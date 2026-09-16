@@ -1,0 +1,71 @@
+{
+  "app": {
+    "title": "ToolNest",
+    "subtitle": "开发者工具箱"
+  },
+  "nav": {
+    "home": "首页",
+    "categories": "分类",
+    "favorites": "收藏",
+    "settings": "设置",
+    "search": "搜索工具..."
+  },
+  "home": {
+    "searchPlaceholder": "按名称、分类或标签搜索工具...",
+    "allTools": "全部工具",
+    "recentTools": "最近使用",
+    "favoriteTools": "收藏工具",
+    "noResults": "未找到工具"
+  },
+  "category": {
+    "crypto": "加密与安全",
+    "crypto.desc": "加密、哈希和安全工具",
+    "converter": "转换器",
+    "converter.desc": "格式和单位转换工具",
+    "web": "Web 工具",
+    "web.desc": "Web 开发和 URL 工具",
+    "developer": "开发者",
+    "developer.desc": "开发和运维工具",
+    "network": "网络",
+    "network.desc": "网络计算和分析工具",
+    "text": "文本",
+    "text.desc": "文本处理和分析工具",
+    "data": "数据",
+    "data.desc": "数据格式和校验工具",
+    "image": "图片",
+    "image.desc": "图片处理工具",
+    "video": "视频",
+    "video.desc": "视频编辑工具",
+    "audio": "音频",
+    "audio.desc": "音频处理工具",
+    "pdf": "PDF",
+    "pdf.desc": "PDF 操作工具",
+    "math": "数学",
+    "math.desc": "数学计算工具",
+    "measurement": "度量",
+    "measurement.desc": "度量和计时工具",
+    "generator": "生成器",
+    "generator.desc": "内容生成工具",
+    "network-test": "网络测试",
+    "network-test.desc": "网络测试和诊断工具",
+    "platform": "平台",
+    "platform.desc": "平台和实用工具"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "theme": "主题",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "themeSystem": "跟随系统"
+  },
+  "tool": {
+    "favorite": "收藏",
+    "unfavorite": "取消收藏",
+    "copy": "复制",
+    "copied": "已复制！",
+    "clear": "清除",
+    "download": "下载",
+    "upload": "上传"
+  }
+}

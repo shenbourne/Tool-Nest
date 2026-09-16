@@ -1,0 +1,71 @@
+{
+  "app": {
+    "title": "ToolNest",
+    "subtitle": "Developer Tools"
+  },
+  "nav": {
+    "home": "Home",
+    "categories": "Categories",
+    "favorites": "Favorites",
+    "settings": "Settings",
+    "search": "Search tools..."
+  },
+  "home": {
+    "searchPlaceholder": "Search tools by name, category, or tag...",
+    "allTools": "All Tools",
+    "recentTools": "Recently Used",
+    "favoriteTools": "Favorites",
+    "noResults": "No tools found"
+  },
+  "category": {
+    "crypto": "Crypto",
+    "crypto.desc": "Encryption, hashing, and security tools",
+    "converter": "Converters",
+    "converter.desc": "Format and unit conversion tools",
+    "web": "Web",
+    "web.desc": "Web development and URL tools",
+    "developer": "Developer",
+    "developer.desc": "Development and DevOps tools",
+    "network": "Network",
+    "network.desc": "Network calculation and analysis tools",
+    "text": "Text",
+    "text.desc": "Text processing and analysis tools",
+    "data": "Data",
+    "data.desc": "Data format and validation tools",
+    "image": "Image",
+    "image.desc": "Image processing tools",
+    "video": "Video",
+    "video.desc": "Video editing tools",
+    "audio": "Audio",
+    "audio.desc": "Audio processing tools",
+    "pdf": "PDF",
+    "pdf.desc": "PDF manipulation tools",
+    "math": "Math",
+    "math.desc": "Mathematical calculation tools",
+    "measurement": "Measurement",
+    "measurement.desc": "Measurement and timing tools",
+    "generator": "Generators",
+    "generator.desc": "Content generation tools",
+    "network-test": "Network Tests",
+    "network-test.desc": "Network testing and diagnostics",
+    "platform": "Platform",
+    "platform.desc": "Platform and utility tools"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "tool": {
+    "favorite": "Favorite",
+    "unfavorite": "Remove from favorites",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "clear": "Clear",
+    "download": "Download",
+    "upload": "Upload"
+  }
+}
