@@ -171,6 +171,54 @@
     "passwordStrength": {
       "name": "Password Strength Analyser",
       "description": "Analyze password strength with entropy estimation and crack time"
+    },
+    "baseConverter": {
+      "name": "Base Converter",
+      "description": "Convert numbers between binary, octal, decimal, and hexadecimal"
+    },
+    "colorConverter": {
+      "name": "Color Converter",
+      "description": "Convert colors between HEX, RGB, and HSL formats"
+    },
+    "urlEncoder": {
+      "name": "URL Encoder/Decoder",
+      "description": "Encode or decode URL-encoded strings"
+    },
+    "caseConverter": {
+      "name": "Case Converter",
+      "description": "Convert text between camelCase, snake_case, kebab-case, and more"
+    },
+    "slugify": {
+      "name": "Slugify",
+      "description": "Convert text to URL-friendly slug format"
+    },
+    "htmlEntities": {
+      "name": "HTML Entities",
+      "description": "Escape and unescape HTML entities"
+    },
+    "jwtParser": {
+      "name": "JWT Parser",
+      "description": "Decode and inspect JSON Web Tokens (JWT)"
+    },
+    "urlParser": {
+      "name": "URL Parser",
+      "description": "Parse URL into its components: protocol, host, path, query, etc."
+    },
+    "httpStatus": {
+      "name": "HTTP Status Codes",
+      "description": "Browse and search HTTP status codes with descriptions"
+    },
+    "mathEvaluator": {
+      "name": "Math Evaluator",
+      "description": "Evaluate mathematical expressions with operators and grouping"
+    },
+    "textStats": {
+      "name": "Text Statistics",
+      "description": "Count characters, words, lines, sentences, and estimate reading time"
+    },
+    "loremIpsum": {
+      "name": "Lorem Ipsum Generator",
+      "description": "Generate placeholder text in paragraphs, sentences, or words"
     }
   }
 }

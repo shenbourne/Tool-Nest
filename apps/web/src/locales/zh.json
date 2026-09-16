@@ -171,6 +171,54 @@
     "passwordStrength": {
       "name": "密码强度分析器",
       "description": "分析密码强度，提供熵值估算和破解时间预估"
+    },
+    "baseConverter": {
+      "name": "进制转换器",
+      "description": "在二进制、八进制、十进制和十六进制之间转换数字"
+    },
+    "colorConverter": {
+      "name": "颜色转换器",
+      "description": "在 HEX、RGB 和 HSL 格式之间转换颜色"
+    },
+    "urlEncoder": {
+      "name": "URL 编码/解码",
+      "description": "编码或解码 URL 编码的字符串"
+    },
+    "caseConverter": {
+      "name": "大小写转换",
+      "description": "在驼峰、蛇形、短横线等多种命名风格之间转换文本"
+    },
+    "slugify": {
+      "name": "URL 别名生成",
+      "description": "将文本转换为 URL 友好的别名格式"
+    },
+    "htmlEntities": {
+      "name": "HTML 实体",
+      "description": "转义和反转义 HTML 实体"
+    },
+    "jwtParser": {
+      "name": "JWT 解析器",
+      "description": "解码和检查 JSON Web 令牌（JWT）"
+    },
+    "urlParser": {
+      "name": "URL 解析器",
+      "description": "将 URL 解析为各组成部分：协议、主机、路径、查询参数等"
+    },
+    "httpStatus": {
+      "name": "HTTP 状态码",
+      "description": "浏览和搜索 HTTP 状态码及其描述"
+    },
+    "mathEvaluator": {
+      "name": "数学表达式计算",
+      "description": "计算包含运算符和分组的数学表达式"
+    },
+    "textStats": {
+      "name": "文本统计",
+      "description": "统计字符、单词、行数、句子数，并估算阅读时间"
+    },
+    "loremIpsum": {
+      "name": "Lorem Ipsum 生成器",
+      "description": "生成段落、句子或单词形式的占位文本"
     }
   }
 }
