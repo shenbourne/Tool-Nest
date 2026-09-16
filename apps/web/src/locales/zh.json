@@ -305,6 +305,20 @@
     "dateWeekdayCalculator": { "name": "日期星期计算", "description": "查找任意日期是星期几" },
     "discordTimestamp": { "name": "Discord 时间戳", "description": "生成 Discord Markdown 时间戳" },
     "timeBetweenDates": { "name": "日期间隔", "description": "计算两个日期之间的时长" },
-    "truncateClockTime": { "name": "时间截断", "description": "将时间截断到分钟或小时精度" }
+    "truncateClockTime": { "name": "时间截断", "description": "将时间截断到分钟或小时精度" },
+    "imageResize": { "name": "图片调整大小", "description": "将图片调整为自定义尺寸" },
+    "imageRotate": { "name": "图片旋转", "description": "按任意角度旋转图片" },
+    "imageFlip": { "name": "图片翻转", "description": "水平或垂直翻转图片" },
+    "imageCompress": { "name": "图片压缩", "description": "压缩图片以减小文件大小" },
+    "imageWatermark": { "name": "图片水印", "description": "为图片添加文字水印" },
+    "convertToJpg": { "name": "转换为 JPG", "description": "将图片转换为 JPEG 格式" },
+    "convertToWebp": { "name": "转换为 WebP", "description": "将图片转换为 WebP 格式" },
+    "imageChangeOpacity": { "name": "图片透明度调整", "description": "调整图片透明度和不透明度" },
+    "pdfMerge": { "name": "PDF 合并", "description": "将多个 PDF 文件合并为一个" },
+    "pdfRotate": { "name": "PDF 旋转", "description": "旋转 PDF 文档中的所有页面" },
+    "pdfSplit": { "name": "PDF 拆分", "description": "从 PDF 中提取指定页面" },
+    "pdfProtect": { "name": "PDF 保护", "description": "为 PDF 文档添加保护" },
+    "convertToPdf": { "name": "转换为 PDF", "description": "将图片转换为 PDF 格式" },
+    "compressPdf": { "name": "PDF 压缩", "description": "减小 PDF 文件大小" }
   }
 }
