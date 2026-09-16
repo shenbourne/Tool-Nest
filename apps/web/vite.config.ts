@@ -42,6 +42,8 @@ export default defineConfig({
           'vendor-vue': ['vue', 'vue-router', 'pinia'],
           'vendor-naive': ['naive-ui'],
           'vendor-i18n': ['vue-i18n'],
+          'vendor-crypto': ['crypto-js', 'node-forge', 'bcryptjs'],
+          'vendor-pdf': ['pdf-lib', 'jspdf'],
         },
       },
     },

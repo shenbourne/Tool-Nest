@@ -7,6 +7,7 @@ import { healthRouter } from './routes/health.js';
 import { userRouter } from './routes/user.js';
 import { reportsRouter } from './routes/reports.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
+import { validateInputSize, concurrencyLimiter } from './middleware/security.js';
 import { initStorage } from './storage/yaml-storage.js';
 import { startCleanupTimer, stopCleanupTimer } from './storage/cleanup.js';
 
@@ -16,6 +17,8 @@ const app = express();
 app.use(helmet());
 app.use(cors({ origin: config.corsOrigin }));
 app.use(express.json({ limit: '1mb' }));
+app.use(validateInputSize(1024 * 1024)); // 1MB max
+app.use(concurrencyLimiter);
 
 // Rate limiting
 const limiter = rateLimit({

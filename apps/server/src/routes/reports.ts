@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { createReport, getReport } from '../storage/store.js';
 import { AppError } from '../middleware/error-handler.js';
+import { sanitizeHtml } from '../middleware/security.js';
 import type { ApiResponse, ShareReport } from '@toolnest/shared';
 
 export const reportsRouter = Router();
@@ -18,7 +19,7 @@ reportsRouter.post('/', async (req, res, next) => {
       throw new AppError(400, 'VALIDATION_ERROR', 'Report title must be a string');
     }
 
-    const report = await createReport(content, title);
+    const report = await createReport(sanitizeHtml(content), title ? sanitizeHtml(title) : undefined);
 
     const response: ApiResponse<ShareReport> = {
       success: true,
