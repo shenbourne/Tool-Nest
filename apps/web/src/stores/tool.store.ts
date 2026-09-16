@@ -55,6 +55,26 @@ export const useToolStore = defineStore('tools', () => {
     localStorage.setItem('toolnest-recent', JSON.stringify(recentTools.value));
   }
 
+  function getToolByPath(path: string): ToolDefinition | undefined {
+    return tools.value.find(t => t.path === path);
+  }
+
+  function getToolsByCategory(category: ToolCategory): ToolDefinition[] {
+    return tools.value.filter(t => t.category === category);
+  }
+
+  function searchTools(query: string): ToolDefinition[] {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return tools.value.filter(t =>
+      t.name.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      t.path.toLowerCase().includes(q) ||
+      t.keywords.some(k => k.toLowerCase().includes(q)) ||
+      (t.aliases ?? []).some(a => a.toLowerCase().includes(q))
+    );
+  }
+
   return {
     tools,
     toolsByCategory,
@@ -64,5 +84,8 @@ export const useToolStore = defineStore('tools', () => {
     recentToolsList,
     toggleFavorite,
     addRecentTool,
+    getToolByPath,
+    getToolsByCategory,
+    searchTools,
   };
 });

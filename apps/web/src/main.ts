@@ -7,12 +7,17 @@ import en from './locales/en.json';
 import zh from './locales/zh.json';
 import 'virtual:uno.css';
 
+const savedLocale = localStorage.getItem('toolnest-locale') || 'zh';
+
 const i18n = createI18n({
   legacy: false,
-  locale: localStorage.getItem('toolnest-locale') || 'zh',
+  locale: savedLocale,
   fallbackLocale: 'en',
   messages: { en, zh },
 });
+
+// Set HTML lang attribute
+document.documentElement.lang = savedLocale;
 
 const app = createApp(App);
 app.use(createPinia());

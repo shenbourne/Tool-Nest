@@ -15,7 +15,11 @@
     "allTools": "All Tools",
     "recentTools": "Recently Used",
     "favoriteTools": "Favorites",
-    "noResults": "No tools found"
+    "noResults": "No tools found",
+    "welcome": "Welcome to ToolNest",
+    "welcomeDesc": "Your unified developer toolbox",
+    "browseCategories": "Browse Categories",
+    "toolCount": "{count} tools"
   },
   "category": {
     "crypto": "Crypto",
@@ -67,5 +71,47 @@
     "clear": "Clear",
     "download": "Download",
     "upload": "Upload"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "reset": "Reset"
+  },
+  "search": {
+    "placeholder": "Search tools...",
+    "noResults": "No tools found matching your search",
+    "resultCount": "{count} tools found"
+  },
+  "tags": {
+    "filter": "Filter by tags",
+    "clearAll": "Clear all",
+    "selected": "{count} selected"
+  },
+  "commandPalette": {
+    "placeholder": "Search tools, actions...",
+    "noResults": "No results found"
+  },
+  "tools": {
+    "helloWorld": {
+      "name": "Hello World",
+      "description": "A sample tool to verify the registration system",
+      "welcome": "This is a sample tool to verify the registration and routing system works correctly."
+    },
+    "jsonPrettify": {
+      "name": "JSON Prettify",
+      "description": "Format and beautify JSON strings",
+      "input": "Input JSON",
+      "output": "Formatted Output"
+    },
+    "base64Encoder": {
+      "name": "Base64 Encoder/Decoder",
+      "description": "Encode or decode Base64 strings"
+    }
   }
 }
