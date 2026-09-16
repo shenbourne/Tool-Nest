@@ -4,12 +4,12 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@toolnest/shared": ["../../packages/shared/src/index.ts"]
     },
     "jsx": "preserve",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"],
-  "references": [{ "path": "../../packages/shared" }]
 }

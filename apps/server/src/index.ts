@@ -5,6 +5,10 @@ import rateLimit from 'express-rate-limit';
 import { config } from './config.js';
 import { healthRouter } from './routes/health.js';
 import { userRouter } from './routes/user.js';
+import { reportsRouter } from './routes/reports.js';
+import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
+import { initStorage } from './storage/yaml-storage.js';
+import { startCleanupTimer, stopCleanupTimer } from './storage/cleanup.js';
 
 const app = express();
 
@@ -25,6 +29,13 @@ app.use('/api/', limiter);
 // Routes
 app.use('/api/health', healthRouter);
 app.use('/api/user', userRouter);
+app.use('/api/reports', reportsRouter);
+
+// 404 handler (before error handler)
+app.use(notFoundHandler);
+
+// Error handler (must be after routes)
+app.use(errorHandler);
 
 // Serve static files in production
 if (config.isProduction) {
@@ -33,6 +44,18 @@ if (config.isProduction) {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   app.use(express.static(path.join(__dirname, '../../web/dist')));
 }
+
+// Initialize storage and start cleanup timer
+await initStorage();
+startCleanupTimer();
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  stopCleanupTimer();
+});
+process.on('SIGINT', () => {
+  stopCleanupTimer();
+});
 
 app.listen(config.port, () => {
   console.log(`ToolNest server running on port ${config.port}`);
