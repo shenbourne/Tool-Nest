@@ -46,6 +46,11 @@ const routes: RouteRecordRaw[] = [
     name: 'settings',
     component: () => import('@/pages/SettingsPage.vue'),
   },
+  {
+    path: '/reports/:id',
+    name: 'report',
+    component: () => import('@/pages/ReportPage.vue'),
+  },
   // 工具路由（放在 404 之前）
   ...toolRoutes,
   // 历史 URL 重定向

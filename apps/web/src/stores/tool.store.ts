@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { ToolDefinition, ToolCategory } from '@toolnest/shared';
+import { usePreferencesStore } from './preferences.store';
 
-// Tool registry - will be populated as tools are migrated
+// Tool registry
 const toolModules = import.meta.glob('@/tools/*/index.ts', { eager: true });
 
 const allTools = Object.values(toolModules)
@@ -11,10 +12,7 @@ const allTools = Object.values(toolModules)
 
 export const useToolStore = defineStore('tools', () => {
   const tools = ref<ToolDefinition[]>(allTools);
-  const favoritePaths = ref<string[]>(JSON.parse(localStorage.getItem('toolnest-favorites') || '[]'));
-  const recentTools = ref<{ path: string; timestamp: number }[]>(
-    JSON.parse(localStorage.getItem('toolnest-recent') || '[]')
-  );
+  const preferencesStore = usePreferencesStore();
 
   const toolsByCategory = computed(() => {
     const grouped = new Map<ToolCategory, ToolDefinition[]>();
@@ -26,12 +24,14 @@ export const useToolStore = defineStore('tools', () => {
     return grouped;
   });
 
+  const favoritePaths = computed(() => preferencesStore.prefs.favorites);
+
   const favoriteTools = computed(() =>
-    tools.value.filter(t => favoritePaths.value.includes(t.path))
+    tools.value.filter(t => preferencesStore.prefs.favorites.includes(t.path))
   );
 
   const recentToolsList = computed(() =>
-    recentTools.value
+    preferencesStore.prefs.recentTools
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(0, 10)
       .map(r => tools.value.find(t => t.path === r.path))
@@ -39,20 +39,11 @@ export const useToolStore = defineStore('tools', () => {
   );
 
   function toggleFavorite(path: string) {
-    const idx = favoritePaths.value.indexOf(path);
-    if (idx >= 0) {
-      favoritePaths.value.splice(idx, 1);
-    } else {
-      favoritePaths.value.push(path);
-    }
-    localStorage.setItem('toolnest-favorites', JSON.stringify(favoritePaths.value));
+    preferencesStore.toggleFavorite(path);
   }
 
   function addRecentTool(path: string) {
-    recentTools.value = recentTools.value.filter(r => r.path !== path);
-    recentTools.value.unshift({ path, timestamp: Date.now() });
-    recentTools.value = recentTools.value.slice(0, 50);
-    localStorage.setItem('toolnest-recent', JSON.stringify(recentTools.value));
+    preferencesStore.recordToolUsage(path);
   }
 
   function getToolByPath(path: string): ToolDefinition | undefined {
@@ -80,7 +71,6 @@ export const useToolStore = defineStore('tools', () => {
     toolsByCategory,
     favoritePaths,
     favoriteTools,
-    recentTools,
     recentToolsList,
     toggleFavorite,
     addRecentTool,

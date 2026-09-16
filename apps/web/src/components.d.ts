@@ -13,6 +13,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBar: typeof import('./components/SearchBar.vue')['default']
+    ShareButton: typeof import('./components/ShareButton.vue')['default']
     TagFilter: typeof import('./components/TagFilter.vue')['default']
     ThemeSwitcher: typeof import('./components/ThemeSwitcher.vue')['default']
     ToolCard: typeof import('./components/ToolCard.vue')['default']

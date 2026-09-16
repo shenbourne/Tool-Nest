@@ -61,7 +61,26 @@
     "theme": "主题",
     "themeLight": "浅色",
     "themeDark": "深色",
-    "themeSystem": "跟随系统"
+    "themeSystem": "跟随系统",
+    "data": "数据管理",
+    "favoritesCount": "{count} 个收藏工具",
+    "recentCount": "{count} 个最近使用的工具",
+    "clearData": "清除所有数据"
+  },
+  "share": {
+    "button": "分享",
+    "title": "分享报告",
+    "titlePlaceholder": "报告标题（可选）",
+    "warning": "隐私提示",
+    "warningDesc": "分享的报告可通过生成的链接公开访问，请勿包含敏感信息。",
+    "create": "创建分享链接",
+    "created": "链接创建成功",
+    "error": "创建分享链接失败"
+  },
+  "report": {
+    "title": "分享报告",
+    "expired": "该报告已过期或不存在",
+    "createdAt": "创建于"
   },
   "tool": {
     "favorite": "收藏",

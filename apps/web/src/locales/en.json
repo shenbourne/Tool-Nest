@@ -61,7 +61,26 @@
     "theme": "Theme",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "themeSystem": "System"
+    "themeSystem": "System",
+    "data": "Data Management",
+    "favoritesCount": "{count} favorite tools",
+    "recentCount": "{count} recently used tools",
+    "clearData": "Clear All Data"
+  },
+  "share": {
+    "button": "Share",
+    "title": "Share Report",
+    "titlePlaceholder": "Report title (optional)",
+    "warning": "Privacy Notice",
+    "warningDesc": "Shared reports are publicly accessible via the generated link. Do not include sensitive information.",
+    "create": "Create Share Link",
+    "created": "Link created successfully",
+    "error": "Failed to create share link"
+  },
+  "report": {
+    "title": "Shared Report",
+    "expired": "This report has expired or does not exist",
+    "createdAt": "Created at"
   },
   "tool": {
     "favorite": "Favorite",
