@@ -319,6 +319,16 @@
     "pdfSplit": { "name": "PDF Split", "description": "Extract specific pages from a PDF" },
     "pdfProtect": { "name": "PDF Protect", "description": "Add protection to PDF documents" },
     "convertToPdf": { "name": "Convert to PDF", "description": "Convert images to PDF format" },
-    "compressPdf": { "name": "Compress PDF", "description": "Reduce PDF file size" }
+    "compressPdf": { "name": "Compress PDF", "description": "Reduce PDF file size" },
+    "connectivityCheck": { "name": "Connectivity Check", "description": "Test internet connectivity to multiple targets" },
+    "webrtcDetection": { "name": "WebRTC Detection", "description": "Detect IP address leaks via WebRTC" },
+    "browserFingerprint": { "name": "Browser Fingerprint", "description": "View detailed browser and device information" },
+    "speedTest": { "name": "Speed Test", "description": "Test download speed and network latency" },
+    "securityChecklist": { "name": "Security Checklist", "description": "Check browser security features and privacy settings" },
+    "ipInfo": { "name": "IP Information", "description": "View your IP address, location, and ISP details" },
+    "dnsResolver": { "name": "DNS Resolver", "description": "Resolve DNS records for any domain" },
+    "macLookup": { "name": "MAC Address Lookup", "description": "Find the vendor for a MAC address" },
+    "serviceStatus": { "name": "Service Status", "description": "Check if a website or service is online" },
+    "whoisLookup": { "name": "Whois Lookup", "description": "Look up domain registration information" }
   }
 }

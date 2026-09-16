@@ -319,6 +319,16 @@
     "pdfSplit": { "name": "PDF 拆分", "description": "从 PDF 中提取指定页面" },
     "pdfProtect": { "name": "PDF 保护", "description": "为 PDF 文档添加保护" },
     "convertToPdf": { "name": "转换为 PDF", "description": "将图片转换为 PDF 格式" },
-    "compressPdf": { "name": "PDF 压缩", "description": "减小 PDF 文件大小" }
+    "compressPdf": { "name": "PDF 压缩", "description": "减小 PDF 文件大小" },
+    "connectivityCheck": { "name": "连通性检查", "description": "测试到多个目标的互联网连通性" },
+    "webrtcDetection": { "name": "WebRTC 检测", "description": "通过 WebRTC 检测 IP 地址泄漏" },
+    "browserFingerprint": { "name": "浏览器指纹", "description": "查看详细的浏览器和设备信息" },
+    "speedTest": { "name": "速度测试", "description": "测试下载速度和网络延迟" },
+    "securityChecklist": { "name": "安全检查清单", "description": "检查浏览器安全功能和隐私设置" },
+    "ipInfo": { "name": "IP 信息查询", "description": "查看 IP 地址、位置和 ISP 详情" },
+    "dnsResolver": { "name": "DNS 解析器", "description": "解析任意域名的 DNS 记录" },
+    "macLookup": { "name": "MAC 地址查询", "description": "查询 MAC 地址对应的厂商" },
+    "serviceStatus": { "name": "服务状态", "description": "检查网站或服务是否在线" },
+    "whoisLookup": { "name": "Whois 查询", "description": "查询域名注册信息" }
   }
 }
