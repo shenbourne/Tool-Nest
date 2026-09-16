@@ -131,6 +131,46 @@
     "base64Encoder": {
       "name": "Base64 Encoder/Decoder",
       "description": "Encode or decode Base64 strings"
+    },
+    "tokenGenerator": {
+      "name": "Token Generator",
+      "description": "Generate random alphanumeric tokens with custom length and character sets"
+    },
+    "hashText": {
+      "name": "Hash Text",
+      "description": "Hash text using MD5, SHA1, SHA256, SHA512 and other algorithms"
+    },
+    "uuidGenerator": {
+      "name": "UUID Generator",
+      "description": "Generate UUID v4 unique identifiers in bulk"
+    },
+    "ulidGenerator": {
+      "name": "ULID Generator",
+      "description": "Generate Universally Unique Lexicographically Sortable Identifiers"
+    },
+    "bcrypt": {
+      "name": "Bcrypt",
+      "description": "Hash and compare strings using bcrypt algorithm"
+    },
+    "encryption": {
+      "name": "Text Encryption",
+      "description": "Encrypt and decrypt text using AES, TripleDES, Rabbit, or RC4"
+    },
+    "hmacGenerator": {
+      "name": "HMAC Generator",
+      "description": "Generate Hash-based Message Authentication Code (HMAC)"
+    },
+    "bip39Generator": {
+      "name": "BIP39 Mnemonic Generator",
+      "description": "Generate and validate BIP39 mnemonic passphrases for crypto wallets"
+    },
+    "rsaKeyPair": {
+      "name": "RSA Key Pair Generator",
+      "description": "Generate RSA public/private key pairs in PEM format"
+    },
+    "passwordStrength": {
+      "name": "Password Strength Analyser",
+      "description": "Analyze password strength with entropy estimation and crack time"
     }
   }
 }

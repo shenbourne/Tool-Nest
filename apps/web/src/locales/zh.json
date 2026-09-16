@@ -131,6 +131,46 @@
     "base64Encoder": {
       "name": "Base64 编码/解码",
       "description": "编码或解码 Base64 字符串"
+    },
+    "tokenGenerator": {
+      "name": "令牌生成器",
+      "description": "生成可自定义长度和字符集的随机令牌"
+    },
+    "hashText": {
+      "name": "文本哈希",
+      "description": "使用 MD5、SHA1、SHA256、SHA512 等算法对文本进行哈希"
+    },
+    "uuidGenerator": {
+      "name": "UUID 生成器",
+      "description": "批量生成 UUID v4 唯一标识符"
+    },
+    "ulidGenerator": {
+      "name": "ULID 生成器",
+      "description": "生成通用唯一字典序可排序标识符"
+    },
+    "bcrypt": {
+      "name": "Bcrypt 哈希",
+      "description": "使用 bcrypt 算法对字符串进行哈希和比较"
+    },
+    "encryption": {
+      "name": "文本加密",
+      "description": "使用 AES、TripleDES、Rabbit 或 RC4 加密和解密文本"
+    },
+    "hmacGenerator": {
+      "name": "HMAC 生成器",
+      "description": "生成基于哈希的消息认证码（HMAC）"
+    },
+    "bip39Generator": {
+      "name": "BIP39 助记词生成器",
+      "description": "生成和验证用于加密钱包的 BIP39 助记词"
+    },
+    "rsaKeyPair": {
+      "name": "RSA 密钥对生成器",
+      "description": "生成 PEM 格式的 RSA 公钥/私钥对"
+    },
+    "passwordStrength": {
+      "name": "密码强度分析器",
+      "description": "分析密码强度，提供熵值估算和破解时间预估"
     }
   }
 }

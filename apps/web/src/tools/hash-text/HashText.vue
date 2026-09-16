@@ -1,0 +1,32 @@
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { NCard, NInput, NSelect, NButton, NSpace } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
+import ToolLayout from '@/layouts/ToolLayout.vue';
+import { tool, hashText, hashAlgorithms, type HashAlgorithm } from './index';
+
+const { t } = useI18n();
+
+const inputText = ref('Lorem ipsum dolor sit amet');
+const algorithm = ref<HashAlgorithm>('SHA256');
+const output = computed(() => hashText(inputText.value, algorithm.value));
+
+const algoOptions = Object.keys(hashAlgorithms).map(label => ({ label, value: label }));
+
+function copy() { navigator.clipboard.writeText(output.value); }
+</script>
+
+<template>
+  <ToolLayout :tool="tool">
+    <NSpace vertical :size="16">
+      <NCard title="Hash Text">
+        <NSpace vertical :size="12">
+          <NInput v-model:value="inputText" type="textarea" :rows="3" placeholder="Text to hash..." />
+          <NSelect v-model:value="algorithm" :options="algoOptions" />
+          <NInput :value="output" readonly type="textarea" :rows="2" style="font-family: monospace;" />
+          <NButton @click="copy">{{ t('tool.copy') }}</NButton>
+        </NSpace>
+      </NCard>
+    </NSpace>
+  </ToolLayout>
+</template>
