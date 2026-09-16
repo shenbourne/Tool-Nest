@@ -33,7 +33,25 @@ export type ToolTag =
   | 'parser'         // 解析工具
   | 'encoder'        // 编解码
   | 'security'       // 安全相关
-  | 'productivity';  // 生产力
+  | 'productivity'   // 生产力
+  | 'text'           // 文本处理
+  | 'csv'            // CSV 处理
+  | 'list'           // 列表操作
+  | 'json'           // JSON 处理
+  | 'xml'            // XML 处理
+  | 'math'           // 数学计算
+  | 'time'           // 时间工具
+  | 'number'         // 数字工具
+  | 'statistics'     // 统计工具
+  | 'random'         // 随机生成
+  | 'filter'         // 过滤工具
+  | 'check'          // 检查验证
+  | 'extract'        // 提取工具
+  | 'debug'          // 调试工具
+  | 'discord'        // Discord 工具
+  | 'tsv'            // TSV 处理
+  | 'yaml'           // YAML 处理
+  | 'developer';     // 开发者工具
 
 // 工具定义接口
 export interface ToolDefinition {
