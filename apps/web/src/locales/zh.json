@@ -219,6 +219,30 @@
     "loremIpsum": {
       "name": "Lorem Ipsum 生成器",
       "description": "生成段落、句子或单词形式的占位文本"
+    },
+    "chronometer": {
+      "name": "秒表",
+      "description": "带圈时记录的秒表计时器"
+    },
+    "temperature": {
+      "name": "温度转换器",
+      "description": "在摄氏度、华氏度和开尔文之间转换"
+    },
+    "textDiff": {
+      "name": "文本对比",
+      "description": "比较两段文本并高亮显示差异"
+    },
+    "emojiPicker": {
+      "name": "表情选择器",
+      "description": "浏览和复制常用表情符号"
+    },
+    "stringObfuscator": {
+      "name": "字符串混淆器",
+      "description": "遮盖、删除或部分隐藏敏感字符串"
+    },
+    "percentageCalc": {
+      "name": "百分比计算器",
+      "description": "计算百分比、比例和百分比变化"
     }
   }
 }

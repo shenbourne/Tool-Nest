@@ -219,6 +219,30 @@
     "loremIpsum": {
       "name": "Lorem Ipsum Generator",
       "description": "Generate placeholder text in paragraphs, sentences, or words"
+    },
+    "chronometer": {
+      "name": "Chronometer",
+      "description": "Stopwatch with lap time recording"
+    },
+    "temperature": {
+      "name": "Temperature Converter",
+      "description": "Convert between Celsius, Fahrenheit, and Kelvin"
+    },
+    "textDiff": {
+      "name": "Text Diff",
+      "description": "Compare two texts and highlight differences"
+    },
+    "emojiPicker": {
+      "name": "Emoji Picker",
+      "description": "Browse and copy popular emojis"
+    },
+    "stringObfuscator": {
+      "name": "String Obfuscator",
+      "description": "Mask, redact, or partially hide sensitive strings"
+    },
+    "percentageCalc": {
+      "name": "Percentage Calculator",
+      "description": "Calculate percentages, proportions, and percent change"
     }
   }
 }
