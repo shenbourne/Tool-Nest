@@ -38,7 +38,7 @@ function toggleFav(e: Event) {
     </p>
     <NSpace size="small">
       <NTag size="small" :bordered="false" type="info">
-        {{ t(`category.${tool.category}`) }}
+        {{ t(`category.${tool.category}.name`) }}
       </NTag>
       <NTag v-for="tag in tool.tags.slice(0, 3)" :key="tag" size="small" :bordered="false">
         {{ tag }}

@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router';
 import { TOOL_CATEGORIES } from '@toolnest/shared';
 import type { ToolDefinition } from '@toolnest/shared';
 import { useToolStore } from '@/stores/tool.store';
+import AppNavbar from '@/components/AppNavbar.vue';
 
 const props = defineProps<{
   tool: ToolDefinition;
@@ -40,7 +41,9 @@ function goCategory() {
 </script>
 
 <template>
-  <div class="tool-layout">
+  <div class="tool-page-wrapper">
+    <AppNavbar />
+    <div class="tool-layout">
     <!-- 面包屑导航 -->
     <NBreadcrumb style="margin-bottom: 16px;">
       <NBreadcrumbItem @click="goHome" style="cursor: pointer;">
@@ -94,10 +97,16 @@ function goCategory() {
     <div class="tool-content">
       <slot />
     </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.tool-page-wrapper {
+  min-height: 100vh;
+  background: #fafafc;
+}
+
 .tool-layout {
   max-width: 900px;
   margin: 0 auto;
@@ -158,5 +167,11 @@ function goCategory() {
     margin-top: 12px;
     align-self: flex-end;
   }
+}
+</style>
+
+<style>
+html.dark .tool-page-wrapper {
+  background: #101014;
 }
 </style>

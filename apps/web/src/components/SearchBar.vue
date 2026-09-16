@@ -86,7 +86,7 @@ function handleBlur() {
             <div style="font-size: 12px; opacity: 0.6;">
               {{ t(tool.description) }}
               <NTag size="tiny" :bordered="false" style="margin-left: 8px;">
-                {{ t(`category.${tool.category}`) }}
+                {{ t(`category.${tool.category}.name`) }}
               </NTag>
             </div>
           </div>
