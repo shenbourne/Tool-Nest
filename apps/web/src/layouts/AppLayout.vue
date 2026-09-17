@@ -116,7 +116,7 @@ onUnmounted(() => {
             display: 'flex',
             alignItems: 'center',
             gap: 'var(--spacing-xs)',
-            padding: collapsed ? '10px 0' : '10px var(--spacing-md)',
+            padding: collapsed ? 'var(--spacing-xs) 0' : 'var(--spacing-xs) var(--spacing-md)',
             justifyContent: collapsed ? 'center' : 'flex-start',
             cursor: 'pointer',
             borderRadius: 'var(--radius-md)',
