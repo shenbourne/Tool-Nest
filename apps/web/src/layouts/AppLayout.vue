@@ -99,7 +99,7 @@ onUnmounted(() => {
     >
       <!-- Logo -->
       <div
-        style="padding: 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--n-border-color);"
+        style="padding: var(--spacing-md); cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--color-hairline);"
         @click="goHome"
       >
         <span style="font-size: 20px; font-weight: bold; white-space: nowrap; overflow: hidden;">
@@ -108,22 +108,22 @@ onUnmounted(() => {
       </div>
 
       <!-- Category list (scrollable) -->
-      <div style="flex: 1; overflow-y: auto; padding: 8px 0;">
+      <div style="flex: 1; overflow-y: auto; padding: var(--spacing-xs) 0;">
         <div
           v-for="cat in sortedCategories"
           :key="cat.name"
           :style="{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
-            padding: collapsed ? '10px 0' : '10px 16px',
+            gap: 'var(--spacing-xs)',
+            padding: collapsed ? '10px 0' : '10px var(--spacing-md)',
             justifyContent: collapsed ? 'center' : 'flex-start',
             cursor: 'pointer',
-            borderRadius: '6px',
-            margin: '2px 8px',
-            backgroundColor: activeCategory === cat.name ? 'rgba(24,160,88,0.12)' : 'transparent',
-            color: activeCategory === cat.name ? '#18a058' : undefined,
-            transition: 'background-color 0.2s',
+            borderRadius: 'var(--radius-md)',
+            margin: '2px var(--spacing-xs)',
+            backgroundColor: activeCategory === cat.name ? 'var(--color-primary-soft)' : 'transparent',
+            color: activeCategory === cat.name ? 'var(--color-primary)' : undefined,
+            transition: 'background-color var(--motion-base) var(--motion-ease)',
           }"
           @click="handleCategoryClick(cat.name)"
         >
@@ -135,7 +135,7 @@ onUnmounted(() => {
           </NTooltip>
           <template v-else>
             <span style="font-size: 18px; flex-shrink: 0;">{{ getCategoryEmoji(cat.name) }}</span>
-            <span style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <span style="font-size: var(--font-size-body-md); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
               {{ t(cat.label) }}
             </span>
           </template>
@@ -143,22 +143,16 @@ onUnmounted(() => {
       </div>
 
       <!-- Footer: theme + locale (pinned at bottom) -->
-      <div style="padding: 12px 16px; border-top: 1px solid var(--n-border-color); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+      <div style="padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--color-hairline); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
         <LocaleSwitcher />
         <ThemeSwitcher />
       </div>
     </NLayoutSider>
 
     <NLayoutContent
-      :style="{ marginLeft: collapsed ? '60px' : '240px', transition: 'margin-left 0.3s' }"
+      :style="{ marginLeft: collapsed ? '60px' : '240px', transition: 'margin-left var(--motion-slow) var(--motion-ease)' }"
     >
       <slot />
     </NLayoutContent>
   </NLayout>
 </template>
-
-<style>
-html.dark .n-layout-sider {
-  background: #18181c !important;
-}
-</style>
