@@ -26,30 +26,35 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'home',
     component: () => import('@/pages/HomePage.vue'),
+    meta: { showSidebar: true },
   },
   {
     path: '/tools/:category',
     name: 'category',
     component: () => import('@/pages/CategoryPage.vue'),
+    meta: { showSidebar: true },
   },
   {
     path: '/settings',
     name: 'settings',
     component: () => import('@/pages/SettingsPage.vue'),
+    meta: { showSidebar: false },
   },
   {
     path: '/reports/:id',
     name: 'report',
     component: () => import('@/pages/ReportPage.vue'),
+    meta: { showSidebar: false },
   },
   // 工具路由（放在 404 之前）
-  ...toolRoutes,
+  ...toolRoutes.map(r => ({ ...r, meta: { ...r.meta, showSidebar: true } })),
   // 历史 URL 重定向
   ...redirectRoutes,
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFoundPage.vue'),
+    meta: { showSidebar: false },
   },
 ];
 

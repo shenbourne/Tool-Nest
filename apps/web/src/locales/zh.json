@@ -8,7 +8,8 @@
     "categories": "分类",
     "favorites": "收藏",
     "settings": "设置",
-    "search": "搜索工具..."
+    "search": "搜索工具...",
+    "allCategories": "所有分类"
   },
   "home": {
     "searchPlaceholder": "按名称、分类或标签搜索工具...",
@@ -47,6 +48,10 @@
     "themeDark": "深色",
     "themeSystem": "跟随系统",
     "data": "数据管理",
+    "sidebarMode": "分类点击行为",
+    "sidebarModeAnchor": "页面内滚动",
+    "sidebarModeNavigate": "跳转独立页面",
+    "layoutMode": "布局模式",
     "favoritesCount": "{count} 个收藏工具",
     "recentCount": "{count} 个最近使用的工具",
     "clearData": "清除所有数据"

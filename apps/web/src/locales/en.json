@@ -8,7 +8,8 @@
     "categories": "Categories",
     "favorites": "Favorites",
     "settings": "Settings",
-    "search": "Search tools..."
+    "search": "Search tools...",
+    "allCategories": "All Categories"
   },
   "home": {
     "searchPlaceholder": "Search tools by name, category, or tag...",
@@ -47,6 +48,10 @@
     "themeDark": "Dark",
     "themeSystem": "System",
     "data": "Data Management",
+    "sidebarMode": "Category Click Behavior",
+    "sidebarModeAnchor": "Scroll on Page",
+    "sidebarModeNavigate": "Navigate to Page",
+    "layoutMode": "Layout Mode",
     "favoritesCount": "{count} favorite tools",
     "recentCount": "{count} recently used tools",
     "clearData": "Clear All Data"

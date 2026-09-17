@@ -71,6 +71,29 @@ export const usePreferencesStore = defineStore('preferences', () => {
     setLocale(prefs.value.language === 'zh' ? 'en' : 'zh');
   }
 
+  // ── Sidebar management ──────────────────────────────────────────
+  const sidebarMode = computed<'anchor' | 'navigate'>({
+    get: () => (prefs.value.settings.sidebarMode as 'anchor' | 'navigate') || 'anchor',
+    set: (val: 'anchor' | 'navigate') => {
+      prefs.value.settings.sidebarMode = val;
+      localStorage.setItem('toolnest-sidebar-mode', val);
+    },
+  });
+
+  const sidebarCollapsed = ref<boolean>(
+    localStorage.getItem('toolnest-sidebar-collapsed') === 'true'
+  );
+
+  function setSidebarMode(mode: 'anchor' | 'navigate') {
+    sidebarMode.value = mode;
+    save({ settings: prefs.value.settings });
+  }
+
+  function toggleSidebarCollapsed() {
+    sidebarCollapsed.value = !sidebarCollapsed.value;
+    localStorage.setItem('toolnest-sidebar-collapsed', String(sidebarCollapsed.value));
+  }
+
   // ── Server sync: load ───────────────────────────────────────────────
   async function load(): Promise<void> {
     if (loading.value) return;
@@ -99,6 +122,10 @@ export const usePreferencesStore = defineStore('preferences', () => {
     // After loading, apply theme and locale side-effects
     applyTheme();
     setLocale(prefs.value.language);
+    const savedMode = localStorage.getItem('toolnest-sidebar-mode');
+    if (savedMode === 'anchor' || savedMode === 'navigate') {
+      prefs.value.settings.sidebarMode = savedMode;
+    }
   }
 
   // ── Server sync: save ───────────────────────────────────────────────
@@ -179,5 +206,10 @@ export const usePreferencesStore = defineStore('preferences', () => {
     toggleFavorite,
     recordToolUsage,
     isFavorite,
+    // sidebar
+    sidebarMode,
+    sidebarCollapsed,
+    setSidebarMode,
+    toggleSidebarCollapsed,
   };
 });

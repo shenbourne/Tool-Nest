@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { NLayout, NLayoutHeader, NLayoutContent, NCard, NAlert, NSpin, NTag } from 'naive-ui';
+import { NLayout, NLayoutContent, NCard, NAlert, NSpin, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import AppNavbar from '@/components/AppNavbar.vue';
 import type { ShareReport } from '@toolnest/shared';
 
 const route = useRoute();
@@ -37,9 +36,6 @@ onMounted(async () => {
 
 <template>
   <NLayout style="min-height: 100vh;">
-    <NLayoutHeader>
-      <AppNavbar />
-    </NLayoutHeader>
     <NLayoutContent content-style="padding: 24px; max-width: 800px; margin: 0 auto;">
       <NSpin v-if="loading" style="display: flex; justify-content: center; padding: 48px;" />
 
