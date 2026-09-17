@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { NConfigProvider, NMessageProvider, NDialogProvider, NNotificationProvider, darkTheme, type GlobalThemeOverrides } from 'naive-ui';
 import { computed } from 'vue';
-import { useThemeStore } from './stores/theme.store';
+import { usePreferencesStore } from './stores/preferences.store';
 import CommandPalette from './components/CommandPalette.vue';
 
-const themeStore = useThemeStore();
+const preferencesStore = usePreferencesStore();
 
-const theme = computed(() => themeStore.isDark ? darkTheme : null);
+const theme = computed(() => preferencesStore.isDark ? darkTheme : null);
 
 const themeOverrides = computed<GlobalThemeOverrides>(() => ({
   common: {

@@ -2,13 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { ToolDefinition, ToolCategory } from '@toolnest/shared';
 import { usePreferencesStore } from './preferences.store';
-
-// Tool registry
-const toolModules = import.meta.glob('@/tools/*/index.ts', { eager: true });
-
-const allTools = Object.values(toolModules)
-  .map((mod: any) => mod.tool as ToolDefinition)
-  .filter(Boolean);
+import { allTools } from '@/tools/registry';
 
 export const useToolStore = defineStore('tools', () => {
   const tools = ref<ToolDefinition[]>(allTools);

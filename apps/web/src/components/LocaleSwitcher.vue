@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui';
-import { useI18n } from 'vue-i18n';
+import { usePreferencesStore } from '@/stores/preferences.store';
 
-const { locale } = useI18n();
-
-function toggleLocale() {
-  locale.value = locale.value === 'zh' ? 'en' : 'zh';
-  localStorage.setItem('toolnest-locale', locale.value);
-  document.documentElement.lang = locale.value;
-}
+const preferencesStore = usePreferencesStore();
 </script>
 
 <template>
-  <NButton quaternary @click="toggleLocale">
-    {{ locale === 'zh' ? 'EN' : '中文' }}
+  <NButton quaternary @click="preferencesStore.toggleLocale">
+    {{ preferencesStore.isZh ? 'EN' : '中文' }}
   </NButton>
 </template>

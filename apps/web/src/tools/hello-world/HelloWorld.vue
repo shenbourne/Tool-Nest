@@ -2,12 +2,11 @@
 import { NCard, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCurrentTool } from '@/composables/useCurrentTool';
 import { computed } from 'vue';
-import { useToolStore } from '@/stores/tool.store';
 
 const { t } = useI18n();
-const toolStore = useToolStore();
-const tool = computed(() => toolStore.getToolByPath('/hello-world'));
+const tool = useCurrentTool();
 </script>
 
 <template>

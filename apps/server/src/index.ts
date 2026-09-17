@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { config } from './config.js';
+import { config, validateConfig } from './config.js';
 import { healthRouter } from './routes/health.js';
 import { userRouter } from './routes/user.js';
 import { reportsRouter } from './routes/reports.js';
@@ -46,6 +46,14 @@ if (config.isProduction) {
   const { fileURLToPath } = await import('url');
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   app.use(express.static(path.join(__dirname, '../../web/dist')));
+}
+
+// Validate config before starting
+try {
+  validateConfig();
+} catch (err) {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
 }
 
 // Initialize storage and start cleanup timer

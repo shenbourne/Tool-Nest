@@ -34,16 +34,9 @@ export function validateUrl(urlStr: string): { valid: boolean; hostname?: string
 }
 
 /**
- * XSS Sanitization - Escape HTML entities in user content
+ * XSS Sanitization - re-exported from shared package
  */
-export function sanitizeHtml(input: string): string {
-  return input
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;');
-}
+export { sanitizeHtml } from '@toolnest/shared';
 
 /**
  * Input validation middleware - limit request body size

@@ -2,12 +2,11 @@
 import { NCard, NInput, NSpace, NButton, NRadioGroup, NRadio } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useToolStore } from '@/stores/tool.store';
+import { useCurrentTool } from '@/composables/useCurrentTool';
 import { ref, computed, watch } from 'vue';
 
 const { t } = useI18n();
-const toolStore = useToolStore();
-const tool = computed(() => toolStore.getToolByPath('/base64-encoder'));
+const tool = useCurrentTool();
 
 const mode = ref<'encode' | 'decode'>('encode');
 const input = ref('');

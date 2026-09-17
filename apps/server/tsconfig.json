@@ -2,9 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "paths": {
-      "@toolnest/shared": ["../../packages/shared/src/index.ts"]
-    }
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/__tests__"]
 }

@@ -2,12 +2,11 @@
 import { NCard, NInput, NSelect, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useToolStore } from '@/stores/tool.store';
+import { useCurrentTool } from '@/composables/useCurrentTool';
 import { ref, computed, watch } from 'vue';
 
 const { t } = useI18n();
-const toolStore = useToolStore();
-const tool = computed(() => toolStore.getToolByPath('/json-prettify'));
+const tool = useCurrentTool();
 
 const input = ref('');
 const indent = ref(2);

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getUserPreferences, saveUserPreferences } from '../storage/store.js';
+import { userPrefsRepo } from '../storage/store.js';
 import { AppError } from '../middleware/error-handler.js';
 import type { ApiResponse, UserPreferences } from '@toolnest/shared';
 
@@ -8,7 +8,7 @@ export const userRouter = Router();
 // Get user preferences
 userRouter.get('/preferences', async (_req, res, next) => {
   try {
-    const prefs = await getUserPreferences();
+    const prefs = await userPrefsRepo.get();
     const response: ApiResponse<UserPreferences> = {
       success: true,
       data: prefs,
@@ -45,7 +45,7 @@ userRouter.put('/preferences', async (req, res, next) => {
       }
     }
 
-    const prefs = await saveUserPreferences(body);
+    const prefs = await userPrefsRepo.save(body);
     const response: ApiResponse<UserPreferences> = {
       success: true,
       data: prefs,

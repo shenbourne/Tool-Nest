@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createReport, getReport } from '../storage/store.js';
+import { reportRepo } from '../storage/store.js';
 import { AppError } from '../middleware/error-handler.js';
 import { sanitizeHtml } from '../middleware/security.js';
 import type { ApiResponse, ShareReport } from '@toolnest/shared';
@@ -19,7 +19,7 @@ reportsRouter.post('/', async (req, res, next) => {
       throw new AppError(400, 'VALIDATION_ERROR', 'Report title must be a string');
     }
 
-    const report = await createReport(sanitizeHtml(content), title ? sanitizeHtml(title) : undefined);
+    const report = await reportRepo.create(sanitizeHtml(content), title ? sanitizeHtml(title) : undefined);
 
     const response: ApiResponse<ShareReport> = {
       success: true,
@@ -47,7 +47,7 @@ reportsRouter.get('/:id', async (req, res, next) => {
       throw new AppError(400, 'VALIDATION_ERROR', 'Invalid report ID format');
     }
 
-    const report = await getReport(id);
+    const report = await reportRepo.get(id);
 
     if (!report) {
       throw new AppError(404, 'NOT_FOUND', 'Report not found or has expired');

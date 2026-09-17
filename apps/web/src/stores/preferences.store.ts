@@ -1,14 +1,19 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { usePreferredDark } from '@vueuse/core';
+import { i18n } from '../i18n';
 import type { UserPreferences } from '@toolnest/shared';
 
 const API_BASE = '/api';
 
+export type ThemeMode = 'light' | 'dark' | 'system';
+
 export const usePreferencesStore = defineStore('preferences', () => {
+  // ── Core preferences state ──────────────────────────────────────────
   const prefs = ref<UserPreferences>({
     version: 1,
-    language: 'zh',
-    theme: 'system',
+    language: localStorage.getItem('toolnest-locale') || 'zh',
+    theme: (localStorage.getItem('toolnest-theme-mode') as ThemeMode) || 'system',
     favorites: [],
     recentTools: [],
     settings: {},
@@ -18,7 +23,55 @@ export const usePreferencesStore = defineStore('preferences', () => {
   const loading = ref(false);
   const syncError = ref<string | null>(null);
 
-  // Load preferences from backend
+  // ── Theme management ────────────────────────────────────────────────
+  const systemDark = usePreferredDark();
+
+  const isDark = computed(() => {
+    if (prefs.value.theme === 'system') return systemDark.value;
+    return prefs.value.theme === 'dark';
+  });
+
+  function applyTheme() {
+    document.documentElement.classList.toggle('dark', isDark.value);
+  }
+
+  function setMode(newMode: ThemeMode) {
+    prefs.value.theme = newMode;
+    localStorage.setItem('toolnest-theme-mode', newMode);
+    applyTheme();
+  }
+
+  function toggleDark() {
+    const modes: ThemeMode[] = ['light', 'dark', 'system'];
+    const idx = modes.indexOf(prefs.value.theme);
+    setMode(modes[(idx + 1) % modes.length]);
+  }
+
+  // Watch for system theme changes
+  watch(systemDark, () => {
+    if (prefs.value.theme === 'system') applyTheme();
+  });
+
+  // ── Locale management ───────────────────────────────────────────────
+  // useI18n() can only be called inside component setup; in a Pinia store
+  // we use the global i18n instance directly.
+  const i18nLocale = i18n.global.locale;
+
+  const isZh = computed(() => prefs.value.language === 'zh');
+  const isEn = computed(() => prefs.value.language === 'en');
+
+  function setLocale(lang: string) {
+    prefs.value.language = lang;
+    i18nLocale.value = lang as 'zh' | 'en';
+    localStorage.setItem('toolnest-locale', lang);
+    document.documentElement.lang = lang;
+  }
+
+  function toggleLocale() {
+    setLocale(prefs.value.language === 'zh' ? 'en' : 'zh');
+  }
+
+  // ── Server sync: load ───────────────────────────────────────────────
   async function load(): Promise<void> {
     if (loading.value) return;
     loading.value = true;
@@ -28,11 +81,10 @@ export const usePreferencesStore = defineStore('preferences', () => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (json.success && json.data) {
-        prefs.value = json.data;
+        prefs.value = { ...prefs.value, ...json.data };
         loaded.value = true;
       }
     } catch (err) {
-      // Fall back to localStorage
       console.warn('Failed to load preferences from server, using localStorage:', err);
       const localFavs = localStorage.getItem('toolnest-favorites');
       const localRecent = localStorage.getItem('toolnest-recent');
@@ -43,16 +95,27 @@ export const usePreferencesStore = defineStore('preferences', () => {
     } finally {
       loading.value = false;
     }
+
+    // After loading, apply theme and locale side-effects
+    applyTheme();
+    setLocale(prefs.value.language);
   }
 
-  // Save preferences to backend (and localStorage as fallback)
+  // ── Server sync: save ───────────────────────────────────────────────
   async function save(updates: Partial<UserPreferences>): Promise<void> {
     const merged = { ...prefs.value, ...updates };
     prefs.value = merged;
 
-    // Always save to localStorage as fallback
+    // Persist to localStorage as fallback
     localStorage.setItem('toolnest-favorites', JSON.stringify(merged.favorites));
     localStorage.setItem('toolnest-recent', JSON.stringify(merged.recentTools));
+    if (updates.theme) {
+      localStorage.setItem('toolnest-theme-mode', updates.theme);
+      applyTheme();
+    }
+    if (updates.language) {
+      setLocale(updates.language);
+    }
 
     // Try to sync to server
     try {
@@ -64,7 +127,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (json.success && json.data) {
-        prefs.value = json.data;
+        prefs.value = { ...prefs.value, ...json.data };
       }
     } catch (err) {
       console.warn('Failed to sync preferences to server:', err);
@@ -72,7 +135,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
     }
   }
 
-  // Toggle a favorite
+  // ── Favorites & recents ─────────────────────────────────────────────
   async function toggleFavorite(path: string): Promise<void> {
     const idx = prefs.value.favorites.indexOf(path);
     const newFavs = [...prefs.value.favorites];
@@ -85,7 +148,6 @@ export const usePreferencesStore = defineStore('preferences', () => {
     await save({ favorites: newFavs });
   }
 
-  // Record a tool usage
   async function recordToolUsage(path: string): Promise<void> {
     const filtered = prefs.value.recentTools.filter(r => r.path !== path);
     const updated = [{ path, timestamp: Date.now() }, ...filtered].slice(0, 30);
@@ -97,10 +159,21 @@ export const usePreferencesStore = defineStore('preferences', () => {
   );
 
   return {
+    // state
     prefs,
     loaded,
     loading,
     syncError,
+    // theme
+    isDark,
+    setMode,
+    toggleDark,
+    // locale
+    isZh,
+    isEn,
+    setLocale,
+    toggleLocale,
+    // favorites & recents
     load,
     save,
     toggleFavorite,

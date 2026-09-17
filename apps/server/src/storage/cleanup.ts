@@ -1,4 +1,4 @@
-import { cleanupExpiredReports } from './store.js';
+import { reportRepo } from './store.js';
 
 let timerHandle: ReturnType<typeof setInterval> | null = null;
 
@@ -8,7 +8,7 @@ export function startCleanupTimer(): void {
   if (timerHandle) return;
 
   // Run once on startup
-  cleanupExpiredReports()
+  reportRepo.cleanupExpired()
     .then((count) => {
       if (count > 0) console.log(`Cleaned up ${count} expired reports on startup`);
     })
@@ -17,7 +17,7 @@ export function startCleanupTimer(): void {
     });
 
   timerHandle = setInterval(() => {
-    cleanupExpiredReports()
+    reportRepo.cleanupExpired()
       .then((count) => {
         if (count > 0) console.log(`Cleaned up ${count} expired reports`);
       })

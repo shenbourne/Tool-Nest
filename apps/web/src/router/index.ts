@@ -1,14 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import type { ToolDefinition } from '@toolnest/shared';
-
-// 直接扫描工具模块，不依赖 store（避免循环依赖）
-const toolModules = import.meta.glob('@/tools/*/index.ts', { eager: true });
-
-// 从模块中提取 tool 定义
-type ToolModule = { tool: ToolDefinition };
-const allTools: ToolDefinition[] = Object.values(toolModules)
-  .map((mod) => (mod as ToolModule).tool)
-  .filter(Boolean);
+import { allTools } from '@/tools/registry';
 
 // 自动生成工具路由
 const toolRoutes: RouteRecordRaw[] = allTools.map((tool) => ({

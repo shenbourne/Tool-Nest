@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Architecture review for ToolNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+  </script>
+  <style>
+    .seam { stroke-dasharray: 4 4; }
+    .leak { stroke: #dc2626; }
+    .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
+    .badge-strong { background: #059669; color: white; }
+    .badge-explore { background: #d97706; color: white; }
+    .badge-speculative { background: #64748b; color: white; }
+    .callout-adr { background: #fef3c7; border-left: 4px solid #d97706; }
+    .cross-section-band { border-left: 4px solid #94a3b8; padding: 6px 12px; margin: 2px 0; font-size: 12px; }
+  </style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-5xl mx-auto px-6 py-12 space-y-12">
+
+  <!-- Header -->
+  <header class="border-b border-slate-200 pb-8">
+    <h1 class="text-3xl font-serif font-bold tracking-tight">ToolNest — Architecture Review</h1>
+    <p class="text-sm text-slate-500 mt-2">2026-09-17 · 115+ tools · Vue 3 + Pinia + Express</p>
+    <div class="flex gap-6 mt-4 text-xs text-slate-500">
+      <span class="flex items-center gap-2"><span class="inline-block w-4 h-3 border border-slate-400 bg-white"></span> module</span>
+      <span class="flex items-center gap-2"><span class="inline-block w-4 h-0 border-t border-dashed border-slate-400"></span> seam</span>
+      <span class="flex items-center gap-2"><span class="inline-block w-4 h-3 bg-red-100 border border-red-400"></span> leakage</span>
+      <span class="flex items-center gap-2"><span class="inline-block w-4 h-3 deep text-white text-[8px] flex items-center justify-center">D</span> deep module</span>
+    </div>
+  </header>
+
+  <section id="candidates" class="space-y-14">
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CANDIDATE 1: Collapse the duplicate tool scanning pipeline -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 space-y-5">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-serif font-bold">Collapse the duplicate tool scanning pipeline</h2>
+          <div class="flex gap-2">
+            <span class="badge-strong text-xs px-2.5 py-1 rounded-full font-medium">Strong</span>
+            <span class="text-xs px-2.5 py-1 rounded-full border border-slate-300 text-slate-600">in-process</span>
+          </div>
+        </div>
+
+        <div class="font-mono text-sm text-slate-600 space-y-0.5">
+          <div>apps/web/src/router/index.ts</div>
+          <div>apps/web/src/stores/tool.store.ts</div>
+        </div>
+
+        <!-- Before / After -->
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">Before — two independent scanners</p>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <pre class="mermaid">
+flowchart TD
+  subgraph "Startup"
+    R["router/index.ts"] -->|"import.meta.glob"| T1["115+ tool modules"]
+    S["tool.store.ts"] -->|"import.meta.glob"| T2["115+ tool modules"]
+  end
+  T1 --> R1["toolRoutes[]"]
+  T2 --> S1["allTools ref"]
+  style R fill:#fef3c7,stroke:#d97706
+  style S fill:#fef3c7,stroke:#d97706
+  style T1 fill:#fee2e2,stroke:#dc2626
+  style T2 fill:#fee2e2,stroke:#dc2626
+              </pre>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">After — one registry, two consumers</p>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <pre class="mermaid">
+flowchart TD
+  subgraph "Startup"
+    REG["tool-registry.ts"] -->|"import.meta.glob"| TOOLS["115+ tool modules"]
+  end
+  REG --> R2["router (reads registry)"]
+  REG --> S2["store (reads registry)"]
+  style REG fill:#1e293b,stroke:#0f172a,color:#fff
+  style R2 fill:#e0f2fe,stroke:#0284c7
+  style S2 fill:#e0f2fe,stroke:#0284c7
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Problem:</p>
+          <p class="text-slate-600">Both <code class="bg-slate-100 px-1 rounded">router/index.ts</code> and <code class="bg-slate-100 px-1 rounded">tool.store.ts</code> independently call <code class="bg-slate-100 px-1 rounded">import.meta.glob('/tools/*/index.ts')</code>, loading every tool module twice. The router extracts routes; the store extracts a ref. Two modules with the same responsibility, no single source of truth.</p>
+        </div>
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Solution:</p>
+          <p class="text-slate-600">Extract a <code class="bg-slate-100 px-1 rounded">tool-registry.ts</code> module that owns the glob scan and exports <code class="bg-slate-100 px-1 rounded">allTools</code>. Router and store import from it. One seam, one place to change the scanning strategy.</p>
+        </div>
+        <div>
+          <p class="font-medium text-slate-800 mb-2">Wins:</p>
+          <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
+            <li><strong>Locality</strong>: glob logic lives in one module</li>
+            <li><strong>Leverage</strong>: change scanning once, both consumers update</li>
+            <li>Deletion test: removing either current scanner breaks half the app</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CANDIDATE 2: Unify the scattered preference identity       -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 space-y-5">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-serif font-bold">Unify the scattered preference identity</h2>
+          <div class="flex gap-2">
+            <span class="badge-strong text-xs px-2.5 py-1 rounded-full font-medium">Strong</span>
+            <span class="text-xs px-2.5 py-1 rounded-full border border-slate-300 text-slate-600">ports &amp; adapters</span>
+          </div>
+        </div>
+
+        <div class="font-mono text-sm text-slate-600 space-y-0.5">
+          <div>apps/web/src/stores/theme.store.ts</div>
+          <div>apps/web/src/stores/preferences.store.ts</div>
+          <div>apps/web/src/composables/useLocale.ts</div>
+          <div>apps/web/src/main.ts</div>
+          <div>apps/web/src/pages/SettingsPage.vue</div>
+        </div>
+
+        <!-- Before / After: cross-section -->
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">Before — 3 modules, overlapping state</p>
+            <div class="space-y-1">
+              <div class="cross-section-band" style="border-color: #f59e0b; background: #fffbeb;">
+                <span class="font-semibold" style="color: #92400e;">theme.store</span> — mode, isDark, localStorage
+              </div>
+              <div class="cross-section-band" style="border-color: #ef4444; background: #fef2f2;">
+                <span class="font-semibold" style="color: #991b1b;">preferences.store</span> — theme, language, favorites, recentTools, server sync
+              </div>
+              <div class="cross-section-band" style="border-color: #f97316; background: #fff7ed;">
+                <span class="font-semibold" style="color: #9a3412;">useLocale</span> — locale, localStorage
+              </div>
+              <div class="cross-section-band" style="border-color: #cbd5e1; background: #f8fafc;">
+                <span class="font-semibold text-slate-600">main.ts</span> — reads locale from localStorage directly
+              </div>
+              <div class="cross-section-band" style="border-color: #cbd5e1; background: #f8fafc;">
+                <span class="font-semibold text-slate-600">SettingsPage</span> — writes to both locale stores + preferences
+              </div>
+              <p class="text-xs text-red-600 mt-2 italic">Theme stored in 2 places. Locale logic in 3. No sync between theme.store and preferences.store.</p>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">After — one preference module, adapter for persistence</p>
+            <div class="rounded-lg border-2 border-slate-800 p-4" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+              <div class="text-xs uppercase tracking-wider text-slate-400 mb-2 text-white">preferences module (deep)</div>
+              <div class="space-y-2 text-sm">
+                <div class="rounded p-2" style="background: #334155;">
+                  <span style="color: #34d399;">interface:</span> <span class="text-white">theme, language, favorites, recentTools, settings</span>
+                </div>
+                <div class="rounded p-2 text-slate-400" style="background: #1e293b;">
+                  <span class="text-slate-500">implementation:</span> localStorage adapter, server sync adapter, system-preference watcher
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-slate-500">
+                theme.store → deleted<br>
+                useLocale → deleted<br>
+                main.ts → reads from preferences module
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Problem:</p>
+          <p class="text-slate-600">Theme lives in <code class="bg-slate-100 px-1 rounded">theme.store</code> AND <code class="bg-slate-100 px-1 rounded">preferences.store</code>. Locale logic is split across <code class="bg-slate-100 px-1 rounded">useLocale</code>, <code class="bg-slate-100 px-1 rounded">main.ts</code>, and <code class="bg-slate-100 px-1 rounded">preferences.store</code>. Changing "how preferences work" means editing 3+ modules that leak into each other.</p>
+        </div>
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Solution:</p>
+          <p class="text-slate-600">Merge theme.store and useLocale into preferences.store. The deepened module owns all user preference state with localStorage and server-sync as internal adapters — callers see one interface.</p>
+        </div>
+        <div>
+          <p class="font-medium text-slate-800 mb-2">Wins:</p>
+          <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
+            <li><strong>Locality</strong>: all preference state in one module</li>
+            <li><strong>Leverage</strong>: one interface for "what does the user prefer"</li>
+            <li>Delete 2 shallow stores; one deep module remains</li>
+            <li>SettingsPage stops coordinating 3 writers</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CANDIDATE 3: Deepen the Tool module — absorb boilerplate   -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 space-y-5">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-serif font-bold">Deepen the Tool module — absorb boilerplate into the seam</h2>
+          <div class="flex gap-2">
+            <span class="badge-explore text-xs px-2.5 py-1 rounded-full font-medium">Worth exploring</span>
+            <span class="text-xs px-2.5 py-1 rounded-full border border-slate-300 text-slate-600">in-process</span>
+          </div>
+        </div>
+
+        <div class="font-mono text-sm text-slate-600 space-y-0.5">
+          <div>apps/web/src/tools/*/index.ts (115+ files)</div>
+          <div>apps/web/src/tools/*/*.vue (115+ files)</div>
+          <div>apps/web/src/layouts/ToolLayout.vue</div>
+        </div>
+
+        <!-- Before / After: mass diagram -->
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">Before — interface nearly as wide as implementation</p>
+            <div class="grid grid-cols-4 gap-1" style="max-height: 200px; overflow-y: auto;">
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3b8;padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3b8;padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3b8;padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3b8;padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3b8;padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3b8;padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3 padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+              <div>
+                <div style="background:#e0f2fe;border:1px solid #0284c7;padding:3px 6px;font-size:10px;text-align:center;">index.ts</div>
+                <div style="background:#f1f5f9;border:1px solid #94a3b8;padding:3px 6px;font-size:10px;text-align:center;margin-top:1px;">Vue</div>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 text-center mt-1">x 115 more... each tool = 2 files, same pattern</p>
+            <p class="text-xs text-red-600 mt-2 italic">Every Vue component re-fetches its own tool definition from the store, wraps itself in ToolLayout, and repeats identical boilerplate.</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">After — deep tool module with thin wrappers</p>
+            <div class="rounded-lg border-2 border-slate-800 p-4" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+              <div class="text-xs uppercase tracking-wider text-slate-400 mb-2 text-white">defineTool (deep)</div>
+              <div class="space-y-2 text-sm">
+                <div class="rounded p-2" style="background: #334155;">
+                  <span style="color: #34d399;">interface:</span> <span class="text-white">defineTool({ name, logic, ui? })</span>
+                </div>
+                <div class="rounded p-2 text-slate-400" style="background: #1e293b; font-size: 11px;">
+                  <span class="text-slate-500">implementation:</span> auto-wraps in ToolLayout, auto-registers route, auto-fetches tool def. Author writes logic + optional UI.
+                </div>
+              </div>
+              <div class="mt-3 text-xs text-slate-500">
+                115 Vue components → many become pure logic + template<br>
+                ToolLayout wrapping → moved into the seam<br>
+                Self-lookup from store → eliminated
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Problem:</p>
+          <p class="text-slate-600">Every tool Vue component repeats: import ToolLayout, look up own definition from store by hardcoded path, pass it as prop. The <code class="bg-slate-100 px-1 rounded">defineTool</code> interface is shallow — it provides metadata but no structural leverage over the 115 implementations.</p>
+        </div>
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Solution:</p>
+          <p class="text-slate-600">Deepen <code class="bg-slate-100 px-1 rounded">defineTool</code> to own the ToolLayout wrapping and route registration. Tool authors provide logic + optional custom UI template. The seam absorbs the boilerplate that currently repeats across 115 files.</p>
+        </div>
+        <div>
+          <p class="font-medium text-slate-800 mb-2">Wins:</p>
+          <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
+            <li><strong>Leverage</strong>: one seam governs wrapping for all 115 tools</li>
+            <li><strong>Locality</strong>: tool self-reference eliminated</li>
+            <li>Adding a tool becomes a 1-file change for simple tools</li>
+            <li>Deletion test: removing <code class="bg-slate-100 px-1 rounded">defineTool</code> collapses the entire tool system</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CANDIDATE 4: Deepen server storage behind typed repository -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 space-y-5">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-serif font-bold">Deepen server storage behind a typed repository</h2>
+          <div class="flex gap-2">
+            <span class="badge-explore text-xs px-2.5 py-1 rounded-full font-medium">Worth exploring</span>
+            <span class="text-xs px-2.5 py-1 rounded-full border border-slate-300 text-slate-600">ports &amp; adapters</span>
+          </div>
+        </div>
+
+        <div class="font-mono text-sm text-slate-600 space-y-0.5">
+          <div>apps/server/src/storage/yaml-storage.ts</div>
+          <div>apps/server/src/storage/store.ts</div>
+          <div>apps/server/src/storage/cleanup.ts</div>
+        </div>
+
+        <!-- Before / After: Mermaid -->
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">Before — leaky generic storage</p>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <pre class="mermaid">
+flowchart LR
+  R["routes/user.ts"] -->|"readYaml&lt;Record&gt;"| Y["yaml-storage.ts"]
+  R2["routes/reports.ts"] --> S["store.ts"]
+  S -->|"readYaml&lt;Record&gt;"| Y
+  S -->|"as unknown as Record"| Y
+  style Y fill:#fee2e2,stroke:#dc2626
+  style S fill:#fef3c7,stroke:#d97706
+              </pre>
+            </div>
+            <p class="text-xs text-red-600 mt-2 italic">Double type casting: <code>as unknown as Record</code>. Routes do manual field-by-field validation inline.</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">After — typed repository interface</p>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <pre class="mermaid">
+flowchart LR
+  R["routes/user.ts"] -->|"getUserPrefs()"| REPO["UserPrefsRepo"]
+  R2["routes/reports.ts"] -->|"create()"| REPO2["ReportRepo"]
+  REPO --> Y["yaml-storage (internal)"]
+  REPO2 --> Y
+  style REPO fill:#1e293b,stroke:#0f172a,color:#fff
+  style REPO2 fill:#1e293b,stroke:#0f172a,color:#fff
+  style Y fill:#e0f2fe,stroke:#0284c7
+              </pre>
+            </div>
+            <p class="text-xs text-emerald-600 mt-2 italic">YAML is an implementation detail. Repos are testable with in-memory adapters.</p>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Problem:</p>
+          <p class="text-slate-600"><code class="bg-slate-100 px-1 rounded">yaml-storage.ts</code> exposes generic <code class="bg-slate-100 px-1 rounded">readYaml&lt;T&gt;</code>/<code class="bg-slate-100 px-1 rounded">writeYaml&lt;T&gt;</code>, forcing callers to cast through <code class="bg-slate-100 px-1 rounded">unknown</code>. <code class="bg-slate-100 px-1 rounded">store.ts</code> mixes domain logic (migration, validation) with serialization. The YAML format leaks into route handlers.</p>
+        </div>
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Solution:</p>
+          <p class="text-slate-600">Introduce <code class="bg-slate-100 px-1 rounded">UserPrefsRepository</code> and <code class="bg-slate-100 px-1 rounded">ReportRepository</code> interfaces. YAML storage becomes a private adapter behind the seam. Two adapters (YAML + in-memory) justify the seam and make the repos testable without touching the filesystem.</p>
+        </div>
+        <div>
+          <p class="font-medium text-slate-800 mb-2">Wins:</p>
+          <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
+            <li><strong>Locality</strong>: migration logic stays inside the repo</li>
+            <li>Two adapters = real seam, testable without fs</li>
+            <li>Interface shrinks; implementation absorbs casting</li>
+            <li>Routes stop knowing YAML exists</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CANDIDATE 5: Eliminate duplicate sanitizeHtml              -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 space-y-5">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-serif font-bold">Eliminate the duplicate sanitizeHtml seam</h2>
+          <div class="flex gap-2">
+            <span class="badge-speculative text-xs px-2.5 py-1 rounded-full font-medium">Speculative</span>
+            <span class="text-xs px-2.5 py-1 rounded-full border border-slate-300 text-slate-600">in-process</span>
+          </div>
+        </div>
+
+        <div class="font-mono text-sm text-slate-600 space-y-0.5">
+          <div>packages/shared/src/validation.ts (line 19-27)</div>
+          <div>apps/server/src/middleware/security.ts (line 39-46)</div>
+        </div>
+
+        <!-- Simple before/after -->
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">Before — same logic, two copies</p>
+            <div class="rounded-lg p-4 font-mono text-xs" style="background: #fef2f2; border: 1px solid #fecaca;">
+              <div style="color: #dc2626;">// packages/shared/validation.ts</div>
+              <div class="text-slate-700">export function sanitizeHtml(input: string) { ... }</div>
+              <div class="mt-2" style="color: #dc2626;">// apps/server/middleware/security.ts</div>
+              <div class="text-slate-700">export function sanitizeHtml(input: string) { ... }</div>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">After — one source, re-exported</p>
+            <div class="rounded-lg p-4 font-mono text-xs" style="background: #f0fdf4; border: 1px solid #bbf7d0;">
+              <div style="color: #16a34a;">// packages/shared/validation.ts</div>
+              <div class="text-slate-700">export function sanitizeHtml(input: string) { ... }</div>
+              <div class="mt-2" style="color: #16a34a;">// apps/server/middleware/security.ts</div>
+              <div class="text-slate-700">export { sanitizeHtml } from '@toolnest/shared';</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Problem:</p>
+          <p class="text-slate-600">Identical <code class="bg-slate-100 px-1 rounded">sanitizeHtml</code> in shared package and server middleware. A security fix in one location will not reach the other — the two copies can drift silently.</p>
+        </div>
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Solution:</p>
+          <p class="text-slate-600">Keep the implementation in <code class="bg-slate-100 px-1 rounded">@toolnest/shared</code>. Server middleware re-exports it. One module owns the sanitization logic.</p>
+        </div>
+        <div>
+          <p class="font-medium text-slate-800 mb-2">Wins:</p>
+          <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
+            <li><strong>Locality</strong>: security logic has one home</li>
+            <li>Fix once, both call sites patched</li>
+            <li>Shared package earns its existence</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- CANDIDATE 6: Server config — shallow wrapper               -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <article class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-6 space-y-5">
+        <div class="flex items-start justify-between">
+          <h2 class="text-xl font-serif font-bold">Deepen server config with validation at the seam</h2>
+          <div class="flex gap-2">
+            <span class="badge-speculative text-xs px-2.5 py-1 rounded-full font-medium">Speculative</span>
+            <span class="text-xs px-2.5 py-1 rounded-full border border-slate-300 text-slate-600">in-process</span>
+          </div>
+        </div>
+
+        <div class="font-mono text-sm text-slate-600">apps/server/src/config.ts</div>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">Before — shallow passthrough</p>
+            <div class="rounded-lg p-4 font-mono text-xs" style="background: #f1f5f9;">
+              <div class="text-slate-500">// config.ts — 10 lines</div>
+              <div class="text-slate-700 mt-1">port: parseInt(process.env.PORT || '3001', 10),</div>
+              <div class="text-slate-700">corsOrigin: process.env.CORS_ORIGIN || '...',</div>
+              <div class="text-red-600 mt-2">// No validation. NaN, empty strings,</div>
+              <div class="text-red-600">// invalid URLs all silently pass.</div>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wider text-slate-400 mb-3 font-semibold">After — validated at the seam</p>
+            <div class="rounded-lg border-2 border-slate-800 p-4" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+              <div style="color: #34d399;" class="text-sm mb-1">interface: ServerConfig (typed, validated)</div>
+              <div class="text-slate-400 text-xs">implementation: reads env, validates types,</div>
+              <div class="text-slate-400 text-xs">fails fast at startup with clear errors.</div>
+              <div class="mt-2 text-slate-500 text-xs">Port range check, URL format check,</div>
+              <div class="text-slate-500 text-xs">dataDir existence check on init.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Problem:</p>
+          <p class="text-slate-600"><code class="bg-slate-100 px-1 rounded">config.ts</code> is a shallow passthrough — interface (10 fields) nearly matches implementation (10 <code class="bg-slate-100 px-1 rounded">parseInt</code> calls). No validation means misconfiguration surfaces as runtime failures far from the source.</p>
+        </div>
+        <div class="space-y-2">
+          <p class="font-medium text-slate-800">Solution:</p>
+          <p class="text-slate-600">Add startup validation: port range, URL format, dataDir existence. Fail fast with actionable errors. The config module becomes deep — small interface, substantial implementation (validation logic hidden behind it).</p>
+        </div>
+        <div>
+          <p class="font-medium text-slate-800 mb-2">Wins:</p>
+          <ul class="text-sm text-slate-600 space-y-1 list-disc list-inside">
+            <li><strong>Locality</strong>: config errors surface at startup, not in production</li>
+            <li>Interface stays the same; implementation deepens</li>
+            <li>Deletion test: removing config module = no valid server start</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- TOP RECOMMENDATION                                         -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="top-recommendation">
+    <div class="rounded-xl p-8 shadow-lg" style="background: linear-gradient(135deg, #0f172a, #1e293b);">
+      <h2 class="text-sm uppercase tracking-wider font-semibold mb-2" style="color: #34d399;">Top recommendation</h2>
+      <h3 class="text-2xl font-serif font-bold mb-3 text-white">Unify the scattered preference identity</h3>
+      <p class="text-slate-300 leading-relaxed">
+        Three modules (<code class="px-1.5 rounded text-emerald-300" style="background:#1e293b;">theme.store</code>,
+        <code class="px-1.5 rounded text-emerald-300" style="background:#1e293b;">preferences.store</code>,
+        <code class="px-1.5 rounded text-emerald-300" style="background:#1e293b;">useLocale</code>) compete to manage overlapping user state.
+        Theme is stored twice. Locale logic is split three ways. SettingsPage coordinates all of them.
+        Merging into one deep preferences module with localStorage and server-sync as internal adapters
+        gives the codebase a single seam for "what does the user prefer" — the highest-leverage
+        deepening available, touching the most call sites and eliminating the most friction.
+      </p>
+      <a href="#candidates" class="inline-block mt-4 text-sm hover:text-emerald-300 transition-colors" style="color: #34d399;">
+        See candidate #2 for diagrams
+      </a>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

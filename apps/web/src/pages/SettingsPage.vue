@@ -4,11 +4,9 @@ import { useI18n } from 'vue-i18n';
 import { computed, onMounted } from 'vue';
 import AppNavbar from '@/components/AppNavbar.vue';
 import { usePreferencesStore } from '@/stores/preferences.store';
-import { useThemeStore } from '@/stores/theme.store';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const preferencesStore = usePreferencesStore();
-const themeStore = useThemeStore();
 
 onMounted(() => {
   if (!preferencesStore.loaded) {
@@ -22,19 +20,18 @@ const languageOptions = [
 ];
 
 const currentLanguage = computed({
-  get: () => locale.value,
+  get: () => preferencesStore.prefs.language,
   set: (val: string) => {
-    locale.value = val;
-    localStorage.setItem('toolnest-locale', val);
-    document.documentElement.lang = val;
+    preferencesStore.setLocale(val);
     preferencesStore.save({ language: val });
   },
 });
 
 const themeMode = computed({
-  get: () => themeStore.mode,
+  get: () => preferencesStore.prefs.theme,
   set: (val: 'light' | 'dark' | 'system') => {
-    themeStore.setMode(val);
+    preferencesStore.setMode(val);
+    preferencesStore.save({ theme: val });
   },
 });
 </script>
