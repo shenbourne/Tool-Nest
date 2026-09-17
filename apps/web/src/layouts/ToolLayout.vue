@@ -59,7 +59,7 @@ function goCategory() {
       <div class="tool-header-info">
         <h1 class="tool-title">{{ t(tool.name) }}</h1>
         <p class="tool-description">{{ t(tool.description) }}</p>
-        <NSpace size="small" style="margin-top: 8px;">
+        <NSpace size="small" style="margin-top: var(--spacing-xs);">
           <NTag size="small" :bordered="false" type="info">
             {{ categoryLabel }}
           </NTag>
@@ -127,7 +127,7 @@ function goCategory() {
 
 .tool-header-actions {
   flex-shrink: 0;
-  margin-left: 16px;
+  margin-left: var(--spacing-md);
 }
 
 .tool-content {

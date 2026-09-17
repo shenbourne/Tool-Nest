@@ -99,7 +99,7 @@ onUnmounted(() => {
     >
       <!-- Logo -->
       <div
-        style="padding: var(--spacing-md); cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--color-hairline);"
+        style="padding: var(--spacing-md); cursor: pointer; display: flex; align-items: center; gap: var(--spacing-sm); border-bottom: 1px solid var(--color-hairline);"
         @click="goHome"
       >
         <span style="font-size: 20px; font-weight: bold; white-space: nowrap; overflow: hidden;">
