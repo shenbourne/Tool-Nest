@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+* {
+  transition: background-color var(--motion-slow) var(--motion-ease),
+    color var(--motion-base) var(--motion-ease),
+    border-color var(--motion-slow) var(--motion-ease);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-3);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-2);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

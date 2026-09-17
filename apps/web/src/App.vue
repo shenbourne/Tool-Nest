@@ -12,15 +12,15 @@ const preferencesStore = usePreferencesStore();
 const theme = computed(() => preferencesStore.isDark ? darkTheme : null);
 const showSidebar = computed(() => route.meta.showSidebar === true);
 
-const themeOverrides = computed<GlobalThemeOverrides>(() => ({
+const themeOverrides: GlobalThemeOverrides = {
   common: {
-    primaryColor: '#18a058',
-    primaryColorHover: '#36ad6a',
-    primaryColorPressed: '#0c7a43',
-    primaryColorSuppl: '#36ad6a',
-    borderRadius: '6px',
+    primaryColor: 'var(--color-primary)',
+    primaryColorHover: 'var(--color-primary-hover)',
+    primaryColorPressed: 'var(--color-primary-pressed)',
+    primaryColorSuppl: 'var(--color-primary-hover)',
+    borderRadius: 'var(--radius-md)',
   },
-}));
+};
 </script>
 
 <template>
@@ -38,32 +38,3 @@ const themeOverrides = computed<GlobalThemeOverrides>(() => ({
     </NMessageProvider>
   </NConfigProvider>
 </template>
-
-<style>
-* {
-  transition: background-color 0.3s ease, color 0.2s ease, border-color 0.3s ease;
-}
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-</style>
