@@ -4,6 +4,8 @@ import App from './App.vue';
 import { router } from './router';
 import { i18n } from './i18n';
 import { usePreferencesStore } from './stores/preferences.store';
+import './styles/tokens.css';
+import './styles/global.css';
 import 'virtual:uno.css';
 
 const app = createApp(App);

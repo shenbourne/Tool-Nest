@@ -40,9 +40,9 @@ function goCategory() {
 </script>
 
 <template>
-  <div class="tool-layout">
+  <div class="page-container">
     <!-- 面包屑导航 -->
-    <NBreadcrumb style="margin-bottom: 16px;">
+    <NBreadcrumb style="margin-bottom: var(--spacing-md);">
       <NBreadcrumbItem @click="goHome" style="cursor: pointer;">
         {{ t('nav.home') }}
       </NBreadcrumbItem>
@@ -59,7 +59,7 @@ function goCategory() {
       <div class="tool-header-info">
         <h1 class="tool-title">{{ t(tool.name) }}</h1>
         <p class="tool-description">{{ t(tool.description) }}</p>
-        <NSpace size="small" style="margin-top: 8px;">
+        <NSpace size="small" style="margin-top: var(--spacing-xs);">
           <NTag size="small" :bordered="false" type="info">
             {{ categoryLabel }}
           </NTag>
@@ -83,7 +83,7 @@ function goCategory() {
           size="large"
           @click="toggleFavorite"
           :title="isFavorite ? t('tool.unfavorite') : t('tool.favorite')"
-          :style="{ color: isFavorite ? '#f0a020' : undefined, fontSize: '20px' }"
+          :style="{ color: isFavorite ? 'var(--color-warning)' : undefined, fontSize: '20px' }"
         >
           {{ isFavorite ? '★' : '☆' }}
         </NButton>
@@ -98,19 +98,13 @@ function goCategory() {
 </template>
 
 <style scoped>
-.tool-layout {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
 .tool-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--n-border-color);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-hairline);
 }
 
 .tool-header-info {
@@ -118,22 +112,22 @@ function goCategory() {
 }
 
 .tool-title {
-  margin: 0 0 8px 0;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.2;
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-display);
 }
 
 .tool-description {
   margin: 0;
-  font-size: 15px;
-  color: var(--n-text-color-3);
-  line-height: 1.5;
+  font-size: var(--font-size-body-md);
+  color: var(--color-text-3);
+  line-height: var(--line-height-body-md);
 }
 
 .tool-header-actions {
   flex-shrink: 0;
-  margin-left: 16px;
+  margin-left: var(--spacing-md);
 }
 
 .tool-content {
@@ -141,12 +135,12 @@ function goCategory() {
 }
 
 @media (max-width: 640px) {
-  .tool-layout {
-    padding: 16px;
+  .page-container {
+    padding: var(--spacing-md);
   }
 
   .tool-title {
-    font-size: 22px;
+    font-size: var(--font-size-heading-lg);
   }
 
   .tool-header {
@@ -155,10 +149,8 @@ function goCategory() {
 
   .tool-header-actions {
     margin-left: 0;
-    margin-top: 12px;
+    margin-top: var(--spacing-sm);
     align-self: flex-end;
   }
 }
 </style>
-
-
