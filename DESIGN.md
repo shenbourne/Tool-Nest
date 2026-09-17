@@ -203,7 +203,7 @@ ToolNest 是一个开发者工具聚合站，当前收录 118 个工具（编码
 
 亮色主题三级阴影，只允许出现在对应层级：
 
-- `shadow-card`：悬浮卡片（工具卡片 hover 抬升）。卡片默认态无阴影，靠 hairline 边框分层。
+- `shadow-card`：悬浮信息层、拖拽中的临时层等短暂浮层；不得用于卡片 hover 抬升（hover 一律只改底色，见 Components 的 `card-hover`）。卡片默认态无阴影，靠 hairline 边框分层。
 - `shadow-popover`：下拉、菜单、气泡。
 - `shadow-modal`：对话框，全站最高层级。
 
@@ -244,7 +244,7 @@ Do：
 
 1. 颜色一律引用 `{colors.*}` 令牌，暗色适配由 tokens.css 的变体承担。
 2. 文字一律使用 7 级层级之一，优先 body-md / body-sm。
-3. hover 反馈优先用 surface-2 底色切换，其次才是 shadow-card。
+3. hover 反馈一律用 surface-2 底色切换，不加阴影。
 4. 状态变化必须同时有颜色与文字/图标双通道表达。
 5. 间距、圆角、高度只取 frontmatter 档位值。
 
@@ -254,7 +254,7 @@ Don't：
 2. 禁止在业务代码里覆盖或依赖 Naive UI 内部 class（如 `.n-button__content`）写样式；只通过官方 theme-overrides 与 tokens.css 变量定制。
 3. 禁止只靠颜色传达状态（红/绿块裸用），必须附图标或文字。
 4. 禁止在暗色主题下使用阴影分层，一律用 hairline 边框替代。
-5. 禁止为卡片默认态添加阴影——默认态层级由 hairline 边框与中性底色表达，阴影只给 popover/modal。
+5. 禁止为卡片默认态或 hover 态添加阴影——默认态与 hover 层级由 hairline 边框与中性底色表达，阴影只给 popover/modal 及 Elevation & Depth 规定的 `shadow-card` 悬浮/拖拽临时层场景。
 6. 禁止自定义字号、行高、圆角值或间距值。
 
 ## Responsive Behavior
