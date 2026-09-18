@@ -430,6 +430,8 @@
     "jsonToCsv": { "name": "JSON to CSV", "description": "Convert JSON array to CSV" },
     "xmlToJson": { "name": "XML to JSON", "description": "Convert XML to JSON" },
     "jsonToXml": { "name": "JSON to XML", "description": "Convert JSON to XML" },
-    "sqlPrettify": { "name": "SQL Prettify", "description": "Format and prettify SQL queries" }
+    "sqlPrettify": { "name": "SQL Prettify", "description": "Format and prettify SQL queries" },
+    "dateTimeConverter": { "name": "Date-Time Converter", "description": "Convert between date-time formats including Unix timestamps" },
+    "listConverter": { "name": "List Converter", "description": "Transform lists with sort, deduplicate, prefix/suffix options" }
   }
 }
