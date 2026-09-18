@@ -451,6 +451,11 @@
     "videoTrim": { "name": "视频裁剪", "description": "通过选择开始和结束时间来裁剪视频" },
     "videoResize": { "name": "视频调整大小", "description": "调整视频尺寸" },
     "videoRotate": { "name": "视频旋转", "description": "将视频旋转 90 或 180 度" },
-    "videoFlip": { "name": "视频翻转", "description": "水平或垂直翻转视频" }
+    "videoFlip": { "name": "视频翻转", "description": "水平或垂直翻转视频" },
+    "videoCrop": { "name": "视频裁剪", "description": "裁剪视频到自定义区域" },
+    "videoChangeSpeed": { "name": "视频变速", "description": "改变视频播放速度" },
+    "videoLoop": { "name": "视频循环", "description": "循环播放视频指定次数" },
+    "videoMerge": { "name": "视频合并", "description": "将多个视频合并为一个" },
+    "videoAddAudio": { "name": "视频添加音频", "description": "为视频添加或替换音轨" }
   }
 }

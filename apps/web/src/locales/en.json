@@ -451,6 +451,11 @@
     "videoTrim": { "name": "Video Trim", "description": "Trim video by selecting start and end times" },
     "videoResize": { "name": "Video Resize", "description": "Resize video dimensions" },
     "videoRotate": { "name": "Video Rotate", "description": "Rotate video by 90 or 180 degrees" },
-    "videoFlip": { "name": "Video Flip", "description": "Flip video horizontally or vertically" }
+    "videoFlip": { "name": "Video Flip", "description": "Flip video horizontally or vertically" },
+    "videoCrop": { "name": "Video Crop", "description": "Crop video to a custom region" },
+    "videoChangeSpeed": { "name": "Video Speed Change", "description": "Change video playback speed" },
+    "videoLoop": { "name": "Video Loop", "description": "Loop video a specified number of times" },
+    "videoMerge": { "name": "Video Merge", "description": "Merge multiple videos into one" },
+    "videoAddAudio": { "name": "Video Add Audio", "description": "Add or replace audio track in a video" }
   }
 }
