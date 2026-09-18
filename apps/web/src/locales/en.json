@@ -443,6 +443,9 @@
     "qrCodeGenerator": { "name": "QR Code Generator", "description": "Generate QR codes from text or URLs" },
     "wifiQrCodeGenerator": { "name": "WiFi QR Code Generator", "description": "Generate QR codes for WiFi network credentials" },
     "svgPlaceholderGenerator": { "name": "SVG Placeholder Generator", "description": "Generate SVG placeholder images with custom dimensions" },
-    "otpGenerator": { "name": "OTP Generator", "description": "Generate and validate TOTP one-time passwords" }
+    "otpGenerator": { "name": "OTP Generator", "description": "Generate and validate TOTP one-time passwords" },
+    "imageToTextOcr": { "name": "Image to Text (OCR)", "description": "Extract text from images using OCR" },
+    "htmlWysiwygEditor": { "name": "HTML WYSIWYG Editor", "description": "Edit HTML with a visual WYSIWYG editor" },
+    "userAgentParser": { "name": "User-Agent Parser", "description": "Parse user-agent strings to extract browser, OS and device info" }
   }
 }
