@@ -96,3 +96,70 @@ describe('POST /api/network/latency', () => {
     expect(body.success).toBe(true);
   });
 });
+
+describe('POST /api/network/dns-leak', () => {
+  it('returns DNS resolution results', async () => {
+    const res = await fetch(`${baseUrl}/api/network/dns-leak`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domains: ['example.com', 'test.org'] }),
+    });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.success).toBe(true);
+  });
+
+  it('rejects empty domain list', async () => {
+    const res = await fetch(`${baseUrl}/api/network/dns-leak`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domains: [] }),
+    });
+    expect(res.status).toBe(400);
+  });
+});
+
+describe('POST /api/network/rule-test', () => {
+  it('returns DNS resolution for rule testing', async () => {
+    const res = await fetch(`${baseUrl}/api/network/rule-test`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domain: 'example.com', dnsServer: '8.8.8.8' }),
+    });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.success).toBe(true);
+  });
+
+  it('rejects missing domain', async () => {
+    const res = await fetch(`${baseUrl}/api/network/rule-test`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    expect(res.status).toBe(400);
+  });
+});
+
+describe('POST /api/network/censorship', () => {
+  it('returns censorship check results', async () => {
+    const res = await fetch(`${baseUrl}/api/network/censorship`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ urls: ['https://example.com'] }),
+    });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.success).toBe(true);
+    expect(body.data).toHaveLength(1);
+  });
+
+  it('rejects empty URL list', async () => {
+    const res = await fetch(`${baseUrl}/api/network/censorship`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ urls: [] }),
+    });
+    expect(res.status).toBe(400);
+  });
+});
