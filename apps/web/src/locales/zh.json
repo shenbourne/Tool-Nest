@@ -456,6 +456,9 @@
     "videoChangeSpeed": { "name": "视频变速", "description": "改变视频播放速度" },
     "videoLoop": { "name": "视频循环", "description": "循环播放视频指定次数" },
     "videoMerge": { "name": "视频合并", "description": "将多个视频合并为一个" },
-    "videoAddAudio": { "name": "视频添加音频", "description": "为视频添加或替换音轨" }
+    "videoAddAudio": { "name": "视频添加音频", "description": "为视频添加或替换音轨" },
+    "videoToGif": { "name": "视频转 GIF", "description": "将视频转换为动态 GIF" },
+    "gifChangeSpeed": { "name": "GIF 变速", "description": "改变 GIF 动画速度" },
+    "imagesToGif": { "name": "图片转 GIF", "description": "将多张图片合成为动态 GIF" }
   }
 }

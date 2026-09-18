@@ -456,6 +456,9 @@
     "videoChangeSpeed": { "name": "Video Speed Change", "description": "Change video playback speed" },
     "videoLoop": { "name": "Video Loop", "description": "Loop video a specified number of times" },
     "videoMerge": { "name": "Video Merge", "description": "Merge multiple videos into one" },
-    "videoAddAudio": { "name": "Video Add Audio", "description": "Add or replace audio track in a video" }
+    "videoAddAudio": { "name": "Video Add Audio", "description": "Add or replace audio track in a video" },
+    "videoToGif": { "name": "Video to GIF", "description": "Convert video to animated GIF" },
+    "gifChangeSpeed": { "name": "GIF Speed Change", "description": "Change GIF animation speed" },
+    "imagesToGif": { "name": "Images to GIF", "description": "Combine images into an animated GIF" }
   }
 }
