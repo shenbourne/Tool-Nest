@@ -1,0 +1,48 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
+import ToolLayout from '@/layouts/ToolLayout.vue';
+import { tool } from './index';
+
+const domain = ref('');
+const dnsServer = ref('');
+const loading = ref(false);
+const error = ref('');
+const result = ref<unknown>(null);
+
+async function run() {
+  loading.value = true;
+  error.value = '';
+  result.value = null;
+  try {
+    const body: Record<string, string> = { domain: domain.value };
+    if (dnsServer.value) body.dnsServer = dnsServer.value;
+    const res = await fetch('/api/network/rule-test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.error?.message ?? 'Request failed');
+    result.value = json.data;
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : 'Request failed';
+  } finally {
+    loading.value = false;
+  }
+}
+</script>
+
+<template>
+  <ToolLayout :tool="tool">
+    <NCard>
+      <NSpace vertical :size="12">
+        <NInput v-model:value="domain" placeholder="Enter domain..." />
+        <NInput v-model:value="dnsServer" placeholder="Custom DNS server (optional)" />
+        <NButton type="primary" :loading="loading" :disabled="!domain" @click="run">Test</NButton>
+        <NAlert v-if="error" type="error" :title="error" />
+        <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>
+      </NSpace>
+    </NCard>
+  </ToolLayout>
+</template>

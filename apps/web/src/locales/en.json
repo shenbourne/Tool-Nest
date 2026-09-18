@@ -470,6 +470,12 @@
     "audioExtract": { "name": "Audio Extract", "description": "Extract audio track from video" },
     "audioLoop": { "name": "Audio Loop", "description": "Loop audio a specified number of times" },
     "audioMerge": { "name": "Audio Merge", "description": "Merge multiple audio files into one" },
-    "audioTrim": { "name": "Audio Trim", "description": "Trim audio to a custom time range" }
+    "audioTrim": { "name": "Audio Trim", "description": "Trim audio to a custom time range" },
+    "dnsLeakTest": { "name": "DNS Leak Test", "description": "Test if your DNS is leaking information" },
+    "pingTest": { "name": "Ping Test", "description": "Test network latency to a target" },
+    "mtrTest": { "name": "MTR Test", "description": "Trace network route to a target" },
+    "globalLatencyTest": { "name": "Global Latency Test", "description": "Test DNS latency from global locations" },
+    "ruleTest": { "name": "Rule Test", "description": "Test DNS resolution with custom rules" },
+    "censorshipCheck": { "name": "Censorship Check", "description": "Check if websites are censored" }
   }
 }

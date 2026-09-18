@@ -470,6 +470,12 @@
     "audioExtract": { "name": "音频提取", "description": "从视频中提取音频轨道" },
     "audioLoop": { "name": "音频循环", "description": "循环播放音频指定次数" },
     "audioMerge": { "name": "音频合并", "description": "将多个音频合并为一个" },
-    "audioTrim": { "name": "音频裁剪", "description": "裁剪音频到自定义时间范围" }
+    "audioTrim": { "name": "音频裁剪", "description": "裁剪音频到自定义时间范围" },
+    "dnsLeakTest": { "name": "DNS 泄漏测试", "description": "测试你的 DNS 是否泄漏信息" },
+    "pingTest": { "name": "Ping 测试", "description": "测试到目标的网络延迟" },
+    "mtrTest": { "name": "MTR 测试", "description": "追踪到目标的网络路由" },
+    "globalLatencyTest": { "name": "全球延迟测试", "description": "从全球位置测试 DNS 延迟" },
+    "ruleTest": { "name": "规则测试", "description": "使用自定义规则测试 DNS 解析" },
+    "censorshipCheck": { "name": "审查检查", "description": "检查网站是否被审查封锁" }
   }
 }
