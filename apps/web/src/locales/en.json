@@ -423,6 +423,10 @@
     "yamlToJson": { "name": "YAML to JSON", "description": "Convert YAML to JSON" },
     "jsonToYaml": { "name": "JSON to YAML", "description": "Convert JSON to YAML" },
     "yamlToToml": { "name": "YAML to TOML", "description": "Convert YAML to TOML" },
-    "yamlViewer": { "name": "YAML Viewer", "description": "Format and validate YAML" }
+    "yamlViewer": { "name": "YAML Viewer", "description": "Format and validate YAML" },
+    "tomlToJson": { "name": "TOML to JSON", "description": "Convert TOML to JSON" },
+    "tomlToYaml": { "name": "TOML to YAML", "description": "Convert TOML to YAML" },
+    "jsonToToml": { "name": "JSON to TOML", "description": "Convert JSON to TOML" },
+    "jsonToCsv": { "name": "JSON to CSV", "description": "Convert JSON array to CSV" }
   }
 }

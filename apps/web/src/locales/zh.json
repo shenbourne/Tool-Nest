@@ -423,6 +423,10 @@
     "yamlToJson": { "name": "YAML 转 JSON", "description": "将 YAML 转换为 JSON" },
     "jsonToYaml": { "name": "JSON 转 YAML", "description": "将 JSON 转换为 YAML" },
     "yamlToToml": { "name": "YAML 转 TOML", "description": "将 YAML 转换为 TOML" },
-    "yamlViewer": { "name": "YAML 查看器", "description": "格式化和验证 YAML" }
+    "yamlViewer": { "name": "YAML 查看器", "description": "格式化和验证 YAML" },
+    "tomlToJson": { "name": "TOML 转 JSON", "description": "将 TOML 转换为 JSON" },
+    "tomlToYaml": { "name": "TOML 转 YAML", "description": "将 TOML 转换为 YAML" },
+    "jsonToToml": { "name": "JSON 转 TOML", "description": "将 JSON 转换为 TOML" },
+    "jsonToCsv": { "name": "JSON 转 CSV", "description": "将 JSON 数组转换为 CSV" }
   }
 }

@@ -51,6 +51,7 @@ export type ToolTag =
   | 'discord'        // Discord 工具
   | 'tsv'            // TSV 处理
   | 'yaml'           // YAML 处理
+  | 'toml'           // TOML 处理
   | 'developer'      // 开发者工具
   | 'network';       // 网络工具
 
