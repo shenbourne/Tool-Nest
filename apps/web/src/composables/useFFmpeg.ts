@@ -105,3 +105,40 @@ export function useFFmpeg(): UseFFmpegReturn {
     dispose,
   };
 }
+
+type FFmpegTaskContext = {
+  ffmpeg: FFmpeg;
+  tempFile: (extension: string) => string;
+};
+
+let taskQueue: Promise<unknown> = Promise.resolve();
+
+export async function runFFmpegTask<T>(
+  task: (context: FFmpegTaskContext) => Promise<T>,
+): Promise<T> {
+  if (!sharedInstance) throw new Error('FFmpeg not loaded — call load() first');
+  const ffmpeg = sharedInstance;
+
+  const run = taskQueue
+    .catch(() => {})
+    .then(async () => {
+      const tempFiles = new Set<string>();
+
+      const tempFile = (extension: string) => {
+        const filename = `${crypto.randomUUID()}${extension}`;
+        tempFiles.add(filename);
+        return filename;
+      };
+
+      try {
+        return await task({ ffmpeg, tempFile });
+      } finally {
+        await Promise.all(
+          [...tempFiles].map((file) => ffmpeg.deleteFile(file).catch(() => {})),
+        );
+      }
+    });
+
+  taskQueue = run.catch(() => {});
+  return run;
+}
