@@ -322,6 +322,67 @@
     "romanNumeralConverter": { "name": "Roman Numeral Converter", "description": "Convert between Arabic and Roman numerals" },
     "textToNatoAlphabet": { "name": "Text to NATO Alphabet", "description": "Convert text to NATO phonetic alphabet" },
     "textToBinary": { "name": "Text to Binary", "description": "Convert text to ASCII binary and back" },
-    "numeronymGenerator": { "name": "Numeronym Generator", "description": "Generate numeronyms (e.g., i18n, a11y) from words" }
+    "numeronymGenerator": { "name": "Numeronym Generator", "description": "Generate numeronyms (e.g., i18n, a11y) from words" },
+    "basicAuthGenerator": {
+      "name": "Basic Auth Generator",
+      "description": "Generate Basic Auth authorization headers",
+      "usernamePlaceholder": "Your username...",
+      "passwordPlaceholder": "Your password...",
+      "authorizationHeader": "Authorization header"
+    },
+    "metaTagGenerator": {
+      "name": "Meta Tag Generator",
+      "description": "Generate HTML meta tags for SEO and social media",
+      "general": "General",
+      "titlePlaceholder": "Page title",
+      "descriptionPlaceholder": "Page description",
+      "keywordsPlaceholder": "Keywords (comma separated)",
+      "openGraph": "Open Graph",
+      "ogTitlePlaceholder": "OG title (defaults to page title)",
+      "ogDescriptionPlaceholder": "OG description (defaults to page description)",
+      "ogImagePlaceholder": "OG image URL",
+      "ogUrlPlaceholder": "OG page URL",
+      "twitter": "Twitter Card",
+      "twitterCardPlaceholder": "Twitter card type",
+      "twitterSitePlaceholder": "Twitter site handle (e.g. @example)",
+      "twitterCreatorPlaceholder": "Twitter creator handle (e.g. @author)",
+      "output": "Generated Meta Tags"
+    },
+    "mimeTypes": {
+      "name": "MIME Types",
+      "description": "Look up MIME types by file extension",
+      "extensionLookup": "Extension to MIME Type",
+      "extensionLookupDesc": "Find the MIME type associated with a file extension",
+      "extension": "Extension",
+      "extensionPlaceholder": "e.g. pdf, jpg, png",
+      "mimeTypeLookup": "MIME Type to Extensions",
+      "mimeTypeLookupDesc": "Find file extensions associated with a MIME type",
+      "mimeType": "MIME Type",
+      "mimeTypePlaceholder": "e.g. application/pdf, image/jpeg",
+      "allTypes": "All MIME Types",
+      "searchPlaceholder": "Search by MIME type or extension...",
+      "mimeTypeColumn": "MIME Type",
+      "extensionsColumn": "Extensions"
+    },
+    "keycodeInfo": {
+      "name": "Keycode Info",
+      "description": "Display keyboard event properties",
+      "key": "Key:",
+      "keyCode": "Key Code:",
+      "code": "Code:",
+      "location": "Location:",
+      "modifiers": "Modifiers:",
+      "pressKeyHint": "Press any key on your keyboard",
+      "modifierKeys": "Active Modifiers",
+      "noModifiers": "No modifier keys pressed"
+    },
+    "safelinkDecoder": {
+      "name": "Safelink Decoder",
+      "description": "Decode Outlook safelink URLs to original URLs",
+      "inputPlaceholder": "Paste Outlook SafeLink URL here...",
+      "output": "Decoded URL",
+      "invalidUrl": "Invalid SafeLinks URL: must contain .safelinks.protection.outlook.com",
+      "noUrlParam": "No 'url' parameter found in the SafeLink URL"
+    }
   }
 }

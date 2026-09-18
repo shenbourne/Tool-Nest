@@ -322,6 +322,67 @@
     "romanNumeralConverter": { "name": "罗马数字转换器", "description": "在阿拉伯数字和罗马数字之间转换" },
     "textToNatoAlphabet": { "name": "文本转NATO字母表", "description": "将文本转换为NATO音标字母表" },
     "textToBinary": { "name": "文本转二进制", "description": "将文本与ASCII二进制互相转换" },
-    "numeronymGenerator": { "name": "数字缩略词生成器", "description": "从单词生成数字缩略词（如 i18n、a11y）" }
+    "numeronymGenerator": { "name": "数字缩略词生成器", "description": "从单词生成数字缩略词（如 i18n、a11y）" },
+    "basicAuthGenerator": {
+      "name": "Basic Auth 生成器",
+      "description": "生成 Basic Auth 授权头",
+      "usernamePlaceholder": "输入用户名...",
+      "passwordPlaceholder": "输入密码...",
+      "authorizationHeader": "授权头"
+    },
+    "metaTagGenerator": {
+      "name": "Meta 标签生成器",
+      "description": "生成用于 SEO 和社交媒体的 HTML meta 标签",
+      "general": "基本信息",
+      "titlePlaceholder": "页面标题",
+      "descriptionPlaceholder": "页面描述",
+      "keywordsPlaceholder": "关键词（逗号分隔）",
+      "openGraph": "Open Graph",
+      "ogTitlePlaceholder": "OG 标题（默认使用页面标题）",
+      "ogDescriptionPlaceholder": "OG 描述（默认使用页面描述）",
+      "ogImagePlaceholder": "OG 图片 URL",
+      "ogUrlPlaceholder": "OG 页面 URL",
+      "twitter": "Twitter 卡片",
+      "twitterCardPlaceholder": "Twitter 卡片类型",
+      "twitterSitePlaceholder": "Twitter 站点账号（如 @example）",
+      "twitterCreatorPlaceholder": "Twitter 作者账号（如 @author）",
+      "output": "生成的 Meta 标签"
+    },
+    "mimeTypes": {
+      "name": "MIME 类型",
+      "description": "通过文件扩展名查找 MIME 类型",
+      "extensionLookup": "扩展名查找 MIME 类型",
+      "extensionLookupDesc": "查找文件扩展名对应的 MIME 类型",
+      "extension": "扩展名",
+      "extensionPlaceholder": "例如 pdf、jpg、png",
+      "mimeTypeLookup": "MIME 类型查找扩展名",
+      "mimeTypeLookupDesc": "查找 MIME 类型对应的文件扩展名",
+      "mimeType": "MIME 类型",
+      "mimeTypePlaceholder": "例如 application/pdf、image/jpeg",
+      "allTypes": "所有 MIME 类型",
+      "searchPlaceholder": "按 MIME 类型或扩展名搜索...",
+      "mimeTypeColumn": "MIME 类型",
+      "extensionsColumn": "扩展名"
+    },
+    "keycodeInfo": {
+      "name": "按键信息",
+      "description": "显示键盘事件属性",
+      "key": "键名：",
+      "keyCode": "键码：",
+      "code": "代码：",
+      "location": "位置：",
+      "modifiers": "修饰键：",
+      "pressKeyHint": "在键盘上按下任意键",
+      "modifierKeys": "当前修饰键",
+      "noModifiers": "未按下修饰键"
+    },
+    "safelinkDecoder": {
+      "name": "Safelink 解码器",
+      "description": "将 Outlook 安全链接解码为原始 URL",
+      "inputPlaceholder": "粘贴 Outlook 安全链接 URL...",
+      "output": "解码后的 URL",
+      "invalidUrl": "无效的安全链接：必须包含 .safelinks.protection.outlook.com",
+      "noUrlParam": "安全链接中未找到 'url' 参数"
+    }
   }
 }
