@@ -383,6 +383,10 @@
       "output": "解码后的 URL",
       "invalidUrl": "无效的安全链接：必须包含 .safelinks.protection.outlook.com",
       "noUrlParam": "安全链接中未找到 'url' 参数"
-    }
+    },
+    "gitMemo": { "name": "Git 速查", "description": "常用 Git 命令速查表" },
+    "regexMemo": { "name": "正则表达式速查", "description": "正则表达式语法速查表" },
+    "randomPortGenerator": { "name": "随机端口生成器", "description": "生成随机端口号" },
+    "chmodCalculator": { "name": "Chmod 计算器", "description": "计算文件权限的数字和符号表示" }
   }
 }
