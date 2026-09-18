@@ -419,6 +419,10 @@
     "base64FileConverter": {
       "name": "Base64 File Converter",
       "description": "Convert files to Base64 and back"
-    }
+    },
+    "yamlToJson": { "name": "YAML to JSON", "description": "Convert YAML to JSON" },
+    "jsonToYaml": { "name": "JSON to YAML", "description": "Convert JSON to YAML" },
+    "yamlToToml": { "name": "YAML to TOML", "description": "Convert YAML to TOML" },
+    "yamlViewer": { "name": "YAML Viewer", "description": "Format and validate YAML" }
   }
 }

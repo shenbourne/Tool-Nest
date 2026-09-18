@@ -419,6 +419,10 @@
     "base64FileConverter": {
       "name": "Base64 文件转换",
       "description": "文件与 Base64 编码互转"
-    }
+    },
+    "yamlToJson": { "name": "YAML 转 JSON", "description": "将 YAML 转换为 JSON" },
+    "jsonToYaml": { "name": "JSON 转 YAML", "description": "将 JSON 转换为 YAML" },
+    "yamlToToml": { "name": "YAML 转 TOML", "description": "将 YAML 转换为 TOML" },
+    "yamlViewer": { "name": "YAML 查看器", "description": "格式化和验证 YAML" }
   }
 }
