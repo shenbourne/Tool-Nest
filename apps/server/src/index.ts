@@ -6,6 +6,7 @@ import { config, validateConfig } from './config.js';
 import { healthRouter } from './routes/health.js';
 import { userRouter } from './routes/user.js';
 import { reportsRouter } from './routes/reports.js';
+import { networkRouter } from './routes/network.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 import { validateInputSize, concurrencyLimiter } from './middleware/security.js';
 import { initStorage } from './storage/yaml-storage.js';
@@ -33,6 +34,7 @@ app.use('/api/', limiter);
 app.use('/api/health', healthRouter);
 app.use('/api/user', userRouter);
 app.use('/api/reports', reportsRouter);
+app.use('/api/network', networkRouter);
 
 // 404 handler (before error handler)
 app.use(notFoundHandler);
