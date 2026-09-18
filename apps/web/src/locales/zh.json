@@ -446,6 +446,11 @@
     "otpGenerator": { "name": "OTP 生成器", "description": "生成和验证 TOTP 一次性密码" },
     "imageToTextOcr": { "name": "图片转文字 (OCR)", "description": "使用 OCR 从图片中提取文字" },
     "htmlWysiwygEditor": { "name": "HTML 所见即所得编辑器", "description": "使用可视化编辑器编辑 HTML" },
-    "userAgentParser": { "name": "User-Agent 解析器", "description": "解析 User-Agent 字符串提取浏览器、系统和设备信息" }
+    "userAgentParser": { "name": "User-Agent 解析器", "description": "解析 User-Agent 字符串提取浏览器、系统和设备信息" },
+    "videoCompress": { "name": "视频压缩", "description": "压缩视频文件以减小文件大小" },
+    "videoTrim": { "name": "视频裁剪", "description": "通过选择开始和结束时间来裁剪视频" },
+    "videoResize": { "name": "视频调整大小", "description": "调整视频尺寸" },
+    "videoRotate": { "name": "视频旋转", "description": "将视频旋转 90 或 180 度" },
+    "videoFlip": { "name": "视频翻转", "description": "水平或垂直翻转视频" }
   }
 }

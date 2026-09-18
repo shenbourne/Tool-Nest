@@ -446,6 +446,11 @@
     "otpGenerator": { "name": "OTP Generator", "description": "Generate and validate TOTP one-time passwords" },
     "imageToTextOcr": { "name": "Image to Text (OCR)", "description": "Extract text from images using OCR" },
     "htmlWysiwygEditor": { "name": "HTML WYSIWYG Editor", "description": "Edit HTML with a visual WYSIWYG editor" },
-    "userAgentParser": { "name": "User-Agent Parser", "description": "Parse user-agent strings to extract browser, OS and device info" }
+    "userAgentParser": { "name": "User-Agent Parser", "description": "Parse user-agent strings to extract browser, OS and device info" },
+    "videoCompress": { "name": "Video Compress", "description": "Compress video files to reduce file size" },
+    "videoTrim": { "name": "Video Trim", "description": "Trim video by selecting start and end times" },
+    "videoResize": { "name": "Video Resize", "description": "Resize video dimensions" },
+    "videoRotate": { "name": "Video Rotate", "description": "Rotate video by 90 or 180 degrees" },
+    "videoFlip": { "name": "Video Flip", "description": "Flip video horizontally or vertically" }
   }
 }
