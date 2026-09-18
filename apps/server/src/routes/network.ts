@@ -9,11 +9,6 @@ import { isValidDomain } from '@toolnest/shared';
 
 export const networkRouter = Router();
 
-interface NetworkRequestBody {
-  target?: string;
-  locations?: Array<{ type: string; magic: string; limit: number }>;
-}
-
 function validateTarget(target: unknown): string {
   if (typeof target !== 'string' || target.trim().length === 0) {
     throw new AppError(400, 'VALIDATION_ERROR', 'Target is required');
