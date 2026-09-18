@@ -318,6 +318,10 @@
     "dnsResolver": { "name": "DNS Resolver", "description": "Resolve DNS records for any domain" },
     "macLookup": { "name": "MAC Address Lookup", "description": "Find the vendor for a MAC address" },
     "serviceStatus": { "name": "Service Status", "description": "Check if a website or service is online" },
-    "whoisLookup": { "name": "Whois Lookup", "description": "Look up domain registration information" }
+    "whoisLookup": { "name": "Whois Lookup", "description": "Look up domain registration information" },
+    "romanNumeralConverter": { "name": "Roman Numeral Converter", "description": "Convert between Arabic and Roman numerals" },
+    "textToNatoAlphabet": { "name": "Text to NATO Alphabet", "description": "Convert text to NATO phonetic alphabet" },
+    "textToBinary": { "name": "Text to Binary", "description": "Convert text to ASCII binary and back" },
+    "numeronymGenerator": { "name": "Numeronym Generator", "description": "Generate numeronyms (e.g., i18n, a11y) from words" }
   }
 }

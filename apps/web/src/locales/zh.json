@@ -318,6 +318,10 @@
     "dnsResolver": { "name": "DNS 解析器", "description": "解析任意域名的 DNS 记录" },
     "macLookup": { "name": "MAC 地址查询", "description": "查询 MAC 地址对应的厂商" },
     "serviceStatus": { "name": "服务状态", "description": "检查网站或服务是否在线" },
-    "whoisLookup": { "name": "Whois 查询", "description": "查询域名注册信息" }
+    "whoisLookup": { "name": "Whois 查询", "description": "查询域名注册信息" },
+    "romanNumeralConverter": { "name": "罗马数字转换器", "description": "在阿拉伯数字和罗马数字之间转换" },
+    "textToNatoAlphabet": { "name": "文本转NATO字母表", "description": "将文本转换为NATO音标字母表" },
+    "textToBinary": { "name": "文本转二进制", "description": "将文本与ASCII二进制互相转换" },
+    "numeronymGenerator": { "name": "数字缩略词生成器", "description": "从单词生成数字缩略词（如 i18n、a11y）" }
   }
 }
