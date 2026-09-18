@@ -476,6 +476,8 @@
     "mtrTest": { "name": "MTR Test", "description": "Trace network route to a target" },
     "globalLatencyTest": { "name": "Global Latency Test", "description": "Test DNS latency from global locations" },
     "ruleTest": { "name": "Rule Test", "description": "Test DNS resolution with custom rules" },
-    "censorshipCheck": { "name": "Censorship Check", "description": "Check if websites are censored" }
+    "censorshipCheck": { "name": "Censorship Check", "description": "Check if websites are censored" },
+    "screenshotShare": { "name": "Screenshot Share", "description": "Capture and share screenshots of web pages" },
+    "jsonDiff": { "name": "JSON Diff", "description": "Compare two JSON objects and find differences" }
   }
 }

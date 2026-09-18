@@ -476,6 +476,8 @@
     "mtrTest": { "name": "MTR 测试", "description": "追踪到目标的网络路由" },
     "globalLatencyTest": { "name": "全球延迟测试", "description": "从全球位置测试 DNS 延迟" },
     "ruleTest": { "name": "规则测试", "description": "使用自定义规则测试 DNS 解析" },
-    "censorshipCheck": { "name": "审查检查", "description": "检查网站是否被审查封锁" }
+    "censorshipCheck": { "name": "审查检查", "description": "检查网站是否被审查封锁" },
+    "screenshotShare": { "name": "截图分享", "description": "捕获并分享网页截图" },
+    "jsonDiff": { "name": "JSON 差异对比", "description": "比较两个 JSON 对象并找出差异" }
   }
 }
