@@ -392,6 +392,11 @@
     "dockerRunToCompose": { "name": "Docker Run 转 Compose", "description": "将 docker run 命令转换为 docker-compose YAML" },
     "xmlFormatter": { "name": "XML 格式化器", "description": "格式化和压缩 XML 文档" },
     "emailNormalizer": { "name": "邮箱地址规范化", "description": "规范化邮箱地址，移除别名和格式化" },
-    "regexTester": { "name": "正则表达式测试器", "description": "实时测试正则表达式匹配" }
+    "regexTester": { "name": "正则表达式测试器", "description": "实时测试正则表达式匹配" },
+    "ipv4SubnetCalculator": { "name": "IPv4 子网计算器", "description": "解析 CIDR 表示法并计算子网属性" },
+    "ipv4AddressConverter": { "name": "IPv4 地址转换器", "description": "在十进制、二进制、十六进制和八进制之间转换 IPv4 地址" },
+    "ipv4RangeExpander": { "name": "IPv4 范围展开器", "description": "计算覆盖 IP 范围的最小 CIDR 块" },
+    "macAddressGenerator": { "name": "MAC 地址生成器", "description": "生成自定义前缀的随机 MAC 地址" },
+    "ipv6UlaGenerator": { "name": "IPv6 ULA 生成器", "description": "按 RFC 4193 生成 IPv6 唯一本地地址" }
   }
 }

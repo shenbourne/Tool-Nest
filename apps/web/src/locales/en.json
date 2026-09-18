@@ -392,6 +392,11 @@
     "dockerRunToCompose": { "name": "Docker Run to Compose", "description": "Convert docker run commands to docker-compose YAML" },
     "xmlFormatter": { "name": "XML Formatter", "description": "Format and minify XML documents" },
     "emailNormalizer": { "name": "Email Normalizer", "description": "Normalize email addresses by removing aliases and formatting" },
-    "regexTester": { "name": "Regex Tester", "description": "Test regular expressions with real-time matching" }
+    "regexTester": { "name": "Regex Tester", "description": "Test regular expressions with real-time matching" },
+    "ipv4SubnetCalculator": { "name": "IPv4 Subnet Calculator", "description": "Parse CIDR notation and calculate subnet properties" },
+    "ipv4AddressConverter": { "name": "IPv4 Address Converter", "description": "Convert IPv4 addresses between decimal, binary, hex, and octal" },
+    "ipv4RangeExpander": { "name": "IPv4 Range Expander", "description": "Calculate minimal CIDR blocks covering an IP range" },
+    "macAddressGenerator": { "name": "MAC Address Generator", "description": "Generate random MAC addresses with custom prefix" },
+    "ipv6UlaGenerator": { "name": "IPv6 ULA Generator", "description": "Generate IPv6 Unique Local Addresses per RFC 4193" }
   }
 }
