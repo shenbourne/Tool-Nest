@@ -427,6 +427,9 @@
     "tomlToJson": { "name": "TOML to JSON", "description": "Convert TOML to JSON" },
     "tomlToYaml": { "name": "TOML to YAML", "description": "Convert TOML to YAML" },
     "jsonToToml": { "name": "JSON to TOML", "description": "Convert JSON to TOML" },
-    "jsonToCsv": { "name": "JSON to CSV", "description": "Convert JSON array to CSV" }
+    "jsonToCsv": { "name": "JSON to CSV", "description": "Convert JSON array to CSV" },
+    "xmlToJson": { "name": "XML to JSON", "description": "Convert XML to JSON" },
+    "jsonToXml": { "name": "JSON to XML", "description": "Convert JSON to XML" },
+    "sqlPrettify": { "name": "SQL Prettify", "description": "Format and prettify SQL queries" }
   }
 }
