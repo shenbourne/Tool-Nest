@@ -432,6 +432,10 @@
     "jsonToXml": { "name": "JSON to XML", "description": "Convert JSON to XML" },
     "sqlPrettify": { "name": "SQL Prettify", "description": "Format and prettify SQL queries" },
     "dateTimeConverter": { "name": "Date-Time Converter", "description": "Convert between date-time formats including Unix timestamps" },
-    "listConverter": { "name": "List Converter", "description": "Transform lists with sort, deduplicate, prefix/suffix options" }
+    "listConverter": { "name": "List Converter", "description": "Transform lists with sort, deduplicate, prefix/suffix options" },
+    "qrCodeGenerator": { "name": "QR Code Generator", "description": "Generate QR codes from text or URLs" },
+    "wifiQrCodeGenerator": { "name": "WiFi QR Code Generator", "description": "Generate QR codes for WiFi network credentials" },
+    "svgPlaceholderGenerator": { "name": "SVG Placeholder Generator", "description": "Generate SVG placeholder images with custom dimensions" },
+    "otpGenerator": { "name": "OTP Generator", "description": "Generate and validate TOTP one-time passwords" }
   }
 }

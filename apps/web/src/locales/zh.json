@@ -432,6 +432,10 @@
     "jsonToXml": { "name": "JSON 转 XML", "description": "将 JSON 转换为 XML" },
     "sqlPrettify": { "name": "SQL 格式化", "description": "格式化和美化 SQL 查询语句" },
     "dateTimeConverter": { "name": "日期时间转换器", "description": "在日期时间格式之间转换，包括 Unix 时间戳" },
-    "listConverter": { "name": "列表转换器", "description": "使用排序、去重、前后缀等选项转换列表" }
+    "listConverter": { "name": "列表转换器", "description": "使用排序、去重、前后缀等选项转换列表" },
+    "qrCodeGenerator": { "name": "二维码生成器", "description": "从文本或 URL 生成二维码" },
+    "wifiQrCodeGenerator": { "name": "WiFi 二维码生成器", "description": "生成 WiFi 网络凭证的二维码" },
+    "svgPlaceholderGenerator": { "name": "SVG 占位图生成器", "description": "生成自定义尺寸的 SVG 占位图" },
+    "otpGenerator": { "name": "OTP 生成器", "description": "生成和验证 TOTP 一次性密码" }
   }
 }
