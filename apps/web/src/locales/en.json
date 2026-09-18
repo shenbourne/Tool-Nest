@@ -387,6 +387,11 @@
     "gitMemo": { "name": "Git Memo", "description": "Quick reference for common Git commands" },
     "regexMemo": { "name": "Regex Memo", "description": "Quick reference for regular expression syntax" },
     "randomPortGenerator": { "name": "Random Port Generator", "description": "Generate random port numbers" },
-    "chmodCalculator": { "name": "Chmod Calculator", "description": "Calculate file permissions numerically and symbolically" }
+    "chmodCalculator": { "name": "Chmod Calculator", "description": "Calculate file permissions numerically and symbolically" },
+    "jsonViewer": { "name": "JSON Viewer", "description": "Format and validate JSON data" },
+    "dockerRunToCompose": { "name": "Docker Run to Compose", "description": "Convert docker run commands to docker-compose YAML" },
+    "xmlFormatter": { "name": "XML Formatter", "description": "Format and minify XML documents" },
+    "emailNormalizer": { "name": "Email Normalizer", "description": "Normalize email addresses by removing aliases and formatting" },
+    "regexTester": { "name": "Regex Tester", "description": "Test regular expressions with real-time matching" }
   }
 }

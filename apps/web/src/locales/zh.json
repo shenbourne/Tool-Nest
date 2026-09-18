@@ -387,6 +387,11 @@
     "gitMemo": { "name": "Git 速查", "description": "常用 Git 命令速查表" },
     "regexMemo": { "name": "正则表达式速查", "description": "正则表达式语法速查表" },
     "randomPortGenerator": { "name": "随机端口生成器", "description": "生成随机端口号" },
-    "chmodCalculator": { "name": "Chmod 计算器", "description": "计算文件权限的数字和符号表示" }
+    "chmodCalculator": { "name": "Chmod 计算器", "description": "计算文件权限的数字和符号表示" },
+    "jsonViewer": { "name": "JSON 查看器", "description": "格式化和验证 JSON 数据" },
+    "dockerRunToCompose": { "name": "Docker Run 转 Compose", "description": "将 docker run 命令转换为 docker-compose YAML" },
+    "xmlFormatter": { "name": "XML 格式化器", "description": "格式化和压缩 XML 文档" },
+    "emailNormalizer": { "name": "邮箱地址规范化", "description": "规范化邮箱地址，移除别名和格式化" },
+    "regexTester": { "name": "正则表达式测试器", "description": "实时测试正则表达式匹配" }
   }
 }
