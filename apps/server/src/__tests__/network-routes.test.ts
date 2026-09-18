@@ -69,6 +69,18 @@ describe('POST /api/network/ping', () => {
     const body = await res.json();
     expect(body.error.code).toBe('VALIDATION_ERROR');
   });
+
+  it('rejects private IP target (SSRF)', async () => {
+    const res = await fetch(`${baseUrl}/api/network/ping`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ target: '127.0.0.1' }),
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error.code).toBe('VALIDATION_ERROR');
+    expect(body.error.message).toContain('private networks');
+  });
 });
 
 describe('POST /api/network/mtr', () => {
@@ -117,6 +129,17 @@ describe('POST /api/network/dns-leak', () => {
     });
     expect(res.status).toBe(400);
   });
+
+  it('rejects private domain (SSRF)', async () => {
+    const res = await fetch(`${baseUrl}/api/network/dns-leak`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domains: ['localhost'] }),
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error.message).toContain('private networks');
+  });
 });
 
 describe('POST /api/network/rule-test', () => {
@@ -138,6 +161,17 @@ describe('POST /api/network/rule-test', () => {
       body: JSON.stringify({}),
     });
     expect(res.status).toBe(400);
+  });
+
+  it('rejects private dnsServer (SSRF)', async () => {
+    const res = await fetch(`${baseUrl}/api/network/rule-test`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domain: 'example.com', dnsServer: '10.0.0.1' }),
+    });
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error.message).toContain('private networks');
   });
 });
 

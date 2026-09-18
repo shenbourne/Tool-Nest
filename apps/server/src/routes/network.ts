@@ -1,13 +1,23 @@
 import { Router } from 'express';
 import dns from 'node:dns';
 import { promisify } from 'node:util';
+import rateLimit from 'express-rate-limit';
 import { AppError } from '../middleware/error-handler.js';
+import { isPrivateHost } from '../middleware/security.js';
 import { GlobalpingService } from '../services/globalping.js';
 import { OoniService } from '../services/ooni.js';
 import type { ApiResponse } from '@toolnest/shared';
 import { isValidDomain } from '@toolnest/shared';
 
 export const networkRouter = Router();
+
+const networkLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+networkRouter.use(networkLimiter);
 
 function validateTarget(target: unknown): string {
   if (typeof target !== 'string' || target.trim().length === 0) {
@@ -16,6 +26,9 @@ function validateTarget(target: unknown): string {
   const cleaned = target.trim();
   if (!isValidDomain(cleaned) && !/^\d{1,3}(\.\d{1,3}){3}$/.test(cleaned)) {
     throw new AppError(400, 'VALIDATION_ERROR', 'Target must be a valid domain or IP address');
+  }
+  if (isPrivateHost(cleaned)) {
+    throw new AppError(400, 'VALIDATION_ERROR', 'Access to private networks is blocked');
   }
   return cleaned;
 }
@@ -86,6 +99,12 @@ networkRouter.post('/dns-leak', async (req, res, next) => {
       throw new AppError(400, 'VALIDATION_ERROR', 'At least one domain is required');
     }
 
+    for (const d of domains) {
+      if (typeof d === 'string' && isPrivateHost(d.trim())) {
+        throw new AppError(400, 'VALIDATION_ERROR', 'Access to private networks is blocked');
+      }
+    }
+
     const results = await Promise.all(
       domains.map(async (domain: string) => {
         try {
@@ -115,6 +134,10 @@ networkRouter.post('/rule-test', async (req, res, next) => {
 
     const resolver = new dns.Resolver();
     if (typeof dnsServer === 'string' && dnsServer.trim()) {
+      const serverHost = dnsServer.trim().replace(/^\[|\]$/g, '');
+      if (isPrivateHost(serverHost)) {
+        throw new AppError(400, 'VALIDATION_ERROR', 'Access to private networks is blocked');
+      }
       resolver.setServers([dnsServer]);
     }
 
