@@ -403,6 +403,22 @@
     "cameraRecorder": { "name": "Camera Recorder", "description": "Record video from your camera" },
     "etaCalculator": { "name": "ETA Calculator", "description": "Calculate estimated time of completion" },
     "benchmarkBuilder": { "name": "Benchmark Builder", "description": "Run JavaScript benchmarks and measure performance" },
-    "infoMasking": { "name": "Info Masking", "description": "Mask sensitive information in text" }
+    "infoMasking": { "name": "Info Masking", "description": "Mask sensitive information in text" },
+    "textToUnicode": {
+      "name": "Text to Unicode",
+      "description": "Convert text to Unicode entities and back"
+    },
+    "jsonMinify": {
+      "name": "JSON Minify",
+      "description": "Minify JSON by removing whitespace"
+    },
+    "markdownToHtml": {
+      "name": "Markdown to HTML",
+      "description": "Convert Markdown to HTML and preview the result"
+    },
+    "base64FileConverter": {
+      "name": "Base64 File Converter",
+      "description": "Convert files to Base64 and back"
+    }
   }
 }

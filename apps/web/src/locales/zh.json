@@ -403,6 +403,22 @@
     "cameraRecorder": { "name": "摄像头录制", "description": "从摄像头录制视频" },
     "etaCalculator": { "name": "ETA 计算器", "description": "计算预计完成时间" },
     "benchmarkBuilder": { "name": "基准测试构建器", "description": "运行 JavaScript 基准测试并测量性能" },
-    "infoMasking": { "name": "信息脱敏", "description": "脱敏文本中的敏感信息" }
+    "infoMasking": { "name": "信息脱敏", "description": "脱敏文本中的敏感信息" },
+    "textToUnicode": {
+      "name": "文本转 Unicode",
+      "description": "文本与 Unicode 实体互转"
+    },
+    "jsonMinify": {
+      "name": "JSON 压缩",
+      "description": "去除 JSON 中的空白字符"
+    },
+    "markdownToHtml": {
+      "name": "Markdown 转 HTML",
+      "description": "将 Markdown 转换为 HTML 并预览"
+    },
+    "base64FileConverter": {
+      "name": "Base64 文件转换",
+      "description": "文件与 Base64 编码互转"
+    }
   }
 }
