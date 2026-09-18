@@ -397,6 +397,12 @@
     "ipv4AddressConverter": { "name": "IPv4 Address Converter", "description": "Convert IPv4 addresses between decimal, binary, hex, and octal" },
     "ipv4RangeExpander": { "name": "IPv4 Range Expander", "description": "Calculate minimal CIDR blocks covering an IP range" },
     "macAddressGenerator": { "name": "MAC Address Generator", "description": "Generate random MAC addresses with custom prefix" },
-    "ipv6UlaGenerator": { "name": "IPv6 ULA Generator", "description": "Generate IPv6 Unique Local Addresses per RFC 4193" }
+    "ipv6UlaGenerator": { "name": "IPv6 ULA Generator", "description": "Generate IPv6 Unique Local Addresses per RFC 4193" },
+    "crontabGenerator": { "name": "Crontab Generator", "description": "Generate cron expressions with human-readable descriptions" },
+    "dockerComposeTo1panel": { "name": "Docker Compose to 1Panel", "description": "Convert docker-compose YAML to 1Panel format" },
+    "cameraRecorder": { "name": "Camera Recorder", "description": "Record video from your camera" },
+    "etaCalculator": { "name": "ETA Calculator", "description": "Calculate estimated time of completion" },
+    "benchmarkBuilder": { "name": "Benchmark Builder", "description": "Run JavaScript benchmarks and measure performance" },
+    "infoMasking": { "name": "Info Masking", "description": "Mask sensitive information in text" }
   }
 }

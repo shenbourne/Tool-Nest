@@ -397,6 +397,12 @@
     "ipv4AddressConverter": { "name": "IPv4 地址转换器", "description": "在十进制、二进制、十六进制和八进制之间转换 IPv4 地址" },
     "ipv4RangeExpander": { "name": "IPv4 范围展开器", "description": "计算覆盖 IP 范围的最小 CIDR 块" },
     "macAddressGenerator": { "name": "MAC 地址生成器", "description": "生成自定义前缀的随机 MAC 地址" },
-    "ipv6UlaGenerator": { "name": "IPv6 ULA 生成器", "description": "按 RFC 4193 生成 IPv6 唯一本地地址" }
+    "ipv6UlaGenerator": { "name": "IPv6 ULA 生成器", "description": "按 RFC 4193 生成 IPv6 唯一本地地址" },
+    "crontabGenerator": { "name": "Crontab 生成器", "description": "生成带有可读描述的 cron 表达式" },
+    "dockerComposeTo1panel": { "name": "Docker Compose 转 1Panel", "description": "将 docker-compose YAML 转换为 1Panel 格式" },
+    "cameraRecorder": { "name": "摄像头录制", "description": "从摄像头录制视频" },
+    "etaCalculator": { "name": "ETA 计算器", "description": "计算预计完成时间" },
+    "benchmarkBuilder": { "name": "基准测试构建器", "description": "运行 JavaScript 基准测试并测量性能" },
+    "infoMasking": { "name": "信息脱敏", "description": "脱敏文本中的敏感信息" }
   }
 }
