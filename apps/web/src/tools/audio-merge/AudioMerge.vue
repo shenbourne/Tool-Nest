@@ -1,0 +1,112 @@
+<script setup lang="ts">
+import { NCard, NSpace, NButton, NAlert, NProgress, NTag } from 'naive-ui';
+import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
+import { tool } from './index';
+
+const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
+
+const files = ref<File[]>([]);
+const processing = ref(false);
+const error = ref('');
+const resultData = ref<Uint8Array | null>(null);
+
+function onFileChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  files.value = input.files ? Array.from(input.files) : [];
+  resultData.value = null;
+  error.value = '';
+}
+
+function downloadBlob(data: Uint8Array, filename: string, mimeType: string) {
+  const blob = new Blob([data], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function process() {
+  if (files.value.length < 2 || !isLoaded.value) return;
+  processing.value = true;
+  error.value = '';
+  resultData.value = null;
+
+  try {
+    const fileBytes: { name: string; data: Uint8Array }[] = [];
+    for (const f of files.value) {
+      fileBytes.push({
+        name: f.name,
+        data: new Uint8Array(await f.arrayBuffer()),
+      });
+    }
+
+    const result = await runFFmpegTask(async ({ ffmpeg, tempFile }) => {
+      const inputNames: string[] = [];
+      for (const fb of fileBytes) {
+        const inputName = tempFile('.mp3');
+        await ffmpeg.writeFile(inputName, fb.data);
+        inputNames.push(inputName);
+      }
+
+      const listContent = inputNames.map((n) => `file '${n}'`).join('\n');
+      const listName = tempFile('.txt');
+      await ffmpeg.writeFile(listName, listContent);
+
+      const outputName = tempFile('.mp3');
+      await ffmpeg.exec([
+        '-f', 'concat',
+        '-safe', '0',
+        '-i', listName,
+        '-c', 'copy',
+        outputName,
+      ]);
+      return (await ffmpeg.readFile(outputName)) as Uint8Array;
+    });
+
+    resultData.value = result;
+    downloadBlob(result, 'merged_audio.mp3', 'audio/mpeg');
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : 'Processing failed';
+  } finally {
+    processing.value = false;
+  }
+}
+</script>
+
+<template>
+  <ToolLayout :tool="tool">
+    <NCard>
+      <NSpace vertical :size="12">
+        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
+          Load FFmpeg
+        </NButton>
+        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+
+        <input type="file" accept="audio/*" multiple @change="onFileChange" />
+
+        <NSpace v-if="files.length > 0">
+          <NTag v-for="(f, i) in files" :key="i" size="small" closable @close="files.splice(i, 1)">
+            {{ f.name }}
+          </NTag>
+        </NSpace>
+
+        <NButton
+          type="primary"
+          :loading="processing"
+          :disabled="files.length < 2 || !isLoaded"
+          @click="process"
+        >
+          Merge Audio
+        </NButton>
+
+        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="error" type="error" :title="error" />
+
+        <NAlert v-if="resultData" type="success" title="Audio merged! File downloaded." />
+      </NSpace>
+    </NCard>
+  </ToolLayout>
+</template>

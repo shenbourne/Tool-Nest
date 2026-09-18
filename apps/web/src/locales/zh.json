@@ -459,6 +459,12 @@
     "videoAddAudio": { "name": "视频添加音频", "description": "为视频添加或替换音轨" },
     "videoToGif": { "name": "视频转 GIF", "description": "将视频转换为动态 GIF" },
     "gifChangeSpeed": { "name": "GIF 变速", "description": "改变 GIF 动画速度" },
-    "imagesToGif": { "name": "图片转 GIF", "description": "将多张图片合成为动态 GIF" }
+    "imagesToGif": { "name": "图片转 GIF", "description": "将多张图片合成为动态 GIF" },
+    "audioConverter": { "name": "音频转换", "description": "在不同音频格式之间转换" },
+    "audioChangeSpeed": { "name": "音频变速", "description": "改变音频播放速度" },
+    "audioExtract": { "name": "音频提取", "description": "从视频中提取音频轨道" },
+    "audioLoop": { "name": "音频循环", "description": "循环播放音频指定次数" },
+    "audioMerge": { "name": "音频合并", "description": "将多个音频合并为一个" },
+    "audioTrim": { "name": "音频裁剪", "description": "裁剪音频到自定义时间范围" }
   }
 }

@@ -459,6 +459,12 @@
     "videoAddAudio": { "name": "Video Add Audio", "description": "Add or replace audio track in a video" },
     "videoToGif": { "name": "Video to GIF", "description": "Convert video to animated GIF" },
     "gifChangeSpeed": { "name": "GIF Speed Change", "description": "Change GIF animation speed" },
-    "imagesToGif": { "name": "Images to GIF", "description": "Combine images into an animated GIF" }
+    "imagesToGif": { "name": "Images to GIF", "description": "Combine images into an animated GIF" },
+    "audioConverter": { "name": "Audio Converter", "description": "Convert audio between formats" },
+    "audioChangeSpeed": { "name": "Audio Speed Change", "description": "Change audio playback speed" },
+    "audioExtract": { "name": "Audio Extract", "description": "Extract audio track from video" },
+    "audioLoop": { "name": "Audio Loop", "description": "Loop audio a specified number of times" },
+    "audioMerge": { "name": "Audio Merge", "description": "Merge multiple audio files into one" },
+    "audioTrim": { "name": "Audio Trim", "description": "Trim audio to a custom time range" }
   }
 }

@@ -1,0 +1,120 @@
+<script setup lang="ts">
+import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
+import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
+import { tool } from './index';
+
+const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
+
+const file = ref<File | null>(null);
+const outputFormat = ref<string>('mp3');
+const processing = ref(false);
+const error = ref('');
+const resultData = ref<Uint8Array | null>(null);
+
+const formatOptions = [
+  { label: 'MP3', value: 'mp3' },
+  { label: 'WAV', value: 'wav' },
+  { label: 'OGG', value: 'ogg' },
+];
+
+const codecMap: Record<string, string> = {
+  mp3: 'libmp3lame',
+  wav: 'pcm_s16le',
+  ogg: 'libvorbis',
+};
+
+const mimeMap: Record<string, string> = {
+  mp3: 'audio/mpeg',
+  wav: 'audio/wav',
+  ogg: 'audio/ogg',
+};
+
+function onFileChange(event: Event) {
+  const input = event.target as HTMLInputElement;
+  file.value = input.files?.[0] ?? null;
+  resultData.value = null;
+  error.value = '';
+}
+
+function downloadBlob(data: Uint8Array, filename: string, mimeType: string) {
+  const blob = new Blob([data], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function process() {
+  if (!file.value || !isLoaded.value) return;
+  processing.value = true;
+  error.value = '';
+  resultData.value = null;
+
+  try {
+    const inputBytes = new Uint8Array(await file.value.arrayBuffer());
+    const ext = `.${outputFormat.value}`;
+    const codec = codecMap[outputFormat.value] ?? 'libmp3lame';
+    const mime = mimeMap[outputFormat.value] ?? 'audio/mpeg';
+
+    const result = await runFFmpegTask(async ({ ffmpeg, tempFile }) => {
+      const inputName = tempFile('.video');
+      const outputName = tempFile(ext);
+      await ffmpeg.writeFile(inputName, inputBytes);
+      await ffmpeg.exec([
+        '-i', inputName,
+        '-vn',
+        '-codec:a', codec,
+        outputName,
+      ]);
+      return (await ffmpeg.readFile(outputName)) as Uint8Array;
+    });
+
+    resultData.value = result;
+    const baseName = file.value.name.replace(/\.[^.]+$/, '');
+    downloadBlob(result, `${baseName}_audio${ext}`, mime);
+  } catch (e: unknown) {
+    error.value = e instanceof Error ? e.message : 'Processing failed';
+  } finally {
+    processing.value = false;
+  }
+}
+</script>
+
+<template>
+  <ToolLayout :tool="tool">
+    <NCard>
+      <NSpace vertical :size="12">
+        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
+          Load FFmpeg
+        </NButton>
+        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+
+        <input type="file" accept="video/*" @change="onFileChange" />
+
+        <NSelect
+          v-model:value="outputFormat"
+          :options="formatOptions"
+          style="width: 200px"
+          placeholder="Select output format"
+        />
+
+        <NButton
+          type="primary"
+          :loading="processing"
+          :disabled="!file || !isLoaded"
+          @click="process"
+        >
+          Extract Audio
+        </NButton>
+
+        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="error" type="error" :title="error" />
+
+        <NAlert v-if="resultData" type="success" title="Audio extracted! File downloaded." />
+      </NSpace>
+    </NCard>
+  </ToolLayout>
+</template>
