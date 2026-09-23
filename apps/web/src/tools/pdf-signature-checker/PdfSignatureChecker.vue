@@ -27,17 +27,15 @@ async function checkSignatures() {
   signatureCount.value = 0;
   fieldNames.value = [];
   try {
-    const { PDFDocument, PDFSignatureField } = await import('pdf-lib');
+    const { PDFDocument, PDFSignature } = await import('pdf-lib');
     const buf = await file.value.arrayBuffer();
     const doc = await PDFDocument.load(buf, { ignoreEncryption: true });
     const form = doc.getForm();
     const fields = form.getFields();
-    const sigFields = fields.filter(
-      (f: any) => f.constructor.name === 'PDFSignatureField' || f instanceof PDFSignatureField
-    );
+    const sigFields = fields.filter((field) => field instanceof PDFSignature);
     signatureCount.value = sigFields.length;
     hasSignatures.value = sigFields.length > 0;
-    fieldNames.value = sigFields.map((f: any) => f.getName());
+    fieldNames.value = sigFields.map((field) => field.getName());
     checked.value = true;
   } catch (e: any) {
     error.value = e.message || 'Failed to check signatures';
