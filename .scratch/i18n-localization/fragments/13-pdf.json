@@ -1,0 +1,148 @@
+{
+  "en": {
+    "common": {
+      "page": "Page {n}"
+    },
+    "tool": {
+      "downloadPng": "Download PNG"
+    },
+    "tools": {
+      "compressPdf": {
+        "compress": "Compress PDF",
+        "sizeResult": "Original: {orig} KB → New: {next} KB"
+      },
+      "convertToPdf": {
+        "info": "Converts images (JPG, PNG, WebP) to PDF",
+        "convert": "Convert to PDF",
+        "downloadPdf": "Download PDF"
+      },
+      "pdfEditor": {
+        "textPlaceholder": "Enter text to add",
+        "positionPlaceholder": "Select position",
+        "fontSize": "Font size",
+        "failed": "Failed to edit PDF",
+        "downloadEditedPdf": "Download Edited PDF",
+        "position": {
+          "topLeft": "Top Left",
+          "topCenter": "Top Center",
+          "topRight": "Top Right",
+          "center": "Center",
+          "bottomLeft": "Bottom Left",
+          "bottomCenter": "Bottom Center",
+          "bottomRight": "Bottom Right"
+        }
+      },
+      "pdfExtractImages": {
+        "extract": "Extract Images",
+        "failed": "Failed to extract images"
+      },
+      "pdfMerge": {
+        "selectAtLeastTwo": "Select at least 2 PDF files",
+        "filesSelected": "{count} files selected",
+        "merge": "Merge PDFs",
+        "downloadMerged": "Download Merged PDF"
+      },
+      "pdfProtect": {
+        "note": "Note: Basic PDF re-save. Full encryption requires server-side processing.",
+        "process": "Process PDF"
+      },
+      "pdfRotate": {
+        "rotate": "Rotate PDF"
+      },
+      "pdfSignatureChecker": {
+        "check": "Check Signatures",
+        "failed": "Failed to check signatures",
+        "signaturesFound": "Signatures Found",
+        "noSignatures": "No Signatures",
+        "signatureFields": "Signature fields: {count}"
+      },
+      "pdfSplit": {
+        "pagesPlaceholder": "Page numbers: 1 3 5",
+        "extractPages": "Extract Pages"
+      },
+      "pdfToEpub": {
+        "failed": "Failed to extract text",
+        "previewTitle": "Extracted Text Preview",
+        "downloadText": "Download Text File"
+      },
+      "pdfToPng": {
+        "scale": "Scale:",
+        "convert": "Convert to PNG",
+        "failed": "Failed to convert PDF to PNG"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "page": "第 {n} 页"
+    },
+    "tool": {
+      "downloadPng": "下载 PNG"
+    },
+    "tools": {
+      "compressPdf": {
+        "compress": "压缩 PDF",
+        "sizeResult": "原始大小: {orig} KB → 新大小: {next} KB"
+      },
+      "convertToPdf": {
+        "info": "将图片（JPG、PNG、WebP）转换为 PDF",
+        "convert": "转换为 PDF",
+        "downloadPdf": "下载 PDF"
+      },
+      "pdfEditor": {
+        "textPlaceholder": "输入要添加的文本",
+        "positionPlaceholder": "选择位置",
+        "fontSize": "字号",
+        "failed": "PDF 编辑失败",
+        "downloadEditedPdf": "下载编辑后的 PDF",
+        "position": {
+          "topLeft": "左上",
+          "topCenter": "顶部居中",
+          "topRight": "右上",
+          "center": "居中",
+          "bottomLeft": "左下",
+          "bottomCenter": "底部居中",
+          "bottomRight": "右下"
+        }
+      },
+      "pdfExtractImages": {
+        "extract": "提取图片",
+        "failed": "提取图片失败"
+      },
+      "pdfMerge": {
+        "selectAtLeastTwo": "请至少选择 2 个 PDF 文件",
+        "filesSelected": "已选择 {count} 个文件",
+        "merge": "合并 PDF",
+        "downloadMerged": "下载合并后的 PDF"
+      },
+      "pdfProtect": {
+        "note": "注意: 这是基本的 PDF 重保存，完整加密需要服务端处理。",
+        "process": "处理 PDF"
+      },
+      "pdfRotate": {
+        "rotate": "旋转 PDF"
+      },
+      "pdfSignatureChecker": {
+        "check": "检查签名",
+        "failed": "检查签名失败",
+        "signaturesFound": "发现签名",
+        "noSignatures": "无签名",
+        "signatureFields": "签名字段: {count}"
+      },
+      "pdfSplit": {
+        "pagesPlaceholder": "页码: 1 3 5",
+        "extractPages": "提取页面"
+      },
+      "pdfToEpub": {
+        "failed": "提取文本失败",
+        "previewTitle": "提取文本预览",
+        "downloadText": "下载文本文件"
+      },
+      "pdfToPng": {
+        "scale": "缩放比例:",
+        "convert": "转换为 PNG",
+        "failed": "PDF 转 PNG 失败"
+      }
+    }
+  }
+}

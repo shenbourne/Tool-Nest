@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NUpload, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 
 interface PageImage {
   url: string;
@@ -52,7 +55,7 @@ async function extract() {
     }
     images.value = result;
   } catch (e: any) {
-    error.value = e.message || 'Failed to extract images';
+    error.value = e.message || t('tools.pdfExtractImages.failed');
   }
   processing.value = false;
 }
@@ -62,14 +65,14 @@ async function extract() {
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
       <NButton type="primary" :loading="processing" @click="extract" :disabled="!file">
-        Extract Images
+        {{ t('tools.pdfExtractImages.extract') }}
       </NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NSpace v-if="images.length" :wrap="true">
-        <NCard v-for="img in images" :key="img.page" :title="`Page ${img.page}`" size="small" style="width: 200px;">
+        <NCard v-for="img in images" :key="img.page" :title="t('common.page', { n: img.page })" size="small" style="width: 200px;">
           <img :src="img.url" style="width: 100%;" />
           <NButton size="small" @click="downloadImage(img)" style="margin-top: 8px;">
-            Download PNG
+            {{ t('tool.downloadPng') }}
           </NButton>
         </NCard>
       </NSpace>

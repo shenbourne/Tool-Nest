@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NUpload, NAlert, NTag } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 
+const { t } = useI18n();
 const file = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
@@ -38,7 +40,7 @@ async function checkSignatures() {
     fieldNames.value = sigFields.map((field) => field.getName());
     checked.value = true;
   } catch (e: any) {
-    error.value = e.message || 'Failed to check signatures';
+    error.value = e.message || t('tools.pdfSignatureChecker.failed');
   }
   processing.value = false;
 }
@@ -48,14 +50,14 @@ async function checkSignatures() {
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
       <NButton type="primary" :loading="processing" @click="checkSignatures" :disabled="!file">
-        Check Signatures
+        {{ t('tools.pdfSignatureChecker.check') }}
       </NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NAlert v-if="checked && !error" :type="hasSignatures ? 'success' : 'warning'">
         <template #header>
-          {{ hasSignatures ? 'Signatures Found' : 'No Signatures' }}
+          {{ hasSignatures ? t('tools.pdfSignatureChecker.signaturesFound') : t('tools.pdfSignatureChecker.noSignatures') }}
         </template>
-        <p>Signature fields: {{ signatureCount }}</p>
+        <p>{{ t('tools.pdfSignatureChecker.signatureFields', { count: signatureCount }) }}</p>
         <NSpace v-if="fieldNames.length">
           <NTag v-for="name in fieldNames" :key="name" type="info">{{ name }}</NTag>
         </NSpace>

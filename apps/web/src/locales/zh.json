@@ -130,7 +130,8 @@
     "upload": "上传",
     "processing": "处理中...",
     "loadFfmpeg": "加载 FFmpeg",
-    "downloadGif": "下载 GIF"
+    "downloadGif": "下载 GIF",
+    "downloadPng": "下载 PNG"
   },
   "common": {
     "loading": "加载中...",
@@ -220,7 +221,8 @@
     "seconds": "秒",
     "invalidDate": "日期无效",
     "invalidDates": "日期无效",
-    "enterTimeAsHhMmSs": "请以 HH:MM:SS 格式输入时间"
+    "enterTimeAsHhMmSs": "请以 HH:MM:SS 格式输入时间",
+    "page": "第 {n} 页"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -887,47 +889,88 @@
     },
     "pdfMerge": {
       "name": "PDF 合并",
-      "description": "将多个 PDF 文件合并为一个"
+      "description": "将多个 PDF 文件合并为一个",
+      "selectAtLeastTwo": "请至少选择 2 个 PDF 文件",
+      "filesSelected": "已选择 {count} 个文件",
+      "merge": "合并 PDF",
+      "downloadMerged": "下载合并后的 PDF"
     },
     "pdfRotate": {
       "name": "PDF 旋转",
-      "description": "旋转 PDF 文档中的所有页面"
+      "description": "旋转 PDF 文档中的所有页面",
+      "rotate": "旋转 PDF"
     },
     "pdfSplit": {
       "name": "PDF 拆分",
-      "description": "从 PDF 中提取指定页面"
+      "description": "从 PDF 中提取指定页面",
+      "pagesPlaceholder": "页码: 1 3 5",
+      "extractPages": "提取页面"
     },
     "pdfProtect": {
       "name": "PDF 保护",
-      "description": "为 PDF 文档添加保护"
+      "description": "为 PDF 文档添加保护",
+      "note": "注意: 这是基本的 PDF 重保存，完整加密需要服务端处理。",
+      "process": "处理 PDF"
     },
     "convertToPdf": {
       "name": "转换为 PDF",
-      "description": "将图片转换为 PDF 格式"
+      "description": "将图片转换为 PDF 格式",
+      "info": "将图片（JPG、PNG、WebP）转换为 PDF",
+      "convert": "转换为 PDF",
+      "downloadPdf": "下载 PDF"
     },
     "compressPdf": {
       "name": "PDF 压缩",
-      "description": "减小 PDF 文件大小"
+      "description": "减小 PDF 文件大小",
+      "compress": "压缩 PDF",
+      "sizeResult": "原始大小: {orig} KB → 新大小: {next} KB"
     },
     "pdfSignatureChecker": {
       "name": "PDF 签名检查",
-      "description": "检查 PDF 是否包含数字签名"
+      "description": "检查 PDF 是否包含数字签名",
+      "check": "检查签名",
+      "failed": "检查签名失败",
+      "signaturesFound": "发现签名",
+      "noSignatures": "无签名",
+      "signatureFields": "签名字段: {count}"
     },
     "pdfEditor": {
       "name": "PDF 编辑器",
-      "description": "为 PDF 添加文本注释和水印"
+      "description": "为 PDF 添加文本注释和水印",
+      "textPlaceholder": "输入要添加的文本",
+      "positionPlaceholder": "选择位置",
+      "fontSize": "字号",
+      "failed": "PDF 编辑失败",
+      "downloadEditedPdf": "下载编辑后的 PDF",
+      "position": {
+        "topLeft": "左上",
+        "topCenter": "顶部居中",
+        "topRight": "右上",
+        "center": "居中",
+        "bottomLeft": "左下",
+        "bottomCenter": "底部居中",
+        "bottomRight": "右下"
+      }
     },
     "pdfExtractImages": {
       "name": "PDF 提取图片",
-      "description": "从 PDF 文件中提取页面图片"
+      "description": "从 PDF 文件中提取页面图片",
+      "extract": "提取图片",
+      "failed": "提取图片失败"
     },
     "pdfToEpub": {
       "name": "PDF 转文本",
-      "description": "从 PDF 中提取文本内容"
+      "description": "从 PDF 中提取文本内容",
+      "failed": "提取文本失败",
+      "previewTitle": "提取文本预览",
+      "downloadText": "下载文本文件"
     },
     "pdfToPng": {
       "name": "PDF 转 PNG",
-      "description": "将 PDF 页面转换为 PNG 图片"
+      "description": "将 PDF 页面转换为 PNG 图片",
+      "scale": "缩放比例:",
+      "convert": "转换为 PNG",
+      "failed": "PDF 转 PNG 失败"
     },
     "connectivityCheck": {
       "name": "连通性检查",

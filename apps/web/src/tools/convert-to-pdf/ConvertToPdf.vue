@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NUpload, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 const file = ref<File | null>(null);
 const resultUrl = ref('');
 const processing = ref(false);
@@ -28,9 +31,9 @@ async function process() {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
-      <NAlert type="info" title="Converts images (JPG, PNG, WebP) to PDF" />
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">Convert to PDF</NButton>
-      <NButton v-if="resultUrl" @click="download">Download PDF</NButton>
+      <NAlert type="info" :title="t('tools.convertToPdf.info')" />
+      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.convertToPdf.convert') }}</NButton>
+      <NButton v-if="resultUrl" @click="download">{{ t('tools.convertToPdf.downloadPdf') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

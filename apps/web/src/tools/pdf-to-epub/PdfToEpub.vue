@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NUpload, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 
+const { t } = useI18n();
 const file = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
@@ -52,7 +54,7 @@ async function convert() {
     const blob = new Blob([extractedText.value], { type: 'text/plain' });
     resultUrl.value = URL.createObjectURL(blob);
   } catch (e: any) {
-    error.value = e.message || 'Failed to extract text';
+    error.value = e.message || t('tools.pdfToEpub.failed');
   }
   processing.value = false;
 }
@@ -62,13 +64,13 @@ async function convert() {
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
       <NButton type="primary" :loading="processing" @click="convert" :disabled="!file">
-        Convert
+        {{ t('common.convert') }}
       </NButton>
       <NAlert v-if="error" type="error" :title="error" />
-      <NCard v-if="extractedText" title="Extracted Text Preview" size="small">
+      <NCard v-if="extractedText" :title="t('tools.pdfToEpub.previewTitle')" size="small">
         <pre style="max-height: 400px; overflow: auto; white-space: pre-wrap; font-size: 12px;">{{ extractedText }}</pre>
       </NCard>
-      <NButton v-if="resultUrl" @click="download">Download Text File</NButton>
+      <NButton v-if="resultUrl" @click="download">{{ t('tools.pdfToEpub.downloadText') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>
