@@ -23,7 +23,7 @@ function copyOutput() {
       <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
         {{ errorMsg }}
       </NAlert>
-      <NCard title="Input JSON">
+      <NCard :title="t('tools.jsonToYaml.input')">
         <NSpace vertical :size="12">
           <NInput
             v-model:value="input"
@@ -33,7 +33,7 @@ function copyOutput() {
           />
         </NSpace>
       </NCard>
-      <NCard title="Output YAML">
+      <NCard :title="t('tools.jsonToYaml.output')">
         <NSpace vertical :size="12">
           <NInput
             :value="output"

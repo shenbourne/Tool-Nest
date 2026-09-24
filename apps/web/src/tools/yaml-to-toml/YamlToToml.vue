@@ -23,7 +23,7 @@ function copyOutput() {
       <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
         {{ errorMsg }}
       </NAlert>
-      <NCard title="Input YAML">
+      <NCard :title="t('tools.yamlToToml.input')">
         <NSpace vertical :size="12">
           <NInput
             v-model:value="input"
@@ -33,7 +33,7 @@ function copyOutput() {
           />
         </NSpace>
       </NCard>
-      <NCard title="Output TOML">
+      <NCard :title="t('tools.yamlToToml.output')">
         <NSpace vertical :size="12">
           <NInput
             :value="output"

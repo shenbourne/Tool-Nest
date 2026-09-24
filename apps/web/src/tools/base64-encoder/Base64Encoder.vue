@@ -42,20 +42,20 @@ function swap() {
     <NSpace vertical :size="16">
       <NSpace align="center">
         <NRadioGroup v-model:value="mode">
-          <NRadio value="encode">Encode</NRadio>
-          <NRadio value="decode">Decode</NRadio>
+          <NRadio value="encode">{{ t('common.encode') }}</NRadio>
+          <NRadio value="decode">{{ t('common.decode') }}</NRadio>
         </NRadioGroup>
-        <NButton @click="swap">⇄ Swap</NButton>
+        <NButton @click="swap">⇄ {{ t('common.swap') }}</NButton>
         <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
         <NButton type="primary" @click="copyOutput" :disabled="!output">{{ t('tool.copy') }}</NButton>
       </NSpace>
       <NCard v-if="error" :bordered="false" style="background: var(--color-error-soft);">
         <span style="color: var(--color-error);">{{ error }}</span>
       </NCard>
-      <NCard title="Input">
-        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'encode' ? 'Enter text to encode...' : 'Enter Base64 to decode...'" />
+      <NCard :title="t('common.input')">
+        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'encode' ? t('tools.base64Encoder.encodePlaceholder') : t('tools.base64Encoder.decodePlaceholder')" />
       </NCard>
-      <NCard title="Output">
+      <NCard :title="t('common.output')">
         <NInput :value="output" type="textarea" :rows="6" readonly />
       </NCard>
     </NSpace>

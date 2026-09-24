@@ -31,18 +31,18 @@ function printHtml() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Markdown Input">
+      <NCard :title="t('tools.markdownToHtml.markdownInput')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputMarkdown" type="textarea" :rows="10" placeholder="Enter Markdown here..." />
+          <NInput v-model:value="inputMarkdown" type="textarea" :rows="10" :placeholder="t('tools.markdownToHtml.inputPlaceholder')" />
         </NSpace>
       </NCard>
 
-      <NCard title="HTML Output">
+      <NCard :title="t('tools.markdownToHtml.htmlOutput')">
         <NSpace vertical :size="8">
-          <NInput :value="outputHtml" type="textarea" :rows="10" readonly placeholder="HTML output..." />
+          <NInput :value="outputHtml" type="textarea" :rows="10" readonly :placeholder="t('tools.markdownToHtml.outputPlaceholder')" />
           <NSpace>
-            <NButton :disabled="!outputHtml" @click="copyHtml">Copy HTML</NButton>
-            <NButton :disabled="!outputHtml" @click="printHtml">Print</NButton>
+            <NButton :disabled="!outputHtml" @click="copyHtml">{{ t('tools.markdownToHtml.copyHtml') }}</NButton>
+            <NButton :disabled="!outputHtml" @click="printHtml">{{ t('tools.markdownToHtml.print') }}</NButton>
           </NSpace>
         </NSpace>
       </NCard>

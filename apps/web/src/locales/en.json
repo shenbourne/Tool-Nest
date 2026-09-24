@@ -181,7 +181,9 @@
     "add": "Add",
     "remove": "Remove",
     "pageNotFound": "Page not found",
-    "goHome": "Go Home"
+    "goHome": "Go Home",
+    "swap": "Swap",
+    "separator": "Separator"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -212,7 +214,9 @@
     },
     "base64Encoder": {
       "name": "Base64 Encoder/Decoder",
-      "description": "Encode or decode Base64 strings"
+      "description": "Encode or decode Base64 strings",
+      "encodePlaceholder": "Enter text to encode...",
+      "decodePlaceholder": "Enter Base64 to decode..."
     },
     "tokenGenerator": {
       "name": "Token Generator",
@@ -256,7 +260,18 @@
     },
     "baseConverter": {
       "name": "Base Converter",
-      "description": "Convert numbers between binary, octal, decimal, and hexadecimal"
+      "description": "Convert numbers between binary, octal, decimal, and hexadecimal",
+      "inputBase": "Input base",
+      "outputBase": "Output base",
+      "inputPlaceholder": "Enter number...",
+      "resultPlaceholder": "Result...",
+      "invalidInput": "Invalid input",
+      "binary": "Binary (2)",
+      "octal": "Octal (8)",
+      "decimal": "Decimal (10)",
+      "hexadecimal": "Hexadecimal (16)",
+      "base32": "Base32",
+      "base36": "Base36"
     },
     "colorConverter": {
       "name": "Color Converter",
@@ -268,7 +283,8 @@
     },
     "caseConverter": {
       "name": "Case Converter",
-      "description": "Convert text between camelCase, snake_case, kebab-case, and more"
+      "description": "Convert text between camelCase, snake_case, kebab-case, and more",
+      "inputPlaceholder": "Enter text to convert..."
     },
     "slugify": {
       "name": "Slugify",
@@ -308,7 +324,10 @@
     },
     "temperature": {
       "name": "Temperature Converter",
-      "description": "Convert between Celsius, Fahrenheit, and Kelvin"
+      "description": "Convert between Celsius, Fahrenheit, and Kelvin",
+      "celsius": "Celsius (°C)",
+      "fahrenheit": "Fahrenheit (°F)",
+      "kelvin": "Kelvin (K)"
     },
     "textDiff": {
       "name": "Text Diff",
@@ -400,7 +419,10 @@
     },
     "byteConverter": {
       "name": "Byte Converter",
-      "description": "Convert between bytes, KB, MB, GB, TB, and bits"
+      "description": "Convert between bytes, KB, MB, GB, TB, and bits",
+      "unit": "Unit",
+      "value": "Value",
+      "inputPlaceholder": "Enter bytes..."
     },
     "numberToWords": {
       "name": "Number to Words",
@@ -720,15 +742,28 @@
     },
     "romanNumeralConverter": {
       "name": "Roman Numeral Converter",
-      "description": "Convert between Arabic and Roman numerals"
+      "description": "Convert between Arabic and Roman numerals",
+      "arabicToRoman": "Arabic → Roman",
+      "romanToArabic": "Roman → Arabic",
+      "romanPlaceholder": "e.g. XLII",
+      "invalidRoman": "Invalid roman numeral"
     },
     "textToNatoAlphabet": {
       "name": "Text to NATO Alphabet",
-      "description": "Convert text to NATO phonetic alphabet"
+      "description": "Convert text to NATO phonetic alphabet",
+      "inputPlaceholder": "Enter text to convert to NATO phonetic alphabet...",
+      "natoAlphabet": "NATO Phonetic Alphabet",
+      "outputPlaceholder": "NATO output will appear here..."
     },
     "textToBinary": {
       "name": "Text to Binary",
-      "description": "Convert text to ASCII binary and back"
+      "description": "Convert text to ASCII binary and back",
+      "textToAsciiBinary": "Text → ASCII Binary",
+      "asciiBinaryToText": "ASCII Binary → Text",
+      "inputPlaceholder": "e.g. 'Hello world'",
+      "binaryOutputPlaceholder": "Binary output...",
+      "binaryInputPlaceholder": "e.g. '01001000 01100101 01101100 01101100 01101111'",
+      "textOutputPlaceholder": "Text output..."
     },
     "numeronymGenerator": {
       "name": "Numeronym Generator",
@@ -877,7 +912,13 @@
     },
     "textToUnicode": {
       "name": "Text to Unicode",
-      "description": "Convert text to Unicode entities and back"
+      "description": "Convert text to Unicode entities and back",
+      "textToUnicodeEntities": "Text → Unicode Entities",
+      "unicodeEntitiesToText": "Unicode Entities → Text",
+      "inputPlaceholder": "Enter text to convert to Unicode entities...",
+      "unicodeOutputPlaceholder": "Unicode entities output...",
+      "unicodeInputPlaceholder": "e.g. &#72;&#101;&#108;&#108;&#111;",
+      "textOutputPlaceholder": "Text output..."
     },
     "jsonMinify": {
       "name": "JSON Minify",
@@ -885,23 +926,41 @@
     },
     "markdownToHtml": {
       "name": "Markdown to HTML",
-      "description": "Convert Markdown to HTML and preview the result"
+      "description": "Convert Markdown to HTML and preview the result",
+      "markdownInput": "Markdown Input",
+      "htmlOutput": "HTML Output",
+      "inputPlaceholder": "Enter Markdown here...",
+      "outputPlaceholder": "HTML output...",
+      "copyHtml": "Copy HTML",
+      "print": "Print"
     },
     "base64FileConverter": {
       "name": "Base64 File Converter",
-      "description": "Convert files to Base64 and back"
+      "description": "Convert files to Base64 and back",
+      "base64ToFile": "Base64 → File",
+      "fileToBase64": "File → Base64",
+      "inputPlaceholder": "Paste Base64 string or data URL...",
+      "outputPlaceholder": "Base64 output will appear here...",
+      "filenameLabel": "Filename:",
+      "invalidBase64": "Invalid Base64 input"
     },
     "yamlToJson": {
       "name": "YAML to JSON",
-      "description": "Convert YAML to JSON"
+      "description": "Convert YAML to JSON",
+      "input": "Input YAML",
+      "output": "Output JSON"
     },
     "jsonToYaml": {
       "name": "JSON to YAML",
-      "description": "Convert JSON to YAML"
+      "description": "Convert JSON to YAML",
+      "input": "Input JSON",
+      "output": "Output YAML"
     },
     "yamlToToml": {
       "name": "YAML to TOML",
-      "description": "Convert YAML to TOML"
+      "description": "Convert YAML to TOML",
+      "input": "Input YAML",
+      "output": "Output TOML"
     },
     "yamlViewer": {
       "name": "YAML Viewer",
@@ -909,15 +968,21 @@
     },
     "tomlToJson": {
       "name": "TOML to JSON",
-      "description": "Convert TOML to JSON"
+      "description": "Convert TOML to JSON",
+      "input": "Input TOML",
+      "output": "Output JSON"
     },
     "tomlToYaml": {
       "name": "TOML to YAML",
-      "description": "Convert TOML to YAML"
+      "description": "Convert TOML to YAML",
+      "input": "Input TOML",
+      "output": "Output YAML"
     },
     "jsonToToml": {
       "name": "JSON to TOML",
-      "description": "Convert JSON to TOML"
+      "description": "Convert JSON to TOML",
+      "input": "Input JSON",
+      "output": "Output TOML"
     },
     "jsonToCsv": {
       "name": "JSON to CSV",
@@ -925,11 +990,15 @@
     },
     "xmlToJson": {
       "name": "XML to JSON",
-      "description": "Convert XML to JSON"
+      "description": "Convert XML to JSON",
+      "input": "Input XML",
+      "output": "Output JSON"
     },
     "jsonToXml": {
       "name": "JSON to XML",
-      "description": "Convert JSON to XML"
+      "description": "Convert JSON to XML",
+      "input": "Input JSON",
+      "output": "Output XML"
     },
     "sqlPrettify": {
       "name": "SQL Prettify",
@@ -937,11 +1006,35 @@
     },
     "dateTimeConverter": {
       "name": "Date-Time Converter",
-      "description": "Convert between date-time formats including Unix timestamps"
+      "description": "Convert between date-time formats including Unix timestamps",
+      "autoDetect": "Auto-detect",
+      "unixSeconds": "Unix Timestamp (s)",
+      "unixMilliseconds": "Unix Timestamp (ms)",
+      "utcString": "UTC String",
+      "custom": "Custom",
+      "inputPlaceholder": "Enter date string or timestamp...",
+      "now": "Now",
+      "customFormatPlaceholder": "Custom format (e.g. YYYY/MM/DD HH:mm)"
     },
     "listConverter": {
       "name": "List Converter",
-      "description": "Transform lists with sort, deduplicate, prefix/suffix options"
+      "description": "Transform lists with sort, deduplicate, prefix/suffix options",
+      "inputPlaceholder": "Enter list items...",
+      "comma": "Comma (,)",
+      "semicolon": "Semicolon (;)",
+      "newline": "Newline",
+      "tab": "Tab",
+      "pipe": "Pipe (|)",
+      "space": "Space",
+      "none": "None",
+      "ascending": "Ascending",
+      "descending": "Descending",
+      "sortOrder": "Sort Order",
+      "trimItems": "Trim Items",
+      "removeEmpty": "Remove Empty",
+      "removeDuplicates": "Remove Duplicates",
+      "itemPrefix": "Item Prefix",
+      "itemSuffix": "Item Suffix"
     },
     "qrCodeGenerator": {
       "name": "QR Code Generator",

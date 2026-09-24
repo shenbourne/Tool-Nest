@@ -29,7 +29,7 @@ function copyArabic() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Arabic → Roman">
+      <NCard :title="t('tools.romanNumeralConverter.arabicToRoman')">
         <NSpace align="center" :size="16" justify="space-between">
           <NInputNumber v-model:value="inputArabic" :min="MIN_ARABIC_TO_ROMAN" :max="MAX_ARABIC_TO_ROMAN" style="width: 200px" :show-button="false" />
           <span style="font-size: 22px;">{{ outputRoman }}</span>
@@ -40,14 +40,14 @@ function copyArabic() {
         </NAlert>
       </NCard>
 
-      <NCard title="Roman → Arabic">
+      <NCard :title="t('tools.romanNumeralConverter.romanToArabic')">
         <NSpace align="center" :size="16" justify="space-between">
-          <NInput v-model:value="inputRoman" style="width: 200px" placeholder="e.g. XLII" />
+          <NInput v-model:value="inputRoman" style="width: 200px" :placeholder="t('tools.romanNumeralConverter.romanPlaceholder')" />
           <span style="font-size: 22px;">{{ outputArabic }}</span>
           <NButton :disabled="!romanValid" @click="copyArabic">{{ t('tool.copy') }}</NButton>
         </NSpace>
         <NAlert v-if="inputRoman && !romanValid" type="error" style="margin-top: 8px;">
-          Invalid roman numeral
+          {{ t('tools.romanNumeralConverter.invalidRoman') }}
         </NAlert>
       </NCard>
     </NSpace>

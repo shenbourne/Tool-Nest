@@ -27,18 +27,18 @@ function copyText() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Text → Unicode Entities">
+      <NCard :title="t('tools.textToUnicode.textToUnicodeEntities')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputText" type="textarea" :rows="4" placeholder="Enter text to convert to Unicode entities..." />
-          <NInput :value="unicodeOutput" type="textarea" :rows="4" readonly placeholder="Unicode entities output..." />
+          <NInput v-model:value="inputText" type="textarea" :rows="4" :placeholder="t('tools.textToUnicode.inputPlaceholder')" />
+          <NInput :value="unicodeOutput" type="textarea" :rows="4" readonly :placeholder="t('tools.textToUnicode.unicodeOutputPlaceholder')" />
           <NButton :disabled="!unicodeOutput" @click="copyUnicode">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>
 
-      <NCard title="Unicode Entities → Text">
+      <NCard :title="t('tools.textToUnicode.unicodeEntitiesToText')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputUnicode" type="textarea" :rows="4" placeholder="e.g. &#72;&#101;&#108;&#108;&#111;" />
-          <NInput :value="textOutput" type="textarea" :rows="4" readonly placeholder="Text output..." />
+          <NInput v-model:value="inputUnicode" type="textarea" :rows="4" :placeholder="t('tools.textToUnicode.unicodeInputPlaceholder')" />
+          <NInput :value="textOutput" type="textarea" :rows="4" readonly :placeholder="t('tools.textToUnicode.textOutputPlaceholder')" />
           <NButton :disabled="!textOutput" @click="copyText">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

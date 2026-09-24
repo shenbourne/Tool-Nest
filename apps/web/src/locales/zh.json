@@ -181,7 +181,9 @@
     "add": "添加",
     "remove": "移除",
     "pageNotFound": "页面不存在",
-    "goHome": "返回首页"
+    "goHome": "返回首页",
+    "swap": "交换",
+    "separator": "分隔符"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -212,7 +214,9 @@
     },
     "base64Encoder": {
       "name": "Base64 编码/解码",
-      "description": "编码或解码 Base64 字符串"
+      "description": "编码或解码 Base64 字符串",
+      "encodePlaceholder": "输入要编码的文本...",
+      "decodePlaceholder": "输入要解码的 Base64..."
     },
     "tokenGenerator": {
       "name": "令牌生成器",
@@ -256,7 +260,18 @@
     },
     "baseConverter": {
       "name": "进制转换器",
-      "description": "在二进制、八进制、十进制和十六进制之间转换数字"
+      "description": "在二进制、八进制、十进制和十六进制之间转换数字",
+      "inputBase": "输入进制",
+      "outputBase": "输出进制",
+      "inputPlaceholder": "输入数字...",
+      "resultPlaceholder": "结果...",
+      "invalidInput": "输入无效",
+      "binary": "二进制 (2)",
+      "octal": "八进制 (8)",
+      "decimal": "十进制 (10)",
+      "hexadecimal": "十六进制 (16)",
+      "base32": "Base32",
+      "base36": "Base36"
     },
     "colorConverter": {
       "name": "颜色转换器",
@@ -268,7 +283,8 @@
     },
     "caseConverter": {
       "name": "大小写转换",
-      "description": "在驼峰、蛇形、短横线等多种命名风格之间转换文本"
+      "description": "在驼峰、蛇形、短横线等多种命名风格之间转换文本",
+      "inputPlaceholder": "输入要转换的文本..."
     },
     "slugify": {
       "name": "URL 别名生成",
@@ -308,7 +324,10 @@
     },
     "temperature": {
       "name": "温度转换器",
-      "description": "在摄氏度、华氏度和开尔文之间转换"
+      "description": "在摄氏度、华氏度和开尔文之间转换",
+      "celsius": "摄氏度 (°C)",
+      "fahrenheit": "华氏度 (°F)",
+      "kelvin": "开尔文 (K)"
     },
     "textDiff": {
       "name": "文本对比",
@@ -400,7 +419,10 @@
     },
     "byteConverter": {
       "name": "字节转换器",
-      "description": "在字节、KB、MB、GB、TB 和比特之间转换"
+      "description": "在字节、KB、MB、GB、TB 和比特之间转换",
+      "unit": "单位",
+      "value": "数值",
+      "inputPlaceholder": "输入字节数..."
     },
     "numberToWords": {
       "name": "数字转英文",
@@ -720,15 +742,28 @@
     },
     "romanNumeralConverter": {
       "name": "罗马数字转换器",
-      "description": "在阿拉伯数字和罗马数字之间转换"
+      "description": "在阿拉伯数字和罗马数字之间转换",
+      "arabicToRoman": "阿拉伯数字 → 罗马数字",
+      "romanToArabic": "罗马数字 → 阿拉伯数字",
+      "romanPlaceholder": "如 XLII",
+      "invalidRoman": "无效的罗马数字"
     },
     "textToNatoAlphabet": {
       "name": "文本转NATO字母表",
-      "description": "将文本转换为NATO音标字母表"
+      "description": "将文本转换为NATO音标字母表",
+      "inputPlaceholder": "输入要转换为 NATO 音标字母的文本...",
+      "natoAlphabet": "NATO 音标字母",
+      "outputPlaceholder": "NATO 音标字母输出将显示在此处..."
     },
     "textToBinary": {
       "name": "文本转二进制",
-      "description": "将文本与ASCII二进制互相转换"
+      "description": "将文本与ASCII二进制互相转换",
+      "textToAsciiBinary": "文本 → ASCII 二进制",
+      "asciiBinaryToText": "ASCII 二进制 → 文本",
+      "inputPlaceholder": "如 'Hello world'",
+      "binaryOutputPlaceholder": "二进制输出...",
+      "binaryInputPlaceholder": "如 '01001000 01100101 01101100 01101100 01101111'",
+      "textOutputPlaceholder": "文本输出..."
     },
     "numeronymGenerator": {
       "name": "数字缩略词生成器",
@@ -877,7 +912,13 @@
     },
     "textToUnicode": {
       "name": "文本转 Unicode",
-      "description": "文本与 Unicode 实体互转"
+      "description": "文本与 Unicode 实体互转",
+      "textToUnicodeEntities": "文本 → Unicode 实体",
+      "unicodeEntitiesToText": "Unicode 实体 → 文本",
+      "inputPlaceholder": "输入要转换为 Unicode 实体的文本...",
+      "unicodeOutputPlaceholder": "Unicode 实体输出...",
+      "unicodeInputPlaceholder": "如 &#72;&#101;&#108;&#108;&#111;",
+      "textOutputPlaceholder": "文本输出..."
     },
     "jsonMinify": {
       "name": "JSON 压缩",
@@ -885,23 +926,41 @@
     },
     "markdownToHtml": {
       "name": "Markdown 转 HTML",
-      "description": "将 Markdown 转换为 HTML 并预览"
+      "description": "将 Markdown 转换为 HTML 并预览",
+      "markdownInput": "Markdown 输入",
+      "htmlOutput": "HTML 输出",
+      "inputPlaceholder": "在此输入 Markdown...",
+      "outputPlaceholder": "HTML 输出...",
+      "copyHtml": "复制 HTML",
+      "print": "打印"
     },
     "base64FileConverter": {
       "name": "Base64 文件转换",
-      "description": "文件与 Base64 编码互转"
+      "description": "文件与 Base64 编码互转",
+      "base64ToFile": "Base64 → 文件",
+      "fileToBase64": "文件 → Base64",
+      "inputPlaceholder": "粘贴 Base64 字符串或 data URL...",
+      "outputPlaceholder": "Base64 输出将显示在此处...",
+      "filenameLabel": "文件名：",
+      "invalidBase64": "Base64 输入无效"
     },
     "yamlToJson": {
       "name": "YAML 转 JSON",
-      "description": "将 YAML 转换为 JSON"
+      "description": "将 YAML 转换为 JSON",
+      "input": "输入 YAML",
+      "output": "输出 JSON"
     },
     "jsonToYaml": {
       "name": "JSON 转 YAML",
-      "description": "将 JSON 转换为 YAML"
+      "description": "将 JSON 转换为 YAML",
+      "input": "输入 JSON",
+      "output": "输出 YAML"
     },
     "yamlToToml": {
       "name": "YAML 转 TOML",
-      "description": "将 YAML 转换为 TOML"
+      "description": "将 YAML 转换为 TOML",
+      "input": "输入 YAML",
+      "output": "输出 TOML"
     },
     "yamlViewer": {
       "name": "YAML 查看器",
@@ -909,15 +968,21 @@
     },
     "tomlToJson": {
       "name": "TOML 转 JSON",
-      "description": "将 TOML 转换为 JSON"
+      "description": "将 TOML 转换为 JSON",
+      "input": "输入 TOML",
+      "output": "输出 JSON"
     },
     "tomlToYaml": {
       "name": "TOML 转 YAML",
-      "description": "将 TOML 转换为 YAML"
+      "description": "将 TOML 转换为 YAML",
+      "input": "输入 TOML",
+      "output": "输出 YAML"
     },
     "jsonToToml": {
       "name": "JSON 转 TOML",
-      "description": "将 JSON 转换为 TOML"
+      "description": "将 JSON 转换为 TOML",
+      "input": "输入 JSON",
+      "output": "输出 TOML"
     },
     "jsonToCsv": {
       "name": "JSON 转 CSV",
@@ -925,11 +990,15 @@
     },
     "xmlToJson": {
       "name": "XML 转 JSON",
-      "description": "将 XML 转换为 JSON"
+      "description": "将 XML 转换为 JSON",
+      "input": "输入 XML",
+      "output": "输出 JSON"
     },
     "jsonToXml": {
       "name": "JSON 转 XML",
-      "description": "将 JSON 转换为 XML"
+      "description": "将 JSON 转换为 XML",
+      "input": "输入 JSON",
+      "output": "输出 XML"
     },
     "sqlPrettify": {
       "name": "SQL 格式化",
@@ -937,11 +1006,35 @@
     },
     "dateTimeConverter": {
       "name": "日期时间转换器",
-      "description": "在日期时间格式之间转换，包括 Unix 时间戳"
+      "description": "在日期时间格式之间转换，包括 Unix 时间戳",
+      "autoDetect": "自动检测",
+      "unixSeconds": "Unix 时间戳（秒）",
+      "unixMilliseconds": "Unix 时间戳（毫秒）",
+      "utcString": "UTC 字符串",
+      "custom": "自定义",
+      "inputPlaceholder": "输入日期字符串或时间戳...",
+      "now": "现在",
+      "customFormatPlaceholder": "自定义格式（如 YYYY/MM/DD HH:mm）"
     },
     "listConverter": {
       "name": "列表转换器",
-      "description": "使用排序、去重、前后缀等选项转换列表"
+      "description": "使用排序、去重、前后缀等选项转换列表",
+      "inputPlaceholder": "输入列表项...",
+      "comma": "逗号 (,)",
+      "semicolon": "分号 (;)",
+      "newline": "换行",
+      "tab": "制表符",
+      "pipe": "竖线 (|)",
+      "space": "空格",
+      "none": "无",
+      "ascending": "升序",
+      "descending": "降序",
+      "sortOrder": "排序方式",
+      "trimItems": "去除项目空白",
+      "removeEmpty": "移除空项",
+      "removeDuplicates": "移除重复项",
+      "itemPrefix": "项目前缀",
+      "itemSuffix": "项目后缀"
     },
     "qrCodeGenerator": {
       "name": "二维码生成器",

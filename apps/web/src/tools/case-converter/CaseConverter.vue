@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 
 const input = ref('hello world example');
 
@@ -37,7 +40,7 @@ function copyText(text: string) { navigator.clipboard.writeText(text); }
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="input" placeholder="Enter text to convert..." />
+        <NInput v-model:value="input" :placeholder="t('tools.caseConverter.inputPlaceholder')" />
         <div v-for="r in results" :key="r.label" style="display: flex; align-items: center; gap: 12px;">
           <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ r.label }}</span>
           <NInput :value="r.value.value" readonly style="flex: 1;" @click="copyText(r.value.value)" />
