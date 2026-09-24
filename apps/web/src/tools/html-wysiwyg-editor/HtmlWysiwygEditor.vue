@@ -71,7 +71,7 @@ onMounted(() => {
             ref="editorRef"
             contenteditable="true"
             @input="updateOutput"
-            style="min-height: 300px; border: 1px solid #e0e0e6; border-radius: 4px; padding: 12px; outline: none; line-height: 1.6;"
+            style="min-height: 300px; border: 1px solid var(--color-hairline); border-radius: 4px; padding: 12px; outline: none; line-height: 1.6;"
           />
         </NSpace>
       </NCard>

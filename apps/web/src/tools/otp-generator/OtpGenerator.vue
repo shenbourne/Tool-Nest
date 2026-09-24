@@ -101,7 +101,7 @@ watch(secret, () => {
           <div style="font-size: 48px; font-family: monospace; font-weight: bold; letter-spacing: 8px;">
             {{ token }}
           </div>
-          <div style="margin-top: 12px; color: #999;">
+          <div style="margin-top: 12px; color: var(--color-text-3);">
             Refreshes in {{ remainingSeconds }}s
           </div>
           <NProgress :percentage="countdown" :show-indicator="false" :rail-height="6" style="margin-top: 8px;" />
@@ -136,7 +136,7 @@ watch(secret, () => {
           <div v-if="qrDataUrl" style="text-align: center;">
             <img :src="qrDataUrl" alt="OTP QR Code" style="max-width: 256px; width: 100%;" />
           </div>
-          <div v-else style="text-align: center; color: #999; padding: 20px;">
+          <div v-else style="text-align: center; color: var(--color-text-3); padding: 20px;">
             No QR code available
           </div>
         </NSpace>

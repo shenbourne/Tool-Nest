@@ -87,7 +87,7 @@ async function process() {
 
         <input type="file" accept="image/*" multiple @change="onFileChange" />
 
-        <div v-if="files.length" style="font-size: 13px; color: var(--n-text-color-3)">
+        <div v-if="files.length" style="font-size: 13px; color: var(--color-text-3)">
           {{ files.length }} file(s) selected
         </div>
 

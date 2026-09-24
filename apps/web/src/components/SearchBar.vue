@@ -77,7 +77,7 @@ function handleBlur() {
             :key="tool.path"
             :style="{
               padding: '8px 12px', cursor: 'pointer', borderRadius: '4px',
-              backgroundColor: idx === activeIndex ? 'rgba(24,160,88,0.1)' : 'transparent'
+              backgroundColor: idx === activeIndex ? 'var(--color-primary-soft)' : 'transparent'
             }"
             @mousedown.prevent="selectTool(tool.path)"
             @mouseenter="activeIndex = idx"

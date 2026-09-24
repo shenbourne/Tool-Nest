@@ -63,7 +63,7 @@ async function copyToClipboard() {
       <NAlert v-if="errorMsg" type="error" :title="errorMsg" />
       <NCard v-if="previewUrl" title="Preview">
         <NSpace vertical :size="8">
-          <img :src="previewUrl" style="max-width:100%;border:1px solid #e0e0e0;border-radius:4px;" />
+          <img :src="previewUrl" style="max-width:100%;border:1px solid var(--color-hairline);border-radius:4px;" />
           <NSpace>
             <NButton type="primary" @click="downloadPng">Download PNG</NButton>
             <NButton @click="copyToClipboard">Copy to Clipboard</NButton>

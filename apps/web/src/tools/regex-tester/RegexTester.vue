@@ -118,7 +118,7 @@ const matchTableData = computed(() =>
             <NTag type="default" size="small">Flags: {{ flags || 'none' }}</NTag>
           </NSpace>
 
-          <div v-if="text" style="margin-bottom: 12px; padding: 8px; background: #f5f5f5; border-radius: 4px; font-family: monospace; white-space: pre-wrap; word-break: break-all;" v-html="highlightedHtml" />
+          <div v-if="text" style="margin-bottom: 12px; padding: 8px; background: var(--color-surface-2); border-radius: 4px; font-family: monospace; white-space: pre-wrap; word-break: break-all;" v-html="highlightedHtml" />
 
           <NDataTable
             v-if="result.matches.length > 0"

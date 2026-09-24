@@ -214,7 +214,7 @@ onBeforeUnmount(() => {
 
       <NCard v-if="recordings.length > 0" title="Recordings">
         <NSpace vertical :size="12">
-          <div v-for="(item, index) in recordings" :key="index" style="border: 1px solid #333; border-radius: 8px; padding: 12px;">
+          <div v-for="(item, index) in recordings" :key="index" style="border: 1px solid var(--color-hairline); border-radius: 8px; padding: 12px;">
             <video :src="item.url" controls style="width: 100%; max-height: 300px;" />
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
               <span>{{ item.createdAt.toLocaleString() }}</span>

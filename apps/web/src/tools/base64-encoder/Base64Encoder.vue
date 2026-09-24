@@ -49,8 +49,8 @@ function swap() {
         <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
         <NButton type="primary" @click="copyOutput" :disabled="!output">{{ t('tool.copy') }}</NButton>
       </NSpace>
-      <NCard v-if="error" :bordered="false" style="background: rgba(208,48,80,0.1);">
-        <span style="color: #d03050;">{{ error }}</span>
+      <NCard v-if="error" :bordered="false" style="background: var(--color-error-soft);">
+        <span style="color: var(--color-error);">{{ error }}</span>
       </NCard>
       <NCard title="Input">
         <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'encode' ? 'Enter text to encode...' : 'Enter Base64 to decode...'" />

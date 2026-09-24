@@ -74,7 +74,7 @@ defineExpose({ open });
     @after-enter="($event as any)?.querySelector('input')?.focus()"
   >
     <NCard content-style="padding: 0;">
-      <div style="padding: 12px 16px; border-bottom: 1px solid var(--n-border-color);">
+      <div style="padding: 12px 16px; border-bottom: 1px solid var(--color-hairline);">
         <NInput
           v-model:value="query"
           :placeholder="t('commandPalette.placeholder')"
@@ -93,7 +93,7 @@ defineExpose({ open });
           :key="tool.path"
           :style="{
             padding: '10px 16px', cursor: 'pointer',
-            backgroundColor: idx === activeIndex ? 'rgba(24,160,88,0.08)' : 'transparent',
+            backgroundColor: idx === activeIndex ? 'var(--color-primary-soft)' : 'transparent',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between'
           }"
           @click="selectTool(tool.path)"
@@ -106,7 +106,7 @@ defineExpose({ open });
           <span style="font-size: 11px; opacity: 0.4;">{{ tool.path }}</span>
         </div>
       </NScrollbar>
-      <div style="padding: 8px 16px; border-top: 1px solid var(--n-border-color); font-size: 11px; opacity: 0.5;">
+      <div style="padding: 8px 16px; border-top: 1px solid var(--color-hairline); font-size: 11px; opacity: 0.5;">
         ↑↓ Navigate · Enter Select · Esc Close
       </div>
     </NCard>

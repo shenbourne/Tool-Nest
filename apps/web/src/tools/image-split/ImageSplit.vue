@@ -94,7 +94,7 @@ function downloadAll() {
         <NSpace vertical :size="12">
           <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:8px;">
             <div v-for="(tile, idx) in tiles" :key="idx">
-              <img :src="tile" style="width:100%;border:1px solid #ccc;" />
+              <img :src="tile" style="width:100%;border:1px solid var(--color-hairline);" />
               <NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">Download</NButton>
             </div>
           </div>

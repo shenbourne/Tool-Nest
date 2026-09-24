@@ -96,14 +96,14 @@ function copyCommand() {
   font-size: 48px;
   font-family: monospace;
   font-weight: bold;
-  color: var(--primary-color, #2080f0);
+  color: var(--color-primary);
   margin: 12px 0 4px;
 }
 
 .result-symbolic {
   font-size: 24px;
   font-family: monospace;
-  color: var(--text-color-2, #666);
+  color: var(--color-text-2);
   margin-bottom: 12px;
 }
 

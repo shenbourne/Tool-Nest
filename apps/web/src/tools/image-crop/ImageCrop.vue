@@ -5,9 +5,29 @@ import { useI18n } from 'vue-i18n';
 import Konva from 'konva';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { usePreferencesStore } from '@/stores/preferences.store';
+import { resolveCssColorToken } from '@/utils/css-tokens';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const preferences = usePreferencesStore();
+
+// Konva/Canvas cannot resolve CSS `var()` expressions, so the primary tokens have
+// to be passed as concrete colors. Token values are declared on `:root` and
+// swapped by the `dark` class, hence the store-driven re-resolution: `isDark`
+// covers theme toggles and `loaded` covers the initial application of the theme
+// class when preferences arrive from the server after mount.
+const primaryColor = ref('');
+const primarySoftColor = ref('');
+
+watch(
+  [() => preferences.isDark, () => preferences.loaded],
+  () => {
+    primaryColor.value = resolveCssColorToken('--color-primary');
+    primarySoftColor.value = resolveCssColorToken('--color-primary-soft');
+  },
+  { immediate: true, flush: 'post' },
+);
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
@@ -156,15 +176,15 @@ function downloadCrop() {
                     y: cropY * imageScale,
                     width: cropWidth * imageScale,
                     height: cropHeight * imageScale,
-                    stroke: '#00c853',
+                    stroke: primaryColor,
                     strokeWidth: 2,
-                    fill: 'rgba(0,200,83,0.15)',
+                    fill: primarySoftColor,
                     draggable: true,
                   }"
                   @transformend="onRectTransformEnd"
                   @dragend="onRectTransformEnd"
                 />
-                <v-transformer ref="transformerRef" :config="{ rotateEnabled: false, borderStroke: '#00c853', anchorStroke: '#00c853' }" />
+                <v-transformer ref="transformerRef" :config="{ rotateEnabled: false, borderStroke: primaryColor, anchorStroke: primaryColor }" />
               </v-layer>
             </v-stage>
           </div>

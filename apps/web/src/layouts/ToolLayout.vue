@@ -83,7 +83,7 @@ function goCategory() {
           size="large"
           @click="toggleFavorite"
           :title="isFavorite ? t('tool.unfavorite') : t('tool.favorite')"
-          :style="{ color: isFavorite ? 'var(--color-warning)' : undefined, fontSize: '20px' }"
+          :style="{ color: isFavorite ? 'var(--color-primary)' : undefined, fontSize: '20px' }"
         >
           {{ isFavorite ? '★' : '☆' }}
         </NButton>

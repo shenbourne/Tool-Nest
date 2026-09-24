@@ -25,7 +25,7 @@ onUnmounted(() => { if (interval) clearInterval(interval); });
         <NButton @click="reset">Reset</NButton>
       </NSpace>
       <div v-if="laps.length" style="width: 100%; max-width: 300px;">
-        <div v-for="(l, i) in laps" :key="i" style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;">
+        <div v-for="(l, i) in laps" :key="i" style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--color-hairline);">
           <span>Lap {{ i + 1 }}</span><span style="font-family: monospace;">{{ fmt(l) }}</span>
         </div>
       </div>

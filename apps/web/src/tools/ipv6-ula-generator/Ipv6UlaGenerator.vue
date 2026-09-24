@@ -71,13 +71,13 @@ const sections = computed(() => [
 .copy-btn {
   cursor: pointer;
   padding: 2px 8px;
-  border: 1px solid var(--n-border-color, #e0e0e6);
+  border: 1px solid var(--color-hairline);
   border-radius: 4px;
   background: transparent;
   font-size: 12px;
   white-space: nowrap;
 }
 .copy-btn:hover {
-  background: var(--n-color-hover, #f0f0f5);
+  background: var(--color-surface-2);
 }
 </style>

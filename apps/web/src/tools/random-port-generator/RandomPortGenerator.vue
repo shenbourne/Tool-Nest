@@ -57,7 +57,7 @@ function copy() {
   font-size: 48px;
   font-weight: bold;
   font-family: monospace;
-  color: var(--primary-color, #2080f0);
+  color: var(--color-primary);
   margin: 16px 0;
 }
 .exclude-option {

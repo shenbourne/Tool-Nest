@@ -24,18 +24,22 @@ function toggleFav(e: Event) {
 </script>
 
 <template>
-  <NCard hoverable style="cursor: pointer;" @click="navigate">
+  <NCard class="tool-card" style="cursor: pointer;" @click="navigate">
     <template #header>
-      <div style="display: flex; align-items: center; justify-content: space-between;">
-        <span style="font-size: 15px; font-weight: 600;">{{ t(tool.name) }}</span>
-        <NButton text size="small" @click="toggleFav">
+      <div class="tool-card-header">
+        <span class="tool-card-title">{{ t(tool.name) }}</span>
+        <NButton
+          text
+          size="small"
+          class="tool-card-fav"
+          :class="{ active: isFavorite }"
+          @click="toggleFav"
+        >
           {{ isFavorite ? '★' : '☆' }}
         </NButton>
       </div>
     </template>
-    <p style="margin: 0 0 8px; font-size: 13px; opacity: 0.7;">
-      {{ t(tool.description) }}
-    </p>
+    <p class="tool-card-desc">{{ t(tool.description) }}</p>
     <NSpace size="small">
       <NTag size="small" :bordered="false" type="info">
         {{ t(`category.${tool.category}.name`) }}
@@ -46,3 +50,48 @@ function toggleFav(e: Event) {
     </NSpace>
   </NCard>
 </template>
+
+<style scoped>
+.tool-card {
+  border: 1px solid var(--color-hairline);
+  transition:
+    box-shadow var(--motion-base) var(--motion-ease),
+    border-color var(--motion-base) var(--motion-ease);
+}
+
+.tool-card:hover {
+  box-shadow: var(--shadow-card);
+  border-color: var(--color-hairline-strong);
+}
+
+.tool-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tool-card-title {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-ink);
+}
+
+.tool-card-fav {
+  font-size: 16px;
+  color: var(--color-text-3);
+}
+
+.tool-card-fav.active {
+  color: var(--color-primary);
+}
+
+.tool-card-desc {
+  margin: 0 0 var(--spacing-xs);
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
