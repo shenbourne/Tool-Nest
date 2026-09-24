@@ -36,7 +36,7 @@ function copyOutput() {
       <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
         {{ errorMsg }}
       </NAlert>
-      <NCard title="Input YAML">
+      <NCard :title="t('tools.yamlViewer.inputTitle')">
         <NSpace vertical :size="12">
           <NInput
             v-model:value="input"
@@ -46,19 +46,19 @@ function copyOutput() {
           />
         </NSpace>
       </NCard>
-      <NCard title="Options">
+      <NCard :title="t('common.options')">
         <NSpace :size="16" align="center">
-          <span>Indent size:</span>
+          <span>{{ t('tools.yamlViewer.indentSize') }}:</span>
           <NSelect
             v-model:value="indentSize"
             :options="indentOptions"
             style="width: 80px;"
           />
-          <span>Sort keys:</span>
+          <span>{{ t('tools.yamlViewer.sortKeys') }}:</span>
           <NSwitch v-model:value="sortKeys" />
         </NSpace>
       </NCard>
-      <NCard title="Output YAML">
+      <NCard :title="t('tools.yamlViewer.outputTitle')">
         <NSpace vertical :size="12">
           <NInput
             :value="output"

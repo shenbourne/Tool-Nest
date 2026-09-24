@@ -183,7 +183,10 @@
     "pageNotFound": "Page not found",
     "goHome": "Go Home",
     "swap": "Swap",
-    "separator": "Separator"
+    "separator": "Separator",
+    "format": "Format",
+    "invalidJson": "Invalid JSON",
+    "inputJson": "Input JSON"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -538,7 +541,11 @@
     },
     "jsonEscape": {
       "name": "JSON Escape",
-      "description": "Escape and unescape JSON strings"
+      "description": "Escape and unescape JSON strings",
+      "toggle": "Escape / Unescape",
+      "escapePlaceholder": "Text to escape...",
+      "unescapePlaceholder": "JSON string to unescape...",
+      "invalidInput": "Invalid input"
     },
     "jsonStringify": {
       "name": "JSON Stringify",
@@ -550,11 +557,14 @@
     },
     "jsonValidate": {
       "name": "JSON Validate",
-      "description": "Validate JSON syntax and show errors"
+      "description": "Validate JSON syntax and show errors",
+      "valid": "Valid JSON"
     },
     "xmlValidator": {
       "name": "XML Validator",
-      "description": "Validate XML syntax and show errors"
+      "description": "Validate XML syntax and show errors",
+      "validXml": "Valid XML",
+      "invalidXml": "Invalid XML"
     },
     "checkLeapYears": {
       "name": "Check Leap Years",
@@ -848,23 +858,58 @@
     },
     "jsonViewer": {
       "name": "JSON Viewer",
-      "description": "Format and validate JSON data"
+      "description": "Format and validate JSON data",
+      "inputPlaceholder": "Paste your JSON here...",
+      "outputTitle": "Formatted Output"
     },
     "dockerRunToCompose": {
       "name": "Docker Run to Compose",
-      "description": "Convert docker run commands to docker-compose YAML"
+      "description": "Convert docker run commands to docker-compose YAML",
+      "inputTitle": "Docker Run Command",
+      "inputPlaceholder": "Paste your docker run command here...",
+      "outputTitle": "Docker Compose YAML",
+      "warnings": "Warnings"
     },
     "xmlFormatter": {
       "name": "XML Formatter",
-      "description": "Format and minify XML documents"
+      "description": "Format and minify XML documents",
+      "inputTitle": "Input XML",
+      "inputPlaceholder": "Paste your XML here...",
+      "minify": "Minify",
+      "spaces": "{n} spaces"
     },
     "emailNormalizer": {
       "name": "Email Normalizer",
-      "description": "Normalize email addresses by removing aliases and formatting"
+      "description": "Normalize email addresses by removing aliases and formatting",
+      "inputTitle": "Input Email Addresses",
+      "inputPlaceholder": "Enter email addresses (one per line)...",
+      "outputTitle": "Normalized Output",
+      "original": "Original",
+      "normalized": "Normalized",
+      "status": "Status",
+      "ok": "OK"
     },
     "regexTester": {
       "name": "Regex Tester",
-      "description": "Test regular expressions with real-time matching"
+      "description": "Test regular expressions with real-time matching",
+      "patternTitle": "Regular Expression",
+      "patternPlaceholder": "Enter regex pattern...",
+      "global": "Global",
+      "ignoreCase": "Ignore Case",
+      "multiline": "Multiline",
+      "dotAll": "DotAll",
+      "unicode": "Unicode",
+      "textTitle": "Test Text",
+      "textPlaceholder": "Enter text to match against...",
+      "resultsTitle": "Match Results",
+      "colIndex": "Index",
+      "colMatch": "Match",
+      "colGroups": "Groups",
+      "matchCountSingle": "{count} match",
+      "matchCountPlural": "{count} matches",
+      "flags": "Flags",
+      "none": "none",
+      "noMatches": "No matches found"
     },
     "ipv4SubnetCalculator": {
       "name": "IPv4 Subnet Calculator",
@@ -888,11 +933,30 @@
     },
     "crontabGenerator": {
       "name": "Crontab Generator",
-      "description": "Generate cron expressions with human-readable descriptions"
+      "description": "Generate cron expressions with human-readable descriptions",
+      "cronFields": "Cron Fields",
+      "cronExpression": "Cron Expression",
+      "invalidCronExpression": "Invalid cron expression",
+      "nextExecutionTimes": "Next Execution Times",
+      "nextExecution": "Next Execution",
+      "syntaxReference": "Syntax Reference",
+      "anyValue": "Any value",
+      "rangeOfValues": "Range of values",
+      "listOfValues": "List of values",
+      "stepValues": "Step values"
     },
     "dockerComposeTo1panel": {
       "name": "Docker Compose to 1Panel",
-      "description": "Convert docker-compose YAML to 1Panel format"
+      "description": "Convert docker-compose YAML to 1Panel format",
+      "inputTitle": "Docker Compose YAML (Input)",
+      "inputPlaceholder": "Paste docker-compose YAML here...",
+      "outputTitle": "1Panel Format (Output)",
+      "aboutIntro": "Converts standard docker-compose YAML to 1Panel-compatible format by:",
+      "addsVersionField": "Adding {field} field if missing (defaults to 3.8)",
+      "addsAppNameLabels": "Adding {field} labels",
+      "setsRestartPolicy": "Setting {field} if not specified",
+      "convertsNetworks": "Converting network arrays to map format",
+      "addsNetworkNames": "Adding explicit network names and volume drivers"
     },
     "cameraRecorder": {
       "name": "Camera Recorder",
@@ -922,7 +986,10 @@
     },
     "jsonMinify": {
       "name": "JSON Minify",
-      "description": "Minify JSON by removing whitespace"
+      "description": "Minify JSON by removing whitespace",
+      "inputPlaceholder": "Paste JSON to minify...",
+      "outputTitle": "Minified Output",
+      "outputPlaceholder": "Minified JSON output..."
     },
     "markdownToHtml": {
       "name": "Markdown to HTML",
@@ -964,7 +1031,11 @@
     },
     "yamlViewer": {
       "name": "YAML Viewer",
-      "description": "Format and validate YAML"
+      "description": "Format and validate YAML",
+      "inputTitle": "Input YAML",
+      "outputTitle": "Output YAML",
+      "indentSize": "Indent size",
+      "sortKeys": "Sort keys"
     },
     "tomlToJson": {
       "name": "TOML to JSON",
@@ -986,7 +1057,8 @@
     },
     "jsonToCsv": {
       "name": "JSON to CSV",
-      "description": "Convert JSON array to CSV"
+      "description": "Convert JSON array to CSV",
+      "outputTitle": "Output CSV"
     },
     "xmlToJson": {
       "name": "XML to JSON",
@@ -1002,7 +1074,13 @@
     },
     "sqlPrettify": {
       "name": "SQL Prettify",
-      "description": "Format and prettify SQL queries"
+      "description": "Format and prettify SQL queries",
+      "dialect": "SQL Dialect",
+      "keywordCase": "Keyword Case",
+      "preserve": "Preserve",
+      "inputTitle": "Input SQL",
+      "outputTitle": "Output SQL",
+      "outputPlaceholder": "Formatted SQL will appear here..."
     },
     "dateTimeConverter": {
       "name": "Date-Time Converter",
@@ -1170,7 +1248,15 @@
     },
     "jsonDiff": {
       "name": "JSON Diff",
-      "description": "Compare two JSON objects and find differences"
+      "description": "Compare two JSON objects and find differences",
+      "leftJson": "Left JSON",
+      "rightJson": "Right JSON",
+      "leftPlaceholder": "Paste left JSON...",
+      "rightPlaceholder": "Paste right JSON...",
+      "added": "Added",
+      "removed": "Removed",
+      "changed": "Changed",
+      "differences": "Differences"
     }
   }
 }

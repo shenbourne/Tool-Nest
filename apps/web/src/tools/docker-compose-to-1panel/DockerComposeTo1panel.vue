@@ -66,11 +66,11 @@ const sampleInput = `services:
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Docker Compose YAML (Input)">
+      <NCard :title="t('tools.dockerComposeTo1panel.inputTitle')">
         <NInput
           v-model:value="input"
           type="textarea"
-          placeholder="Paste docker-compose YAML here..."
+          :placeholder="t('tools.dockerComposeTo1panel.inputPlaceholder')"
           :autosize="{ minRows: 10, maxRows: 30 }"
           style="font-family: monospace;"
         />
@@ -80,7 +80,7 @@ const sampleInput = `services:
         {{ result.error }}
       </NAlert>
 
-      <NCard v-if="result.success" title="1Panel Format (Output)">
+      <NCard v-if="result.success" :title="t('tools.dockerComposeTo1panel.outputTitle')">
         <template #header-extra>
           <NButton size="small" @click="copyOutput">{{ t('tool.copy') }}</NButton>
         </template>
@@ -95,15 +95,21 @@ const sampleInput = `services:
 
       <NDivider />
 
-      <NCard title="About">
+      <NCard :title="t('common.about')">
         <div style="opacity: 0.8; line-height: 1.6;">
-          Converts standard docker-compose YAML to 1Panel-compatible format by:
+          {{ t('tools.dockerComposeTo1panel.aboutIntro') }}
           <ul style="margin-top: 8px;">
-            <li>Adding <code>version</code> field if missing (defaults to 3.8)</li>
-            <li>Adding <code>com.1panel.appName</code> labels</li>
-            <li>Setting <code>restart: always</code> if not specified</li>
-            <li>Converting network arrays to map format</li>
-            <li>Adding explicit network names and volume drivers</li>
+            <i18n-t keypath="tools.dockerComposeTo1panel.addsVersionField" tag="li">
+              <template #field><code>version</code></template>
+            </i18n-t>
+            <i18n-t keypath="tools.dockerComposeTo1panel.addsAppNameLabels" tag="li">
+              <template #field><code>com.1panel.appName</code></template>
+            </i18n-t>
+            <i18n-t keypath="tools.dockerComposeTo1panel.setsRestartPolicy" tag="li">
+              <template #field><code>restart: always</code></template>
+            </i18n-t>
+            <li>{{ t('tools.dockerComposeTo1panel.convertsNetworks') }}</li>
+            <li>{{ t('tools.dockerComposeTo1panel.addsNetworkNames') }}</li>
           </ul>
         </div>
       </NCard>

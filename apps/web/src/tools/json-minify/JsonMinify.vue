@@ -20,19 +20,19 @@ function copyOutput() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NAlert v-if="minified.error" type="error" title="Invalid JSON">
+      <NAlert v-if="minified.error" type="error" :title="t('common.invalidJson')">
         {{ minified.error }}
       </NAlert>
 
-      <NCard title="Input JSON">
+      <NCard :title="t('common.inputJson')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputJson" type="textarea" :rows="8" placeholder="Paste JSON to minify..." />
+          <NInput v-model:value="inputJson" type="textarea" :rows="8" :placeholder="t('tools.jsonMinify.inputPlaceholder')" />
         </NSpace>
       </NCard>
 
-      <NCard title="Minified Output">
+      <NCard :title="t('tools.jsonMinify.outputTitle')">
         <NSpace vertical :size="8">
-          <NInput :value="minified.result" type="textarea" :rows="8" readonly placeholder="Minified JSON output..." />
+          <NInput :value="minified.result" type="textarea" :rows="8" readonly :placeholder="t('tools.jsonMinify.outputPlaceholder')" />
           <NButton :disabled="!minified.result" @click="copyOutput">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

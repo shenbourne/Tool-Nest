@@ -183,7 +183,10 @@
     "pageNotFound": "页面不存在",
     "goHome": "返回首页",
     "swap": "交换",
-    "separator": "分隔符"
+    "separator": "分隔符",
+    "format": "格式",
+    "invalidJson": "无效的 JSON",
+    "inputJson": "输入 JSON"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -538,7 +541,11 @@
     },
     "jsonEscape": {
       "name": "JSON 转义",
-      "description": "转义和反转义 JSON 字符串"
+      "description": "转义和反转义 JSON 字符串",
+      "toggle": "转义 / 反转义",
+      "escapePlaceholder": "要转义的文本...",
+      "unescapePlaceholder": "要反转义的 JSON 字符串...",
+      "invalidInput": "输入无效"
     },
     "jsonStringify": {
       "name": "JSON 序列化",
@@ -550,11 +557,14 @@
     },
     "jsonValidate": {
       "name": "JSON 验证",
-      "description": "验证 JSON 语法并显示错误"
+      "description": "验证 JSON 语法并显示错误",
+      "valid": "有效的 JSON"
     },
     "xmlValidator": {
       "name": "XML 验证器",
-      "description": "验证 XML 语法并显示错误"
+      "description": "验证 XML 语法并显示错误",
+      "validXml": "有效的 XML",
+      "invalidXml": "无效的 XML"
     },
     "checkLeapYears": {
       "name": "闰年检测",
@@ -848,23 +858,58 @@
     },
     "jsonViewer": {
       "name": "JSON 查看器",
-      "description": "格式化和验证 JSON 数据"
+      "description": "格式化和验证 JSON 数据",
+      "inputPlaceholder": "在此粘贴你的 JSON...",
+      "outputTitle": "格式化输出"
     },
     "dockerRunToCompose": {
       "name": "Docker Run 转 Compose",
-      "description": "将 docker run 命令转换为 docker-compose YAML"
+      "description": "将 docker run 命令转换为 docker-compose YAML",
+      "inputTitle": "Docker Run 命令",
+      "inputPlaceholder": "在此粘贴你的 docker run 命令...",
+      "outputTitle": "Docker Compose YAML",
+      "warnings": "警告"
     },
     "xmlFormatter": {
       "name": "XML 格式化器",
-      "description": "格式化和压缩 XML 文档"
+      "description": "格式化和压缩 XML 文档",
+      "inputTitle": "输入 XML",
+      "inputPlaceholder": "在此粘贴你的 XML...",
+      "minify": "压缩",
+      "spaces": "{n} 个空格"
     },
     "emailNormalizer": {
       "name": "邮箱地址规范化",
-      "description": "规范化邮箱地址，移除别名和格式化"
+      "description": "规范化邮箱地址，移除别名和格式化",
+      "inputTitle": "输入电子邮箱地址",
+      "inputPlaceholder": "输入电子邮箱地址（每行一个）...",
+      "outputTitle": "标准化输出",
+      "original": "原始",
+      "normalized": "标准化",
+      "status": "状态",
+      "ok": "正常"
     },
     "regexTester": {
       "name": "正则表达式测试器",
-      "description": "实时测试正则表达式匹配"
+      "description": "实时测试正则表达式匹配",
+      "patternTitle": "正则表达式",
+      "patternPlaceholder": "输入正则表达式模式...",
+      "global": "全局",
+      "ignoreCase": "忽略大小写",
+      "multiline": "多行",
+      "dotAll": "单行模式（DotAll）",
+      "unicode": "Unicode",
+      "textTitle": "测试文本",
+      "textPlaceholder": "输入要匹配的文本...",
+      "resultsTitle": "匹配结果",
+      "colIndex": "索引",
+      "colMatch": "匹配",
+      "colGroups": "分组",
+      "matchCountSingle": "{count} 个匹配",
+      "matchCountPlural": "{count} 个匹配",
+      "flags": "标志",
+      "none": "无",
+      "noMatches": "未找到匹配"
     },
     "ipv4SubnetCalculator": {
       "name": "IPv4 子网计算器",
@@ -888,11 +933,30 @@
     },
     "crontabGenerator": {
       "name": "Crontab 生成器",
-      "description": "生成带有可读描述的 cron 表达式"
+      "description": "生成带有可读描述的 cron 表达式",
+      "cronFields": "Cron 字段",
+      "cronExpression": "Cron 表达式",
+      "invalidCronExpression": "Cron 表达式无效",
+      "nextExecutionTimes": "下次执行时间",
+      "nextExecution": "下次执行",
+      "syntaxReference": "语法参考",
+      "anyValue": "任意值",
+      "rangeOfValues": "范围值",
+      "listOfValues": "列表值",
+      "stepValues": "步进值"
     },
     "dockerComposeTo1panel": {
       "name": "Docker Compose 转 1Panel",
-      "description": "将 docker-compose YAML 转换为 1Panel 格式"
+      "description": "将 docker-compose YAML 转换为 1Panel 格式",
+      "inputTitle": "Docker Compose YAML（输入）",
+      "inputPlaceholder": "在此粘贴 docker-compose YAML...",
+      "outputTitle": "1Panel 格式（输出）",
+      "aboutIntro": "通过以下方式将标准 docker-compose YAML 转换为 1Panel 兼容格式：",
+      "addsVersionField": "缺少时添加 {field} 字段（默认为 3.8）",
+      "addsAppNameLabels": "添加 {field} 标签",
+      "setsRestartPolicy": "未指定时设置 {field}",
+      "convertsNetworks": "将网络数组转换为映射格式",
+      "addsNetworkNames": "添加显式网络名称和卷驱动"
     },
     "cameraRecorder": {
       "name": "摄像头录制",
@@ -922,7 +986,10 @@
     },
     "jsonMinify": {
       "name": "JSON 压缩",
-      "description": "去除 JSON 中的空白字符"
+      "description": "去除 JSON 中的空白字符",
+      "inputPlaceholder": "粘贴要压缩的 JSON...",
+      "outputTitle": "压缩后的输出",
+      "outputPlaceholder": "压缩后的 JSON 输出..."
     },
     "markdownToHtml": {
       "name": "Markdown 转 HTML",
@@ -964,7 +1031,11 @@
     },
     "yamlViewer": {
       "name": "YAML 查看器",
-      "description": "格式化和验证 YAML"
+      "description": "格式化和验证 YAML",
+      "inputTitle": "输入 YAML",
+      "outputTitle": "输出 YAML",
+      "indentSize": "缩进大小",
+      "sortKeys": "键排序"
     },
     "tomlToJson": {
       "name": "TOML 转 JSON",
@@ -986,7 +1057,8 @@
     },
     "jsonToCsv": {
       "name": "JSON 转 CSV",
-      "description": "将 JSON 数组转换为 CSV"
+      "description": "将 JSON 数组转换为 CSV",
+      "outputTitle": "输出 CSV"
     },
     "xmlToJson": {
       "name": "XML 转 JSON",
@@ -1002,7 +1074,13 @@
     },
     "sqlPrettify": {
       "name": "SQL 格式化",
-      "description": "格式化和美化 SQL 查询语句"
+      "description": "格式化和美化 SQL 查询语句",
+      "dialect": "SQL 方言",
+      "keywordCase": "关键字大小写",
+      "preserve": "保留",
+      "inputTitle": "输入 SQL",
+      "outputTitle": "输出 SQL",
+      "outputPlaceholder": "格式化后的 SQL 将显示在这里..."
     },
     "dateTimeConverter": {
       "name": "日期时间转换器",
@@ -1170,7 +1248,15 @@
     },
     "jsonDiff": {
       "name": "JSON 差异对比",
-      "description": "比较两个 JSON 对象并找出差异"
+      "description": "比较两个 JSON 对象并找出差异",
+      "leftJson": "左侧 JSON",
+      "rightJson": "右侧 JSON",
+      "leftPlaceholder": "粘贴左侧 JSON...",
+      "rightPlaceholder": "粘贴右侧 JSON...",
+      "added": "新增",
+      "removed": "移除",
+      "changed": "修改",
+      "differences": "差异"
     }
   }
 }
