@@ -103,7 +103,7 @@ function copyCommand() {
 .result-symbolic {
   font-size: 24px;
   font-family: monospace;
-  color: var(--text-color-2, #666);
+  color: var(--color-text-2);
   margin-bottom: 12px;
 }
 
