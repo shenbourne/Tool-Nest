@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
+import type { CSSProperties } from 'vue';
 import { NLayout, NLayoutSider, NLayoutContent, NTooltip } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -20,6 +21,14 @@ const sortedCategories = computed(() =>
 );
 
 const clickedCategory = ref<string | null>(null);
+
+// NLayoutSider wraps the slot in a scroll container, so make that wrapper the flex
+// column; otherwise .category-list can never be the element that scrolls.
+const siderContentStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+};
 
 const activeCategory = computed(() => {
   if (clickedCategory.value) return clickedCategory.value;
@@ -91,6 +100,7 @@ onUnmounted(() => {
       :width="240"
       :collapsed-width="60"
       :native-scrollbar="false"
+      :content-style="siderContentStyle"
       bordered
       collapse-mode="width"
       show-trigger="bar"
@@ -172,8 +182,9 @@ onUnmounted(() => {
 
 .category-list {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
-  padding: var(--spacing-xs) 0;
+  padding: var(--spacing-sm) 0;
   scrollbar-width: thin;
   scrollbar-color: var(--color-muted) transparent;
 }
@@ -193,9 +204,9 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  height: 36px;
+  height: 42px;
   padding: 0 var(--spacing-md);
-  margin: 2px var(--spacing-xs);
+  margin: var(--spacing-xxs) var(--spacing-xs);
   cursor: pointer;
   border-radius: var(--radius-lg);
   color: var(--color-text-2);
