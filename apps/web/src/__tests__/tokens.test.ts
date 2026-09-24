@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { naiveThemeOverrides } from '@/styles/naive-theme';
+import { naiveLightThemeOverrides } from '@/styles/naive-theme';
 
 const tokensCss = readFileSync(new URL('../styles/tokens.css', import.meta.url), 'utf8');
 const readToken = (name: string) =>
@@ -8,9 +8,9 @@ const readToken = (name: string) =>
 
 describe('naive theme overrides stay in sync with tokens.css', () => {
   it('primary colors match tokens', () => {
-    expect(naiveThemeOverrides.common.primaryColor).toBe(readToken('color-primary'));
-    expect(naiveThemeOverrides.common.primaryColorHover).toBe(readToken('color-primary-hover'));
-    expect(naiveThemeOverrides.common.primaryColorPressed).toBe(readToken('color-primary-pressed'));
-    expect(naiveThemeOverrides.common.borderRadius).toBe(readToken('radius-md'));
+    expect(naiveLightThemeOverrides.common?.primaryColor).toBe(readToken('color-primary'));
+    expect(naiveLightThemeOverrides.common?.primaryColorHover).toBe(readToken('color-primary-hover'));
+    expect(naiveLightThemeOverrides.common?.primaryColorPressed).toBe(readToken('color-primary-pressed'));
+    expect(naiveLightThemeOverrides.common?.borderRadius).toBe(readToken('radius-lg'));
   });
 });
