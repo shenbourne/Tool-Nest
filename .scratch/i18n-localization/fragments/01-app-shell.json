@@ -1,0 +1,26 @@
+{
+  "en": {
+    "common": {
+      "pageNotFound": "Page not found",
+      "goHome": "Go Home"
+    },
+    "home": {
+      "noToolsInstalled": "No tools installed yet"
+    },
+    "commandPalette": {
+      "hint": "↑↓ Navigate · Enter Select · Esc Close"
+    }
+  },
+  "zh": {
+    "common": {
+      "pageNotFound": "页面不存在",
+      "goHome": "返回首页"
+    },
+    "home": {
+      "noToolsInstalled": "暂无工具"
+    },
+    "commandPalette": {
+      "hint": "↑↓ 导航 · Enter 选择 · Esc 关闭"
+    }
+  }
+}

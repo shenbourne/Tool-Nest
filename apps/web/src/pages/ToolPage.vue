@@ -50,6 +50,6 @@ onMounted(() => {
   <!-- 每个工具组件内部使用 ToolLayout 包裹 -->
   <RouterView v-if="tool" />
   <div v-else style="padding: 48px; text-align: center;">
-    <p>Loading...</p>
+    <p>{{ t('common.loading') }}</p>
   </div>
 </template>

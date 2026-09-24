@@ -107,7 +107,7 @@ defineExpose({ open });
         </div>
       </NScrollbar>
       <div style="padding: 8px 16px; border-top: 1px solid var(--color-hairline); font-size: 11px; opacity: 0.5;">
-        ↑↓ Navigate · Enter Select · Esc Close
+        {{ t('commandPalette.hint') }}
       </div>
     </NCard>
   </NModal>

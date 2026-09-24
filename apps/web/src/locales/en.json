@@ -20,25 +20,74 @@
     "welcome": "Welcome to ToolNest",
     "welcomeDesc": "Your unified developer toolbox",
     "browseCategories": "Browse Categories",
-    "toolCount": "{count} tools"
+    "toolCount": "{count} tools",
+    "noToolsInstalled": "No tools installed yet"
   },
   "category": {
-    "crypto": { "name": "Crypto", "desc": "Encryption, hashing, and security tools" },
-    "converter": { "name": "Converters", "desc": "Format and unit conversion tools" },
-    "web": { "name": "Web", "desc": "Web development and URL tools" },
-    "developer": { "name": "Developer", "desc": "Development and DevOps tools" },
-    "network": { "name": "Network", "desc": "Network calculation and analysis tools" },
-    "text": { "name": "Text", "desc": "Text processing and analysis tools" },
-    "data": { "name": "Data", "desc": "Data format and validation tools" },
-    "image": { "name": "Image", "desc": "Image processing tools" },
-    "video": { "name": "Video", "desc": "Video editing tools" },
-    "audio": { "name": "Audio", "desc": "Audio processing tools" },
-    "pdf": { "name": "PDF", "desc": "PDF manipulation tools" },
-    "math": { "name": "Math", "desc": "Mathematical calculation tools" },
-    "measurement": { "name": "Measurement", "desc": "Measurement and timing tools" },
-    "generator": { "name": "Generators", "desc": "Content generation tools" },
-    "network-test": { "name": "Network Tests", "desc": "Network testing and diagnostics" },
-    "platform": { "name": "Platform", "desc": "Platform and utility tools" }
+    "crypto": {
+      "name": "Crypto",
+      "desc": "Encryption, hashing, and security tools"
+    },
+    "converter": {
+      "name": "Converters",
+      "desc": "Format and unit conversion tools"
+    },
+    "web": {
+      "name": "Web",
+      "desc": "Web development and URL tools"
+    },
+    "developer": {
+      "name": "Developer",
+      "desc": "Development and DevOps tools"
+    },
+    "network": {
+      "name": "Network",
+      "desc": "Network calculation and analysis tools"
+    },
+    "text": {
+      "name": "Text",
+      "desc": "Text processing and analysis tools"
+    },
+    "data": {
+      "name": "Data",
+      "desc": "Data format and validation tools"
+    },
+    "image": {
+      "name": "Image",
+      "desc": "Image processing tools"
+    },
+    "video": {
+      "name": "Video",
+      "desc": "Video editing tools"
+    },
+    "audio": {
+      "name": "Audio",
+      "desc": "Audio processing tools"
+    },
+    "pdf": {
+      "name": "PDF",
+      "desc": "PDF manipulation tools"
+    },
+    "math": {
+      "name": "Math",
+      "desc": "Mathematical calculation tools"
+    },
+    "measurement": {
+      "name": "Measurement",
+      "desc": "Measurement and timing tools"
+    },
+    "generator": {
+      "name": "Generators",
+      "desc": "Content generation tools"
+    },
+    "network-test": {
+      "name": "Network Tests",
+      "desc": "Network testing and diagnostics"
+    },
+    "platform": {
+      "name": "Platform",
+      "desc": "Platform and utility tools"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -130,7 +179,9 @@
     "convert": "Convert",
     "compare": "Compare",
     "add": "Add",
-    "remove": "Remove"
+    "remove": "Remove",
+    "pageNotFound": "Page not found",
+    "goHome": "Go Home"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -144,7 +195,8 @@
   },
   "commandPalette": {
     "placeholder": "Search tools, actions...",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "hint": "↑↓ Navigate · Enter Select · Esc Close"
   },
   "tools": {
     "helloWorld": {
@@ -274,108 +326,414 @@
       "name": "Percentage Calculator",
       "description": "Calculate percentages, proportions, and percent change"
     },
-    "rot13": { "name": "ROT13 Cipher", "description": "Encode and decode text using ROT13 substitution cipher" },
-    "morseCode": { "name": "Morse Code Converter", "description": "Convert text to Morse code and back" },
-    "textCensor": { "name": "Text Censor", "description": "Filter and mask profanity or sensitive words" },
-    "createPalindrome": { "name": "Create Palindrome", "description": "Create a palindrome by appending reversed text" },
-    "palindromeChecker": { "name": "Palindrome Checker", "description": "Check if text is a palindrome" },
-    "emailExtractor": { "name": "Email Extractor", "description": "Extract email addresses from text using regex" },
-    "extractSubstring": { "name": "Extract Substring", "description": "Extract a portion of text by position range" },
-    "hiddenCharDetector": { "name": "Hidden Character Detector", "description": "Detect invisible and special Unicode characters" },
-    "textJoin": { "name": "Text Join", "description": "Join multiple lines with a custom separator" },
-    "quoteGenerator": { "name": "Quote Generator", "description": "Browse and display random programming quotes" },
-    "removeDuplicateLines": { "name": "Remove Duplicate Lines", "description": "Remove duplicate lines from text" },
-    "textRepeat": { "name": "Text Repeat", "description": "Repeat text a specified number of times" },
-    "textReverse": { "name": "Text Reverse", "description": "Reverse the characters in text" },
-    "textRotate": { "name": "Text Rotate", "description": "Rotate text lines by N positions" },
-    "textSplit": { "name": "Text Split", "description": "Split text by delimiters into separate lines" },
-    "textReplacer": { "name": "Text Replacer", "description": "Find and replace text with regex support" },
-    "textTruncate": { "name": "Text Truncate", "description": "Truncate text by characters, words, or lines" },
-    "passwordGenerator": { "name": "Password Generator", "description": "Generate secure random passwords with custom options" },
-    "byteConverter": { "name": "Byte Converter", "description": "Convert between bytes, KB, MB, GB, TB, and bits" },
-    "numberToWords": { "name": "Number to Words", "description": "Convert numbers to English words" },
-    "arithmeticSequence": { "name": "Arithmetic Sequence", "description": "Generate arithmetic sequences and find terms" },
-    "genericCalculator": { "name": "Generic Calculator", "description": "Simple calculator for basic math expressions" },
-    "randomNumberGenerator": { "name": "Random Number Generator", "description": "Generate random numbers with custom range" },
-    "numberSum": { "name": "Number Sum", "description": "Calculate sum, average, min, max, and median of numbers" },
-    "numberGenerator": { "name": "Number Generator", "description": "Generate number sequences: Fibonacci, primes, even, odd" },
-    "csvToJson": { "name": "CSV to JSON", "description": "Convert CSV data to JSON array format" },
-    "csvToTsv": { "name": "CSV to TSV", "description": "Convert CSV to tab-separated values" },
-    "csvToXml": { "name": "CSV to XML", "description": "Convert CSV data to XML format" },
-    "csvToYaml": { "name": "CSV to YAML", "description": "Convert CSV data to YAML format" },
-    "tsvToJson": { "name": "TSV to JSON", "description": "Convert tab-separated values to JSON" },
-    "csvChangeSeparator": { "name": "CSV Change Separator", "description": "Change the delimiter used in CSV data" },
-    "csvRowsToColumns": { "name": "CSV Rows to Columns", "description": "Transpose CSV rows into columns" },
-    "csvFindIncomplete": { "name": "Find Incomplete CSV Records", "description": "Find CSV rows with fewer columns than expected" },
-    "csvInsertColumns": { "name": "Insert CSV Columns", "description": "Insert a new column into CSV data" },
-    "csvSwapColumns": { "name": "Swap CSV Columns", "description": "Swap two columns in CSV data" },
-    "csvTranspose": { "name": "Transpose CSV", "description": "Transpose CSV data (rows become columns)" },
-    "listDuplicate": { "name": "List Duplicate", "description": "Duplicate each item in a list" },
-    "listFindPopular": { "name": "List Find Most Popular", "description": "Find the most frequent items in a list" },
-    "listFindUnique": { "name": "List Find Unique", "description": "Extract unique items from a list" },
-    "listGroup": { "name": "List Group", "description": "Group list items into chunks of N" },
-    "listReverse": { "name": "List Reverse", "description": "Reverse the order of list items" },
-    "listRotate": { "name": "List Rotate", "description": "Rotate list items by N positions" },
-    "listShuffle": { "name": "List Shuffle", "description": "Randomly shuffle list items" },
-    "listSort": { "name": "List Sort", "description": "Sort list items alphabetically or numerically" },
-    "listTruncate": { "name": "List Truncate", "description": "Keep only the first N items of a list" },
-    "listUnwrap": { "name": "List Unwrap", "description": "Remove wrapping characters from list items" },
-    "listWrap": { "name": "List Wrap", "description": "Wrap each list item with prefix and suffix" },
-    "jsonEscape": { "name": "JSON Escape", "description": "Escape and unescape JSON strings" },
-    "jsonStringify": { "name": "JSON Stringify", "description": "Format and serialize JSON with options" },
-    "jsonSort": { "name": "JSON Sort", "description": "Sort JSON object keys alphabetically" },
-    "jsonValidate": { "name": "JSON Validate", "description": "Validate JSON syntax and show errors" },
-    "xmlValidator": { "name": "XML Validator", "description": "Validate XML syntax and show errors" },
-    "checkLeapYears": { "name": "Check Leap Years", "description": "Check if years are leap years" },
-    "daysToHours": { "name": "Days to Hours", "description": "Convert days to hours, minutes, and seconds" },
-    "hoursToDays": { "name": "Hours to Days", "description": "Convert hours to days and remaining hours" },
-    "secondsToTime": { "name": "Seconds to Time", "description": "Convert seconds to HH:MM:SS format" },
-    "timeToDecimal": { "name": "Time to Decimal", "description": "Convert time to decimal hours" },
-    "timeToSeconds": { "name": "Time to Seconds", "description": "Convert time to total seconds" },
-    "dateWeekdayCalculator": { "name": "Date Weekday Calculator", "description": "Find the day of the week for any date" },
-    "discordTimestamp": { "name": "Discord Timestamp", "description": "Generate Discord markdown timestamps" },
-    "timeBetweenDates": { "name": "Time Between Dates", "description": "Calculate duration between two dates" },
-    "truncateClockTime": { "name": "Truncate Clock Time", "description": "Truncate time to minute or hour precision" },
-    "imageResize": { "name": "Image Resize", "description": "Resize images to custom dimensions" },
-    "imageRotate": { "name": "Image Rotate", "description": "Rotate images by any angle" },
-    "imageFlip": { "name": "Image Flip", "description": "Flip images horizontally or vertically" },
-    "imageCompress": { "name": "Image Compress", "description": "Compress images to reduce file size" },
-    "imageWatermark": { "name": "Image Watermark", "description": "Add text watermark to images" },
-    "convertToJpg": { "name": "Convert to JPG", "description": "Convert images to JPEG format" },
-    "convertToWebp": { "name": "Convert to WebP", "description": "Convert images to WebP format" },
-    "imageChangeOpacity": { "name": "Image Change Opacity", "description": "Adjust image transparency and opacity" },
-    "imageChangeColors": { "name": "Image Change Colors", "description": "Adjust hue, saturation, brightness and contrast of images" },
-    "imageCreateTransparent": { "name": "Image Create Transparent", "description": "Remove a color from an image to make it transparent" },
-    "imageSplit": { "name": "Image Split", "description": "Split an image into a grid of tiles" },
-    "imageCrop": { "name": "Image Crop", "description": "Crop images by selecting a region" },
-    "imageEditor": { "name": "Image Editor", "description": "Add text and drawings to images" },
-    "imageRemoveBackground": { "name": "Image Remove Background", "description": "Remove background color from images" },
-    "jpgToPng": { "name": "JPG to PNG", "description": "Convert JPG images to PNG format" },
-    "pdfMerge": { "name": "PDF Merge", "description": "Merge multiple PDF files into one" },
-    "pdfRotate": { "name": "PDF Rotate", "description": "Rotate all pages in a PDF document" },
-    "pdfSplit": { "name": "PDF Split", "description": "Extract specific pages from a PDF" },
-    "pdfProtect": { "name": "PDF Protect", "description": "Add protection to PDF documents" },
-    "convertToPdf": { "name": "Convert to PDF", "description": "Convert images to PDF format" },
-    "compressPdf": { "name": "Compress PDF", "description": "Reduce PDF file size" },
-    "pdfSignatureChecker": { "name": "PDF Signature Checker", "description": "Check if a PDF contains digital signatures" },
-    "pdfEditor": { "name": "PDF Editor", "description": "Add text annotations and watermarks to PDF" },
-    "pdfExtractImages": { "name": "PDF Extract Images", "description": "Extract page images from a PDF file" },
-    "pdfToEpub": { "name": "PDF to Text", "description": "Extract text content from PDF" },
-    "pdfToPng": { "name": "PDF to PNG", "description": "Convert PDF pages to PNG images" },
-    "connectivityCheck": { "name": "Connectivity Check", "description": "Test internet connectivity to multiple targets" },
-    "webrtcDetection": { "name": "WebRTC Detection", "description": "Detect IP address leaks via WebRTC" },
-    "browserFingerprint": { "name": "Browser Fingerprint", "description": "View detailed browser and device information" },
-    "speedTest": { "name": "Speed Test", "description": "Test download speed and network latency" },
-    "securityChecklist": { "name": "Security Checklist", "description": "Check browser security features and privacy settings" },
-    "ipInfo": { "name": "IP Information", "description": "View your IP address, location, and ISP details" },
-    "dnsResolver": { "name": "DNS Resolver", "description": "Resolve DNS records for any domain" },
-    "macLookup": { "name": "MAC Address Lookup", "description": "Find the vendor for a MAC address" },
-    "serviceStatus": { "name": "Service Status", "description": "Check if a website or service is online" },
-    "whoisLookup": { "name": "Whois Lookup", "description": "Look up domain registration information" },
-    "romanNumeralConverter": { "name": "Roman Numeral Converter", "description": "Convert between Arabic and Roman numerals" },
-    "textToNatoAlphabet": { "name": "Text to NATO Alphabet", "description": "Convert text to NATO phonetic alphabet" },
-    "textToBinary": { "name": "Text to Binary", "description": "Convert text to ASCII binary and back" },
-    "numeronymGenerator": { "name": "Numeronym Generator", "description": "Generate numeronyms (e.g., i18n, a11y) from words" },
+    "rot13": {
+      "name": "ROT13 Cipher",
+      "description": "Encode and decode text using ROT13 substitution cipher"
+    },
+    "morseCode": {
+      "name": "Morse Code Converter",
+      "description": "Convert text to Morse code and back"
+    },
+    "textCensor": {
+      "name": "Text Censor",
+      "description": "Filter and mask profanity or sensitive words"
+    },
+    "createPalindrome": {
+      "name": "Create Palindrome",
+      "description": "Create a palindrome by appending reversed text"
+    },
+    "palindromeChecker": {
+      "name": "Palindrome Checker",
+      "description": "Check if text is a palindrome"
+    },
+    "emailExtractor": {
+      "name": "Email Extractor",
+      "description": "Extract email addresses from text using regex"
+    },
+    "extractSubstring": {
+      "name": "Extract Substring",
+      "description": "Extract a portion of text by position range"
+    },
+    "hiddenCharDetector": {
+      "name": "Hidden Character Detector",
+      "description": "Detect invisible and special Unicode characters"
+    },
+    "textJoin": {
+      "name": "Text Join",
+      "description": "Join multiple lines with a custom separator"
+    },
+    "quoteGenerator": {
+      "name": "Quote Generator",
+      "description": "Browse and display random programming quotes"
+    },
+    "removeDuplicateLines": {
+      "name": "Remove Duplicate Lines",
+      "description": "Remove duplicate lines from text"
+    },
+    "textRepeat": {
+      "name": "Text Repeat",
+      "description": "Repeat text a specified number of times"
+    },
+    "textReverse": {
+      "name": "Text Reverse",
+      "description": "Reverse the characters in text"
+    },
+    "textRotate": {
+      "name": "Text Rotate",
+      "description": "Rotate text lines by N positions"
+    },
+    "textSplit": {
+      "name": "Text Split",
+      "description": "Split text by delimiters into separate lines"
+    },
+    "textReplacer": {
+      "name": "Text Replacer",
+      "description": "Find and replace text with regex support"
+    },
+    "textTruncate": {
+      "name": "Text Truncate",
+      "description": "Truncate text by characters, words, or lines"
+    },
+    "passwordGenerator": {
+      "name": "Password Generator",
+      "description": "Generate secure random passwords with custom options"
+    },
+    "byteConverter": {
+      "name": "Byte Converter",
+      "description": "Convert between bytes, KB, MB, GB, TB, and bits"
+    },
+    "numberToWords": {
+      "name": "Number to Words",
+      "description": "Convert numbers to English words"
+    },
+    "arithmeticSequence": {
+      "name": "Arithmetic Sequence",
+      "description": "Generate arithmetic sequences and find terms"
+    },
+    "genericCalculator": {
+      "name": "Generic Calculator",
+      "description": "Simple calculator for basic math expressions"
+    },
+    "randomNumberGenerator": {
+      "name": "Random Number Generator",
+      "description": "Generate random numbers with custom range"
+    },
+    "numberSum": {
+      "name": "Number Sum",
+      "description": "Calculate sum, average, min, max, and median of numbers"
+    },
+    "numberGenerator": {
+      "name": "Number Generator",
+      "description": "Generate number sequences: Fibonacci, primes, even, odd"
+    },
+    "csvToJson": {
+      "name": "CSV to JSON",
+      "description": "Convert CSV data to JSON array format"
+    },
+    "csvToTsv": {
+      "name": "CSV to TSV",
+      "description": "Convert CSV to tab-separated values"
+    },
+    "csvToXml": {
+      "name": "CSV to XML",
+      "description": "Convert CSV data to XML format"
+    },
+    "csvToYaml": {
+      "name": "CSV to YAML",
+      "description": "Convert CSV data to YAML format"
+    },
+    "tsvToJson": {
+      "name": "TSV to JSON",
+      "description": "Convert tab-separated values to JSON"
+    },
+    "csvChangeSeparator": {
+      "name": "CSV Change Separator",
+      "description": "Change the delimiter used in CSV data"
+    },
+    "csvRowsToColumns": {
+      "name": "CSV Rows to Columns",
+      "description": "Transpose CSV rows into columns"
+    },
+    "csvFindIncomplete": {
+      "name": "Find Incomplete CSV Records",
+      "description": "Find CSV rows with fewer columns than expected"
+    },
+    "csvInsertColumns": {
+      "name": "Insert CSV Columns",
+      "description": "Insert a new column into CSV data"
+    },
+    "csvSwapColumns": {
+      "name": "Swap CSV Columns",
+      "description": "Swap two columns in CSV data"
+    },
+    "csvTranspose": {
+      "name": "Transpose CSV",
+      "description": "Transpose CSV data (rows become columns)"
+    },
+    "listDuplicate": {
+      "name": "List Duplicate",
+      "description": "Duplicate each item in a list"
+    },
+    "listFindPopular": {
+      "name": "List Find Most Popular",
+      "description": "Find the most frequent items in a list"
+    },
+    "listFindUnique": {
+      "name": "List Find Unique",
+      "description": "Extract unique items from a list"
+    },
+    "listGroup": {
+      "name": "List Group",
+      "description": "Group list items into chunks of N"
+    },
+    "listReverse": {
+      "name": "List Reverse",
+      "description": "Reverse the order of list items"
+    },
+    "listRotate": {
+      "name": "List Rotate",
+      "description": "Rotate list items by N positions"
+    },
+    "listShuffle": {
+      "name": "List Shuffle",
+      "description": "Randomly shuffle list items"
+    },
+    "listSort": {
+      "name": "List Sort",
+      "description": "Sort list items alphabetically or numerically"
+    },
+    "listTruncate": {
+      "name": "List Truncate",
+      "description": "Keep only the first N items of a list"
+    },
+    "listUnwrap": {
+      "name": "List Unwrap",
+      "description": "Remove wrapping characters from list items"
+    },
+    "listWrap": {
+      "name": "List Wrap",
+      "description": "Wrap each list item with prefix and suffix"
+    },
+    "jsonEscape": {
+      "name": "JSON Escape",
+      "description": "Escape and unescape JSON strings"
+    },
+    "jsonStringify": {
+      "name": "JSON Stringify",
+      "description": "Format and serialize JSON with options"
+    },
+    "jsonSort": {
+      "name": "JSON Sort",
+      "description": "Sort JSON object keys alphabetically"
+    },
+    "jsonValidate": {
+      "name": "JSON Validate",
+      "description": "Validate JSON syntax and show errors"
+    },
+    "xmlValidator": {
+      "name": "XML Validator",
+      "description": "Validate XML syntax and show errors"
+    },
+    "checkLeapYears": {
+      "name": "Check Leap Years",
+      "description": "Check if years are leap years"
+    },
+    "daysToHours": {
+      "name": "Days to Hours",
+      "description": "Convert days to hours, minutes, and seconds"
+    },
+    "hoursToDays": {
+      "name": "Hours to Days",
+      "description": "Convert hours to days and remaining hours"
+    },
+    "secondsToTime": {
+      "name": "Seconds to Time",
+      "description": "Convert seconds to HH:MM:SS format"
+    },
+    "timeToDecimal": {
+      "name": "Time to Decimal",
+      "description": "Convert time to decimal hours"
+    },
+    "timeToSeconds": {
+      "name": "Time to Seconds",
+      "description": "Convert time to total seconds"
+    },
+    "dateWeekdayCalculator": {
+      "name": "Date Weekday Calculator",
+      "description": "Find the day of the week for any date"
+    },
+    "discordTimestamp": {
+      "name": "Discord Timestamp",
+      "description": "Generate Discord markdown timestamps"
+    },
+    "timeBetweenDates": {
+      "name": "Time Between Dates",
+      "description": "Calculate duration between two dates"
+    },
+    "truncateClockTime": {
+      "name": "Truncate Clock Time",
+      "description": "Truncate time to minute or hour precision"
+    },
+    "imageResize": {
+      "name": "Image Resize",
+      "description": "Resize images to custom dimensions"
+    },
+    "imageRotate": {
+      "name": "Image Rotate",
+      "description": "Rotate images by any angle"
+    },
+    "imageFlip": {
+      "name": "Image Flip",
+      "description": "Flip images horizontally or vertically"
+    },
+    "imageCompress": {
+      "name": "Image Compress",
+      "description": "Compress images to reduce file size"
+    },
+    "imageWatermark": {
+      "name": "Image Watermark",
+      "description": "Add text watermark to images"
+    },
+    "convertToJpg": {
+      "name": "Convert to JPG",
+      "description": "Convert images to JPEG format"
+    },
+    "convertToWebp": {
+      "name": "Convert to WebP",
+      "description": "Convert images to WebP format"
+    },
+    "imageChangeOpacity": {
+      "name": "Image Change Opacity",
+      "description": "Adjust image transparency and opacity"
+    },
+    "imageChangeColors": {
+      "name": "Image Change Colors",
+      "description": "Adjust hue, saturation, brightness and contrast of images"
+    },
+    "imageCreateTransparent": {
+      "name": "Image Create Transparent",
+      "description": "Remove a color from an image to make it transparent"
+    },
+    "imageSplit": {
+      "name": "Image Split",
+      "description": "Split an image into a grid of tiles"
+    },
+    "imageCrop": {
+      "name": "Image Crop",
+      "description": "Crop images by selecting a region"
+    },
+    "imageEditor": {
+      "name": "Image Editor",
+      "description": "Add text and drawings to images"
+    },
+    "imageRemoveBackground": {
+      "name": "Image Remove Background",
+      "description": "Remove background color from images"
+    },
+    "jpgToPng": {
+      "name": "JPG to PNG",
+      "description": "Convert JPG images to PNG format"
+    },
+    "pdfMerge": {
+      "name": "PDF Merge",
+      "description": "Merge multiple PDF files into one"
+    },
+    "pdfRotate": {
+      "name": "PDF Rotate",
+      "description": "Rotate all pages in a PDF document"
+    },
+    "pdfSplit": {
+      "name": "PDF Split",
+      "description": "Extract specific pages from a PDF"
+    },
+    "pdfProtect": {
+      "name": "PDF Protect",
+      "description": "Add protection to PDF documents"
+    },
+    "convertToPdf": {
+      "name": "Convert to PDF",
+      "description": "Convert images to PDF format"
+    },
+    "compressPdf": {
+      "name": "Compress PDF",
+      "description": "Reduce PDF file size"
+    },
+    "pdfSignatureChecker": {
+      "name": "PDF Signature Checker",
+      "description": "Check if a PDF contains digital signatures"
+    },
+    "pdfEditor": {
+      "name": "PDF Editor",
+      "description": "Add text annotations and watermarks to PDF"
+    },
+    "pdfExtractImages": {
+      "name": "PDF Extract Images",
+      "description": "Extract page images from a PDF file"
+    },
+    "pdfToEpub": {
+      "name": "PDF to Text",
+      "description": "Extract text content from PDF"
+    },
+    "pdfToPng": {
+      "name": "PDF to PNG",
+      "description": "Convert PDF pages to PNG images"
+    },
+    "connectivityCheck": {
+      "name": "Connectivity Check",
+      "description": "Test internet connectivity to multiple targets"
+    },
+    "webrtcDetection": {
+      "name": "WebRTC Detection",
+      "description": "Detect IP address leaks via WebRTC"
+    },
+    "browserFingerprint": {
+      "name": "Browser Fingerprint",
+      "description": "View detailed browser and device information"
+    },
+    "speedTest": {
+      "name": "Speed Test",
+      "description": "Test download speed and network latency"
+    },
+    "securityChecklist": {
+      "name": "Security Checklist",
+      "description": "Check browser security features and privacy settings"
+    },
+    "ipInfo": {
+      "name": "IP Information",
+      "description": "View your IP address, location, and ISP details"
+    },
+    "dnsResolver": {
+      "name": "DNS Resolver",
+      "description": "Resolve DNS records for any domain"
+    },
+    "macLookup": {
+      "name": "MAC Address Lookup",
+      "description": "Find the vendor for a MAC address"
+    },
+    "serviceStatus": {
+      "name": "Service Status",
+      "description": "Check if a website or service is online"
+    },
+    "whoisLookup": {
+      "name": "Whois Lookup",
+      "description": "Look up domain registration information"
+    },
+    "romanNumeralConverter": {
+      "name": "Roman Numeral Converter",
+      "description": "Convert between Arabic and Roman numerals"
+    },
+    "textToNatoAlphabet": {
+      "name": "Text to NATO Alphabet",
+      "description": "Convert text to NATO phonetic alphabet"
+    },
+    "textToBinary": {
+      "name": "Text to Binary",
+      "description": "Convert text to ASCII binary and back"
+    },
+    "numeronymGenerator": {
+      "name": "Numeronym Generator",
+      "description": "Generate numeronyms (e.g., i18n, a11y) from words"
+    },
     "basicAuthGenerator": {
       "name": "Basic Auth Generator",
       "description": "Generate Basic Auth authorization headers",
@@ -437,26 +795,86 @@
       "invalidUrl": "Invalid SafeLinks URL: must contain .safelinks.protection.outlook.com",
       "noUrlParam": "No 'url' parameter found in the SafeLink URL"
     },
-    "gitMemo": { "name": "Git Memo", "description": "Quick reference for common Git commands" },
-    "regexMemo": { "name": "Regex Memo", "description": "Quick reference for regular expression syntax" },
-    "randomPortGenerator": { "name": "Random Port Generator", "description": "Generate random port numbers" },
-    "chmodCalculator": { "name": "Chmod Calculator", "description": "Calculate file permissions numerically and symbolically" },
-    "jsonViewer": { "name": "JSON Viewer", "description": "Format and validate JSON data" },
-    "dockerRunToCompose": { "name": "Docker Run to Compose", "description": "Convert docker run commands to docker-compose YAML" },
-    "xmlFormatter": { "name": "XML Formatter", "description": "Format and minify XML documents" },
-    "emailNormalizer": { "name": "Email Normalizer", "description": "Normalize email addresses by removing aliases and formatting" },
-    "regexTester": { "name": "Regex Tester", "description": "Test regular expressions with real-time matching" },
-    "ipv4SubnetCalculator": { "name": "IPv4 Subnet Calculator", "description": "Parse CIDR notation and calculate subnet properties" },
-    "ipv4AddressConverter": { "name": "IPv4 Address Converter", "description": "Convert IPv4 addresses between decimal, binary, hex, and octal" },
-    "ipv4RangeExpander": { "name": "IPv4 Range Expander", "description": "Calculate minimal CIDR blocks covering an IP range" },
-    "macAddressGenerator": { "name": "MAC Address Generator", "description": "Generate random MAC addresses with custom prefix" },
-    "ipv6UlaGenerator": { "name": "IPv6 ULA Generator", "description": "Generate IPv6 Unique Local Addresses per RFC 4193" },
-    "crontabGenerator": { "name": "Crontab Generator", "description": "Generate cron expressions with human-readable descriptions" },
-    "dockerComposeTo1panel": { "name": "Docker Compose to 1Panel", "description": "Convert docker-compose YAML to 1Panel format" },
-    "cameraRecorder": { "name": "Camera Recorder", "description": "Record video from your camera" },
-    "etaCalculator": { "name": "ETA Calculator", "description": "Calculate estimated time of completion" },
-    "benchmarkBuilder": { "name": "Benchmark Builder", "description": "Run JavaScript benchmarks and measure performance" },
-    "infoMasking": { "name": "Info Masking", "description": "Mask sensitive information in text" },
+    "gitMemo": {
+      "name": "Git Memo",
+      "description": "Quick reference for common Git commands"
+    },
+    "regexMemo": {
+      "name": "Regex Memo",
+      "description": "Quick reference for regular expression syntax"
+    },
+    "randomPortGenerator": {
+      "name": "Random Port Generator",
+      "description": "Generate random port numbers"
+    },
+    "chmodCalculator": {
+      "name": "Chmod Calculator",
+      "description": "Calculate file permissions numerically and symbolically"
+    },
+    "jsonViewer": {
+      "name": "JSON Viewer",
+      "description": "Format and validate JSON data"
+    },
+    "dockerRunToCompose": {
+      "name": "Docker Run to Compose",
+      "description": "Convert docker run commands to docker-compose YAML"
+    },
+    "xmlFormatter": {
+      "name": "XML Formatter",
+      "description": "Format and minify XML documents"
+    },
+    "emailNormalizer": {
+      "name": "Email Normalizer",
+      "description": "Normalize email addresses by removing aliases and formatting"
+    },
+    "regexTester": {
+      "name": "Regex Tester",
+      "description": "Test regular expressions with real-time matching"
+    },
+    "ipv4SubnetCalculator": {
+      "name": "IPv4 Subnet Calculator",
+      "description": "Parse CIDR notation and calculate subnet properties"
+    },
+    "ipv4AddressConverter": {
+      "name": "IPv4 Address Converter",
+      "description": "Convert IPv4 addresses between decimal, binary, hex, and octal"
+    },
+    "ipv4RangeExpander": {
+      "name": "IPv4 Range Expander",
+      "description": "Calculate minimal CIDR blocks covering an IP range"
+    },
+    "macAddressGenerator": {
+      "name": "MAC Address Generator",
+      "description": "Generate random MAC addresses with custom prefix"
+    },
+    "ipv6UlaGenerator": {
+      "name": "IPv6 ULA Generator",
+      "description": "Generate IPv6 Unique Local Addresses per RFC 4193"
+    },
+    "crontabGenerator": {
+      "name": "Crontab Generator",
+      "description": "Generate cron expressions with human-readable descriptions"
+    },
+    "dockerComposeTo1panel": {
+      "name": "Docker Compose to 1Panel",
+      "description": "Convert docker-compose YAML to 1Panel format"
+    },
+    "cameraRecorder": {
+      "name": "Camera Recorder",
+      "description": "Record video from your camera"
+    },
+    "etaCalculator": {
+      "name": "ETA Calculator",
+      "description": "Calculate estimated time of completion"
+    },
+    "benchmarkBuilder": {
+      "name": "Benchmark Builder",
+      "description": "Run JavaScript benchmarks and measure performance"
+    },
+    "infoMasking": {
+      "name": "Info Masking",
+      "description": "Mask sensitive information in text"
+    },
     "textToUnicode": {
       "name": "Text to Unicode",
       "description": "Convert text to Unicode entities and back"
@@ -473,52 +891,193 @@
       "name": "Base64 File Converter",
       "description": "Convert files to Base64 and back"
     },
-    "yamlToJson": { "name": "YAML to JSON", "description": "Convert YAML to JSON" },
-    "jsonToYaml": { "name": "JSON to YAML", "description": "Convert JSON to YAML" },
-    "yamlToToml": { "name": "YAML to TOML", "description": "Convert YAML to TOML" },
-    "yamlViewer": { "name": "YAML Viewer", "description": "Format and validate YAML" },
-    "tomlToJson": { "name": "TOML to JSON", "description": "Convert TOML to JSON" },
-    "tomlToYaml": { "name": "TOML to YAML", "description": "Convert TOML to YAML" },
-    "jsonToToml": { "name": "JSON to TOML", "description": "Convert JSON to TOML" },
-    "jsonToCsv": { "name": "JSON to CSV", "description": "Convert JSON array to CSV" },
-    "xmlToJson": { "name": "XML to JSON", "description": "Convert XML to JSON" },
-    "jsonToXml": { "name": "JSON to XML", "description": "Convert JSON to XML" },
-    "sqlPrettify": { "name": "SQL Prettify", "description": "Format and prettify SQL queries" },
-    "dateTimeConverter": { "name": "Date-Time Converter", "description": "Convert between date-time formats including Unix timestamps" },
-    "listConverter": { "name": "List Converter", "description": "Transform lists with sort, deduplicate, prefix/suffix options" },
-    "qrCodeGenerator": { "name": "QR Code Generator", "description": "Generate QR codes from text or URLs" },
-    "wifiQrCodeGenerator": { "name": "WiFi QR Code Generator", "description": "Generate QR codes for WiFi network credentials" },
-    "svgPlaceholderGenerator": { "name": "SVG Placeholder Generator", "description": "Generate SVG placeholder images with custom dimensions" },
-    "otpGenerator": { "name": "OTP Generator", "description": "Generate and validate TOTP one-time passwords" },
-    "imageToTextOcr": { "name": "Image to Text (OCR)", "description": "Extract text from images using OCR" },
-    "htmlWysiwygEditor": { "name": "HTML WYSIWYG Editor", "description": "Edit HTML with a visual WYSIWYG editor" },
-    "userAgentParser": { "name": "User-Agent Parser", "description": "Parse user-agent strings to extract browser, OS and device info" },
-    "videoCompress": { "name": "Video Compress", "description": "Compress video files to reduce file size" },
-    "videoTrim": { "name": "Video Trim", "description": "Trim video by selecting start and end times" },
-    "videoResize": { "name": "Video Resize", "description": "Resize video dimensions" },
-    "videoRotate": { "name": "Video Rotate", "description": "Rotate video by 90 or 180 degrees" },
-    "videoFlip": { "name": "Video Flip", "description": "Flip video horizontally or vertically" },
-    "videoCrop": { "name": "Video Crop", "description": "Crop video to a custom region" },
-    "videoChangeSpeed": { "name": "Video Speed Change", "description": "Change video playback speed" },
-    "videoLoop": { "name": "Video Loop", "description": "Loop video a specified number of times" },
-    "videoMerge": { "name": "Video Merge", "description": "Merge multiple videos into one" },
-    "videoAddAudio": { "name": "Video Add Audio", "description": "Add or replace audio track in a video" },
-    "videoToGif": { "name": "Video to GIF", "description": "Convert video to animated GIF" },
-    "gifChangeSpeed": { "name": "GIF Speed Change", "description": "Change GIF animation speed" },
-    "imagesToGif": { "name": "Images to GIF", "description": "Combine images into an animated GIF" },
-    "audioConverter": { "name": "Audio Converter", "description": "Convert audio between formats" },
-    "audioChangeSpeed": { "name": "Audio Speed Change", "description": "Change audio playback speed" },
-    "audioExtract": { "name": "Audio Extract", "description": "Extract audio track from video" },
-    "audioLoop": { "name": "Audio Loop", "description": "Loop audio a specified number of times" },
-    "audioMerge": { "name": "Audio Merge", "description": "Merge multiple audio files into one" },
-    "audioTrim": { "name": "Audio Trim", "description": "Trim audio to a custom time range" },
-    "dnsLeakTest": { "name": "DNS Leak Test", "description": "Test if your DNS is leaking information" },
-    "pingTest": { "name": "Ping Test", "description": "Test network latency to a target" },
-    "mtrTest": { "name": "MTR Test", "description": "Trace network route to a target" },
-    "globalLatencyTest": { "name": "Global Latency Test", "description": "Test DNS latency from global locations" },
-    "ruleTest": { "name": "Rule Test", "description": "Test DNS resolution with custom rules" },
-    "censorshipCheck": { "name": "Censorship Check", "description": "Check if websites are censored" },
-    "screenshotShare": { "name": "Screenshot Share", "description": "Capture and share screenshots of web pages" },
-    "jsonDiff": { "name": "JSON Diff", "description": "Compare two JSON objects and find differences" }
+    "yamlToJson": {
+      "name": "YAML to JSON",
+      "description": "Convert YAML to JSON"
+    },
+    "jsonToYaml": {
+      "name": "JSON to YAML",
+      "description": "Convert JSON to YAML"
+    },
+    "yamlToToml": {
+      "name": "YAML to TOML",
+      "description": "Convert YAML to TOML"
+    },
+    "yamlViewer": {
+      "name": "YAML Viewer",
+      "description": "Format and validate YAML"
+    },
+    "tomlToJson": {
+      "name": "TOML to JSON",
+      "description": "Convert TOML to JSON"
+    },
+    "tomlToYaml": {
+      "name": "TOML to YAML",
+      "description": "Convert TOML to YAML"
+    },
+    "jsonToToml": {
+      "name": "JSON to TOML",
+      "description": "Convert JSON to TOML"
+    },
+    "jsonToCsv": {
+      "name": "JSON to CSV",
+      "description": "Convert JSON array to CSV"
+    },
+    "xmlToJson": {
+      "name": "XML to JSON",
+      "description": "Convert XML to JSON"
+    },
+    "jsonToXml": {
+      "name": "JSON to XML",
+      "description": "Convert JSON to XML"
+    },
+    "sqlPrettify": {
+      "name": "SQL Prettify",
+      "description": "Format and prettify SQL queries"
+    },
+    "dateTimeConverter": {
+      "name": "Date-Time Converter",
+      "description": "Convert between date-time formats including Unix timestamps"
+    },
+    "listConverter": {
+      "name": "List Converter",
+      "description": "Transform lists with sort, deduplicate, prefix/suffix options"
+    },
+    "qrCodeGenerator": {
+      "name": "QR Code Generator",
+      "description": "Generate QR codes from text or URLs"
+    },
+    "wifiQrCodeGenerator": {
+      "name": "WiFi QR Code Generator",
+      "description": "Generate QR codes for WiFi network credentials"
+    },
+    "svgPlaceholderGenerator": {
+      "name": "SVG Placeholder Generator",
+      "description": "Generate SVG placeholder images with custom dimensions"
+    },
+    "otpGenerator": {
+      "name": "OTP Generator",
+      "description": "Generate and validate TOTP one-time passwords"
+    },
+    "imageToTextOcr": {
+      "name": "Image to Text (OCR)",
+      "description": "Extract text from images using OCR"
+    },
+    "htmlWysiwygEditor": {
+      "name": "HTML WYSIWYG Editor",
+      "description": "Edit HTML with a visual WYSIWYG editor"
+    },
+    "userAgentParser": {
+      "name": "User-Agent Parser",
+      "description": "Parse user-agent strings to extract browser, OS and device info"
+    },
+    "videoCompress": {
+      "name": "Video Compress",
+      "description": "Compress video files to reduce file size"
+    },
+    "videoTrim": {
+      "name": "Video Trim",
+      "description": "Trim video by selecting start and end times"
+    },
+    "videoResize": {
+      "name": "Video Resize",
+      "description": "Resize video dimensions"
+    },
+    "videoRotate": {
+      "name": "Video Rotate",
+      "description": "Rotate video by 90 or 180 degrees"
+    },
+    "videoFlip": {
+      "name": "Video Flip",
+      "description": "Flip video horizontally or vertically"
+    },
+    "videoCrop": {
+      "name": "Video Crop",
+      "description": "Crop video to a custom region"
+    },
+    "videoChangeSpeed": {
+      "name": "Video Speed Change",
+      "description": "Change video playback speed"
+    },
+    "videoLoop": {
+      "name": "Video Loop",
+      "description": "Loop video a specified number of times"
+    },
+    "videoMerge": {
+      "name": "Video Merge",
+      "description": "Merge multiple videos into one"
+    },
+    "videoAddAudio": {
+      "name": "Video Add Audio",
+      "description": "Add or replace audio track in a video"
+    },
+    "videoToGif": {
+      "name": "Video to GIF",
+      "description": "Convert video to animated GIF"
+    },
+    "gifChangeSpeed": {
+      "name": "GIF Speed Change",
+      "description": "Change GIF animation speed"
+    },
+    "imagesToGif": {
+      "name": "Images to GIF",
+      "description": "Combine images into an animated GIF"
+    },
+    "audioConverter": {
+      "name": "Audio Converter",
+      "description": "Convert audio between formats"
+    },
+    "audioChangeSpeed": {
+      "name": "Audio Speed Change",
+      "description": "Change audio playback speed"
+    },
+    "audioExtract": {
+      "name": "Audio Extract",
+      "description": "Extract audio track from video"
+    },
+    "audioLoop": {
+      "name": "Audio Loop",
+      "description": "Loop audio a specified number of times"
+    },
+    "audioMerge": {
+      "name": "Audio Merge",
+      "description": "Merge multiple audio files into one"
+    },
+    "audioTrim": {
+      "name": "Audio Trim",
+      "description": "Trim audio to a custom time range"
+    },
+    "dnsLeakTest": {
+      "name": "DNS Leak Test",
+      "description": "Test if your DNS is leaking information"
+    },
+    "pingTest": {
+      "name": "Ping Test",
+      "description": "Test network latency to a target"
+    },
+    "mtrTest": {
+      "name": "MTR Test",
+      "description": "Trace network route to a target"
+    },
+    "globalLatencyTest": {
+      "name": "Global Latency Test",
+      "description": "Test DNS latency from global locations"
+    },
+    "ruleTest": {
+      "name": "Rule Test",
+      "description": "Test DNS resolution with custom rules"
+    },
+    "censorshipCheck": {
+      "name": "Censorship Check",
+      "description": "Check if websites are censored"
+    },
+    "screenshotShare": {
+      "name": "Screenshot Share",
+      "description": "Capture and share screenshots of web pages"
+    },
+    "jsonDiff": {
+      "name": "JSON Diff",
+      "description": "Compare two JSON objects and find differences"
+    }
   }
 }
