@@ -213,7 +213,14 @@
     "csvInputPlaceholder": "CSV input...",
     "listItemsPlaceholder": "List items...",
     "none": "None",
-    "secretKeyPlaceholder": "Secret key..."
+    "secretKeyPlaceholder": "Secret key...",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "invalidDate": "Invalid date",
+    "invalidDates": "Invalid dates",
+    "enterTimeAsHhMmSs": "Enter time as HH:MM:SS"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -418,7 +425,9 @@
     },
     "chronometer": {
       "name": "Chronometer",
-      "description": "Stopwatch with lap time recording"
+      "description": "Stopwatch with lap time recording",
+      "lap": "Lap",
+      "lapN": "Lap {n}"
     },
     "temperature": {
       "name": "Temperature Converter",
@@ -713,7 +722,10 @@
     },
     "checkLeapYears": {
       "name": "Check Leap Years",
-      "description": "Check if years are leap years"
+      "description": "Check if years are leap years",
+      "prompt": "Enter years (one per line or space-separated)",
+      "isLeap": "✅ Leap year",
+      "notLeap": "❌ Not a leap year"
     },
     "daysToHours": {
       "name": "Days to Hours",
@@ -737,19 +749,39 @@
     },
     "dateWeekdayCalculator": {
       "name": "Date Weekday Calculator",
-      "description": "Find the day of the week for any date"
+      "description": "Find the day of the week for any date",
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
     },
     "discordTimestamp": {
       "name": "Discord Timestamp",
-      "description": "Generate Discord markdown timestamps"
+      "description": "Generate Discord markdown timestamps",
+      "shortTime": "Short Time",
+      "longTime": "Long Time",
+      "shortDate": "Short Date",
+      "longDate": "Long Date",
+      "shortDateTime": "Short Date/Time",
+      "longDateTime": "Long Date/Time",
+      "relative": "Relative"
     },
     "timeBetweenDates": {
       "name": "Time Between Dates",
-      "description": "Calculate duration between two dates"
+      "description": "Calculate duration between two dates",
+      "startPlaceholder": "Start date/time",
+      "endPlaceholder": "End date/time",
+      "total": "Total:"
     },
     "truncateClockTime": {
       "name": "Truncate Clock Time",
-      "description": "Truncate time to minute or hour precision"
+      "description": "Truncate time to minute or hour precision",
+      "original": "(original)",
+      "toMinute": "(to minute)",
+      "toHour": "(to hour)"
     },
     "imageResize": {
       "name": "Image Resize",
@@ -1171,7 +1203,22 @@
     },
     "benchmarkBuilder": {
       "name": "Benchmark Builder",
-      "description": "Run JavaScript benchmarks and measure performance"
+      "description": "Run JavaScript benchmarks and measure performance",
+      "suite": "Suite {n}",
+      "suiteColumn": "Suite",
+      "suitesTitle": "Benchmark Suites",
+      "suiteNamePlaceholder": "Suite name",
+      "codePlaceholder": "// JavaScript code to benchmark",
+      "addSuite": "+ Add Suite",
+      "iterations": "Iterations",
+      "run": "Run Benchmark",
+      "noResults": "No suites produced results. Check your code for errors.",
+      "failed": "Benchmark failed",
+      "avgMs": "Avg (ms)",
+      "minMs": "Min (ms)",
+      "maxMs": "Max (ms)",
+      "opsPerSec": "Ops/sec",
+      "aboutText": "Write JavaScript code in each suite and run benchmarks to compare execution speed. Results show average, min, max execution time and operations per second across all iterations. Code runs via {code} with a warmup pass before measured iterations."
     },
     "infoMasking": {
       "name": "Info Masking",

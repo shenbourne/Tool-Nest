@@ -1,0 +1,136 @@
+{
+  "en": {
+    "common": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds",
+      "invalidDate": "Invalid date",
+      "invalidDates": "Invalid dates",
+      "enterTimeAsHhMmSs": "Enter time as HH:MM:SS"
+    },
+    "tools": {
+      "benchmarkBuilder": {
+        "suite": "Suite {n}",
+        "suiteColumn": "Suite",
+        "suitesTitle": "Benchmark Suites",
+        "suiteNamePlaceholder": "Suite name",
+        "codePlaceholder": "// JavaScript code to benchmark",
+        "addSuite": "+ Add Suite",
+        "iterations": "Iterations",
+        "run": "Run Benchmark",
+        "noResults": "No suites produced results. Check your code for errors.",
+        "failed": "Benchmark failed",
+        "avgMs": "Avg (ms)",
+        "minMs": "Min (ms)",
+        "maxMs": "Max (ms)",
+        "opsPerSec": "Ops/sec",
+        "aboutText": "Write JavaScript code in each suite and run benchmarks to compare execution speed. Results show average, min, max execution time and operations per second across all iterations. Code runs via {code} with a warmup pass before measured iterations."
+      },
+      "checkLeapYears": {
+        "prompt": "Enter years (one per line or space-separated)",
+        "isLeap": "✅ Leap year",
+        "notLeap": "❌ Not a leap year"
+      },
+      "chronometer": {
+        "lap": "Lap",
+        "lapN": "Lap {n}"
+      },
+      "dateWeekdayCalculator": {
+        "sunday": "Sunday",
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday"
+      },
+      "discordTimestamp": {
+        "shortTime": "Short Time",
+        "longTime": "Long Time",
+        "shortDate": "Short Date",
+        "longDate": "Long Date",
+        "shortDateTime": "Short Date/Time",
+        "longDateTime": "Long Date/Time",
+        "relative": "Relative"
+      },
+      "timeBetweenDates": {
+        "startPlaceholder": "Start date/time",
+        "endPlaceholder": "End date/time",
+        "total": "Total:"
+      },
+      "truncateClockTime": {
+        "original": "(original)",
+        "toMinute": "(to minute)",
+        "toHour": "(to hour)"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "days": "天",
+      "hours": "小时",
+      "minutes": "分钟",
+      "seconds": "秒",
+      "invalidDate": "日期无效",
+      "invalidDates": "日期无效",
+      "enterTimeAsHhMmSs": "请以 HH:MM:SS 格式输入时间"
+    },
+    "tools": {
+      "benchmarkBuilder": {
+        "suite": "套件 {n}",
+        "suiteColumn": "套件",
+        "suitesTitle": "基准测试套件",
+        "suiteNamePlaceholder": "套件名称",
+        "codePlaceholder": "// 要基准测试的 JavaScript 代码",
+        "addSuite": "+ 添加套件",
+        "iterations": "迭代次数",
+        "run": "运行基准测试",
+        "noResults": "没有套件产生结果，请检查代码是否存在错误。",
+        "failed": "基准测试运行失败",
+        "avgMs": "平均 (ms)",
+        "minMs": "最小 (ms)",
+        "maxMs": "最大 (ms)",
+        "opsPerSec": "操作/秒",
+        "aboutText": "在每个套件中编写 JavaScript 代码并运行基准测试，以比较执行速度。结果展示所有迭代中的平均、最小、最大执行时间及每秒操作数。代码通过 {code} 执行，并在正式测量迭代前进行预热。"
+      },
+      "checkLeapYears": {
+        "prompt": "输入年份（每行一个或以空格分隔）",
+        "isLeap": "✅ 闰年",
+        "notLeap": "❌ 非闰年"
+      },
+      "chronometer": {
+        "lap": "计次",
+        "lapN": "计次 {n}"
+      },
+      "dateWeekdayCalculator": {
+        "sunday": "周日",
+        "monday": "周一",
+        "tuesday": "周二",
+        "wednesday": "周三",
+        "thursday": "周四",
+        "friday": "周五",
+        "saturday": "周六"
+      },
+      "discordTimestamp": {
+        "shortTime": "短时间",
+        "longTime": "长时间",
+        "shortDate": "短日期",
+        "longDate": "长日期",
+        "shortDateTime": "短日期时间",
+        "longDateTime": "长日期时间",
+        "relative": "相对时间"
+      },
+      "timeBetweenDates": {
+        "startPlaceholder": "开始日期/时间",
+        "endPlaceholder": "结束日期/时间",
+        "total": "总计:"
+      },
+      "truncateClockTime": {
+        "original": "(原始)",
+        "toMinute": "(精确到分)",
+        "toHour": "(精确到小时)"
+      }
+    }
+  }
+}

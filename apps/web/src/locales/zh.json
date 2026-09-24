@@ -213,7 +213,14 @@
     "csvInputPlaceholder": "输入 CSV...",
     "listItemsPlaceholder": "输入列表项...",
     "none": "无",
-    "secretKeyPlaceholder": "密钥..."
+    "secretKeyPlaceholder": "密钥...",
+    "days": "天",
+    "hours": "小时",
+    "minutes": "分钟",
+    "seconds": "秒",
+    "invalidDate": "日期无效",
+    "invalidDates": "日期无效",
+    "enterTimeAsHhMmSs": "请以 HH:MM:SS 格式输入时间"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -418,7 +425,9 @@
     },
     "chronometer": {
       "name": "秒表",
-      "description": "带圈时记录的秒表计时器"
+      "description": "带圈时记录的秒表计时器",
+      "lap": "计次",
+      "lapN": "计次 {n}"
     },
     "temperature": {
       "name": "温度转换器",
@@ -713,7 +722,10 @@
     },
     "checkLeapYears": {
       "name": "闰年检测",
-      "description": "检测年份是否为闰年"
+      "description": "检测年份是否为闰年",
+      "prompt": "输入年份（每行一个或以空格分隔）",
+      "isLeap": "✅ 闰年",
+      "notLeap": "❌ 非闰年"
     },
     "daysToHours": {
       "name": "天转小时",
@@ -737,19 +749,39 @@
     },
     "dateWeekdayCalculator": {
       "name": "日期星期计算",
-      "description": "查找任意日期是星期几"
+      "description": "查找任意日期是星期几",
+      "sunday": "周日",
+      "monday": "周一",
+      "tuesday": "周二",
+      "wednesday": "周三",
+      "thursday": "周四",
+      "friday": "周五",
+      "saturday": "周六"
     },
     "discordTimestamp": {
       "name": "Discord 时间戳",
-      "description": "生成 Discord Markdown 时间戳"
+      "description": "生成 Discord Markdown 时间戳",
+      "shortTime": "短时间",
+      "longTime": "长时间",
+      "shortDate": "短日期",
+      "longDate": "长日期",
+      "shortDateTime": "短日期时间",
+      "longDateTime": "长日期时间",
+      "relative": "相对时间"
     },
     "timeBetweenDates": {
       "name": "日期间隔",
-      "description": "计算两个日期之间的时长"
+      "description": "计算两个日期之间的时长",
+      "startPlaceholder": "开始日期/时间",
+      "endPlaceholder": "结束日期/时间",
+      "total": "总计:"
     },
     "truncateClockTime": {
       "name": "时间截断",
-      "description": "将时间截断到分钟或小时精度"
+      "description": "将时间截断到分钟或小时精度",
+      "original": "(原始)",
+      "toMinute": "(精确到分)",
+      "toHour": "(精确到小时)"
     },
     "imageResize": {
       "name": "图片调整大小",
@@ -1171,7 +1203,22 @@
     },
     "benchmarkBuilder": {
       "name": "基准测试构建器",
-      "description": "运行 JavaScript 基准测试并测量性能"
+      "description": "运行 JavaScript 基准测试并测量性能",
+      "suite": "套件 {n}",
+      "suiteColumn": "套件",
+      "suitesTitle": "基准测试套件",
+      "suiteNamePlaceholder": "套件名称",
+      "codePlaceholder": "// 要基准测试的 JavaScript 代码",
+      "addSuite": "+ 添加套件",
+      "iterations": "迭代次数",
+      "run": "运行基准测试",
+      "noResults": "没有套件产生结果，请检查代码是否存在错误。",
+      "failed": "基准测试运行失败",
+      "avgMs": "平均 (ms)",
+      "minMs": "最小 (ms)",
+      "maxMs": "最大 (ms)",
+      "opsPerSec": "操作/秒",
+      "aboutText": "在每个套件中编写 JavaScript 代码并运行基准测试，以比较执行速度。结果展示所有迭代中的平均、最小、最大执行时间及每秒操作数。代码通过 {code} 执行，并在正式测量迭代前进行预热。"
     },
     "infoMasking": {
       "name": "信息脱敏",
