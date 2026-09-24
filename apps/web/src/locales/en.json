@@ -207,7 +207,9 @@
     "symbols": "Symbols",
     "qrCode": "QR Code",
     "password": "Password",
-    "uploadFile": "Upload an image"
+    "uploadFile": "Upload an image",
+    "end": "End",
+    "regex": "Regex"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -336,7 +338,16 @@
     },
     "textStats": {
       "name": "Text Statistics",
-      "description": "Count characters, words, lines, sentences, and estimate reading time"
+      "description": "Count characters, words, lines, sentences, and estimate reading time",
+      "inputPlaceholder": "Paste or type text here...",
+      "characters": "Characters",
+      "charactersNoSpaces": "Characters (no spaces)",
+      "words": "Words",
+      "lines": "Lines",
+      "sentences": "Sentences",
+      "paragraphs": "Paragraphs",
+      "readingTime": "Reading time",
+      "readingTimeValue": "{count} min"
     },
     "loremIpsum": {
       "name": "Lorem Ipsum Generator",
@@ -355,11 +366,19 @@
     },
     "textDiff": {
       "name": "Text Diff",
-      "description": "Compare two texts and highlight differences"
+      "description": "Compare two texts and highlight differences",
+      "original": "Original",
+      "modified": "Modified",
+      "diff": "Diff",
+      "same": "Same: {count}",
+      "changed": "Changed: {count}",
+      "removed": "Removed: {count}",
+      "added": "Added: {count}"
     },
     "emojiPicker": {
       "name": "Emoji Picker",
-      "description": "Browse and copy popular emojis"
+      "description": "Browse and copy popular emojis",
+      "searchPlaceholder": "Search emoji..."
     },
     "stringObfuscator": {
       "name": "String Obfuscator",
@@ -387,19 +406,24 @@
     },
     "palindromeChecker": {
       "name": "Palindrome Checker",
-      "description": "Check if text is a palindrome"
+      "description": "Check if text is a palindrome",
+      "isPalindrome": "✅ Yes! This is a palindrome.",
+      "notPalindrome": "❌ Not a palindrome."
     },
     "emailExtractor": {
       "name": "Email Extractor",
-      "description": "Extract email addresses from text using regex"
+      "description": "Extract email addresses from text using regex",
+      "noEmailsFound": "No emails found."
     },
     "extractSubstring": {
       "name": "Extract Substring",
-      "description": "Extract a portion of text by position range"
+      "description": "Extract a portion of text by position range",
+      "inputPlaceholder": "Input text..."
     },
     "hiddenCharDetector": {
       "name": "Hidden Character Detector",
-      "description": "Detect invisible and special Unicode characters"
+      "description": "Detect invisible and special Unicode characters",
+      "noneDetected": "No hidden characters detected."
     },
     "textJoin": {
       "name": "Text Join",
@@ -407,7 +431,8 @@
     },
     "quoteGenerator": {
       "name": "Quote Generator",
-      "description": "Browse and display random programming quotes"
+      "description": "Browse and display random programming quotes",
+      "nextQuote": "Next Quote"
     },
     "removeDuplicateLines": {
       "name": "Remove Duplicate Lines",
@@ -415,7 +440,8 @@
     },
     "textRepeat": {
       "name": "Text Repeat",
-      "description": "Repeat text a specified number of times"
+      "description": "Repeat text a specified number of times",
+      "inputPlaceholder": "Text to repeat..."
     },
     "textReverse": {
       "name": "Text Reverse",
@@ -423,7 +449,8 @@
     },
     "textRotate": {
       "name": "Text Rotate",
-      "description": "Rotate text lines by N positions"
+      "description": "Rotate text lines by N positions",
+      "inputPlaceholder": "Input lines..."
     },
     "textSplit": {
       "name": "Text Split",
@@ -431,11 +458,19 @@
     },
     "textReplacer": {
       "name": "Text Replacer",
-      "description": "Find and replace text with regex support"
+      "description": "Find and replace text with regex support",
+      "inputPlaceholder": "Input text...",
+      "findPlaceholder": "Find...",
+      "replacePlaceholder": "Replace...",
+      "invalidRegex": "Invalid regex"
     },
     "textTruncate": {
       "name": "Text Truncate",
-      "description": "Truncate text by characters, words, or lines"
+      "description": "Truncate text by characters, words, or lines",
+      "inputPlaceholder": "Input text...",
+      "characters": "Characters",
+      "words": "Words",
+      "lines": "Lines"
     },
     "passwordGenerator": {
       "name": "Password Generator",
@@ -846,7 +881,8 @@
     },
     "numeronymGenerator": {
       "name": "Numeronym Generator",
-      "description": "Generate numeronyms (e.g., i18n, a11y) from words"
+      "description": "Generate numeronyms (e.g., i18n, a11y) from words",
+      "inputPlaceholder": "Enter a word, e.g. 'internationalization'"
     },
     "basicAuthGenerator": {
       "name": "Basic Auth Generator",

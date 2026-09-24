@@ -22,7 +22,7 @@ function copy(e: string) { navigator.clipboard.writeText(e); }
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="search" placeholder="Search emoji..." clearable />
+      <NInput v-model:value="search" :placeholder="t('tools.emojiPicker.searchPlaceholder')" clearable />
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(50px,1fr));gap:4px;">
         <NButton v-for="[emoji, name] in filtered" :key="name" quaternary size="large" @click="copy(emoji)" :title="name" style="font-size:24px;height:48px;">{{ emoji }}</NButton>
       </div>

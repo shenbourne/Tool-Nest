@@ -207,7 +207,9 @@
     "symbols": "符号",
     "qrCode": "二维码",
     "password": "密码",
-    "uploadFile": "上传图片"
+    "uploadFile": "上传图片",
+    "end": "结束",
+    "regex": "Regex"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -336,7 +338,16 @@
     },
     "textStats": {
       "name": "文本统计",
-      "description": "统计字符、单词、行数、句子数，并估算阅读时间"
+      "description": "统计字符、单词、行数、句子数，并估算阅读时间",
+      "inputPlaceholder": "在此粘贴或输入文本...",
+      "characters": "字符数",
+      "charactersNoSpaces": "字符数（不含空格）",
+      "words": "单词数",
+      "lines": "行数",
+      "sentences": "句子数",
+      "paragraphs": "段落数",
+      "readingTime": "阅读时间",
+      "readingTimeValue": "{count} 分钟"
     },
     "loremIpsum": {
       "name": "Lorem Ipsum 生成器",
@@ -355,11 +366,19 @@
     },
     "textDiff": {
       "name": "文本对比",
-      "description": "比较两段文本并高亮显示差异"
+      "description": "比较两段文本并高亮显示差异",
+      "original": "原文",
+      "modified": "修改后",
+      "diff": "差异",
+      "same": "相同: {count}",
+      "changed": "已修改: {count}",
+      "removed": "已删除: {count}",
+      "added": "已新增: {count}"
     },
     "emojiPicker": {
       "name": "表情选择器",
-      "description": "浏览和复制常用表情符号"
+      "description": "浏览和复制常用表情符号",
+      "searchPlaceholder": "搜索表情..."
     },
     "stringObfuscator": {
       "name": "字符串混淆器",
@@ -387,19 +406,24 @@
     },
     "palindromeChecker": {
       "name": "回文检测",
-      "description": "检测文本是否为回文"
+      "description": "检测文本是否为回文",
+      "isPalindrome": "✅ 是的！这是回文。",
+      "notPalindrome": "❌ 不是回文。"
     },
     "emailExtractor": {
       "name": "邮箱提取器",
-      "description": "使用正则表达式从文本中提取邮箱地址"
+      "description": "使用正则表达式从文本中提取邮箱地址",
+      "noEmailsFound": "未找到邮箱。"
     },
     "extractSubstring": {
       "name": "提取子串",
-      "description": "按位置范围提取文本片段"
+      "description": "按位置范围提取文本片段",
+      "inputPlaceholder": "输入文本..."
     },
     "hiddenCharDetector": {
       "name": "隐藏字符检测",
-      "description": "检测不可见和特殊 Unicode 字符"
+      "description": "检测不可见和特殊 Unicode 字符",
+      "noneDetected": "未检测到隐藏字符。"
     },
     "textJoin": {
       "name": "文本连接",
@@ -407,7 +431,8 @@
     },
     "quoteGenerator": {
       "name": "名言生成器",
-      "description": "浏览和显示随机编程名言"
+      "description": "浏览和显示随机编程名言",
+      "nextQuote": "下一条名言"
     },
     "removeDuplicateLines": {
       "name": "去除重复行",
@@ -415,7 +440,8 @@
     },
     "textRepeat": {
       "name": "文本重复",
-      "description": "将文本重复指定次数"
+      "description": "将文本重复指定次数",
+      "inputPlaceholder": "要重复的文本..."
     },
     "textReverse": {
       "name": "文本反转",
@@ -423,7 +449,8 @@
     },
     "textRotate": {
       "name": "文本旋转",
-      "description": "将文本行旋转 N 个位置"
+      "description": "将文本行旋转 N 个位置",
+      "inputPlaceholder": "输入行..."
     },
     "textSplit": {
       "name": "文本分割",
@@ -431,11 +458,19 @@
     },
     "textReplacer": {
       "name": "文本替换",
-      "description": "支持正则表达式的查找和替换"
+      "description": "支持正则表达式的查找和替换",
+      "inputPlaceholder": "输入文本...",
+      "findPlaceholder": "查找...",
+      "replacePlaceholder": "替换...",
+      "invalidRegex": "无效的正则表达式"
     },
     "textTruncate": {
       "name": "文本截断",
-      "description": "按字符、单词或行截断文本"
+      "description": "按字符、单词或行截断文本",
+      "inputPlaceholder": "输入文本...",
+      "characters": "字符",
+      "words": "单词",
+      "lines": "行"
     },
     "passwordGenerator": {
       "name": "密码生成器",
@@ -846,7 +881,8 @@
     },
     "numeronymGenerator": {
       "name": "数字缩略词生成器",
-      "description": "从单词生成数字缩略词（如 i18n、a11y）"
+      "description": "从单词生成数字缩略词（如 i18n、a11y）",
+      "inputPlaceholder": "输入单词，例如 'internationalization'"
     },
     "basicAuthGenerator": {
       "name": "Basic Auth 生成器",
