@@ -41,49 +41,49 @@ function download() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Settings">
+      <NCard :title="t('common.settings')">
         <NSpace vertical :size="12">
           <NSpace :size="12">
             <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">Width</div>
+              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.width') }}</div>
               <NInputNumber v-model:value="width" :min="1" :max="4000" style="width: 120px;" />
             </div>
             <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">Height</div>
+              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.height') }}</div>
               <NInputNumber v-model:value="height" :min="1" :max="4000" style="width: 120px;" />
             </div>
             <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">Font Size</div>
-              <NInputNumber v-model:value="fontSize" :min="1" :max="200" placeholder="Auto" style="width: 120px;" />
+              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.svgPlaceholderGenerator.fontSize') }}</div>
+              <NInputNumber v-model:value="fontSize" :min="1" :max="200" :placeholder="t('tools.svgPlaceholderGenerator.auto')" style="width: 120px;" />
             </div>
           </NSpace>
           <NSpace :size="12">
             <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">Background</div>
+              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.background') }}</div>
               <NColorPicker v-model:value="bgColor" :show-alpha="false" size="small" style="width: 100px;" />
             </div>
             <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">Text Color</div>
+              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.svgPlaceholderGenerator.textColor') }}</div>
               <NColorPicker v-model:value="fgColor" :show-alpha="false" size="small" style="width: 100px;" />
             </div>
           </NSpace>
           <div>
-            <div style="margin-bottom: 4px; font-size: 13px;">Custom Text</div>
-            <NInput v-model:value="customText" placeholder="Default: width x height" clearable />
+            <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.svgPlaceholderGenerator.customText') }}</div>
+            <NInput v-model:value="customText" :placeholder="t('tools.svgPlaceholderGenerator.customTextPlaceholder')" clearable />
           </div>
         </NSpace>
       </NCard>
 
-      <NCard title="Preview">
+      <NCard :title="t('common.preview')">
         <div style="text-align: center; margin-bottom: 16px;">
-          <img :src="dataUrl" alt="SVG Placeholder" style="max-width: 100%; border: 1px solid var(--color-hairline);" />
+          <img :src="dataUrl" :alt="t('tools.svgPlaceholderGenerator.alt')" style="max-width: 100%; border: 1px solid var(--color-hairline);" />
         </div>
         <NSpace>
-          <NButton @click="download">{{ t('tool.download') }} SVG</NButton>
+          <NButton @click="download">{{ t('tools.svgPlaceholderGenerator.downloadSvg') }}</NButton>
         </NSpace>
       </NCard>
 
-      <NCard title="SVG Code">
+      <NCard :title="t('tools.svgPlaceholderGenerator.svgCode')">
         <NInput
           :value="svgCode"
           type="textarea"

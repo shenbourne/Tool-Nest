@@ -200,7 +200,14 @@
     "moveUp": "Up",
     "moveDown": "Down",
     "horizontal": "Horizontal",
-    "vertical": "Vertical"
+    "vertical": "Vertical",
+    "min": "Min",
+    "max": "Max",
+    "numbers": "Numbers",
+    "symbols": "Symbols",
+    "qrCode": "QR Code",
+    "password": "Password",
+    "uploadFile": "Upload an image"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -432,7 +439,11 @@
     },
     "passwordGenerator": {
       "name": "Password Generator",
-      "description": "Generate secure random passwords with custom options"
+      "description": "Generate secure random passwords with custom options",
+      "selectOneOption": "Select at least one option",
+      "excludePlaceholder": "Exclude characters...",
+      "generatePassword": "Generate Password",
+      "outputPlaceholder": "Click generate..."
     },
     "byteConverter": {
       "name": "Byte Converter",
@@ -455,7 +466,9 @@
     },
     "randomNumberGenerator": {
       "name": "Random Number Generator",
-      "description": "Generate random numbers with custom range"
+      "description": "Generate random numbers with custom range",
+      "rangeTooSmall": "Range too small for unique numbers",
+      "uniqueOnly": "Unique only"
     },
     "numberSum": {
       "name": "Number Sum",
@@ -463,7 +476,8 @@
     },
     "numberGenerator": {
       "name": "Number Generator",
-      "description": "Generate number sequences: Fibonacci, primes, even, odd"
+      "description": "Generate number sequences: Fibonacci, primes, even, odd",
+      "usageHint": "Line 1: type (fibonacci/primes/even/odd)\nLine 2: count"
     },
     "csvToJson": {
       "name": "CSV to JSON",
@@ -717,7 +731,9 @@
     },
     "jpgToPng": {
       "name": "JPG to PNG",
-      "description": "Convert JPG images to PNG format"
+      "description": "Convert JPG images to PNG format",
+      "uploadImage": "Upload a JPG image",
+      "downloadAsPng": "Download as PNG"
     },
     "pdfMerge": {
       "name": "PDF Merge",
@@ -1185,19 +1201,55 @@
     },
     "qrCodeGenerator": {
       "name": "QR Code Generator",
-      "description": "Generate QR codes from text or URLs"
+      "description": "Generate QR codes from text or URLs",
+      "inputPlaceholder": "Enter text or URL...",
+      "errorCorrection": "Error Correction",
+      "emptyHint": "Enter text above to generate QR code"
     },
     "wifiQrCodeGenerator": {
       "name": "WiFi QR Code Generator",
-      "description": "Generate QR codes for WiFi network credentials"
+      "description": "Generate QR codes for WiFi network credentials",
+      "settingsTitle": "WiFi Settings",
+      "encryption": "Encryption",
+      "ssid": "SSID (Network Name)",
+      "ssidPlaceholder": "Enter WiFi network name",
+      "passwordPlaceholder": "Enter password",
+      "hiddenNetwork": "Hidden network",
+      "noPassword": "No Password",
+      "qrCodeAlt": "WiFi QR Code",
+      "emptyHint": "Enter WiFi details above to generate QR code"
     },
     "svgPlaceholderGenerator": {
       "name": "SVG Placeholder Generator",
-      "description": "Generate SVG placeholder images with custom dimensions"
+      "description": "Generate SVG placeholder images with custom dimensions",
+      "fontSize": "Font Size",
+      "auto": "Auto",
+      "textColor": "Text Color",
+      "customText": "Custom Text",
+      "customTextPlaceholder": "Default: width x height",
+      "alt": "SVG Placeholder",
+      "downloadSvg": "Download SVG",
+      "svgCode": "SVG Code"
     },
     "otpGenerator": {
       "name": "OTP Generator",
-      "description": "Generate and validate TOTP one-time passwords"
+      "description": "Generate and validate TOTP one-time passwords",
+      "secretKey": "Secret Key",
+      "generateNewSecret": "Generate new secret",
+      "currentToken": "Current TOTP Token",
+      "refreshesIn": "Refreshes in {n}s",
+      "copyToken": "Copy Token",
+      "verifyToken": "Verify Token",
+      "verifyPlaceholder": "Enter token to verify",
+      "verify": "Verify",
+      "pleaseEnterToken": "Please enter a token",
+      "tokenValid": "Token is valid",
+      "tokenInvalid": "Token is invalid",
+      "qrCodeTitle": "QR Code for Authenticator Apps",
+      "qrCodeAlt": "OTP QR Code",
+      "noQrCode": "No QR code available",
+      "issuer": "Issuer",
+      "account": "Account"
     },
     "imageToTextOcr": {
       "name": "Image to Text (OCR)",

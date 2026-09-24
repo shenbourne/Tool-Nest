@@ -51,13 +51,13 @@ function download() {
       <NCard :title="t('tools.jpgToPng.name')">
         <NSpace vertical :size="12">
           <div>
-            <label for="file-upload">{{ t('common.uploadFile', 'Upload a JPG image') }}</label>
+            <label for="file-upload">{{ t('tools.jpgToPng.uploadImage') }}</label>
             <input id="file-upload" type="file" accept="image/jpeg" @change="onFileChange" style="display:block;margin-top:8px;" />
           </div>
           <div v-if="imageUrl">
             <img :src="imageUrl" style="max-width:100%;" />
           </div>
-          <NButton type="primary" :disabled="!file" @click="download">{{ t('common.download', 'Download as PNG') }}</NButton>
+          <NButton type="primary" :disabled="!file" @click="download">{{ t('tools.jpgToPng.downloadAsPng') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

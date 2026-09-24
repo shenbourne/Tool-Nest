@@ -200,7 +200,14 @@
     "moveUp": "上移",
     "moveDown": "下移",
     "horizontal": "水平",
-    "vertical": "垂直"
+    "vertical": "垂直",
+    "min": "最小",
+    "max": "最大",
+    "numbers": "数字",
+    "symbols": "符号",
+    "qrCode": "二维码",
+    "password": "密码",
+    "uploadFile": "上传图片"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -432,7 +439,11 @@
     },
     "passwordGenerator": {
       "name": "密码生成器",
-      "description": "使用自定义选项生成安全随机密码"
+      "description": "使用自定义选项生成安全随机密码",
+      "selectOneOption": "请至少选择一项",
+      "excludePlaceholder": "排除字符...",
+      "generatePassword": "生成密码",
+      "outputPlaceholder": "点击生成..."
     },
     "byteConverter": {
       "name": "字节转换器",
@@ -455,7 +466,9 @@
     },
     "randomNumberGenerator": {
       "name": "随机数生成器",
-      "description": "在自定义范围内生成随机数"
+      "description": "在自定义范围内生成随机数",
+      "rangeTooSmall": "范围太小，无法生成不重复的数字",
+      "uniqueOnly": "仅不重复"
     },
     "numberSum": {
       "name": "数字求和",
@@ -463,7 +476,8 @@
     },
     "numberGenerator": {
       "name": "数字序列生成",
-      "description": "生成数字序列：斐波那契、素数、偶数、奇数"
+      "description": "生成数字序列：斐波那契、素数、偶数、奇数",
+      "usageHint": "第 1 行：类型（fibonacci/primes/even/odd）\n第 2 行：数量"
     },
     "csvToJson": {
       "name": "CSV 转 JSON",
@@ -717,7 +731,9 @@
     },
     "jpgToPng": {
       "name": "JPG 转 PNG",
-      "description": "将 JPG 图片转换为 PNG 格式"
+      "description": "将 JPG 图片转换为 PNG 格式",
+      "uploadImage": "上传 JPG 图片",
+      "downloadAsPng": "下载为 PNG"
     },
     "pdfMerge": {
       "name": "PDF 合并",
@@ -1185,19 +1201,55 @@
     },
     "qrCodeGenerator": {
       "name": "二维码生成器",
-      "description": "从文本或 URL 生成二维码"
+      "description": "从文本或 URL 生成二维码",
+      "inputPlaceholder": "输入文本或 URL...",
+      "errorCorrection": "纠错级别",
+      "emptyHint": "在上方输入内容以生成二维码"
     },
     "wifiQrCodeGenerator": {
       "name": "WiFi 二维码生成器",
-      "description": "生成 WiFi 网络凭证的二维码"
+      "description": "生成 WiFi 网络凭证的二维码",
+      "settingsTitle": "WiFi 设置",
+      "encryption": "加密方式",
+      "ssid": "SSID（网络名称）",
+      "ssidPlaceholder": "输入 WiFi 网络名称",
+      "passwordPlaceholder": "输入密码",
+      "hiddenNetwork": "隐藏网络",
+      "noPassword": "无密码",
+      "qrCodeAlt": "WiFi 二维码",
+      "emptyHint": "在上方填写 WiFi 信息以生成二维码"
     },
     "svgPlaceholderGenerator": {
       "name": "SVG 占位图生成器",
-      "description": "生成自定义尺寸的 SVG 占位图"
+      "description": "生成自定义尺寸的 SVG 占位图",
+      "fontSize": "字号",
+      "auto": "自动",
+      "textColor": "文字颜色",
+      "customText": "自定义文本",
+      "customTextPlaceholder": "默认：宽 x 高",
+      "alt": "SVG 占位图",
+      "downloadSvg": "下载 SVG",
+      "svgCode": "SVG 代码"
     },
     "otpGenerator": {
       "name": "OTP 生成器",
-      "description": "生成和验证 TOTP 一次性密码"
+      "description": "生成和验证 TOTP 一次性密码",
+      "secretKey": "密钥",
+      "generateNewSecret": "生成新密钥",
+      "currentToken": "当前 TOTP 令牌",
+      "refreshesIn": "{n} 秒后刷新",
+      "copyToken": "复制令牌",
+      "verifyToken": "验证令牌",
+      "verifyPlaceholder": "输入要验证的令牌",
+      "verify": "验证",
+      "pleaseEnterToken": "请输入令牌",
+      "tokenValid": "令牌有效",
+      "tokenInvalid": "令牌无效",
+      "qrCodeTitle": "用于验证器应用的二维码",
+      "qrCodeAlt": "OTP 二维码",
+      "noQrCode": "暂无可用二维码",
+      "issuer": "颁发者",
+      "account": "账户"
     },
     "imageToTextOcr": {
       "name": "图片转文字 (OCR)",
