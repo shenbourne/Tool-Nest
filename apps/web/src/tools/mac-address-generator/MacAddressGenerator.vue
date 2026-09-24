@@ -14,12 +14,12 @@ const prefix = ref('64:16:7F');
 const separator = ref(':');
 const uppercase = ref(true);
 
-const separatorOptions = [
+const separatorOptions = computed(() => [
   { label: ':', value: ':' },
   { label: '-', value: '-' },
   { label: '.', value: '.' },
-  { label: 'None', value: '' },
-];
+  { label: t('common.none'), value: '' },
+]);
 
 const prefixValid = computed(() => isValidMacPrefix(prefix.value));
 
@@ -45,37 +45,37 @@ function copyAll() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Settings">
+      <NCard :title="t('common.settings')">
         <NSpace vertical :size="12">
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">Quantity:</label>
+            <label style="min-width: 120px; text-align: right;">{{ t('common.quantity') }}:</label>
             <NInputNumber v-model:value="count" :min="1" :max="100" style="flex: 1" />
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">Prefix (OUI):</label>
-            <NInput v-model:value="prefix" placeholder="e.g. 64:16:7F" clearable style="flex: 1" />
+            <label style="min-width: 120px; text-align: right;">{{ t('tools.macAddressGenerator.prefixOui') }}:</label>
+            <NInput v-model:value="prefix" :placeholder="t('tools.macAddressGenerator.prefixPlaceholder')" clearable style="flex: 1" />
           </div>
           <NAlert v-if="prefix && !prefixValid" type="error">
-            Invalid MAC prefix. Use hex pairs separated by : or -
+            {{ t('tools.macAddressGenerator.invalidMacPrefix') }}
           </NAlert>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">Separator:</label>
+            <label style="min-width: 120px; text-align: right;">{{ t('common.separator') }}:</label>
             <NSelect v-model:value="separator" :options="separatorOptions" style="flex: 1" />
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">Case:</label>
+            <label style="min-width: 120px; text-align: right;">{{ t('tools.macAddressGenerator.caseLabel') }}:</label>
             <NRadioGroup v-model:value="uppercase">
-              <NRadio :value="true">Uppercase</NRadio>
-              <NRadio :value="false">Lowercase</NRadio>
+              <NRadio :value="true">{{ t('common.uppercase') }}</NRadio>
+              <NRadio :value="false">{{ t('common.lowercase') }}</NRadio>
             </NRadioGroup>
           </div>
         </NSpace>
       </NCard>
 
-      <NCard title="Generated MAC Addresses">
+      <NCard :title="t('tools.macAddressGenerator.generatedMacAddresses')">
         <pre style="margin: 0; font-family: monospace; white-space: pre-wrap;">{{ macAddresses.join('\n') }}</pre>
         <NSpace style="margin-top: 12px" justify="center">
-          <NButton @click="refresh">Refresh</NButton>
+          <NButton @click="refresh">{{ t('common.refresh') }}</NButton>
           <NButton @click="copyAll">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

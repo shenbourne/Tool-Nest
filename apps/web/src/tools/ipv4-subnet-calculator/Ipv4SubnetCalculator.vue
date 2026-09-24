@@ -21,40 +21,40 @@ const tableData = computed(() => {
   if (!result.value) return [];
   const r = result.value;
   return [
-    { property: 'Network Address', value: r.networkAddress },
-    { property: 'Broadcast Address', value: r.broadcastAddress },
-    { property: 'Subnet Mask', value: r.subnetMask },
-    { property: 'Wildcard Mask', value: r.wildcardMask },
-    { property: 'CIDR Prefix', value: `/${r.cidr}` },
-    { property: 'Mask (Binary)', value: r.maskBinary },
-    { property: 'First Host', value: r.firstHost },
-    { property: 'Last Host', value: r.lastHost },
-    { property: 'Total Hosts', value: r.totalHosts.toLocaleString() },
-    { property: 'Usable Hosts', value: r.usableHosts.toLocaleString() },
-    { property: 'IP Class', value: r.ipClass },
+    { property: t('tools.ipv4SubnetCalculator.networkAddress'), value: r.networkAddress },
+    { property: t('tools.ipv4SubnetCalculator.broadcastAddress'), value: r.broadcastAddress },
+    { property: t('tools.ipv4SubnetCalculator.subnetMask'), value: r.subnetMask },
+    { property: t('tools.ipv4SubnetCalculator.wildcardMask'), value: r.wildcardMask },
+    { property: t('tools.ipv4SubnetCalculator.cidrPrefix'), value: `/${r.cidr}` },
+    { property: t('tools.ipv4SubnetCalculator.maskBinary'), value: r.maskBinary },
+    { property: t('tools.ipv4SubnetCalculator.firstHost'), value: r.firstHost },
+    { property: t('tools.ipv4SubnetCalculator.lastHost'), value: r.lastHost },
+    { property: t('tools.ipv4SubnetCalculator.totalHosts'), value: r.totalHosts.toLocaleString() },
+    { property: t('tools.ipv4SubnetCalculator.usableHosts'), value: r.usableHosts.toLocaleString() },
+    { property: t('tools.ipv4SubnetCalculator.ipClass'), value: r.ipClass },
   ];
 });
 
-const columns = [
-  { title: 'Property', key: 'property' },
-  { title: 'Value', key: 'value' },
-];
+const columns = computed(() => [
+  { title: t('tools.ipv4SubnetCalculator.property'), key: 'property' },
+  { title: t('tools.ipv4SubnetCalculator.value'), key: 'value' },
+]);
 </script>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="IPv4 CIDR Address">
+      <NCard :title="t('tools.ipv4SubnetCalculator.ipv4CidrAddress')">
         <NInput
           v-model:value="cidrInput"
-          placeholder="e.g. 192.168.1.0/24"
+          :placeholder="t('tools.ipv4SubnetCalculator.cidrPlaceholder')"
         />
         <NAlert v-if="cidrInput && !isValid" type="error" style="margin-top: 8px">
-          Invalid IPv4 CIDR address. Use format like 192.168.1.0/24
+          {{ t('tools.ipv4SubnetCalculator.invalidCidr') }}
         </NAlert>
       </NCard>
 
-      <NCard v-if="result" title="Subnet Details">
+      <NCard v-if="result" :title="t('tools.ipv4SubnetCalculator.subnetDetails')">
         <NDataTable
           :columns="columns"
           :data="tableData"

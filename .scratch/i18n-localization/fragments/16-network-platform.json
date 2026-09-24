@@ -1,0 +1,140 @@
+{
+  "en": {
+    "tools": {
+      "infoMasking": {
+        "inputText": "Input Text",
+        "pasteSensitivePlaceholder": "Paste text containing sensitive information...",
+        "detected": "Detected:",
+        "maskCharacter": "Mask character:",
+        "preserveFirst": "Preserve first:",
+        "preserveLast": "Preserve last:",
+        "patternsToMask": "Patterns to mask:",
+        "maskedOutput": "Masked Output",
+        "comparison": "Before / After Comparison",
+        "before": "Before",
+        "after": "After"
+      },
+      "ipv4RangeExpander": {
+        "ipRange": "IP Range",
+        "startIpPlaceholder": "Start IPv4 address...",
+        "endIpPlaceholder": "End IPv4 address...",
+        "invalidIpv4": "Invalid IPv4 address",
+        "startAddress": "Start Address",
+        "endAddress": "End Address",
+        "addressesInRange": "Addresses in Range",
+        "property": "Property",
+        "oldValue": "Old Value",
+        "newValue": "New Value",
+        "cidrResult": "CIDR Result",
+        "invalidCombination": "Invalid address combination",
+        "reversedError": "The end IPv4 address is lower than the start IPv4 address.",
+        "swapStartEnd": "Switch start and end"
+      },
+      "ipv4SubnetCalculator": {
+        "ipv4CidrAddress": "IPv4 CIDR Address",
+        "cidrPlaceholder": "e.g. 192.168.1.0/24",
+        "invalidCidr": "Invalid IPv4 CIDR address. Use format like 192.168.1.0/24",
+        "subnetDetails": "Subnet Details",
+        "networkAddress": "Network Address",
+        "broadcastAddress": "Broadcast Address",
+        "subnetMask": "Subnet Mask",
+        "wildcardMask": "Wildcard Mask",
+        "cidrPrefix": "CIDR Prefix",
+        "maskBinary": "Mask (Binary)",
+        "firstHost": "First Host",
+        "lastHost": "Last Host",
+        "totalHosts": "Total Hosts",
+        "usableHosts": "Usable Hosts",
+        "ipClass": "IP Class",
+        "property": "Property",
+        "value": "Value"
+      },
+      "macAddressGenerator": {
+        "prefixOui": "Prefix (OUI)",
+        "prefixPlaceholder": "e.g. 64:16:7F",
+        "invalidMacPrefix": "Invalid MAC prefix. Use hex pairs separated by : or -",
+        "caseLabel": "Case",
+        "generatedMacAddresses": "Generated MAC Addresses"
+      },
+      "screenshotShare": {
+        "cssSelector": "CSS Selector",
+        "selectorPlaceholder": "Enter CSS selector (default: body)",
+        "capture": "Capture",
+        "downloadPng": "Download PNG",
+        "copyToClipboard": "Copy to Clipboard",
+        "noElementFound": "No element found for selector: {selector}",
+        "captureFailed": "Failed to capture screenshot",
+        "copyFailed": "Failed to copy to clipboard"
+      }
+    }
+  },
+  "zh": {
+    "tools": {
+      "infoMasking": {
+        "inputText": "输入文本",
+        "pasteSensitivePlaceholder": "粘贴包含敏感信息的文本...",
+        "detected": "检测到:",
+        "maskCharacter": "掩码字符:",
+        "preserveFirst": "保留前:",
+        "preserveLast": "保留后:",
+        "patternsToMask": "要掩码的模式:",
+        "maskedOutput": "掩码输出",
+        "comparison": "前后对比",
+        "before": "前",
+        "after": "后"
+      },
+      "ipv4RangeExpander": {
+        "ipRange": "IP 范围",
+        "startIpPlaceholder": "起始 IPv4 地址...",
+        "endIpPlaceholder": "结束 IPv4 地址...",
+        "invalidIpv4": "IPv4 地址无效",
+        "startAddress": "起始地址",
+        "endAddress": "结束地址",
+        "addressesInRange": "范围内地址数",
+        "property": "属性",
+        "oldValue": "原值",
+        "newValue": "新值",
+        "cidrResult": "CIDR 结果",
+        "invalidCombination": "地址组合无效",
+        "reversedError": "结束 IPv4 地址小于起始 IPv4 地址。",
+        "swapStartEnd": "交换起始和结束"
+      },
+      "ipv4SubnetCalculator": {
+        "ipv4CidrAddress": "IPv4 CIDR 地址",
+        "cidrPlaceholder": "例如 192.168.1.0/24",
+        "invalidCidr": "IPv4 CIDR 地址无效。请使用 192.168.1.0/24 这样的格式",
+        "subnetDetails": "子网详情",
+        "networkAddress": "网络地址",
+        "broadcastAddress": "广播地址",
+        "subnetMask": "子网掩码",
+        "wildcardMask": "通配符掩码",
+        "cidrPrefix": "CIDR 前缀",
+        "maskBinary": "掩码（二进制）",
+        "firstHost": "第一个主机",
+        "lastHost": "最后一个主机",
+        "totalHosts": "主机总数",
+        "usableHosts": "可用主机数",
+        "ipClass": "IP 类别",
+        "property": "属性",
+        "value": "值"
+      },
+      "macAddressGenerator": {
+        "prefixOui": "前缀 (OUI)",
+        "prefixPlaceholder": "例如 64:16:7F",
+        "invalidMacPrefix": "MAC 前缀无效。请使用以 : 或 - 分隔的十六进制对",
+        "caseLabel": "大小写",
+        "generatedMacAddresses": "生成的 MAC 地址"
+      },
+      "screenshotShare": {
+        "cssSelector": "CSS 选择器",
+        "selectorPlaceholder": "输入 CSS 选择器（默认: body）",
+        "capture": "截取",
+        "downloadPng": "下载 PNG",
+        "copyToClipboard": "复制到剪贴板",
+        "noElementFound": "未找到选择器对应的元素: {selector}",
+        "captureFailed": "截取屏幕截图失败",
+        "copyFailed": "复制到剪贴板失败"
+      }
+    }
+  }
+}

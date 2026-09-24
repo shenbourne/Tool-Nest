@@ -1261,7 +1261,24 @@
     },
     "ipv4SubnetCalculator": {
       "name": "IPv4 Subnet Calculator",
-      "description": "Parse CIDR notation and calculate subnet properties"
+      "description": "Parse CIDR notation and calculate subnet properties",
+      "ipv4CidrAddress": "IPv4 CIDR Address",
+      "cidrPlaceholder": "e.g. 192.168.1.0/24",
+      "invalidCidr": "Invalid IPv4 CIDR address. Use format like 192.168.1.0/24",
+      "subnetDetails": "Subnet Details",
+      "networkAddress": "Network Address",
+      "broadcastAddress": "Broadcast Address",
+      "subnetMask": "Subnet Mask",
+      "wildcardMask": "Wildcard Mask",
+      "cidrPrefix": "CIDR Prefix",
+      "maskBinary": "Mask (Binary)",
+      "firstHost": "First Host",
+      "lastHost": "Last Host",
+      "totalHosts": "Total Hosts",
+      "usableHosts": "Usable Hosts",
+      "ipClass": "IP Class",
+      "property": "Property",
+      "value": "Value"
     },
     "ipv4AddressConverter": {
       "name": "IPv4 Address Converter",
@@ -1269,11 +1286,30 @@
     },
     "ipv4RangeExpander": {
       "name": "IPv4 Range Expander",
-      "description": "Calculate minimal CIDR blocks covering an IP range"
+      "description": "Calculate minimal CIDR blocks covering an IP range",
+      "ipRange": "IP Range",
+      "startIpPlaceholder": "Start IPv4 address...",
+      "endIpPlaceholder": "End IPv4 address...",
+      "invalidIpv4": "Invalid IPv4 address",
+      "startAddress": "Start Address",
+      "endAddress": "End Address",
+      "addressesInRange": "Addresses in Range",
+      "property": "Property",
+      "oldValue": "Old Value",
+      "newValue": "New Value",
+      "cidrResult": "CIDR Result",
+      "invalidCombination": "Invalid address combination",
+      "reversedError": "The end IPv4 address is lower than the start IPv4 address.",
+      "swapStartEnd": "Switch start and end"
     },
     "macAddressGenerator": {
       "name": "MAC Address Generator",
-      "description": "Generate random MAC addresses with custom prefix"
+      "description": "Generate random MAC addresses with custom prefix",
+      "prefixOui": "Prefix (OUI)",
+      "prefixPlaceholder": "e.g. 64:16:7F",
+      "invalidMacPrefix": "Invalid MAC prefix. Use hex pairs separated by : or -",
+      "caseLabel": "Case",
+      "generatedMacAddresses": "Generated MAC Addresses"
     },
     "ipv6UlaGenerator": {
       "name": "IPv6 ULA Generator",
@@ -1362,7 +1398,18 @@
     },
     "infoMasking": {
       "name": "Info Masking",
-      "description": "Mask sensitive information in text"
+      "description": "Mask sensitive information in text",
+      "inputText": "Input Text",
+      "pasteSensitivePlaceholder": "Paste text containing sensitive information...",
+      "detected": "Detected:",
+      "maskCharacter": "Mask character:",
+      "preserveFirst": "Preserve first:",
+      "preserveLast": "Preserve last:",
+      "patternsToMask": "Patterns to mask:",
+      "maskedOutput": "Masked Output",
+      "comparison": "Before / After Comparison",
+      "before": "Before",
+      "after": "After"
     },
     "textToUnicode": {
       "name": "Text to Unicode",
@@ -1756,7 +1803,15 @@
     },
     "screenshotShare": {
       "name": "Screenshot Share",
-      "description": "Capture and share screenshots of web pages"
+      "description": "Capture and share screenshots of web pages",
+      "cssSelector": "CSS Selector",
+      "selectorPlaceholder": "Enter CSS selector (default: body)",
+      "capture": "Capture",
+      "downloadPng": "Download PNG",
+      "copyToClipboard": "Copy to Clipboard",
+      "noElementFound": "No element found for selector: {selector}",
+      "captureFailed": "Failed to capture screenshot",
+      "copyFailed": "Failed to copy to clipboard"
     },
     "jsonDiff": {
       "name": "JSON Diff",

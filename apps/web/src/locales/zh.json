@@ -1261,7 +1261,24 @@
     },
     "ipv4SubnetCalculator": {
       "name": "IPv4 子网计算器",
-      "description": "解析 CIDR 表示法并计算子网属性"
+      "description": "解析 CIDR 表示法并计算子网属性",
+      "ipv4CidrAddress": "IPv4 CIDR 地址",
+      "cidrPlaceholder": "例如 192.168.1.0/24",
+      "invalidCidr": "IPv4 CIDR 地址无效。请使用 192.168.1.0/24 这样的格式",
+      "subnetDetails": "子网详情",
+      "networkAddress": "网络地址",
+      "broadcastAddress": "广播地址",
+      "subnetMask": "子网掩码",
+      "wildcardMask": "通配符掩码",
+      "cidrPrefix": "CIDR 前缀",
+      "maskBinary": "掩码（二进制）",
+      "firstHost": "第一个主机",
+      "lastHost": "最后一个主机",
+      "totalHosts": "主机总数",
+      "usableHosts": "可用主机数",
+      "ipClass": "IP 类别",
+      "property": "属性",
+      "value": "值"
     },
     "ipv4AddressConverter": {
       "name": "IPv4 地址转换器",
@@ -1269,11 +1286,30 @@
     },
     "ipv4RangeExpander": {
       "name": "IPv4 范围展开器",
-      "description": "计算覆盖 IP 范围的最小 CIDR 块"
+      "description": "计算覆盖 IP 范围的最小 CIDR 块",
+      "ipRange": "IP 范围",
+      "startIpPlaceholder": "起始 IPv4 地址...",
+      "endIpPlaceholder": "结束 IPv4 地址...",
+      "invalidIpv4": "IPv4 地址无效",
+      "startAddress": "起始地址",
+      "endAddress": "结束地址",
+      "addressesInRange": "范围内地址数",
+      "property": "属性",
+      "oldValue": "原值",
+      "newValue": "新值",
+      "cidrResult": "CIDR 结果",
+      "invalidCombination": "地址组合无效",
+      "reversedError": "结束 IPv4 地址小于起始 IPv4 地址。",
+      "swapStartEnd": "交换起始和结束"
     },
     "macAddressGenerator": {
       "name": "MAC 地址生成器",
-      "description": "生成自定义前缀的随机 MAC 地址"
+      "description": "生成自定义前缀的随机 MAC 地址",
+      "prefixOui": "前缀 (OUI)",
+      "prefixPlaceholder": "例如 64:16:7F",
+      "invalidMacPrefix": "MAC 前缀无效。请使用以 : 或 - 分隔的十六进制对",
+      "caseLabel": "大小写",
+      "generatedMacAddresses": "生成的 MAC 地址"
     },
     "ipv6UlaGenerator": {
       "name": "IPv6 ULA 生成器",
@@ -1362,7 +1398,18 @@
     },
     "infoMasking": {
       "name": "信息脱敏",
-      "description": "脱敏文本中的敏感信息"
+      "description": "脱敏文本中的敏感信息",
+      "inputText": "输入文本",
+      "pasteSensitivePlaceholder": "粘贴包含敏感信息的文本...",
+      "detected": "检测到:",
+      "maskCharacter": "掩码字符:",
+      "preserveFirst": "保留前:",
+      "preserveLast": "保留后:",
+      "patternsToMask": "要掩码的模式:",
+      "maskedOutput": "掩码输出",
+      "comparison": "前后对比",
+      "before": "前",
+      "after": "后"
     },
     "textToUnicode": {
       "name": "文本转 Unicode",
@@ -1756,7 +1803,15 @@
     },
     "screenshotShare": {
       "name": "截图分享",
-      "description": "捕获并分享网页截图"
+      "description": "捕获并分享网页截图",
+      "cssSelector": "CSS 选择器",
+      "selectorPlaceholder": "输入 CSS 选择器（默认: body）",
+      "capture": "截取",
+      "downloadPng": "下载 PNG",
+      "copyToClipboard": "复制到剪贴板",
+      "noElementFound": "未找到选择器对应的元素: {selector}",
+      "captureFailed": "截取屏幕截图失败",
+      "copyFailed": "复制到剪贴板失败"
     },
     "jsonDiff": {
       "name": "JSON 差异对比",

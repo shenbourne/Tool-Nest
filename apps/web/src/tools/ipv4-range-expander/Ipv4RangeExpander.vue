@@ -30,18 +30,18 @@ const tableData = computed(() => {
   if (!result.value) return [];
   const r = result.value;
   return [
-    { property: 'Start Address', oldValue: r.oldStart, newValue: r.newStart },
-    { property: 'End Address', oldValue: r.oldEnd, newValue: r.newEnd },
-    { property: 'Addresses in Range', oldValue: r.oldSize.toLocaleString(), newValue: r.newSize.toLocaleString() },
+    { property: t('tools.ipv4RangeExpander.startAddress'), oldValue: r.oldStart, newValue: r.newStart },
+    { property: t('tools.ipv4RangeExpander.endAddress'), oldValue: r.oldEnd, newValue: r.newEnd },
+    { property: t('tools.ipv4RangeExpander.addressesInRange'), oldValue: r.oldSize.toLocaleString(), newValue: r.newSize.toLocaleString() },
     { property: 'CIDR', oldValue: '', newValue: r.newCidr },
   ];
 });
 
-const columns = [
-  { title: 'Property', key: 'property' },
-  { title: 'Old Value', key: 'oldValue' },
-  { title: 'New Value', key: 'newValue' },
-];
+const columns = computed(() => [
+  { title: t('tools.ipv4RangeExpander.property'), key: 'property' },
+  { title: t('tools.ipv4RangeExpander.oldValue'), key: 'oldValue' },
+  { title: t('tools.ipv4RangeExpander.newValue'), key: 'newValue' },
+]);
 
 function swapAddresses() {
   const tmp = startIp.value;
@@ -53,24 +53,24 @@ function swapAddresses() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="IP Range">
+      <NCard :title="t('tools.ipv4RangeExpander.ipRange')">
         <NSpace :size="12">
           <div style="flex: 1">
-            <NInput v-model:value="startIp" placeholder="Start IPv4 address..." />
+            <NInput v-model:value="startIp" :placeholder="t('tools.ipv4RangeExpander.startIpPlaceholder')" />
             <NAlert v-if="startIp && !startValid" type="error" style="margin-top: 4px">
-              Invalid IPv4 address
+              {{ t('tools.ipv4RangeExpander.invalidIpv4') }}
             </NAlert>
           </div>
           <div style="flex: 1">
-            <NInput v-model:value="endIp" placeholder="End IPv4 address..." />
+            <NInput v-model:value="endIp" :placeholder="t('tools.ipv4RangeExpander.endIpPlaceholder')" />
             <NAlert v-if="endIp && !endValid" type="error" style="margin-top: 4px">
-              Invalid IPv4 address
+              {{ t('tools.ipv4RangeExpander.invalidIpv4') }}
             </NAlert>
           </div>
         </NSpace>
       </NCard>
 
-      <NCard v-if="result" title="CIDR Result">
+      <NCard v-if="result" :title="t('tools.ipv4RangeExpander.cidrResult')">
         <NDataTable
           :columns="columns"
           :data="tableData"
@@ -80,10 +80,10 @@ function swapAddresses() {
         />
       </NCard>
 
-      <NAlert v-else-if="isReversed" type="error" title="Invalid address combination">
-        The end IPv4 address is lower than the start IPv4 address.
+      <NAlert v-else-if="isReversed" type="error" :title="t('tools.ipv4RangeExpander.invalidCombination')">
+        {{ t('tools.ipv4RangeExpander.reversedError') }}
         <NButton size="small" style="margin-top: 8px" @click="swapAddresses">
-          Switch start and end
+          {{ t('tools.ipv4RangeExpander.swapStartEnd') }}
         </NButton>
       </NAlert>
     </NSpace>
