@@ -20,28 +20,28 @@ const progressStatus = computed(() => {
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="16">
-        <NInput v-model:value="password" type="password" show-password-on="click" placeholder="Enter a password to analyze..." size="large" />
+        <NInput v-model:value="password" type="password" show-password-on="click" :placeholder="t('tools.passwordStrength.inputPlaceholder')" size="large" />
 
         <div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
             <span :style="{ color: result.color, fontWeight: 700 }">{{ result.label }}</span>
-            <span style="opacity: 0.6;">Score: {{ result.score }}/4</span>
+            <span style="opacity: 0.6;">{{ t('tools.passwordStrength.score', { score: result.score }) }}/4</span>
           </div>
           <NProgress type="line" :percentage="result.score * 25" :show-indicator="false" :status="progressStatus" />
         </div>
 
         <div style="display: flex; gap: 16px;">
           <div>
-            <span style="opacity: 0.6; font-size: 13px;">Estimated crack time:</span>
+            <span style="opacity: 0.6; font-size: 13px;">{{ t('tools.passwordStrength.crackTime') }}</span>
             <div style="font-size: 18px; font-weight: 700;">{{ result.crackTime }}</div>
           </div>
           <div>
-            <span style="opacity: 0.6; font-size: 13px;">Length:</span>
+            <span style="opacity: 0.6; font-size: 13px;">{{ t('common.length') }}:</span>
             <div style="font-size: 18px; font-weight: 700;">{{ password.length }}</div>
           </div>
         </div>
 
-        <NAlert v-if="result.suggestions.length > 0" type="warning" title="Suggestions">
+        <NAlert v-if="result.suggestions.length > 0" type="warning" :title="t('tools.passwordStrength.suggestions')">
           <ul style="margin: 0; padding-left: 16px;">
             <li v-for="s in result.suggestions" :key="s">{{ s }}</li>
           </ul>

@@ -212,7 +212,8 @@
     "regex": "Regex",
     "csvInputPlaceholder": "CSV input...",
     "listItemsPlaceholder": "List items...",
-    "none": "None"
+    "none": "None",
+    "secretKeyPlaceholder": "Secret key..."
   },
   "search": {
     "placeholder": "Search tools...",
@@ -253,7 +254,8 @@
     },
     "hashText": {
       "name": "Hash Text",
-      "description": "Hash text using MD5, SHA1, SHA256, SHA512 and other algorithms"
+      "description": "Hash text using MD5, SHA1, SHA256, SHA512 and other algorithms",
+      "inputPlaceholder": "Text to hash..."
     },
     "uuidGenerator": {
       "name": "UUID Generator",
@@ -265,27 +267,56 @@
     },
     "bcrypt": {
       "name": "Bcrypt",
-      "description": "Hash and compare strings using bcrypt algorithm"
+      "description": "Hash and compare strings using bcrypt algorithm",
+      "hash": "Hash",
+      "inputPlaceholder": "Your string to bcrypt...",
+      "saltRounds": "Salt rounds:",
+      "compareTitle": "Compare string with hash",
+      "compareStringPlaceholder": "Your string...",
+      "compareHashPlaceholder": "Your hash...",
+      "match": "Match ✓",
+      "noMatch": "No match ✗"
     },
     "encryption": {
       "name": "Text Encryption",
-      "description": "Encrypt and decrypt text using AES, TripleDES, Rabbit, or RC4"
+      "description": "Encrypt and decrypt text using AES, TripleDES, Rabbit, or RC4",
+      "encryptPlaceholder": "Text to encrypt...",
+      "decryptPlaceholder": "Encrypted text...",
+      "decryptFailed": "Unable to decrypt your text"
     },
     "hmacGenerator": {
       "name": "HMAC Generator",
-      "description": "Generate Hash-based Message Authentication Code (HMAC)"
+      "description": "Generate Hash-based Message Authentication Code (HMAC)",
+      "inputPlaceholder": "Plain text to compute HMAC...",
+      "hashFunction": "Hash function",
+      "encoding": "Encoding"
     },
     "bip39Generator": {
       "name": "BIP39 Mnemonic Generator",
-      "description": "Generate and validate BIP39 mnemonic passphrases for crypto wallets"
+      "description": "Generate and validate BIP39 mnemonic passphrases for crypto wallets",
+      "generateMnemonic": "Generate Mnemonic",
+      "validateMnemonic": "Validate Mnemonic",
+      "validatePlaceholder": "Enter mnemonic to validate...",
+      "wordCount": "{n} words",
+      "validMnemonic": "Valid mnemonic ✓",
+      "invalidMnemonic": "Invalid mnemonic ✗"
     },
     "rsaKeyPair": {
       "name": "RSA Key Pair Generator",
-      "description": "Generate RSA public/private key pairs in PEM format"
+      "description": "Generate RSA public/private key pairs in PEM format",
+      "keySize": "Key size (bits)",
+      "generateKeyPair": "Generate Key Pair",
+      "generateFailed": "Failed to generate key pair",
+      "publicKey": "Public Key",
+      "privateKey": "Private Key"
     },
     "passwordStrength": {
       "name": "Password Strength Analyser",
-      "description": "Analyze password strength with entropy estimation and crack time"
+      "description": "Analyze password strength with entropy estimation and crack time",
+      "inputPlaceholder": "Enter a password to analyze...",
+      "score": "Score: {score}",
+      "crackTime": "Estimated crack time:",
+      "suggestions": "Suggestions"
     },
     "baseConverter": {
       "name": "Base Converter",
@@ -414,7 +445,12 @@
     },
     "stringObfuscator": {
       "name": "String Obfuscator",
-      "description": "Mask, redact, or partially hide sensitive strings"
+      "description": "Mask, redact, or partially hide sensitive strings",
+      "inputPlaceholder": "String to obfuscate...",
+      "maskAll": "Mask all",
+      "redact": "Redact",
+      "partial": "Partial (keep edges)",
+      "keepCharacters": "Keep characters"
     },
     "percentageCalc": {
       "name": "Percentage Calculator",

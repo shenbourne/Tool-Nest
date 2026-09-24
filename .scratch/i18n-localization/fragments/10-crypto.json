@@ -1,0 +1,118 @@
+{
+  "en": {
+    "common": {
+      "secretKeyPlaceholder": "Secret key..."
+    },
+    "tools": {
+      "bcrypt": {
+        "hash": "Hash",
+        "inputPlaceholder": "Your string to bcrypt...",
+        "saltRounds": "Salt rounds:",
+        "compareTitle": "Compare string with hash",
+        "compareStringPlaceholder": "Your string...",
+        "compareHashPlaceholder": "Your hash...",
+        "match": "Match ✓",
+        "noMatch": "No match ✗"
+      },
+      "bip39Generator": {
+        "generateMnemonic": "Generate Mnemonic",
+        "validateMnemonic": "Validate Mnemonic",
+        "validatePlaceholder": "Enter mnemonic to validate...",
+        "wordCount": "{n} words",
+        "validMnemonic": "Valid mnemonic ✓",
+        "invalidMnemonic": "Invalid mnemonic ✗"
+      },
+      "encryption": {
+        "encryptPlaceholder": "Text to encrypt...",
+        "decryptPlaceholder": "Encrypted text...",
+        "decryptFailed": "Unable to decrypt your text"
+      },
+      "hashText": {
+        "inputPlaceholder": "Text to hash..."
+      },
+      "hmacGenerator": {
+        "inputPlaceholder": "Plain text to compute HMAC...",
+        "hashFunction": "Hash function",
+        "encoding": "Encoding"
+      },
+      "passwordStrength": {
+        "inputPlaceholder": "Enter a password to analyze...",
+        "score": "Score: {score}",
+        "crackTime": "Estimated crack time:",
+        "suggestions": "Suggestions"
+      },
+      "rsaKeyPair": {
+        "keySize": "Key size (bits)",
+        "generateKeyPair": "Generate Key Pair",
+        "generateFailed": "Failed to generate key pair",
+        "publicKey": "Public Key",
+        "privateKey": "Private Key"
+      },
+      "stringObfuscator": {
+        "inputPlaceholder": "String to obfuscate...",
+        "maskAll": "Mask all",
+        "redact": "Redact",
+        "partial": "Partial (keep edges)",
+        "keepCharacters": "Keep characters"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "secretKeyPlaceholder": "密钥..."
+    },
+    "tools": {
+      "bcrypt": {
+        "hash": "哈希",
+        "inputPlaceholder": "要生成 bcrypt 哈希的字符串...",
+        "saltRounds": "盐值轮数：",
+        "compareTitle": "比对字符串与哈希",
+        "compareStringPlaceholder": "你的字符串...",
+        "compareHashPlaceholder": "你的哈希值...",
+        "match": "匹配 ✓",
+        "noMatch": "不匹配 ✗"
+      },
+      "bip39Generator": {
+        "generateMnemonic": "生成助记词",
+        "validateMnemonic": "验证助记词",
+        "validatePlaceholder": "输入要验证的助记词...",
+        "wordCount": "{n} 个单词",
+        "validMnemonic": "有效助记词 ✓",
+        "invalidMnemonic": "无效助记词 ✗"
+      },
+      "encryption": {
+        "encryptPlaceholder": "要加密的文本...",
+        "decryptPlaceholder": "要解密的密文...",
+        "decryptFailed": "无法解密你的文本"
+      },
+      "hashText": {
+        "inputPlaceholder": "要哈希的文本..."
+      },
+      "hmacGenerator": {
+        "inputPlaceholder": "要计算 HMAC 的明文...",
+        "hashFunction": "哈希函数",
+        "encoding": "编码"
+      },
+      "passwordStrength": {
+        "inputPlaceholder": "输入要分析的密码...",
+        "score": "评分：{score}",
+        "crackTime": "预计破解时间：",
+        "suggestions": "建议"
+      },
+      "rsaKeyPair": {
+        "keySize": "密钥长度（位）",
+        "generateKeyPair": "生成密钥对",
+        "generateFailed": "生成密钥对失败",
+        "publicKey": "公钥",
+        "privateKey": "私钥"
+      },
+      "stringObfuscator": {
+        "inputPlaceholder": "要混淆的字符串...",
+        "maskAll": "全部掩码",
+        "redact": "完全遮蔽",
+        "partial": "部分显示（保留首尾）",
+        "keepCharacters": "保留字符数"
+      }
+    }
+  }
+}
