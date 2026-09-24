@@ -31,5 +31,15 @@ describe('naive theme overrides stay in sync with tokens.css', () => {
         readToken(block, `color-${status}`),
       );
     });
+
+    it.each([
+      ['primaryColor', 'color-primary'],
+      ['primaryColorHover', 'color-primary-hover'],
+      ['primaryColorPressed', 'color-primary-pressed'],
+      ['textColorBase', 'color-ink'],
+      ['cardColor', 'color-surface'],
+    ] as const)('%s mirrors %s', (naiveKey, tokenName) => {
+      expect(overrides.common?.[naiveKey as 'primaryColor']).toBe(readToken(block, tokenName));
+    });
   });
 });

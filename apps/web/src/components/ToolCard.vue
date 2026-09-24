@@ -71,7 +71,7 @@ function toggleFav(e: Event) {
 }
 
 .tool-card-title {
-  font-size: 15px;
+  font-size: var(--font-size-body-md);
   font-weight: var(--font-weight-semibold);
   color: var(--color-ink);
 }
