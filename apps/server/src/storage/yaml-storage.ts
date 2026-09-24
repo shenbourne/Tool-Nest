@@ -6,7 +6,7 @@ import { config } from '../config.js';
 const MAX_BACKUPS = 3;
 
 // Process-internal mutex using a queue
-let queue: Array<() => void> = [];
+const queue: Array<() => void> = [];
 let locked = false;
 
 function enterMutex(): Promise<() => void> {

@@ -75,7 +75,7 @@ function migrateUserPreferences(data: Record<string, unknown>): UserPreferences 
     recentTools: Array.isArray(data.recentTools)
       ? data.recentTools
           .filter((r): r is { path: string; timestamp: number } =>
-            typeof r === 'object' && r !== null && typeof (r as any).path === 'string' && typeof (r as any).timestamp === 'number'
+            typeof r === 'object' && r !== null && typeof (r as Record<string, unknown>).path === 'string' && typeof (r as Record<string, unknown>).timestamp === 'number'
           )
           .slice(0, MAX_RECENT_TOOLS)
       : [],
@@ -144,7 +144,7 @@ export class YamlReportRepository implements ReportRepository {
     const reports = Array.isArray(data.reports)
       ? data.reports
           .filter((r): r is ShareReport =>
-            typeof r === 'object' && r !== null && typeof (r as any).id === 'string'
+            typeof r === 'object' && r !== null && typeof (r as Record<string, unknown>).id === 'string'
           )
       : [];
     return {
