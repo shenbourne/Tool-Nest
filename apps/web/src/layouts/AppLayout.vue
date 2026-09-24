@@ -84,8 +84,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <NLayout has-sider style="min-height: 100vh;">
+  <NLayout has-sider class="app-layout">
     <NLayoutSider
+      class="app-sider"
       :collapsed="collapsed"
       :width="240"
       :collapsed-width="60"
@@ -95,64 +96,148 @@ onUnmounted(() => {
       show-trigger="bar"
       @collapse="preferencesStore.toggleSidebarCollapsed()"
       @expand="preferencesStore.toggleSidebarCollapsed()"
-      style="position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; display: flex; flex-direction: column;"
     >
-      <!-- Logo -->
-      <div
-        style="padding: var(--spacing-md); cursor: pointer; display: flex; align-items: center; gap: var(--spacing-sm); border-bottom: 1px solid var(--color-hairline);"
-        @click="goHome"
-      >
-        <span style="font-size: 20px; font-weight: bold; white-space: nowrap; overflow: hidden;">
-          {{ collapsed ? 'T' : 'ToolNest' }}
-        </span>
+      <div class="logo" @click="goHome">
+        <span class="logo-text">{{ collapsed ? 'T' : 'ToolNest' }}</span>
       </div>
 
-      <!-- Category list (scrollable) -->
-      <div style="flex: 1; overflow-y: auto; padding: var(--spacing-xs) 0;">
+      <div class="category-list">
         <div
           v-for="cat in sortedCategories"
           :key="cat.name"
-          :style="{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--spacing-xs)',
-            padding: collapsed ? 'var(--spacing-xs) 0' : 'var(--spacing-xs) var(--spacing-md)',
-            justifyContent: collapsed ? 'center' : 'flex-start',
-            cursor: 'pointer',
-            borderRadius: 'var(--radius-md)',
-            margin: '2px var(--spacing-xs)',
-            backgroundColor: activeCategory === cat.name ? 'var(--color-primary-soft)' : 'transparent',
-            color: activeCategory === cat.name ? 'var(--color-primary)' : undefined,
-            transition: 'background-color var(--motion-base) var(--motion-ease)',
-          }"
+          class="category-item"
+          :class="{ active: activeCategory === cat.name, collapsed }"
           @click="handleCategoryClick(cat.name)"
         >
           <NTooltip v-if="collapsed" placement="right">
             <template #trigger>
-              <span style="font-size: 18px; flex-shrink: 0;">{{ getCategoryEmoji(cat.name) }}</span>
+              <span class="category-emoji">{{ getCategoryEmoji(cat.name) }}</span>
             </template>
             {{ t(cat.label) }}
           </NTooltip>
           <template v-else>
-            <span style="font-size: 18px; flex-shrink: 0;">{{ getCategoryEmoji(cat.name) }}</span>
-            <span style="font-size: var(--font-size-body-md); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-              {{ t(cat.label) }}
-            </span>
+            <span class="category-emoji">{{ getCategoryEmoji(cat.name) }}</span>
+            <span class="category-label">{{ t(cat.label) }}</span>
           </template>
         </div>
       </div>
 
-      <!-- Footer: theme + locale (pinned at bottom) -->
-      <div style="padding: var(--spacing-sm) var(--spacing-md); border-top: 1px solid var(--color-hairline); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+      <div class="sidebar-footer">
         <LocaleSwitcher />
         <ThemeSwitcher />
       </div>
     </NLayoutSider>
 
     <NLayoutContent
+      class="app-content"
       :style="{ marginLeft: collapsed ? '60px' : '240px', transition: 'margin-left var(--motion-slow) var(--motion-ease)' }"
     >
       <slot />
     </NLayoutContent>
   </NLayout>
 </template>
+
+<style scoped>
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-sider {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  height: 52px;
+  box-sizing: border-box;
+  padding: 0 var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.logo-text {
+  font-size: var(--font-size-heading-md);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.category-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-xs) 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted) transparent;
+}
+
+.category-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.category-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-muted);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  height: 36px;
+  padding: 0 var(--spacing-md);
+  margin: 2px var(--spacing-xs);
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  color: var(--color-text-2);
+  transition:
+    background-color var(--motion-base) var(--motion-ease),
+    color var(--motion-base) var(--motion-ease);
+}
+
+.category-item.collapsed {
+  padding: 0;
+  justify-content: center;
+}
+
+.category-item:hover {
+  background-color: var(--color-surface-2);
+}
+
+.category-item.active {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.category-emoji {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.category-label {
+  font-size: var(--font-size-body-md);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-footer {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-top: 1px solid var(--color-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+</style>
