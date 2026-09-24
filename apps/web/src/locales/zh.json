@@ -1538,27 +1538,47 @@
     },
     "audioConverter": {
       "name": "音频转换",
-      "description": "在不同音频格式之间转换"
+      "description": "在不同音频格式之间转换",
+      "selectFormat": "选择格式",
+      "conversionComplete": "转换完成！文件已下载。"
     },
     "audioChangeSpeed": {
       "name": "音频变速",
-      "description": "改变音频播放速度"
+      "description": "改变音频播放速度",
+      "selectSpeed": "选择速度",
+      "changeSpeed": "调整速度",
+      "speedHalf": "0.5x（半速）",
+      "speedNormal": "1x（正常）",
+      "speedDouble": "2x（双倍速）",
+      "speedChanged": "速度已调整！文件已下载。"
     },
     "audioExtract": {
       "name": "音频提取",
-      "description": "从视频中提取音频轨道"
+      "description": "从视频中提取音频轨道",
+      "selectOutputFormat": "选择输出格式",
+      "extractAudio": "提取音频",
+      "audioExtracted": "音频已提取！文件已下载。"
     },
     "audioLoop": {
       "name": "音频循环",
-      "description": "循环播放音频指定次数"
+      "description": "循环播放音频指定次数",
+      "loopCount": "循环次数",
+      "loopAudio": "循环音频",
+      "audioLooped": "音频已循环！文件已下载。"
     },
     "audioMerge": {
       "name": "音频合并",
-      "description": "将多个音频合并为一个"
+      "description": "将多个音频合并为一个",
+      "mergeAudio": "合并音频",
+      "audioMerged": "音频已合并！文件已下载。"
     },
     "audioTrim": {
       "name": "音频裁剪",
-      "description": "裁剪音频到自定义时间范围"
+      "description": "裁剪音频到自定义时间范围",
+      "startSeconds": "开始（秒）",
+      "endSeconds": "结束（秒）",
+      "trimAudio": "裁剪音频",
+      "audioTrimmed": "音频已裁剪！文件已下载。"
     },
     "dnsLeakTest": {
       "name": "DNS 泄漏测试",

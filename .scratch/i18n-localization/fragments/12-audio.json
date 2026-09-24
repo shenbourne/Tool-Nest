@@ -1,0 +1,74 @@
+{
+  "en": {
+    "tools": {
+      "audioChangeSpeed": {
+        "selectSpeed": "Select speed",
+        "changeSpeed": "Change Speed",
+        "speedHalf": "0.5x (Half speed)",
+        "speedNormal": "1x (Normal)",
+        "speedDouble": "2x (Double speed)",
+        "speedChanged": "Speed changed! File downloaded."
+      },
+      "audioConverter": {
+        "selectFormat": "Select format",
+        "conversionComplete": "Conversion complete! File downloaded."
+      },
+      "audioExtract": {
+        "selectOutputFormat": "Select output format",
+        "extractAudio": "Extract Audio",
+        "audioExtracted": "Audio extracted! File downloaded."
+      },
+      "audioLoop": {
+        "loopCount": "Loop count",
+        "loopAudio": "Loop Audio",
+        "audioLooped": "Audio looped! File downloaded."
+      },
+      "audioMerge": {
+        "mergeAudio": "Merge Audio",
+        "audioMerged": "Audio merged! File downloaded."
+      },
+      "audioTrim": {
+        "startSeconds": "Start (seconds)",
+        "endSeconds": "End (seconds)",
+        "trimAudio": "Trim Audio",
+        "audioTrimmed": "Audio trimmed! File downloaded."
+      }
+    }
+  },
+  "zh": {
+    "tools": {
+      "audioChangeSpeed": {
+        "selectSpeed": "选择速度",
+        "changeSpeed": "调整速度",
+        "speedHalf": "0.5x（半速）",
+        "speedNormal": "1x（正常）",
+        "speedDouble": "2x（双倍速）",
+        "speedChanged": "速度已调整！文件已下载。"
+      },
+      "audioConverter": {
+        "selectFormat": "选择格式",
+        "conversionComplete": "转换完成！文件已下载。"
+      },
+      "audioExtract": {
+        "selectOutputFormat": "选择输出格式",
+        "extractAudio": "提取音频",
+        "audioExtracted": "音频已提取！文件已下载。"
+      },
+      "audioLoop": {
+        "loopCount": "循环次数",
+        "loopAudio": "循环音频",
+        "audioLooped": "音频已循环！文件已下载。"
+      },
+      "audioMerge": {
+        "mergeAudio": "合并音频",
+        "audioMerged": "音频已合并！文件已下载。"
+      },
+      "audioTrim": {
+        "startSeconds": "开始（秒）",
+        "endSeconds": "结束（秒）",
+        "trimAudio": "裁剪音频",
+        "audioTrimmed": "音频已裁剪！文件已下载。"
+      }
+    }
+  }
+}

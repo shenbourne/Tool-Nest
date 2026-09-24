@@ -1537,27 +1537,47 @@
     },
     "audioConverter": {
       "name": "Audio Converter",
-      "description": "Convert audio between formats"
+      "description": "Convert audio between formats",
+      "selectFormat": "Select format",
+      "conversionComplete": "Conversion complete! File downloaded."
     },
     "audioChangeSpeed": {
       "name": "Audio Speed Change",
-      "description": "Change audio playback speed"
+      "description": "Change audio playback speed",
+      "selectSpeed": "Select speed",
+      "changeSpeed": "Change Speed",
+      "speedHalf": "0.5x (Half speed)",
+      "speedNormal": "1x (Normal)",
+      "speedDouble": "2x (Double speed)",
+      "speedChanged": "Speed changed! File downloaded."
     },
     "audioExtract": {
       "name": "Audio Extract",
-      "description": "Extract audio track from video"
+      "description": "Extract audio track from video",
+      "selectOutputFormat": "Select output format",
+      "extractAudio": "Extract Audio",
+      "audioExtracted": "Audio extracted! File downloaded."
     },
     "audioLoop": {
       "name": "Audio Loop",
-      "description": "Loop audio a specified number of times"
+      "description": "Loop audio a specified number of times",
+      "loopCount": "Loop count",
+      "loopAudio": "Loop Audio",
+      "audioLooped": "Audio looped! File downloaded."
     },
     "audioMerge": {
       "name": "Audio Merge",
-      "description": "Merge multiple audio files into one"
+      "description": "Merge multiple audio files into one",
+      "mergeAudio": "Merge Audio",
+      "audioMerged": "Audio merged! File downloaded."
     },
     "audioTrim": {
       "name": "Audio Trim",
-      "description": "Trim audio to a custom time range"
+      "description": "Trim audio to a custom time range",
+      "startSeconds": "Start (seconds)",
+      "endSeconds": "End (seconds)",
+      "trimAudio": "Trim Audio",
+      "audioTrimmed": "Audio trimmed! File downloaded."
     },
     "dnsLeakTest": {
       "name": "DNS Leak Test",
