@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NInput, NButton } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
+
 const expr = ref('');
 const result = ref('');
 const history = ref<string[]>([]);
@@ -35,25 +39,25 @@ function safeEval(s: string): number {
     if (str[pos] === '(') { pos++; const v = parseExpr(); if (str[pos] === ')') pos++; return v; }
     let num = '';
     while (pos < str.length && (str[pos] >= '0' && str[pos] <= '9' || str[pos] === '.')) num += str[pos++];
-    if (!num) throw new Error('Unexpected: ' + (str[pos] || 'end'));
+    if (!num) throw new Error(t('tools.genericCalculator.unexpected', { char: str[pos] || t('tools.genericCalculator.endOfInput') }));
     return parseFloat(num);
   }
   const r = parseExpr();
-  if (pos < str.length) throw new Error('Unexpected: ' + str[pos]);
+  if (pos < str.length) throw new Error(t('tools.genericCalculator.unexpected', { char: str[pos] }));
   return r;
 }
 function calc() {
   try { result.value = String(safeEval(expr.value)); history.value.unshift(expr.value + ' = ' + result.value); if (history.value.length > 10) history.value.pop(); }
-  catch (e: any) { result.value = 'Error: ' + e.message; }
+  catch (e: any) { result.value = t('tools.genericCalculator.errorPrefix', { message: e.message }); }
 }
 </script>
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="expr" placeholder="Expression: 2+3*4" @keyup.enter="calc" />
-      <NButton type="primary" @click="calc">Calculate</NButton>
-      <NInput :value="result" readonly placeholder="Result..." />
-      <div v-if="history.length" style="opacity:0.7;font-size:13px;">History:<br/><span v-for="h in history">{{ h }}<br/></span></div>
+      <NInput v-model:value="expr" :placeholder="t('tools.genericCalculator.expressionPlaceholder', { example: '2+3*4' })" @keyup.enter="calc" />
+      <NButton type="primary" @click="calc">{{ t('common.calculate') }}</NButton>
+      <NInput :value="result" readonly :placeholder="t('tools.genericCalculator.resultPlaceholder')" />
+      <div v-if="history.length" style="opacity:0.7;font-size:13px;">{{ t('tools.genericCalculator.history') }}<br/><span v-for="h in history">{{ h }}<br/></span></div>
     </NSpace></NCard>
   </ToolLayout>
 </template>

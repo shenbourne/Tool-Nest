@@ -25,26 +25,26 @@ const result = computed(() =>
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Task Parameters">
+      <NCard :title="t('tools.etaCalculator.taskParameters')">
         <NSpace vertical :size="12">
           <div style="display: flex; gap: 16px; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 200px;">
-              <label style="display: block; margin-bottom: 4px; font-weight: 500;">Total Tasks</label>
+              <label style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.totalTasks') }}</label>
               <NInputNumber v-model:value="totalTasks" :min="1" style="width: 100%;" />
             </div>
             <div style="flex: 1; min-width: 200px;">
-              <label style="display: block; margin-bottom: 4px; font-weight: 500;">Completed Tasks</label>
+              <label style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.completedTasks') }}</label>
               <NInputNumber v-model:value="completedTasks" :min="0" :max="totalTasks" style="width: 100%;" />
             </div>
           </div>
           <div>
-            <label style="display: block; margin-bottom: 4px; font-weight: 500;">Start Time</label>
+            <label style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.startTime') }}</label>
             <NDatePicker v-model:value="startTime" type="datetime" style="width: 100%;" />
           </div>
         </NSpace>
       </NCard>
 
-      <NCard v-if="result" title="Results">
+      <NCard v-if="result" :title="t('common.results')">
         <NSpace vertical :size="16">
           <NProgress
             type="line"
@@ -55,21 +55,20 @@ const result = computed(() =>
           />
 
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
-            <NStatistic label="Progress" :value="result.progressPercent.toFixed(1)" suffix="%" />
-            <NStatistic label="Remaining Tasks" :value="result.remainingTasks" />
-            <NStatistic label="Elapsed Time" :value="formatDuration(result.elapsedMs)" />
-            <NStatistic label="Time Remaining" :value="formatDuration(result.remainingMs)" />
-            <NStatistic label="Estimated End" :value="formatEndTime(result.estimatedEndTime)" />
+            <NStatistic :label="t('tools.etaCalculator.progress')" :value="result.progressPercent.toFixed(1)" suffix="%" />
+            <NStatistic :label="t('tools.etaCalculator.remainingTasks')" :value="result.remainingTasks" />
+            <NStatistic :label="t('tools.etaCalculator.elapsedTime')" :value="formatDuration(result.elapsedMs)" />
+            <NStatistic :label="t('tools.etaCalculator.timeRemaining')" :value="formatDuration(result.remainingMs)" />
+            <NStatistic :label="t('tools.etaCalculator.estimatedEnd')" :value="formatEndTime(result.estimatedEndTime)" />
           </div>
         </NSpace>
       </NCard>
 
       <NDivider />
 
-      <NCard title="Example">
+      <NCard :title="t('tools.etaCalculator.example')">
         <div style="opacity: 0.8; line-height: 1.6;">
-          If you wash 5 plates in 3 minutes and you have 500 plates to wash, it will take you approximately 5 hours to wash them all.
-          Enter the total task count, how many are completed, and when you started to see the estimated completion time.
+          {{ t('tools.etaCalculator.exampleText') }}
         </div>
       </NCard>
     </NSpace>

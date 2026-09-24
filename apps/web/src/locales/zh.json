@@ -230,7 +230,9 @@
     "domain": "域名",
     "enterDomain": "输入域名...",
     "enterDomainOrIp": "输入域名或 IP...",
-    "domainNamePlaceholder": "域名..."
+    "domainNamePlaceholder": "域名...",
+    "calculate": "计算",
+    "sum": "和: {value}"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -414,7 +416,15 @@
     },
     "mathEvaluator": {
       "name": "数学表达式计算",
-      "description": "计算包含运算符和分组的数学表达式"
+      "description": "计算包含运算符和分组的数学表达式",
+      "expressionPlaceholder": "输入数学表达式...",
+      "supportedOperators": "支持的运算符",
+      "operatorsList": "+, -, *, /, ^ (幂), % (取模), () (分组)",
+      "divisionByZero": "除数不能为零",
+      "missingClosingParenthesis": "缺少右括号",
+      "unexpectedCharacter": "无法识别的字符: {char}",
+      "endOfInput": "输入末尾",
+      "errorPrefix": "错误: {message}"
     },
     "textStats": {
       "name": "文本统计",
@@ -474,7 +484,11 @@
     "percentageCalc": {
       "name": "百分比计算器",
       "description": "计算百分比、比例和百分比变化",
-      "percentOf": "% 的"
+      "percentOf": "% 的",
+      "whatIsPercentOf": "X% 的 Y 是多少？",
+      "isWhatPercentOf": "X 是 Y 的百分之几？",
+      "percentChangeFromTo": "从 X 到 Y 的百分比变化",
+      "is": "是"
     },
     "rot13": {
       "name": "ROT13 加密",
@@ -581,11 +595,21 @@
     },
     "arithmeticSequence": {
       "name": "等差数列",
-      "description": "生成等差数列并求项"
+      "description": "生成等差数列并求项",
+      "firstTerm": "首项",
+      "difference": "公差",
+      "sequence": "数列: {value}",
+      "nthTerm": "第 n 项: {value}"
     },
     "genericCalculator": {
       "name": "通用计算器",
-      "description": "基本数学表达式的简单计算器"
+      "description": "基本数学表达式的简单计算器",
+      "expressionPlaceholder": "表达式: {example}",
+      "resultPlaceholder": "结果...",
+      "history": "历史记录:",
+      "unexpected": "意外字符: {char}",
+      "endOfInput": "输入末尾",
+      "errorPrefix": "错误: {message}"
     },
     "randomNumberGenerator": {
       "name": "随机数生成器",
@@ -595,7 +619,9 @@
     },
     "numberSum": {
       "name": "数字求和",
-      "description": "计算数字的总和、平均值、最小值、最大值和中位数"
+      "description": "计算数字的总和、平均值、最小值、最大值和中位数",
+      "average": "平均值",
+      "median": "中位数"
     },
     "numberGenerator": {
       "name": "数字序列生成",
@@ -1302,7 +1328,18 @@
     },
     "etaCalculator": {
       "name": "ETA 计算器",
-      "description": "计算预计完成时间"
+      "description": "计算预计完成时间",
+      "taskParameters": "任务参数",
+      "totalTasks": "总任务数",
+      "completedTasks": "已完成任务数",
+      "startTime": "开始时间",
+      "progress": "进度",
+      "remainingTasks": "剩余任务数",
+      "elapsedTime": "已用时间",
+      "timeRemaining": "剩余时间",
+      "estimatedEnd": "预计结束",
+      "example": "示例",
+      "exampleText": "如果你 3 分钟洗 5 个盘子，而总共有 500 个盘子要洗，那么全部洗完大约需要 5 小时。输入总任务数、已完成数量和开始时间，即可查看预计完成时间。"
     },
     "benchmarkBuilder": {
       "name": "基准测试构建器",

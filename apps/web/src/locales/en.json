@@ -230,7 +230,9 @@
     "domain": "Domain",
     "enterDomain": "Enter domain...",
     "enterDomainOrIp": "Enter domain or IP...",
-    "domainNamePlaceholder": "Domain name..."
+    "domainNamePlaceholder": "Domain name...",
+    "calculate": "Calculate",
+    "sum": "Sum: {value}"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -414,7 +416,15 @@
     },
     "mathEvaluator": {
       "name": "Math Evaluator",
-      "description": "Evaluate mathematical expressions with operators and grouping"
+      "description": "Evaluate mathematical expressions with operators and grouping",
+      "expressionPlaceholder": "Enter math expression...",
+      "supportedOperators": "Supported operators",
+      "operatorsList": "+, -, *, /, ^ (power), % (modulo), () (grouping)",
+      "divisionByZero": "Division by zero",
+      "missingClosingParenthesis": "Missing closing parenthesis",
+      "unexpectedCharacter": "Unexpected character: {char}",
+      "endOfInput": "end of input",
+      "errorPrefix": "Error: {message}"
     },
     "textStats": {
       "name": "Text Statistics",
@@ -473,7 +483,12 @@
     },
     "percentageCalc": {
       "name": "Percentage Calculator",
-      "description": "Calculate percentages, proportions, and percent change"
+      "description": "Calculate percentages, proportions, and percent change",
+      "whatIsPercentOf": "What is X% of Y?",
+      "isWhatPercentOf": "X is what % of Y?",
+      "percentChangeFromTo": "% change from X to Y",
+      "percentOf": "% of",
+      "is": "is"
     },
     "rot13": {
       "name": "ROT13 Cipher",
@@ -580,11 +595,21 @@
     },
     "arithmeticSequence": {
       "name": "Arithmetic Sequence",
-      "description": "Generate arithmetic sequences and find terms"
+      "description": "Generate arithmetic sequences and find terms",
+      "firstTerm": "First term",
+      "difference": "Difference",
+      "sequence": "Sequence: {value}",
+      "nthTerm": "n-th term: {value}"
     },
     "genericCalculator": {
       "name": "Generic Calculator",
-      "description": "Simple calculator for basic math expressions"
+      "description": "Simple calculator for basic math expressions",
+      "expressionPlaceholder": "Expression: {example}",
+      "resultPlaceholder": "Result...",
+      "history": "History:",
+      "unexpected": "Unexpected: {char}",
+      "endOfInput": "end of input",
+      "errorPrefix": "Error: {message}"
     },
     "randomNumberGenerator": {
       "name": "Random Number Generator",
@@ -594,7 +619,9 @@
     },
     "numberSum": {
       "name": "Number Sum",
-      "description": "Calculate sum, average, min, max, and median of numbers"
+      "description": "Calculate sum, average, min, max, and median of numbers",
+      "average": "Average",
+      "median": "Median"
     },
     "numberGenerator": {
       "name": "Number Generator",
@@ -1301,7 +1328,18 @@
     },
     "etaCalculator": {
       "name": "ETA Calculator",
-      "description": "Calculate estimated time of completion"
+      "description": "Calculate estimated time of completion",
+      "taskParameters": "Task Parameters",
+      "totalTasks": "Total Tasks",
+      "completedTasks": "Completed Tasks",
+      "startTime": "Start Time",
+      "progress": "Progress",
+      "remainingTasks": "Remaining Tasks",
+      "elapsedTime": "Elapsed Time",
+      "timeRemaining": "Time Remaining",
+      "estimatedEnd": "Estimated End",
+      "example": "Example",
+      "exampleText": "If you wash 5 plates in 3 minutes and you have 500 plates to wash, it will take you approximately 5 hours to wash them all. Enter the total task count, how many are completed, and when you started to see the estimated completion time."
     },
     "benchmarkBuilder": {
       "name": "Benchmark Builder",
