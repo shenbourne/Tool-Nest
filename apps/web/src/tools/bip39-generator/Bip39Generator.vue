@@ -48,7 +48,7 @@ function refresh() { words.value = words.value; }
       <NCard title="Validate Mnemonic">
         <NSpace vertical :size="12">
           <NInput v-model:value="inputMnemonic" type="textarea" :rows="3" placeholder="Enter mnemonic to validate..." />
-          <div v-if="isValid !== null" :style="{ color: isValid ? '#18a058' : '#d03050', fontWeight: 600 }">
+          <div v-if="isValid !== null" :style="{ color: isValid ? 'var(--color-success)' : 'var(--color-error)', fontWeight: 600 }">
             {{ isValid ? 'Valid mnemonic ✓' : 'Invalid mnemonic ✗' }}
           </div>
         </NSpace>

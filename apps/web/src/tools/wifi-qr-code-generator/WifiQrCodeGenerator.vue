@@ -91,7 +91,7 @@ function copyImage() {
         <div v-if="dataUrl" style="text-align: center; margin-bottom: 16px;">
           <img :src="dataUrl" alt="WiFi QR Code" style="max-width: 300px; width: 100%;" />
         </div>
-        <div v-else style="text-align: center; color: #999; padding: 40px 0;">
+        <div v-else style="text-align: center; color: var(--color-text-3); padding: 40px 0;">
           Enter WiFi details above to generate QR code
         </div>
         <NSpace v-if="dataUrl">

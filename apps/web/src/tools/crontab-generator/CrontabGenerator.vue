@@ -61,7 +61,7 @@ const syntaxHelpers = [
               style="flex: 1; font-family: monospace;"
               :status="fieldValid[i] ? undefined : 'error'"
             />
-            <span style="min-width: 80px; color: #999; font-size: 12px;">
+            <span style="min-width: 80px; color: var(--color-text-3); font-size: 12px;">
               {{ CRON_FIELDS[i].min }} - {{ CRON_FIELDS[i].max }}
             </span>
           </div>
@@ -92,7 +92,7 @@ const syntaxHelpers = [
 
       <NCard title="Syntax Reference">
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;">
-          <div v-for="h in syntaxHelpers" :key="h.symbol" style="padding: 8px; border: 1px solid #333; border-radius: 6px;">
+          <div v-for="h in syntaxHelpers" :key="h.symbol" style="padding: 8px; border: 1px solid var(--color-hairline); border-radius: 6px;">
             <div><strong>{{ h.symbol }}</strong> — {{ h.meaning }}</div>
             <div style="font-family: monospace; font-size: 12px; opacity: 0.7; margin-top: 4px;">{{ h.example }}</div>
           </div>

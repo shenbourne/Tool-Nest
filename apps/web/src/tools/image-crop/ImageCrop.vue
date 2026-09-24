@@ -156,7 +156,7 @@ function downloadCrop() {
                     y: cropY * imageScale,
                     width: cropWidth * imageScale,
                     height: cropHeight * imageScale,
-                    stroke: '#00c853',
+                    stroke: 'var(--color-primary)',
                     strokeWidth: 2,
                     fill: 'rgba(0,200,83,0.15)',
                     draggable: true,
@@ -164,7 +164,7 @@ function downloadCrop() {
                   @transformend="onRectTransformEnd"
                   @dragend="onRectTransformEnd"
                 />
-                <v-transformer ref="transformerRef" :config="{ rotateEnabled: false, borderStroke: '#00c853', anchorStroke: '#00c853' }" />
+                <v-transformer ref="transformerRef" :config="{ rotateEnabled: false, borderStroke: 'var(--color-primary)', anchorStroke: 'var(--color-primary)' }" />
               </v-layer>
             </v-stage>
           </div>

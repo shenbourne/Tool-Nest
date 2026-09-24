@@ -144,12 +144,12 @@ function copyCommand(command: string) {
   font-family: monospace;
   font-size: 13px;
   font-weight: 500;
-  color: var(--primary-color, #2080f0);
+  color: var(--color-primary);
 }
 
 .command-desc {
   font-size: 12px;
-  color: var(--text-color-3, #999);
+  color: var(--color-text-3);
 }
 
 :deep(.n-card-header) {

@@ -96,7 +96,7 @@ function copyCommand() {
   font-size: 48px;
   font-family: monospace;
   font-weight: bold;
-  color: var(--primary-color, #2080f0);
+  color: var(--color-primary);
   margin: 12px 0 4px;
 }
 

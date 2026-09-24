@@ -9,7 +9,7 @@ export interface StrengthResult {
 }
 
 export function analyzePassword(password: string): StrengthResult {
-  if (!password) return { score: 0, label: 'None', color: '#999', crackTime: 'Instant', suggestions: [] };
+  if (!password) return { score: 0, label: 'None', color: 'var(--color-text-3)', crackTime: 'Instant', suggestions: [] };
 
   let score = 0;
   const suggestions: string[] = [];
@@ -54,7 +54,7 @@ export function analyzePassword(password: string): StrengthResult {
   score = Math.max(0, Math.min(4, score));
 
   const labels = ['Very Weak', 'Weak', 'Fair', 'Strong', 'Very Strong'];
-  const colors = ['#d03050', '#d03050', '#f0a020', '#18a058', '#18a058'];
+  const colors = ['var(--color-error)', 'var(--color-error)', 'var(--color-warning)', 'var(--color-success)', 'var(--color-success)'];
 
   return { score, label: labels[score], color: colors[score], crackTime, suggestions };
 }

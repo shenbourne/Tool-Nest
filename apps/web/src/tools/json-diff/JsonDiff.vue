@@ -83,12 +83,12 @@ function formatVal(v: any): string {
       </NSpace>
       <NCard v-if="diffResult.length" title="Differences">
         <div style="font-family:monospace;font-size:13px;">
-          <div v-for="(d, i) in diffResult" :key="i" :style="{ padding: '4px 8px', borderBottom: '1px solid #eee', background: d.type==='added'?'#e6ffed':d.type==='removed'?'#ffeef0':'#fff5b1' }">
+          <div v-for="(d, i) in diffResult" :key="i" :style="{ padding: '4px 8px', borderBottom: '1px solid var(--color-hairline)', background: d.type==='added'?'#e6ffed':d.type==='removed'?'#ffeef0':'#fff5b1' }">
             <NTag :type="d.type==='added'?'success':d.type==='removed'?'error':'warning'" size="small" style="margin-right:8px;">{{ d.type }}</NTag>
             <strong>{{ d.path }}</strong>
-            <span v-if="d.type==='removed'" style="color:#d03050;margin-left:8px;">{{ formatVal(d.oldValue) }}</span>
-            <span v-else-if="d.type==='added'" style="color:#18a058;margin-left:8px;">{{ formatVal(d.newValue) }}</span>
-            <span v-else style="margin-left:8px;"><span style="color:#d03050;">{{ formatVal(d.oldValue) }}</span> → <span style="color:#18a058;">{{ formatVal(d.newValue) }}</span></span>
+            <span v-if="d.type==='removed'" style="color:var(--color-error);margin-left:8px;">{{ formatVal(d.oldValue) }}</span>
+            <span v-else-if="d.type==='added'" style="color:var(--color-success);margin-left:8px;">{{ formatVal(d.newValue) }}</span>
+            <span v-else style="margin-left:8px;"><span style="color:var(--color-error);">{{ formatVal(d.oldValue) }}</span> → <span style="color:var(--color-success);">{{ formatVal(d.newValue) }}</span></span>
           </div>
         </div>
       </NCard>

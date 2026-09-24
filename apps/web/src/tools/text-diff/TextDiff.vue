@@ -37,9 +37,9 @@ const stats = computed(() => {
       <NCard v-if="text1 || text2" title="Diff"><div style="font-family:monospace;font-size:13px;">
         <div v-for="d in diff" :key="d.num" :style="{ padding: '2px 8px', background: d.type==='added'?'#e6ffed':d.type==='removed'?'#ffeef0':d.type==='changed'?'#fff5b1':'transparent' }">
           <span style="opacity:0.4;width:30px;display:inline-block;">{{ d.num }}</span>
-          <span v-if="d.type==='removed'" style="color:#d03050;">- {{ d.line1 }}</span>
-          <span v-else-if="d.type==='added'" style="color:#18a058;">+ {{ d.line2 }}</span>
-          <span v-else-if="d.type==='changed'"><span style="color:#d03050;">- {{ d.line1 }}</span><br/><span style="color:#18a058;margin-left:30px;">+ {{ d.line2 }}</span></span>
+          <span v-if="d.type==='removed'" style="color:var(--color-error);">- {{ d.line1 }}</span>
+          <span v-else-if="d.type==='added'" style="color:var(--color-success);">+ {{ d.line2 }}</span>
+          <span v-else-if="d.type==='changed'"><span style="color:var(--color-error);">- {{ d.line1 }}</span><br/><span style="color:var(--color-success);margin-left:30px;">+ {{ d.line2 }}</span></span>
           <span v-else>{{ d.line1 }}</span>
         </div>
       </div></NCard>

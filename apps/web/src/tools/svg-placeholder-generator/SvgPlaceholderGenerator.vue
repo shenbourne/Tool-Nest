@@ -76,7 +76,7 @@ function download() {
 
       <NCard title="Preview">
         <div style="text-align: center; margin-bottom: 16px;">
-          <img :src="dataUrl" alt="SVG Placeholder" style="max-width: 100%; border: 1px solid #eee;" />
+          <img :src="dataUrl" alt="SVG Placeholder" style="max-width: 100%; border: 1px solid var(--color-hairline);" />
         </div>
         <NSpace>
           <NButton @click="download">{{ t('tool.download') }} SVG</NButton>
