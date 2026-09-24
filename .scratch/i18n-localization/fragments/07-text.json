@@ -70,7 +70,7 @@
   "zh": {
     "common": {
       "end": "结束",
-      "regex": "Regex"
+      "regex": "正则"
     },
     "tools": {
       "emailExtractor": {

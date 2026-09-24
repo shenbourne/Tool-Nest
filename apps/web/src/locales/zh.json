@@ -209,7 +209,7 @@
     "password": "密码",
     "uploadFile": "上传图片",
     "end": "结束",
-    "regex": "Regex",
+    "regex": "正则",
     "csvInputPlaceholder": "输入 CSV...",
     "listItemsPlaceholder": "输入列表项...",
     "none": "无",
@@ -463,7 +463,8 @@
     },
     "percentageCalc": {
       "name": "百分比计算器",
-      "description": "计算百分比、比例和百分比变化"
+      "description": "计算百分比、比例和百分比变化",
+      "percentOf": "% 的"
     },
     "rot13": {
       "name": "ROT13 加密",
@@ -1086,7 +1087,7 @@
       "description": "将 docker run 命令转换为 docker-compose YAML",
       "inputTitle": "Docker Run 命令",
       "inputPlaceholder": "在此粘贴你的 docker run 命令...",
-      "outputTitle": "Docker Compose YAML",
+      "outputTitle": "Docker Compose YAML 输出",
       "warnings": "警告"
     },
     "xmlFormatter": {

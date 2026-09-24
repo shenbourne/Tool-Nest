@@ -154,7 +154,7 @@
       "dockerRunToCompose": {
         "inputTitle": "Docker Run 命令",
         "inputPlaceholder": "在此粘贴你的 docker run 命令...",
-        "outputTitle": "Docker Compose YAML",
+        "outputTitle": "Docker Compose YAML 输出",
         "warnings": "警告"
       },
       "emailNormalizer": {
