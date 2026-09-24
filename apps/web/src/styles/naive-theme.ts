@@ -10,6 +10,16 @@ const radius = {
   borderRadiusLarge: '12px',
 } as const;
 
+// Control height ladder, +8px over Naive defaults so medium lands on the 42px baseline.
+// heightMini/heightTiny stay at Naive defaults (16/22px): tags map to those two tiers,
+// and they are labels rather than controls.
+const height = {
+  heightSmall: '36px',
+  heightMedium: '42px',
+  heightLarge: '48px',
+  heightHuge: '54px',
+} as const;
+
 export const naiveLightThemeOverrides: GlobalThemeOverrides = {
   common: {
     // Primary — teal (aligned with --color-primary*)
@@ -53,6 +63,7 @@ export const naiveLightThemeOverrides: GlobalThemeOverrides = {
     fontFamily,
     fontSize: '14px',
     ...radius,
+    ...height,
   },
 };
 
@@ -99,5 +110,6 @@ export const naiveDarkThemeOverrides: GlobalThemeOverrides = {
     fontFamily,
     fontSize: '14px',
     ...radius,
+    ...height,
   },
 };
