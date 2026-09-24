@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NUpload } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 const file = ref<File | null>(null);
 const angle = ref(90);
 const resultUrl = ref('');
@@ -33,10 +36,10 @@ async function process() {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
-      <NInputNumber v-model:value="angle" :min="-360" :max="360" placeholder="Degrees" style="width:140px" />
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">Rotate</NButton>
+      <NInputNumber v-model:value="angle" :min="-360" :max="360" :placeholder="t('tools.imageRotate.degrees')" style="width:140px" />
+      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageRotate.rotate') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
-      <NButton v-if="resultUrl" @click="download">Download</NButton>
+      <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

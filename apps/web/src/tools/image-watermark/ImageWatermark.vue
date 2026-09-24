@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NInput, NUpload } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 const file = ref<File | null>(null);
 const text = ref('Watermark');
 const resultUrl = ref('');
@@ -34,10 +37,10 @@ async function process() {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
-      <NInput v-model:value="text" placeholder="Watermark text..." style="width:250px" />
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">Add Watermark</NButton>
+      <NInput v-model:value="text" :placeholder="t('tools.imageWatermark.watermarkPlaceholder')" style="width:250px" />
+      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageWatermark.addWatermark') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
-      <NButton v-if="resultUrl" @click="download">Download</NButton>
+      <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

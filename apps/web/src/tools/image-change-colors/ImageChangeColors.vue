@@ -71,22 +71,22 @@ function download() {
       <NCard :title="t('tools.imageChangeColors.name') + ' ' + t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <div>
-            <label>Hue Rotate (0-360): </label>
+            <label>{{ t('tools.imageChangeColors.hueRotate') }}</label>
             <NInputNumber v-model:value="hueRotate" :min="0" :max="360" :step="1" />
           </div>
           <div>
-            <label>Saturate (0-200): </label>
+            <label>{{ t('tools.imageChangeColors.saturate') }}</label>
             <NInputNumber v-model:value="saturate" :min="0" :max="200" :step="1" />
           </div>
           <div>
-            <label>Brightness (0-200): </label>
+            <label>{{ t('tools.imageChangeColors.brightness') }}</label>
             <NInputNumber v-model:value="brightness" :min="0" :max="200" :step="1" />
           </div>
           <div>
-            <label>Contrast (0-200): </label>
+            <label>{{ t('tools.imageChangeColors.contrast') }}</label>
             <NInputNumber v-model:value="contrast" :min="0" :max="200" :step="1" />
           </div>
-          <NButton type="primary" :disabled="!file" @click="download">{{ t('common.download', 'Download') }}</NButton>
+          <NButton type="primary" :disabled="!file" @click="download">{{ t('tool.download') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

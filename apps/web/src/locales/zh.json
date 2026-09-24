@@ -622,59 +622,98 @@
     },
     "imageResize": {
       "name": "图片调整大小",
-      "description": "将图片调整为自定义尺寸"
+      "description": "将图片调整为自定义尺寸",
+      "resize": "调整尺寸"
     },
     "imageRotate": {
       "name": "图片旋转",
-      "description": "按任意角度旋转图片"
+      "description": "按任意角度旋转图片",
+      "degrees": "角度",
+      "rotate": "旋转"
     },
     "imageFlip": {
       "name": "图片翻转",
-      "description": "水平或垂直翻转图片"
+      "description": "水平或垂直翻转图片",
+      "horizontal": "水平",
+      "vertical": "垂直",
+      "flip": "翻转"
     },
     "imageCompress": {
       "name": "图片压缩",
-      "description": "压缩图片以减小文件大小"
+      "description": "压缩图片以减小文件大小",
+      "quality": "质量",
+      "compress": "压缩",
+      "sizeInfo": "原图：{orig} KB → 新图：{next} KB"
     },
     "imageWatermark": {
       "name": "图片水印",
-      "description": "为图片添加文字水印"
+      "description": "为图片添加文字水印",
+      "watermarkPlaceholder": "水印文本...",
+      "addWatermark": "添加水印"
     },
     "convertToJpg": {
       "name": "转换为 JPG",
-      "description": "将图片转换为 JPEG 格式"
+      "description": "将图片转换为 JPEG 格式",
+      "convert": "转换为 JPG",
+      "downloadJpg": "下载 JPG"
     },
     "convertToWebp": {
       "name": "转换为 WebP",
-      "description": "将图片转换为 WebP 格式"
+      "description": "将图片转换为 WebP 格式",
+      "convert": "转换为 WebP",
+      "downloadWebp": "下载 WebP"
     },
     "imageChangeOpacity": {
       "name": "图片透明度调整",
-      "description": "调整图片透明度和不透明度"
+      "description": "调整图片透明度和不透明度",
+      "downloadPng": "下载 PNG"
     },
     "imageChangeColors": {
       "name": "图片颜色调整",
-      "description": "调整图片的色相、饱和度、亮度和对比度"
+      "description": "调整图片的色相、饱和度、亮度和对比度",
+      "hueRotate": "色相旋转 (0-360)：",
+      "saturate": "饱和度 (0-200)：",
+      "brightness": "亮度 (0-200)：",
+      "contrast": "对比度 (0-200)："
     },
     "imageCreateTransparent": {
       "name": "图片透明化",
-      "description": "移除图片中的指定颜色使其变为透明"
+      "description": "移除图片中的指定颜色使其变为透明",
+      "targetColor": "目标颜色：",
+      "toleranceRange": "容差 (0-100)："
     },
     "imageSplit": {
       "name": "图片分割",
-      "description": "将图片分割为网格状的瓦片"
+      "description": "将图片分割为网格状的瓦片",
+      "rows": "行数 (1-10)：",
+      "columns": "列数 (1-10)：",
+      "split": "分割",
+      "tiles": "瓦片",
+      "downloadAll": "全部下载"
     },
     "imageCrop": {
       "name": "图片裁剪",
-      "description": "通过选择区域裁剪图片"
+      "description": "通过选择区域裁剪图片",
+      "cropAndDownload": "裁剪并下载"
     },
     "imageEditor": {
       "name": "图片编辑器",
-      "description": "在图片上添加文字和绘图"
+      "description": "在图片上添加文字和绘图",
+      "addText": "添加文本",
+      "drawLine": "绘制线条",
+      "clearAll": "全部清除",
+      "color": "颜色：",
+      "lineWidth": "线宽：",
+      "fontSize": "字号：",
+      "text": "文本：",
+      "textPlaceholder": "输入文本...",
+      "defaultText": "文本"
     },
     "imageRemoveBackground": {
       "name": "图片去背景",
-      "description": "移除图片的背景颜色"
+      "description": "移除图片的背景颜色",
+      "backgroundColor": "背景颜色：",
+      "toleranceRange": "容差 (0-100)："
     },
     "jpgToPng": {
       "name": "JPG 转 PNG",
@@ -974,7 +1013,23 @@
     },
     "cameraRecorder": {
       "name": "摄像头录制",
-      "description": "从摄像头录制视频"
+      "description": "从摄像头录制视频",
+      "unsupportedBrowser": "您的浏览器不支持摄像头录制。请使用支持 WebRTC 的现代浏览器。",
+      "permissionTitle": "摄像头权限",
+      "permissionHint": "您需要授予摄像头和麦克风的使用权限。",
+      "permissionDenied": "权限被拒绝",
+      "grantPermission": "授予权限",
+      "failedToStart": "无法启动摄像头",
+      "cameraPreview": "摄像头预览",
+      "selectCamera": "选择摄像头",
+      "selectMicrophone": "选择麦克风",
+      "cameraLabel": "摄像头 {n}",
+      "microphoneLabel": "麦克风 {n}",
+      "startRecording": "开始录制",
+      "pause": "暂停",
+      "resume": "继续",
+      "recordingUnsupported": "您的浏览器不支持视频录制",
+      "recordings": "录制列表"
     },
     "etaCalculator": {
       "name": "ETA 计算器",
@@ -1146,7 +1201,10 @@
     },
     "imageToTextOcr": {
       "name": "图片转文字 (OCR)",
-      "description": "使用 OCR 从图片中提取文字"
+      "description": "使用 OCR 从图片中提取文字",
+      "imageUpload": "图片上传",
+      "extractText": "提取文本",
+      "extractedText": "提取结果"
     },
     "htmlWysiwygEditor": {
       "name": "HTML 所见即所得编辑器",

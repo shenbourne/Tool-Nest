@@ -203,15 +203,15 @@ function downloadCrop() {
               <NInputNumber v-model:value="cropY" :min="0" :step="1" style="width:120px;" />
             </div>
             <div>
-              <label>Width: </label>
+              <label>{{ t('common.width') }}: </label>
               <NInputNumber v-model:value="cropWidth" :min="1" :step="1" style="width:120px;" />
             </div>
             <div>
-              <label>Height: </label>
+              <label>{{ t('common.height') }}: </label>
               <NInputNumber v-model:value="cropHeight" :min="1" :step="1" style="width:120px;" />
             </div>
           </NSpace>
-          <NButton type="primary" :disabled="!file" @click="downloadCrop">Crop &amp; Download</NButton>
+          <NButton type="primary" :disabled="!file" @click="downloadCrop">{{ t('tools.imageCrop.cropAndDownload') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

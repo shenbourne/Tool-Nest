@@ -622,59 +622,98 @@
     },
     "imageResize": {
       "name": "Image Resize",
-      "description": "Resize images to custom dimensions"
+      "description": "Resize images to custom dimensions",
+      "resize": "Resize"
     },
     "imageRotate": {
       "name": "Image Rotate",
-      "description": "Rotate images by any angle"
+      "description": "Rotate images by any angle",
+      "degrees": "Degrees",
+      "rotate": "Rotate"
     },
     "imageFlip": {
       "name": "Image Flip",
-      "description": "Flip images horizontally or vertically"
+      "description": "Flip images horizontally or vertically",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical",
+      "flip": "Flip"
     },
     "imageCompress": {
       "name": "Image Compress",
-      "description": "Compress images to reduce file size"
+      "description": "Compress images to reduce file size",
+      "quality": "Quality",
+      "compress": "Compress",
+      "sizeInfo": "Original: {orig} KB → New: {next} KB"
     },
     "imageWatermark": {
       "name": "Image Watermark",
-      "description": "Add text watermark to images"
+      "description": "Add text watermark to images",
+      "watermarkPlaceholder": "Watermark text...",
+      "addWatermark": "Add Watermark"
     },
     "convertToJpg": {
       "name": "Convert to JPG",
-      "description": "Convert images to JPEG format"
+      "description": "Convert images to JPEG format",
+      "convert": "Convert to JPG",
+      "downloadJpg": "Download JPG"
     },
     "convertToWebp": {
       "name": "Convert to WebP",
-      "description": "Convert images to WebP format"
+      "description": "Convert images to WebP format",
+      "convert": "Convert to WebP",
+      "downloadWebp": "Download WebP"
     },
     "imageChangeOpacity": {
       "name": "Image Change Opacity",
-      "description": "Adjust image transparency and opacity"
+      "description": "Adjust image transparency and opacity",
+      "downloadPng": "Download PNG"
     },
     "imageChangeColors": {
       "name": "Image Change Colors",
-      "description": "Adjust hue, saturation, brightness and contrast of images"
+      "description": "Adjust hue, saturation, brightness and contrast of images",
+      "hueRotate": "Hue Rotate (0-360): ",
+      "saturate": "Saturate (0-200): ",
+      "brightness": "Brightness (0-200): ",
+      "contrast": "Contrast (0-200): "
     },
     "imageCreateTransparent": {
       "name": "Image Create Transparent",
-      "description": "Remove a color from an image to make it transparent"
+      "description": "Remove a color from an image to make it transparent",
+      "targetColor": "Target Color: ",
+      "toleranceRange": "Tolerance (0-100): "
     },
     "imageSplit": {
       "name": "Image Split",
-      "description": "Split an image into a grid of tiles"
+      "description": "Split an image into a grid of tiles",
+      "rows": "Rows (1-10): ",
+      "columns": "Columns (1-10): ",
+      "split": "Split",
+      "tiles": "Tiles",
+      "downloadAll": "Download All"
     },
     "imageCrop": {
       "name": "Image Crop",
-      "description": "Crop images by selecting a region"
+      "description": "Crop images by selecting a region",
+      "cropAndDownload": "Crop & Download"
     },
     "imageEditor": {
       "name": "Image Editor",
-      "description": "Add text and drawings to images"
+      "description": "Add text and drawings to images",
+      "addText": "Add Text",
+      "drawLine": "Draw Line",
+      "clearAll": "Clear All",
+      "color": "Color: ",
+      "lineWidth": "Line Width: ",
+      "fontSize": "Font Size: ",
+      "text": "Text: ",
+      "textPlaceholder": "Enter text...",
+      "defaultText": "Text"
     },
     "imageRemoveBackground": {
       "name": "Image Remove Background",
-      "description": "Remove background color from images"
+      "description": "Remove background color from images",
+      "backgroundColor": "Background Color: ",
+      "toleranceRange": "Tolerance (0-100): "
     },
     "jpgToPng": {
       "name": "JPG to PNG",
@@ -974,7 +1013,23 @@
     },
     "cameraRecorder": {
       "name": "Camera Recorder",
-      "description": "Record video from your camera"
+      "description": "Record video from your camera",
+      "unsupportedBrowser": "Your browser does not support camera recording. Please use a modern browser with WebRTC support.",
+      "permissionTitle": "Camera Permission",
+      "permissionHint": "You need to grant permission to use your camera and microphone.",
+      "permissionDenied": "Permission denied",
+      "grantPermission": "Grant Permission",
+      "failedToStart": "Failed to start camera",
+      "cameraPreview": "Camera Preview",
+      "selectCamera": "Select camera",
+      "selectMicrophone": "Select microphone",
+      "cameraLabel": "Camera {n}",
+      "microphoneLabel": "Microphone {n}",
+      "startRecording": "Start Recording",
+      "pause": "Pause",
+      "resume": "Resume",
+      "recordingUnsupported": "Video recording is not supported in your browser",
+      "recordings": "Recordings"
     },
     "etaCalculator": {
       "name": "ETA Calculator",
@@ -1146,7 +1201,10 @@
     },
     "imageToTextOcr": {
       "name": "Image to Text (OCR)",
-      "description": "Extract text from images using OCR"
+      "description": "Extract text from images using OCR",
+      "imageUpload": "Image Upload",
+      "extractText": "Extract Text",
+      "extractedText": "Extracted Text"
     },
     "htmlWysiwygEditor": {
       "name": "HTML WYSIWYG Editor",
