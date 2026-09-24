@@ -209,7 +209,9 @@
     "password": "Password",
     "uploadFile": "Upload an image",
     "end": "End",
-    "regex": "Regex"
+    "regex": "Regex",
+    "csvInputPlaceholder": "CSV input...",
+    "listItemsPlaceholder": "List items..."
   },
   "search": {
     "placeholder": "Search tools...",
@@ -536,7 +538,11 @@
     },
     "csvChangeSeparator": {
       "name": "CSV Change Separator",
-      "description": "Change the delimiter used in CSV data"
+      "description": "Change the delimiter used in CSV data",
+      "semicolon": "Semicolon (;)",
+      "pipe": "Pipe (|)",
+      "tab": "Tab",
+      "comma": "Comma (,)"
     },
     "csvRowsToColumns": {
       "name": "CSV Rows to Columns",
@@ -544,15 +550,22 @@
     },
     "csvFindIncomplete": {
       "name": "Find Incomplete CSV Records",
-      "description": "Find CSV rows with fewer columns than expected"
+      "description": "Find CSV rows with fewer columns than expected",
+      "incompleteRow": "Line {line}: {cols} columns (expected {expected})",
+      "allRowsValid": "All rows have {expected} columns."
     },
     "csvInsertColumns": {
       "name": "Insert CSV Columns",
-      "description": "Insert a new column into CSV data"
+      "description": "Insert a new column into CSV data",
+      "position": "Position",
+      "headerName": "Header name",
+      "defaultValue": "Default value"
     },
     "csvSwapColumns": {
       "name": "Swap CSV Columns",
-      "description": "Swap two columns in CSV data"
+      "description": "Swap two columns in CSV data",
+      "columnA": "Column A",
+      "columnB": "Column B"
     },
     "csvTranspose": {
       "name": "Transpose CSV",
@@ -572,7 +585,10 @@
     },
     "listGroup": {
       "name": "List Group",
-      "description": "Group list items into chunks of N"
+      "description": "Group list items into chunks of N",
+      "inputPlaceholder": "List items (one per line)...",
+      "groupSize": "Group size",
+      "groupLabel": "--- Group {number} ---"
     },
     "listReverse": {
       "name": "List Reverse",

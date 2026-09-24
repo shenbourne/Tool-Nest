@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NInputNumber } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
+
 const input = ref('');
 const count = ref(10);
 const output = computed(() => input.value.split('\n').filter(Boolean).slice(0, count.value).join('\n'));
@@ -10,7 +14,7 @@ const output = computed(() => input.value.split('\n').filter(Boolean).slice(0, c
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" placeholder="List items..." />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')" />
       <NInputNumber v-model:value="count" :min="1" style="width:130px" />
       <NInput :value="output" type="textarea" :rows="6" readonly />
     </NSpace></NCard>

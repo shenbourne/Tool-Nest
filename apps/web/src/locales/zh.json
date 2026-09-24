@@ -209,7 +209,9 @@
     "password": "密码",
     "uploadFile": "上传图片",
     "end": "结束",
-    "regex": "Regex"
+    "regex": "Regex",
+    "csvInputPlaceholder": "输入 CSV...",
+    "listItemsPlaceholder": "输入列表项..."
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -536,7 +538,11 @@
     },
     "csvChangeSeparator": {
       "name": "CSV 分隔符更改",
-      "description": "更改 CSV 数据中使用的分隔符"
+      "description": "更改 CSV 数据中使用的分隔符",
+      "semicolon": "分号 (;)",
+      "pipe": "竖线 (|)",
+      "tab": "制表符",
+      "comma": "逗号 (,)"
     },
     "csvRowsToColumns": {
       "name": "CSV 行列转换",
@@ -544,15 +550,22 @@
     },
     "csvFindIncomplete": {
       "name": "查找不完整 CSV 记录",
-      "description": "查找列数少于预期的 CSV 行"
+      "description": "查找列数少于预期的 CSV 行",
+      "incompleteRow": "第 {line} 行：{cols} 列（应有 {expected} 列）",
+      "allRowsValid": "所有行都有 {expected} 列。"
     },
     "csvInsertColumns": {
       "name": "插入 CSV 列",
-      "description": "在 CSV 数据中插入新列"
+      "description": "在 CSV 数据中插入新列",
+      "position": "位置",
+      "headerName": "列名",
+      "defaultValue": "默认值"
     },
     "csvSwapColumns": {
       "name": "交换 CSV 列",
-      "description": "交换 CSV 数据中的两列"
+      "description": "交换 CSV 数据中的两列",
+      "columnA": "列 A",
+      "columnB": "列 B"
     },
     "csvTranspose": {
       "name": "CSV 转置",
@@ -572,7 +585,10 @@
     },
     "listGroup": {
       "name": "列表分组",
-      "description": "将列表项分成 N 个一组"
+      "description": "将列表项分成 N 个一组",
+      "inputPlaceholder": "输入列表项（每行一项）...",
+      "groupSize": "每组大小",
+      "groupLabel": "--- 第 {number} 组 ---"
     },
     "listReverse": {
       "name": "列表反转",

@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NInputNumber } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
+
 const input = ref('');
 const colA = ref(0);
 const colB = ref(1);
@@ -26,8 +30,8 @@ const output = computed(() => parseCSV(input.value).map(r => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="5" placeholder="CSV input..." />
-      <NSpace><NInputNumber v-model:value="colA" :min="0" placeholder="Column A" style="width:120px" /><NInputNumber v-model:value="colB" :min="0" placeholder="Column B" style="width:120px" /></NSpace>
+      <NInput v-model:value="input" type="textarea" :rows="5" :placeholder="t('common.csvInputPlaceholder')" />
+      <NSpace><NInputNumber v-model:value="colA" :min="0" :placeholder="t('tools.csvSwapColumns.columnA')" style="width:120px" /><NInputNumber v-model:value="colB" :min="0" :placeholder="t('tools.csvSwapColumns.columnB')" style="width:120px" /></NSpace>
       <NInput :value="output" type="textarea" :rows="5" readonly />
     </NSpace></NCard>
   </ToolLayout>
