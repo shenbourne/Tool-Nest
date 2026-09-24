@@ -45,7 +45,7 @@ export function parseDockerRun(command: string): ParseResult {
       }
     }
 
-    let commandParts: string[] = [];
+    const commandParts: string[] = [];
     let collectingCommand = false;
 
     while (i < tokens.length) {
