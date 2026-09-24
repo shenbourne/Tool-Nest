@@ -12,17 +12,19 @@ const { t } = useI18n();
 const tool = useCurrentTool();
 const preferences = usePreferencesStore();
 
-// Konva/Canvas cannot resolve CSS `var()` expressions, so the primary token has
-// to be passed as a concrete color. Token values are declared on `:root` and
+// Konva/Canvas cannot resolve CSS `var()` expressions, so the primary tokens have
+// to be passed as concrete colors. Token values are declared on `:root` and
 // swapped by the `dark` class, hence the store-driven re-resolution: `isDark`
 // covers theme toggles and `loaded` covers the initial application of the theme
 // class when preferences arrive from the server after mount.
 const primaryColor = ref('');
+const primarySoftColor = ref('');
 
 watch(
   [() => preferences.isDark, () => preferences.loaded],
   () => {
     primaryColor.value = resolveCssColorToken('--color-primary');
+    primarySoftColor.value = resolveCssColorToken('--color-primary-soft');
   },
   { immediate: true, flush: 'post' },
 );
@@ -176,7 +178,7 @@ function downloadCrop() {
                     height: cropHeight * imageScale,
                     stroke: primaryColor,
                     strokeWidth: 2,
-                    fill: 'rgba(0,200,83,0.15)',
+                    fill: primarySoftColor,
                     draggable: true,
                   }"
                   @transformend="onRectTransformEnd"

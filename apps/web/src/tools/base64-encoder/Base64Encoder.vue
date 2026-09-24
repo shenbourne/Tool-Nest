@@ -49,7 +49,7 @@ function swap() {
         <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
         <NButton type="primary" @click="copyOutput" :disabled="!output">{{ t('tool.copy') }}</NButton>
       </NSpace>
-      <NCard v-if="error" :bordered="false" style="background: rgba(208,48,80,0.1);">
+      <NCard v-if="error" :bordered="false" style="background: var(--color-error-soft);">
         <span style="color: var(--color-error);">{{ error }}</span>
       </NCard>
       <NCard title="Input">
