@@ -1,0 +1,164 @@
+{
+  "en": {
+    "common": {
+      "processingFailed": "Processing failed",
+      "compress": "Compress",
+      "resize": "Resize",
+      "rotate": "Rotate",
+      "flip": "Flip",
+      "crop": "Crop",
+      "trim": "Trim",
+      "merge": "Merge",
+      "loop": "Loop",
+      "moveUp": "Up",
+      "moveDown": "Down",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    },
+    "tool": {
+      "downloadGif": "Download GIF"
+    },
+    "tools": {
+      "gifChangeSpeed": {
+        "selectSpeed": "Select speed",
+        "changeSpeed": "Change Speed",
+        "speedVeryFast": "0.25x (very fast)",
+        "speedFaster": "0.5x (faster)",
+        "speedNormal": "1x (normal)",
+        "speedSlower": "1.5x (slower)",
+        "speedSlow": "2x (slow)",
+        "speedVerySlow": "4x (very slow)"
+      },
+      "imagesToGif": {
+        "filesSelected": "{count} file(s) selected",
+        "frameDuration": "Frame duration (s)",
+        "createGif": "Create GIF"
+      },
+      "videoAddAudio": {
+        "videoFile": "Video file",
+        "audioFile": "Audio file",
+        "addAudio": "Add Audio"
+      },
+      "videoChangeSpeed": {
+        "selectSpeed": "Select speed",
+        "changeSpeed": "Change Speed",
+        "speedVerySlow": "0.25x (very slow)",
+        "speedSlow": "0.5x (slow)",
+        "speedNormal": "1x (normal)",
+        "speedFast": "1.5x (fast)",
+        "speedFaster": "2x (faster)",
+        "speedVeryFast": "4x (very fast)"
+      },
+      "videoCompress": {
+        "selectQuality": "Select quality",
+        "qualityLow": "Low (smaller file)",
+        "qualityMedium": "Medium (balanced)",
+        "qualityHigh": "High (better quality)"
+      },
+      "videoFlip": {
+        "selectDirection": "Select direction"
+      },
+      "videoLoop": {
+        "loopCount": "Loop count"
+      },
+      "videoResize": {
+        "keepAspectRatio": "Keep aspect ratio"
+      },
+      "videoRotate": {
+        "selectRotation": "Select rotation",
+        "rotation90cw": "90° Clockwise",
+        "rotation90ccw": "90° Counter-clockwise",
+        "rotation180": "180°"
+      },
+      "videoToGif": {
+        "duration": "Duration (s)",
+        "convertToGif": "Convert to GIF"
+      },
+      "videoTrim": {
+        "startTime": "Start (s)",
+        "endTime": "End (s)"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "processingFailed": "处理失败",
+      "compress": "压缩",
+      "resize": "调整尺寸",
+      "rotate": "旋转",
+      "flip": "翻转",
+      "crop": "裁剪",
+      "trim": "裁剪",
+      "merge": "合并",
+      "loop": "循环",
+      "moveUp": "上移",
+      "moveDown": "下移",
+      "horizontal": "水平",
+      "vertical": "垂直"
+    },
+    "tool": {
+      "downloadGif": "下载 GIF"
+    },
+    "tools": {
+      "gifChangeSpeed": {
+        "selectSpeed": "选择速度",
+        "changeSpeed": "调整速度",
+        "speedVeryFast": "0.25x（极快）",
+        "speedFaster": "0.5x（较快）",
+        "speedNormal": "1x（正常）",
+        "speedSlower": "1.5x（较慢）",
+        "speedSlow": "2x（慢）",
+        "speedVerySlow": "4x（极慢）"
+      },
+      "imagesToGif": {
+        "filesSelected": "已选择 {count} 个文件",
+        "frameDuration": "帧时长（秒）",
+        "createGif": "创建 GIF"
+      },
+      "videoAddAudio": {
+        "videoFile": "视频文件",
+        "audioFile": "音频文件",
+        "addAudio": "添加音频"
+      },
+      "videoChangeSpeed": {
+        "selectSpeed": "选择速度",
+        "changeSpeed": "调整速度",
+        "speedVerySlow": "0.25x（极慢）",
+        "speedSlow": "0.5x（慢）",
+        "speedNormal": "1x（正常）",
+        "speedFast": "1.5x（快）",
+        "speedFaster": "2x（较快）",
+        "speedVeryFast": "4x（极快）"
+      },
+      "videoCompress": {
+        "selectQuality": "选择质量",
+        "qualityLow": "低（文件更小）",
+        "qualityMedium": "中（均衡）",
+        "qualityHigh": "高（画质更好）"
+      },
+      "videoFlip": {
+        "selectDirection": "选择方向"
+      },
+      "videoLoop": {
+        "loopCount": "循环次数"
+      },
+      "videoResize": {
+        "keepAspectRatio": "保持宽高比"
+      },
+      "videoRotate": {
+        "selectRotation": "选择旋转角度",
+        "rotation90cw": "90° 顺时针",
+        "rotation90ccw": "90° 逆时针",
+        "rotation180": "180°"
+      },
+      "videoToGif": {
+        "duration": "时长（秒）",
+        "convertToGif": "转换为 GIF"
+      },
+      "videoTrim": {
+        "startTime": "开始（秒）",
+        "endTime": "结束（秒）"
+      }
+    }
+  }
+}

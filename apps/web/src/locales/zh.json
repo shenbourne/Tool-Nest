@@ -129,7 +129,8 @@
     "download": "下载",
     "upload": "上传",
     "processing": "处理中...",
-    "loadFfmpeg": "加载 FFmpeg"
+    "loadFfmpeg": "加载 FFmpeg",
+    "downloadGif": "下载 GIF"
   },
   "common": {
     "loading": "加载中...",
@@ -186,7 +187,20 @@
     "separator": "分隔符",
     "format": "格式",
     "invalidJson": "无效的 JSON",
-    "inputJson": "输入 JSON"
+    "inputJson": "输入 JSON",
+    "processingFailed": "处理失败",
+    "compress": "压缩",
+    "resize": "调整尺寸",
+    "rotate": "旋转",
+    "flip": "翻转",
+    "crop": "裁剪",
+    "trim": "裁剪",
+    "merge": "合并",
+    "loop": "循环",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "horizontal": "水平",
+    "vertical": "垂直"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -1144,23 +1158,35 @@
     },
     "videoCompress": {
       "name": "视频压缩",
-      "description": "压缩视频文件以减小文件大小"
+      "description": "压缩视频文件以减小文件大小",
+      "selectQuality": "选择质量",
+      "qualityLow": "低（文件更小）",
+      "qualityMedium": "中（均衡）",
+      "qualityHigh": "高（画质更好）"
     },
     "videoTrim": {
       "name": "视频裁剪",
-      "description": "通过选择开始和结束时间来裁剪视频"
+      "description": "通过选择开始和结束时间来裁剪视频",
+      "startTime": "开始（秒）",
+      "endTime": "结束（秒）"
     },
     "videoResize": {
       "name": "视频调整大小",
-      "description": "调整视频尺寸"
+      "description": "调整视频尺寸",
+      "keepAspectRatio": "保持宽高比"
     },
     "videoRotate": {
       "name": "视频旋转",
-      "description": "将视频旋转 90 或 180 度"
+      "description": "将视频旋转 90 或 180 度",
+      "selectRotation": "选择旋转角度",
+      "rotation90cw": "90° 顺时针",
+      "rotation90ccw": "90° 逆时针",
+      "rotation180": "180°"
     },
     "videoFlip": {
       "name": "视频翻转",
-      "description": "水平或垂直翻转视频"
+      "description": "水平或垂直翻转视频",
+      "selectDirection": "选择方向"
     },
     "videoCrop": {
       "name": "视频裁剪",
@@ -1168,11 +1194,20 @@
     },
     "videoChangeSpeed": {
       "name": "视频变速",
-      "description": "改变视频播放速度"
+      "description": "改变视频播放速度",
+      "selectSpeed": "选择速度",
+      "changeSpeed": "调整速度",
+      "speedVerySlow": "0.25x（极慢）",
+      "speedSlow": "0.5x（慢）",
+      "speedNormal": "1x（正常）",
+      "speedFast": "1.5x（快）",
+      "speedFaster": "2x（较快）",
+      "speedVeryFast": "4x（极快）"
     },
     "videoLoop": {
       "name": "视频循环",
-      "description": "循环播放视频指定次数"
+      "description": "循环播放视频指定次数",
+      "loopCount": "循环次数"
     },
     "videoMerge": {
       "name": "视频合并",
@@ -1180,19 +1215,35 @@
     },
     "videoAddAudio": {
       "name": "视频添加音频",
-      "description": "为视频添加或替换音轨"
+      "description": "为视频添加或替换音轨",
+      "videoFile": "视频文件",
+      "audioFile": "音频文件",
+      "addAudio": "添加音频"
     },
     "videoToGif": {
       "name": "视频转 GIF",
-      "description": "将视频转换为动态 GIF"
+      "description": "将视频转换为动态 GIF",
+      "duration": "时长（秒）",
+      "convertToGif": "转换为 GIF"
     },
     "gifChangeSpeed": {
       "name": "GIF 变速",
-      "description": "改变 GIF 动画速度"
+      "description": "改变 GIF 动画速度",
+      "selectSpeed": "选择速度",
+      "changeSpeed": "调整速度",
+      "speedVeryFast": "0.25x（极快）",
+      "speedFaster": "0.5x（较快）",
+      "speedNormal": "1x（正常）",
+      "speedSlower": "1.5x（较慢）",
+      "speedSlow": "2x（慢）",
+      "speedVerySlow": "4x（极慢）"
     },
     "imagesToGif": {
       "name": "图片转 GIF",
-      "description": "将多张图片合成为动态 GIF"
+      "description": "将多张图片合成为动态 GIF",
+      "filesSelected": "已选择 {count} 个文件",
+      "frameDuration": "帧时长（秒）",
+      "createGif": "创建 GIF"
     },
     "audioConverter": {
       "name": "音频转换",

@@ -129,7 +129,8 @@
     "download": "Download",
     "upload": "Upload",
     "processing": "Processing...",
-    "loadFfmpeg": "Load FFmpeg"
+    "loadFfmpeg": "Load FFmpeg",
+    "downloadGif": "Download GIF"
   },
   "common": {
     "loading": "Loading...",
@@ -186,7 +187,20 @@
     "separator": "Separator",
     "format": "Format",
     "invalidJson": "Invalid JSON",
-    "inputJson": "Input JSON"
+    "inputJson": "Input JSON",
+    "processingFailed": "Processing failed",
+    "compress": "Compress",
+    "resize": "Resize",
+    "rotate": "Rotate",
+    "flip": "Flip",
+    "crop": "Crop",
+    "trim": "Trim",
+    "merge": "Merge",
+    "loop": "Loop",
+    "moveUp": "Up",
+    "moveDown": "Down",
+    "horizontal": "Horizontal",
+    "vertical": "Vertical"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -1144,23 +1158,35 @@
     },
     "videoCompress": {
       "name": "Video Compress",
-      "description": "Compress video files to reduce file size"
+      "description": "Compress video files to reduce file size",
+      "selectQuality": "Select quality",
+      "qualityLow": "Low (smaller file)",
+      "qualityMedium": "Medium (balanced)",
+      "qualityHigh": "High (better quality)"
     },
     "videoTrim": {
       "name": "Video Trim",
-      "description": "Trim video by selecting start and end times"
+      "description": "Trim video by selecting start and end times",
+      "startTime": "Start (s)",
+      "endTime": "End (s)"
     },
     "videoResize": {
       "name": "Video Resize",
-      "description": "Resize video dimensions"
+      "description": "Resize video dimensions",
+      "keepAspectRatio": "Keep aspect ratio"
     },
     "videoRotate": {
       "name": "Video Rotate",
-      "description": "Rotate video by 90 or 180 degrees"
+      "description": "Rotate video by 90 or 180 degrees",
+      "selectRotation": "Select rotation",
+      "rotation90cw": "90° Clockwise",
+      "rotation90ccw": "90° Counter-clockwise",
+      "rotation180": "180°"
     },
     "videoFlip": {
       "name": "Video Flip",
-      "description": "Flip video horizontally or vertically"
+      "description": "Flip video horizontally or vertically",
+      "selectDirection": "Select direction"
     },
     "videoCrop": {
       "name": "Video Crop",
@@ -1168,11 +1194,20 @@
     },
     "videoChangeSpeed": {
       "name": "Video Speed Change",
-      "description": "Change video playback speed"
+      "description": "Change video playback speed",
+      "selectSpeed": "Select speed",
+      "changeSpeed": "Change Speed",
+      "speedVerySlow": "0.25x (very slow)",
+      "speedSlow": "0.5x (slow)",
+      "speedNormal": "1x (normal)",
+      "speedFast": "1.5x (fast)",
+      "speedFaster": "2x (faster)",
+      "speedVeryFast": "4x (very fast)"
     },
     "videoLoop": {
       "name": "Video Loop",
-      "description": "Loop video a specified number of times"
+      "description": "Loop video a specified number of times",
+      "loopCount": "Loop count"
     },
     "videoMerge": {
       "name": "Video Merge",
@@ -1180,19 +1215,35 @@
     },
     "videoAddAudio": {
       "name": "Video Add Audio",
-      "description": "Add or replace audio track in a video"
+      "description": "Add or replace audio track in a video",
+      "videoFile": "Video file",
+      "audioFile": "Audio file",
+      "addAudio": "Add Audio"
     },
     "videoToGif": {
       "name": "Video to GIF",
-      "description": "Convert video to animated GIF"
+      "description": "Convert video to animated GIF",
+      "duration": "Duration (s)",
+      "convertToGif": "Convert to GIF"
     },
     "gifChangeSpeed": {
       "name": "GIF Speed Change",
-      "description": "Change GIF animation speed"
+      "description": "Change GIF animation speed",
+      "selectSpeed": "Select speed",
+      "changeSpeed": "Change Speed",
+      "speedVeryFast": "0.25x (very fast)",
+      "speedFaster": "0.5x (faster)",
+      "speedNormal": "1x (normal)",
+      "speedSlower": "1.5x (slower)",
+      "speedSlow": "2x (slow)",
+      "speedVerySlow": "4x (very slow)"
     },
     "imagesToGif": {
       "name": "Images to GIF",
-      "description": "Combine images into an animated GIF"
+      "description": "Combine images into an animated GIF",
+      "filesSelected": "{count} file(s) selected",
+      "frameDuration": "Frame duration (s)",
+      "createGif": "Create GIF"
     },
     "audioConverter": {
       "name": "Audio Converter",
