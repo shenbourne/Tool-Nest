@@ -98,14 +98,7 @@ const syntaxHelpers = computed(() => [
           </div>
         </div>
         <div style="margin-top: 16px; font-family: monospace; font-size: 12px; opacity: 0.7;">
-          <pre style="margin: 0;">
-┌──────────── minute (0 - 59)
-| ┌────────── hour (0 - 23)
-| | ┌──────── day of month (1 - 31)
-| | | ┌────── month (1 - 12)
-| | | | ┌──── day of week (0 - 6, Sunday = 0)
-| | | | |
-* * * * *</pre>
+          <pre style="margin: 0;">{{ t('tools.crontabGenerator.syntaxDiagram') }}</pre>
         </div>
       </NCard>
     </NSpace>

@@ -1327,7 +1327,8 @@
       "anyValue": "Any value",
       "rangeOfValues": "Range of values",
       "listOfValues": "List of values",
-      "stepValues": "Step values"
+      "stepValues": "Step values",
+      "syntaxDiagram": "┌──────────── minute (0 - 59)\n| ┌────────── hour (0 - 23)\n| | ┌──────── day of month (1 - 31)\n| | | ┌────── month (1 - 12)\n| | | | ┌──── day of week (0 - 6, Sunday = 0)\n| | | | |\n* * * * *"
     },
     "dockerComposeTo1panel": {
       "name": "Docker Compose to 1Panel",

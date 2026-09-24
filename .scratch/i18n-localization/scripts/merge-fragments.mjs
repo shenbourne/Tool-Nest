@@ -15,12 +15,14 @@ function deepMerge(target, src, trail = '') {
       deepMerge(target[k], v, p);
     } else {
       if (Object.hasOwn(target, k) && target[k] !== v) {
-        console.warn(`  ! overwrite ${p}: ${JSON.stringify(target[k])} -> ${JSON.stringify(v)}`);
+        collisions.push(`${p}: ${JSON.stringify(target[k])} -> ${JSON.stringify(v)}`);
       }
       target[k] = v;
     }
   }
 }
+
+const collisions = [];
 
 const files = fs
   .readdirSync(FRAG_DIR)
@@ -35,8 +37,13 @@ if (!files.length) {
 for (const f of files) {
   const frag = JSON.parse(fs.readFileSync(path.join(FRAG_DIR, f), 'utf8'));
   console.log(`merging ${f}`);
+  collisions.length = 0;
   if (frag.en) deepMerge(en, frag.en);
   if (frag.zh) deepMerge(zh, frag.zh);
+  if (collisions.length) {
+    console.error(`  COLLISION in ${f}:`);
+    collisions.forEach((c) => console.error(`    ${c}`));
+  }
 }
 
 const sortKeys = (o) =>

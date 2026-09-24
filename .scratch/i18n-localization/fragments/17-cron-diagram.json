@@ -1,0 +1,16 @@
+{
+  "en": {
+    "tools": {
+      "crontabGenerator": {
+        "syntaxDiagram": "┌──────────── minute (0 - 59)\n| ┌────────── hour (0 - 23)\n| | ┌──────── day of month (1 - 31)\n| | | ┌────── month (1 - 12)\n| | | | ┌──── day of week (0 - 6, Sunday = 0)\n| | | | |\n* * * * *"
+      }
+    }
+  },
+  "zh": {
+    "tools": {
+      "crontabGenerator": {
+        "syntaxDiagram": "┌──────────── 分钟 (0 - 59)\n| ┌────────── 小时 (0 - 23)\n| | ┌──────── 日 (1 - 31)\n| | | ┌────── 月 (1 - 12)\n| | | | ┌──── 星期 (0 - 6，周日 = 0)\n| | | | |\n* * * * *"
+      }
+    }
+  }
+}

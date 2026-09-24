@@ -4,6 +4,14 @@ import path from 'node:path';
 const root = process.argv[2] || 'apps/web/src';
 const exts = ['.vue', '.ts'];
 
+// Literals intentionally left untranslated (spec §非目标). Matched against the
+// JSON.stringify() form of the extracted value.
+const ALLOWLIST_PATH = '.scratch/i18n-localization/scan-allowlist.json';
+const allowlist = fs.existsSync(ALLOWLIST_PATH)
+  ? new Set(JSON.parse(fs.readFileSync(ALLOWLIST_PATH, 'utf8')).exact ?? [])
+  : new Set();
+let allowedHits = 0;
+
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
@@ -76,7 +84,15 @@ for (const f of walk(root)) {
     }
   }
 
-  if (hits.length) results.push({ file: f, hits });
+  const kept = hits.filter((h) => {
+    if (allowlist.has(h.value)) {
+      allowedHits++;
+      return false;
+    }
+    return true;
+  });
+
+  if (kept.length) results.push({ file: f, hits: kept });
 }
 
 let total = 0;
@@ -87,4 +103,4 @@ for (const r of results) {
     console.log(`  ${r.file}:${h.line}  [${h.kind}]  ${JSON.stringify(h.value)}`);
   }
 }
-console.log(`\nFILES: ${results.length}  HITS: ${total}`);
+console.log(`\nFILES: ${results.length}  HITS: ${total}  (allowlisted: ${allowedHits})`);
