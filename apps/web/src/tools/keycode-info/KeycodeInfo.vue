@@ -37,7 +37,7 @@ const fields = computed(() => {
         event.value.shiftKey && 'Shift',
         event.value.ctrlKey && 'Ctrl',
         event.value.altKey && 'Alt',
-      ].filter(Boolean).join(' + ') || 'None',
+      ].filter(Boolean).join(' + ') || t('common.none'),
     },
   ];
 });

@@ -211,7 +211,8 @@
     "end": "结束",
     "regex": "Regex",
     "csvInputPlaceholder": "输入 CSV...",
-    "listItemsPlaceholder": "输入列表项..."
+    "listItemsPlaceholder": "输入列表项...",
+    "none": "无"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -307,7 +308,12 @@
     },
     "urlEncoder": {
       "name": "URL 编码/解码",
-      "description": "编码或解码 URL 编码的字符串"
+      "description": "编码或解码 URL 编码的字符串",
+      "inputPlaceholder": "要编码/解码的文本...",
+      "encoded": "已编码",
+      "decoded": "已解码",
+      "copyEncoded": "复制编码结果",
+      "copyDecoded": "复制解码结果"
     },
     "caseConverter": {
       "name": "大小写转换",
@@ -316,23 +322,47 @@
     },
     "slugify": {
       "name": "URL 别名生成",
-      "description": "将文本转换为 URL 友好的别名格式"
+      "description": "将文本转换为 URL 友好的别名格式",
+      "inputPlaceholder": "输入要生成短链标识的文本...",
+      "outputPlaceholder": "短链标识..."
     },
     "htmlEntities": {
       "name": "HTML 实体",
-      "description": "转义和反转义 HTML 实体"
+      "description": "转义和反转义 HTML 实体",
+      "escaped": "已转义",
+      "unescaped": "已反转义"
     },
     "jwtParser": {
       "name": "JWT 解析器",
-      "description": "解码和检查 JSON Web 令牌（JWT）"
+      "description": "解码和检查 JSON Web 令牌（JWT）",
+      "inputPlaceholder": "在此粘贴 JWT 令牌...",
+      "invalidFormat": "JWT 格式无效",
+      "header": "头部",
+      "payload": "载荷"
     },
     "urlParser": {
       "name": "URL 解析器",
-      "description": "将 URL 解析为各组成部分：协议、主机、路径、查询参数等"
+      "description": "将 URL 解析为各组成部分：协议、主机、路径、查询参数等",
+      "inputPlaceholder": "输入要解析的 URL...",
+      "invalidUrl": "URL 无效",
+      "urlParts": "URL 组成部分",
+      "queryParameters": "查询参数",
+      "protocol": "协议",
+      "host": "主机",
+      "hostname": "主机名",
+      "port": "端口",
+      "pathname": "路径",
+      "search": "查询字符串",
+      "hash": "锚点",
+      "defaultPort": "（默认）"
     },
     "httpStatus": {
       "name": "HTTP 状态码",
-      "description": "浏览和搜索 HTTP 状态码及其描述"
+      "description": "浏览和搜索 HTTP 状态码及其描述",
+      "searchPlaceholder": "搜索状态码...",
+      "code": "状态码",
+      "class": "类别",
+      "descriptionColumn": "描述"
     },
     "mathEvaluator": {
       "name": "数学表达式计算",
@@ -1312,11 +1342,26 @@
     },
     "htmlWysiwygEditor": {
       "name": "HTML 所见即所得编辑器",
-      "description": "使用可视化编辑器编辑 HTML"
+      "description": "使用可视化编辑器编辑 HTML",
+      "editor": "编辑器",
+      "link": "链接",
+      "htmlOutput": "HTML 输出",
+      "enterUrl": "输入 URL：",
+      "startTyping": "在此开始输入..."
     },
     "userAgentParser": {
       "name": "User-Agent 解析器",
-      "description": "解析 User-Agent 字符串提取浏览器、系统和设备信息"
+      "description": "解析 User-Agent 字符串提取浏览器、系统和设备信息",
+      "uaString": "User-Agent 字符串",
+      "inputPlaceholder": "输入 User-Agent 字符串...",
+      "browser": "浏览器",
+      "operatingSystem": "操作系统",
+      "device": "设备",
+      "engine": "引擎",
+      "deviceType": "类型",
+      "vendor": "厂商",
+      "model": "型号",
+      "architecture": "架构"
     },
     "videoCompress": {
       "name": "视频压缩",

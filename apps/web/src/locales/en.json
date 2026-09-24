@@ -211,7 +211,8 @@
     "end": "End",
     "regex": "Regex",
     "csvInputPlaceholder": "CSV input...",
-    "listItemsPlaceholder": "List items..."
+    "listItemsPlaceholder": "List items...",
+    "none": "None"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -307,7 +308,12 @@
     },
     "urlEncoder": {
       "name": "URL Encoder/Decoder",
-      "description": "Encode or decode URL-encoded strings"
+      "description": "Encode or decode URL-encoded strings",
+      "inputPlaceholder": "Text to encode/decode...",
+      "encoded": "Encoded",
+      "decoded": "Decoded",
+      "copyEncoded": "Copy Encoded",
+      "copyDecoded": "Copy Decoded"
     },
     "caseConverter": {
       "name": "Case Converter",
@@ -316,23 +322,47 @@
     },
     "slugify": {
       "name": "Slugify",
-      "description": "Convert text to URL-friendly slug format"
+      "description": "Convert text to URL-friendly slug format",
+      "inputPlaceholder": "Enter text to slugify...",
+      "outputPlaceholder": "Slug..."
     },
     "htmlEntities": {
       "name": "HTML Entities",
-      "description": "Escape and unescape HTML entities"
+      "description": "Escape and unescape HTML entities",
+      "escaped": "Escaped",
+      "unescaped": "Unescaped"
     },
     "jwtParser": {
       "name": "JWT Parser",
-      "description": "Decode and inspect JSON Web Tokens (JWT)"
+      "description": "Decode and inspect JSON Web Tokens (JWT)",
+      "inputPlaceholder": "Paste JWT token here...",
+      "invalidFormat": "Invalid JWT format",
+      "header": "Header",
+      "payload": "Payload"
     },
     "urlParser": {
       "name": "URL Parser",
-      "description": "Parse URL into its components: protocol, host, path, query, etc."
+      "description": "Parse URL into its components: protocol, host, path, query, etc.",
+      "inputPlaceholder": "Enter URL to parse...",
+      "invalidUrl": "Invalid URL",
+      "urlParts": "URL Parts",
+      "queryParameters": "Query Parameters",
+      "protocol": "Protocol",
+      "host": "Host",
+      "hostname": "Hostname",
+      "port": "Port",
+      "pathname": "Pathname",
+      "search": "Search",
+      "hash": "Hash",
+      "defaultPort": "(default)"
     },
     "httpStatus": {
       "name": "HTTP Status Codes",
-      "description": "Browse and search HTTP status codes with descriptions"
+      "description": "Browse and search HTTP status codes with descriptions",
+      "searchPlaceholder": "Search status codes...",
+      "code": "Code",
+      "class": "Class",
+      "descriptionColumn": "Description"
     },
     "mathEvaluator": {
       "name": "Math Evaluator",
@@ -1312,11 +1342,26 @@
     },
     "htmlWysiwygEditor": {
       "name": "HTML WYSIWYG Editor",
-      "description": "Edit HTML with a visual WYSIWYG editor"
+      "description": "Edit HTML with a visual WYSIWYG editor",
+      "editor": "Editor",
+      "link": "Link",
+      "htmlOutput": "HTML Output",
+      "enterUrl": "Enter URL:",
+      "startTyping": "Start typing here..."
     },
     "userAgentParser": {
       "name": "User-Agent Parser",
-      "description": "Parse user-agent strings to extract browser, OS and device info"
+      "description": "Parse user-agent strings to extract browser, OS and device info",
+      "uaString": "User-Agent String",
+      "inputPlaceholder": "Enter a user-agent string...",
+      "browser": "Browser",
+      "operatingSystem": "Operating System",
+      "device": "Device",
+      "engine": "Engine",
+      "deviceType": "Type",
+      "vendor": "Vendor",
+      "model": "Model",
+      "architecture": "Architecture"
     },
     "videoCompress": {
       "name": "Video Compress",
