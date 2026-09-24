@@ -222,7 +222,15 @@
     "invalidDate": "Invalid date",
     "invalidDates": "Invalid dates",
     "enterTimeAsHhMmSs": "Enter time as HH:MM:SS",
-    "page": "Page {n}"
+    "page": "Page {n}",
+    "requestFailed": "Request failed",
+    "target": "Target",
+    "status": "Status",
+    "latency": "Latency",
+    "domain": "Domain",
+    "enterDomain": "Enter domain...",
+    "enterDomainOrIp": "Enter domain or IP...",
+    "domainNamePlaceholder": "Domain name..."
   },
   "search": {
     "placeholder": "Search tools...",
@@ -973,11 +981,19 @@
     },
     "connectivityCheck": {
       "name": "Connectivity Check",
-      "description": "Test internet connectivity to multiple targets"
+      "description": "Test internet connectivity to multiple targets",
+      "testConnectivity": "Test Connectivity",
+      "online": "✅ Online",
+      "offline": "❌ Offline"
     },
     "webrtcDetection": {
       "name": "WebRTC Detection",
-      "description": "Detect IP address leaks via WebRTC"
+      "description": "Detect IP address leaks via WebRTC",
+      "detect": "Detect IPs",
+      "warning": "WebRTC can leak your real IP address even behind VPN",
+      "detected": "Detected IPs:",
+      "noIps": "No IPs detected - your browser may block WebRTC leaks",
+      "error": "Error: {message}"
     },
     "browserFingerprint": {
       "name": "Browser Fingerprint",
@@ -985,7 +1001,10 @@
     },
     "speedTest": {
       "name": "Speed Test",
-      "description": "Test download speed and network latency"
+      "description": "Test download speed and network latency",
+      "start": "Start Speed Test",
+      "latencyValue": "Latency: {n} ms",
+      "downloadValue": "Download: {n} Mbps"
     },
     "securityChecklist": {
       "name": "Security Checklist",
@@ -993,23 +1012,63 @@
     },
     "ipInfo": {
       "name": "IP Information",
-      "description": "View your IP address, location, and ISP details"
+      "description": "View your IP address, location, and ISP details",
+      "property": "Property",
+      "value": "Value",
+      "ipAddress": "IP Address",
+      "city": "City",
+      "region": "Region",
+      "country": "Country",
+      "countryCode": "Country Code",
+      "postal": "Postal",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "timezone": "Timezone"
     },
     "dnsResolver": {
       "name": "DNS Resolver",
-      "description": "Resolve DNS records for any domain"
+      "description": "Resolve DNS records for any domain",
+      "resolve": "Resolve",
+      "type": "Type",
+      "data": "Data"
     },
     "macLookup": {
       "name": "MAC Address Lookup",
-      "description": "Find the vendor for a MAC address"
+      "description": "Find the vendor for a MAC address",
+      "inputPlaceholder": "MAC address (e.g. 00:1A:2B:3C:4D:5E)",
+      "lookup": "Lookup Vendor",
+      "invalidMac": "Enter a valid MAC address",
+      "found": "Found",
+      "notFound": "Not found",
+      "vendorResult": "Vendor: {vendor}"
     },
     "serviceStatus": {
       "name": "Service Status",
-      "description": "Check if a website or service is online"
+      "description": "Check if a website or service is online",
+      "checkStatus": "Check Status",
+      "inputPlaceholder": "URL to check...",
+      "httpRequest": "HTTP Request",
+      "responseTime": "Response Time",
+      "sslTls": "SSL/TLS",
+      "reachable": "✅ Reachable",
+      "fast": "✅ Fast",
+      "moderate": "⚠️ Moderate",
+      "slow": "❌ Slow",
+      "httpOnly": "❌ HTTP only",
+      "unreachable": "❌ Unreachable",
+      "checkColumn": "Check",
+      "timeColumn": "Time"
     },
     "whoisLookup": {
       "name": "Whois Lookup",
-      "description": "Look up domain registration information"
+      "description": "Look up domain registration information",
+      "lookup": "Whois Lookup",
+      "domainLine": "Domain: {value}",
+      "registrarLine": "Registrar: {value}",
+      "statusLine": "Status: {value}",
+      "events": "Events:",
+      "unknown": "Unknown",
+      "error": "Error: {message}"
     },
     "romanNumeralConverter": {
       "name": "Roman Numeral Converter",
@@ -1624,27 +1683,38 @@
     },
     "dnsLeakTest": {
       "name": "DNS Leak Test",
-      "description": "Test if your DNS is leaking information"
+      "description": "Test if your DNS is leaking information",
+      "runTest": "Run Test",
+      "resolved": "Resolved",
+      "addresses": "Addresses"
     },
     "pingTest": {
       "name": "Ping Test",
-      "description": "Test network latency to a target"
+      "description": "Test network latency to a target",
+      "ping": "Ping"
     },
     "mtrTest": {
       "name": "MTR Test",
-      "description": "Trace network route to a target"
+      "description": "Trace network route to a target",
+      "trace": "Trace"
     },
     "globalLatencyTest": {
       "name": "Global Latency Test",
-      "description": "Test DNS latency from global locations"
+      "description": "Test DNS latency from global locations",
+      "testLatency": "Test Latency"
     },
     "ruleTest": {
       "name": "Rule Test",
-      "description": "Test DNS resolution with custom rules"
+      "description": "Test DNS resolution with custom rules",
+      "test": "Test",
+      "dnsServerPlaceholder": "Custom DNS server (optional)"
     },
     "censorshipCheck": {
       "name": "Censorship Check",
-      "description": "Check if websites are censored"
+      "description": "Check if websites are censored",
+      "check": "Check",
+      "inputPlaceholder": "Enter URLs (one per line)...",
+      "emptyError": "Please enter at least one URL"
     },
     "screenshotShare": {
       "name": "Screenshot Share",

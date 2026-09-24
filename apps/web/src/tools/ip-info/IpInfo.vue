@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { NCard, NSpace, NButton, NDataTable, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 const data = ref<{key: string; value: string}[]>([]);
 const loading = ref(false);
 const error = ref('');
@@ -12,16 +15,16 @@ async function fetchInfo() {
     const r = await fetch('https://ipapi.co/json/');
     const j = await r.json();
     data.value = [
-      { key: 'IP Address', value: j.ip || '' },
-      { key: 'Version', value: j.version || '' },
-      { key: 'City', value: j.city || '' },
-      { key: 'Region', value: j.region || '' },
-      { key: 'Country', value: j.country_name || '' },
-      { key: 'Country Code', value: j.country_code || '' },
-      { key: 'Postal', value: j.postal || '' },
-      { key: 'Latitude', value: String(j.latitude || '') },
-      { key: 'Longitude', value: String(j.longitude || '') },
-      { key: 'Timezone', value: j.timezone || '' },
+      { key: t('tools.ipInfo.ipAddress'), value: j.ip || '' },
+      { key: t('common.version'), value: j.version || '' },
+      { key: t('tools.ipInfo.city'), value: j.city || '' },
+      { key: t('tools.ipInfo.region'), value: j.region || '' },
+      { key: t('tools.ipInfo.country'), value: j.country_name || '' },
+      { key: t('tools.ipInfo.countryCode'), value: j.country_code || '' },
+      { key: t('tools.ipInfo.postal'), value: j.postal || '' },
+      { key: t('tools.ipInfo.latitude'), value: String(j.latitude || '') },
+      { key: t('tools.ipInfo.longitude'), value: String(j.longitude || '') },
+      { key: t('tools.ipInfo.timezone'), value: j.timezone || '' },
       { key: 'ISP', value: j.org || '' },
       { key: 'ASN', value: j.asn || '' },
     ];
@@ -29,12 +32,12 @@ async function fetchInfo() {
   loading.value = false;
 }
 onMounted(fetchInfo);
-const cols = [{ title: 'Property', key: 'key' }, { title: 'Value', key: 'value' }];
+const cols = computed(() => [{ title: t('tools.ipInfo.property'), key: 'key' }, { title: t('tools.ipInfo.value'), key: 'value' }]);
 </script>
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NButton :loading="loading" @click="fetchInfo">Refresh</NButton>
+      <NButton :loading="loading" @click="fetchInfo">{{ t('common.refresh') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NDataTable v-if="data.length" :columns="cols" :data="data" :bordered="false" size="small" />
     </NSpace></NCard>

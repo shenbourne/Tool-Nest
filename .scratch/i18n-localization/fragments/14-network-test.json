@@ -1,0 +1,210 @@
+{
+  "en": {
+    "common": {
+      "requestFailed": "Request failed",
+      "target": "Target",
+      "status": "Status",
+      "latency": "Latency",
+      "domain": "Domain",
+      "enterDomain": "Enter domain...",
+      "enterDomainOrIp": "Enter domain or IP...",
+      "domainNamePlaceholder": "Domain name..."
+    },
+    "tools": {
+      "censorshipCheck": {
+        "check": "Check",
+        "inputPlaceholder": "Enter URLs (one per line)...",
+        "emptyError": "Please enter at least one URL"
+      },
+      "connectivityCheck": {
+        "testConnectivity": "Test Connectivity",
+        "online": "✅ Online",
+        "offline": "❌ Offline"
+      },
+      "dnsLeakTest": {
+        "runTest": "Run Test",
+        "resolved": "Resolved",
+        "addresses": "Addresses"
+      },
+      "dnsResolver": {
+        "resolve": "Resolve",
+        "type": "Type",
+        "data": "Data"
+      },
+      "globalLatencyTest": {
+        "testLatency": "Test Latency"
+      },
+      "ipInfo": {
+        "property": "Property",
+        "value": "Value",
+        "ipAddress": "IP Address",
+        "city": "City",
+        "region": "Region",
+        "country": "Country",
+        "countryCode": "Country Code",
+        "postal": "Postal",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "timezone": "Timezone"
+      },
+      "macLookup": {
+        "inputPlaceholder": "MAC address (e.g. 00:1A:2B:3C:4D:5E)",
+        "lookup": "Lookup Vendor",
+        "invalidMac": "Enter a valid MAC address",
+        "found": "Found",
+        "notFound": "Not found",
+        "vendorResult": "Vendor: {vendor}"
+      },
+      "mtrTest": {
+        "trace": "Trace"
+      },
+      "pingTest": {
+        "ping": "Ping"
+      },
+      "ruleTest": {
+        "test": "Test",
+        "dnsServerPlaceholder": "Custom DNS server (optional)"
+      },
+      "serviceStatus": {
+        "checkStatus": "Check Status",
+        "inputPlaceholder": "URL to check...",
+        "httpRequest": "HTTP Request",
+        "responseTime": "Response Time",
+        "sslTls": "SSL/TLS",
+        "reachable": "✅ Reachable",
+        "fast": "✅ Fast",
+        "moderate": "⚠️ Moderate",
+        "slow": "❌ Slow",
+        "httpOnly": "❌ HTTP only",
+        "unreachable": "❌ Unreachable",
+        "checkColumn": "Check",
+        "timeColumn": "Time"
+      },
+      "speedTest": {
+        "start": "Start Speed Test",
+        "latencyValue": "Latency: {n} ms",
+        "downloadValue": "Download: {n} Mbps"
+      },
+      "webrtcDetection": {
+        "detect": "Detect IPs",
+        "warning": "WebRTC can leak your real IP address even behind VPN",
+        "detected": "Detected IPs:",
+        "noIps": "No IPs detected - your browser may block WebRTC leaks",
+        "error": "Error: {message}"
+      },
+      "whoisLookup": {
+        "lookup": "Whois Lookup",
+        "domainLine": "Domain: {value}",
+        "registrarLine": "Registrar: {value}",
+        "statusLine": "Status: {value}",
+        "events": "Events:",
+        "unknown": "Unknown",
+        "error": "Error: {message}"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "requestFailed": "请求失败",
+      "target": "目标",
+      "status": "状态",
+      "latency": "延迟",
+      "domain": "域名",
+      "enterDomain": "输入域名...",
+      "enterDomainOrIp": "输入域名或 IP...",
+      "domainNamePlaceholder": "域名..."
+    },
+    "tools": {
+      "censorshipCheck": {
+        "check": "检查",
+        "inputPlaceholder": "输入 URL（每行一个）...",
+        "emptyError": "请输入至少一个 URL"
+      },
+      "connectivityCheck": {
+        "testConnectivity": "测试连通性",
+        "online": "✅ 在线",
+        "offline": "❌ 离线"
+      },
+      "dnsLeakTest": {
+        "runTest": "运行测试",
+        "resolved": "已解析",
+        "addresses": "地址"
+      },
+      "dnsResolver": {
+        "resolve": "解析",
+        "type": "类型",
+        "data": "数据"
+      },
+      "globalLatencyTest": {
+        "testLatency": "测试延迟"
+      },
+      "ipInfo": {
+        "property": "属性",
+        "value": "值",
+        "ipAddress": "IP 地址",
+        "city": "城市",
+        "region": "地区",
+        "country": "国家",
+        "countryCode": "国家代码",
+        "postal": "邮编",
+        "latitude": "纬度",
+        "longitude": "经度",
+        "timezone": "时区"
+      },
+      "macLookup": {
+        "inputPlaceholder": "MAC 地址（如 00:1A:2B:3C:4D:5E）",
+        "lookup": "查询厂商",
+        "invalidMac": "请输入有效的 MAC 地址",
+        "found": "找到",
+        "notFound": "未找到",
+        "vendorResult": "厂商：{vendor}"
+      },
+      "mtrTest": {
+        "trace": "追踪"
+      },
+      "pingTest": {
+        "ping": "Ping"
+      },
+      "ruleTest": {
+        "test": "测试",
+        "dnsServerPlaceholder": "自定义 DNS 服务器（可选）"
+      },
+      "serviceStatus": {
+        "checkStatus": "检查状态",
+        "inputPlaceholder": "输入要检查的 URL...",
+        "httpRequest": "HTTP 请求",
+        "responseTime": "响应时间",
+        "sslTls": "SSL/TLS",
+        "reachable": "✅ 可访问",
+        "fast": "✅ 快",
+        "moderate": "⚠️ 中等",
+        "slow": "❌ 慢",
+        "httpOnly": "❌ 仅 HTTP",
+        "unreachable": "❌ 不可达",
+        "checkColumn": "检查",
+        "timeColumn": "时间"
+      },
+      "speedTest": {
+        "start": "开始测速",
+        "latencyValue": "延迟：{n} ms",
+        "downloadValue": "下载：{n} Mbps"
+      },
+      "webrtcDetection": {
+        "detect": "检测 IP",
+        "warning": "WebRTC 即使在 VPN 后也可能泄露你的真实 IP 地址",
+        "detected": "检测到的 IP：",
+        "noIps": "未检测到 IP - 你的浏览器可能已阻止 WebRTC 泄露",
+        "error": "错误：{message}"
+      },
+      "whoisLookup": {
+        "lookup": "Whois 查询",
+        "domainLine": "域名：{value}",
+        "registrarLine": "注册商：{value}",
+        "statusLine": "状态：{value}",
+        "events": "事件：",
+        "unknown": "未知",
+        "error": "错误：{message}"
+      }
+    }
+  }
+}

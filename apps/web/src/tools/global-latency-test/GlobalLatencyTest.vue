@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 
 const target = ref('');
 const loading = ref(false);
@@ -20,10 +23,10 @@ async function run() {
       body: JSON.stringify({ target: target.value }),
     });
     const json = await res.json();
-    if (!json.success) throw new Error(json.error?.message ?? 'Request failed');
+    if (!json.success) throw new Error(json.error?.message ?? t('common.requestFailed'));
     result.value = json.data;
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Request failed';
+    error.value = e instanceof Error ? e.message : t('common.requestFailed');
   } finally {
     loading.value = false;
   }
@@ -34,8 +37,8 @@ async function run() {
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="target" placeholder="Enter domain..." />
-        <NButton type="primary" :loading="loading" :disabled="!target" @click="run">Test Latency</NButton>
+        <NInput v-model:value="target" :placeholder="t('common.enterDomain')" />
+        <NButton type="primary" :loading="loading" :disabled="!target" @click="run">{{ t('tools.globalLatencyTest.testLatency') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
         <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>
       </NSpace>

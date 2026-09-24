@@ -222,7 +222,15 @@
     "invalidDate": "日期无效",
     "invalidDates": "日期无效",
     "enterTimeAsHhMmSs": "请以 HH:MM:SS 格式输入时间",
-    "page": "第 {n} 页"
+    "page": "第 {n} 页",
+    "requestFailed": "请求失败",
+    "target": "目标",
+    "status": "状态",
+    "latency": "延迟",
+    "domain": "域名",
+    "enterDomain": "输入域名...",
+    "enterDomainOrIp": "输入域名或 IP...",
+    "domainNamePlaceholder": "域名..."
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -974,11 +982,19 @@
     },
     "connectivityCheck": {
       "name": "连通性检查",
-      "description": "测试到多个目标的互联网连通性"
+      "description": "测试到多个目标的互联网连通性",
+      "testConnectivity": "测试连通性",
+      "online": "✅ 在线",
+      "offline": "❌ 离线"
     },
     "webrtcDetection": {
       "name": "WebRTC 检测",
-      "description": "通过 WebRTC 检测 IP 地址泄漏"
+      "description": "通过 WebRTC 检测 IP 地址泄漏",
+      "detect": "检测 IP",
+      "warning": "WebRTC 即使在 VPN 后也可能泄露你的真实 IP 地址",
+      "detected": "检测到的 IP：",
+      "noIps": "未检测到 IP - 你的浏览器可能已阻止 WebRTC 泄露",
+      "error": "错误：{message}"
     },
     "browserFingerprint": {
       "name": "浏览器指纹",
@@ -986,7 +1002,10 @@
     },
     "speedTest": {
       "name": "速度测试",
-      "description": "测试下载速度和网络延迟"
+      "description": "测试下载速度和网络延迟",
+      "start": "开始测速",
+      "latencyValue": "延迟：{n} ms",
+      "downloadValue": "下载：{n} Mbps"
     },
     "securityChecklist": {
       "name": "安全检查清单",
@@ -994,23 +1013,63 @@
     },
     "ipInfo": {
       "name": "IP 信息查询",
-      "description": "查看 IP 地址、位置和 ISP 详情"
+      "description": "查看 IP 地址、位置和 ISP 详情",
+      "property": "属性",
+      "value": "值",
+      "ipAddress": "IP 地址",
+      "city": "城市",
+      "region": "地区",
+      "country": "国家",
+      "countryCode": "国家代码",
+      "postal": "邮编",
+      "latitude": "纬度",
+      "longitude": "经度",
+      "timezone": "时区"
     },
     "dnsResolver": {
       "name": "DNS 解析器",
-      "description": "解析任意域名的 DNS 记录"
+      "description": "解析任意域名的 DNS 记录",
+      "resolve": "解析",
+      "type": "类型",
+      "data": "数据"
     },
     "macLookup": {
       "name": "MAC 地址查询",
-      "description": "查询 MAC 地址对应的厂商"
+      "description": "查询 MAC 地址对应的厂商",
+      "inputPlaceholder": "MAC 地址（如 00:1A:2B:3C:4D:5E）",
+      "lookup": "查询厂商",
+      "invalidMac": "请输入有效的 MAC 地址",
+      "found": "找到",
+      "notFound": "未找到",
+      "vendorResult": "厂商：{vendor}"
     },
     "serviceStatus": {
       "name": "服务状态",
-      "description": "检查网站或服务是否在线"
+      "description": "检查网站或服务是否在线",
+      "checkStatus": "检查状态",
+      "inputPlaceholder": "输入要检查的 URL...",
+      "httpRequest": "HTTP 请求",
+      "responseTime": "响应时间",
+      "sslTls": "SSL/TLS",
+      "reachable": "✅ 可访问",
+      "fast": "✅ 快",
+      "moderate": "⚠️ 中等",
+      "slow": "❌ 慢",
+      "httpOnly": "❌ 仅 HTTP",
+      "unreachable": "❌ 不可达",
+      "checkColumn": "检查",
+      "timeColumn": "时间"
     },
     "whoisLookup": {
       "name": "Whois 查询",
-      "description": "查询域名注册信息"
+      "description": "查询域名注册信息",
+      "lookup": "Whois 查询",
+      "domainLine": "域名：{value}",
+      "registrarLine": "注册商：{value}",
+      "statusLine": "状态：{value}",
+      "events": "事件：",
+      "unknown": "未知",
+      "error": "错误：{message}"
     },
     "romanNumeralConverter": {
       "name": "罗马数字转换器",
@@ -1625,27 +1684,38 @@
     },
     "dnsLeakTest": {
       "name": "DNS 泄漏测试",
-      "description": "测试你的 DNS 是否泄漏信息"
+      "description": "测试你的 DNS 是否泄漏信息",
+      "runTest": "运行测试",
+      "resolved": "已解析",
+      "addresses": "地址"
     },
     "pingTest": {
       "name": "Ping 测试",
-      "description": "测试到目标的网络延迟"
+      "description": "测试到目标的网络延迟",
+      "ping": "Ping"
     },
     "mtrTest": {
       "name": "MTR 测试",
-      "description": "追踪到目标的网络路由"
+      "description": "追踪到目标的网络路由",
+      "trace": "追踪"
     },
     "globalLatencyTest": {
       "name": "全球延迟测试",
-      "description": "从全球位置测试 DNS 延迟"
+      "description": "从全球位置测试 DNS 延迟",
+      "testLatency": "测试延迟"
     },
     "ruleTest": {
       "name": "规则测试",
-      "description": "使用自定义规则测试 DNS 解析"
+      "description": "使用自定义规则测试 DNS 解析",
+      "test": "测试",
+      "dnsServerPlaceholder": "自定义 DNS 服务器（可选）"
     },
     "censorshipCheck": {
       "name": "审查检查",
-      "description": "检查网站是否被审查封锁"
+      "description": "检查网站是否被审查封锁",
+      "check": "检查",
+      "inputPlaceholder": "输入 URL（每行一个）...",
+      "emptyError": "请输入至少一个 URL"
     },
     "screenshotShare": {
       "name": "截图分享",
