@@ -58,13 +58,13 @@ spacing:
 rounded:
   tiers: [none 0, xs 2, sm 4, md 6, lg 8, xl 12, xxl 16, full 9999]
 components:
-  sidebar-item: { height: 36px, rounded: lg, background: canvas, text: text-2 }
+  sidebar-item: { height: 42px, rounded: lg, background: canvas, text: text-2 }
   sidebar-item-hover: { background: surface-2, text: ink }
   sidebar-item-selected: { background: primary-soft, text: primary, indicator: "inset 3px 0 0 primary" }
   card: { background: surface, text: ink, rounded: lg, border: hairline }
   card-hover: { shadow: card, border: hairline-strong }
-  text-input: { height: 36px, rounded: md, background: canvas, text: ink }
-  button-primary: { height: 36px, rounded: md, background: primary, text: "#ffffff" }
+  text-input: { height: 42px, rounded: md, background: canvas, text: ink }
+  button-primary: { height: 42px, rounded: md, background: primary, text: "#ffffff" }
 shadow:
   light:
     card: "0 1px 2px rgba(15,15,15,0.04), 0 4px 12px rgba(15,15,15,0.06)"
@@ -95,7 +95,7 @@ ToolNest 采用 Notion 式克制编辑骨架与自有青绿品牌色：页面保
 
 ## Layout
 
-间距采用 4px 基准与 12 档令牌。页面内容最大宽度保持 900px；侧栏展开 240px、折叠 60px；Logo 区高 52px；侧栏条目与常规控件高 36px。区块间优先使用 section 档，区块内部不超过 xl。
+间距采用 4px 基准与 12 档令牌。页面内容最大宽度保持 900px；侧栏展开 240px、折叠 60px；Logo 区高 52px；侧栏条目与常规控件高 42px（侧栏项间距 4px）。区块间优先使用 section 档，区块内部不超过 xl。
 
 ## Elevation & Depth
 
@@ -107,10 +107,10 @@ ToolNest 采用 Notion 式克制编辑骨架与自有青绿品牌色：页面保
 
 ## Components
 
-- 侧栏条目：36px 高，hover 为 surface-2；选中态为 primary-soft 底、primary 字与左侧 3px primary 指示条。
+- 侧栏条目：42px 高，hover 为 surface-2；选中态为 primary-soft 底、primary 字与左侧 3px primary 指示条。
 - 工具卡片：surface 底、hairline 边框、lg 圆角；hover 浮起并加深边框；描述最多两行。
 - 工具页标题：display-lg/700/ink；描述为 body-md/text-3；收藏激活态使用 primary。
-- 输入与按钮：36px 高、md 圆角；Naive 组件外观全部通过 themeOverrides 设置。
+- 输入与按钮：42px 高、md 圆角；Naive 组件外观全部通过 themeOverrides 设置。
 - 弹出层：亮色为纯白、暗色为 surface-soft，并使用相应阴影档。
 
 ## Do's and Don'ts
@@ -143,7 +143,7 @@ Don't：不得在业务组件样式中硬编码主题色；不得覆盖 `.n-*` �
 3. **暗色允许使用阴影**（深色阴影值）——v1"暗色禁用阴影"作废。
 4. 卡片 hover 抬升：`box-shadow: var(--shadow-card)` + `border-color: var(--color-hairline-strong)`。
 5. 侧边栏激活态：`--color-primary-soft` 背景 + `--color-primary` 文字 + `inset 3px 0 0 var(--color-primary)`。
-6. 控制高度基准 36px；圆角基准 `--radius-md`(6px) / `--radius-lg`(8px)。
+6. 控制高度基准 42px，在 `naive-theme.ts` 以 `common.height*` 阶梯实现：small 36 / medium 42 / large 48 / huge 54（Naive 默认档位整体 +8px）。`heightMini`/`heightTiny` 保持 Naive 默认 16/22px——标签映射这两档且属标注而非控件，不得改动。圆角基准 `--radius-md`(6px) / `--radius-lg`(8px)。
 7. 功能性/用户数据色（取景器、棋盘格、二维码模块、diff 底色、用户可编辑默认色）不受规则 1 约束。
 8. 间距/圆角/阴影/动效档位以本文件与 tokens.css 为准，不得自行新增档位。
 
