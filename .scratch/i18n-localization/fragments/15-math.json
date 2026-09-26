@@ -1,0 +1,114 @@
+{
+  "en": {
+    "common": {
+      "calculate": "Calculate",
+      "sum": "Sum: {value}"
+    },
+    "tools": {
+      "arithmeticSequence": {
+        "firstTerm": "First term",
+        "difference": "Difference",
+        "sequence": "Sequence: {value}",
+        "nthTerm": "n-th term: {value}"
+      },
+      "etaCalculator": {
+        "taskParameters": "Task Parameters",
+        "totalTasks": "Total Tasks",
+        "completedTasks": "Completed Tasks",
+        "startTime": "Start Time",
+        "progress": "Progress",
+        "remainingTasks": "Remaining Tasks",
+        "elapsedTime": "Elapsed Time",
+        "timeRemaining": "Time Remaining",
+        "estimatedEnd": "Estimated End",
+        "example": "Example",
+        "exampleText": "If you wash 5 plates in 3 minutes and you have 500 plates to wash, it will take you approximately 5 hours to wash them all. Enter the total task count, how many are completed, and when you started to see the estimated completion time."
+      },
+      "genericCalculator": {
+        "expressionPlaceholder": "Expression: {example}",
+        "resultPlaceholder": "Result...",
+        "history": "History:",
+        "unexpected": "Unexpected: {char}",
+        "endOfInput": "end of input",
+        "errorPrefix": "Error: {message}"
+      },
+      "mathEvaluator": {
+        "expressionPlaceholder": "Enter math expression...",
+        "supportedOperators": "Supported operators",
+        "operatorsList": "+, -, *, /, ^ (power), % (modulo), () (grouping)",
+        "divisionByZero": "Division by zero",
+        "missingClosingParenthesis": "Missing closing parenthesis",
+        "unexpectedCharacter": "Unexpected character: {char}",
+        "endOfInput": "end of input",
+        "errorPrefix": "Error: {message}"
+      },
+      "numberSum": {
+        "average": "Average",
+        "median": "Median"
+      },
+      "percentageCalc": {
+        "whatIsPercentOf": "What is X% of Y?",
+        "isWhatPercentOf": "X is what % of Y?",
+        "percentChangeFromTo": "% change from X to Y",
+        "percentOf": "% of",
+        "is": "is"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "calculate": "计算",
+      "sum": "和: {value}"
+    },
+    "tools": {
+      "arithmeticSequence": {
+        "firstTerm": "首项",
+        "difference": "公差",
+        "sequence": "数列: {value}",
+        "nthTerm": "第 n 项: {value}"
+      },
+      "etaCalculator": {
+        "taskParameters": "任务参数",
+        "totalTasks": "总任务数",
+        "completedTasks": "已完成任务数",
+        "startTime": "开始时间",
+        "progress": "进度",
+        "remainingTasks": "剩余任务数",
+        "elapsedTime": "已用时间",
+        "timeRemaining": "剩余时间",
+        "estimatedEnd": "预计结束",
+        "example": "示例",
+        "exampleText": "如果你 3 分钟洗 5 个盘子，而总共有 500 个盘子要洗，那么全部洗完大约需要 5 小时。输入总任务数、已完成数量和开始时间，即可查看预计完成时间。"
+      },
+      "genericCalculator": {
+        "expressionPlaceholder": "表达式: {example}",
+        "resultPlaceholder": "结果...",
+        "history": "历史记录:",
+        "unexpected": "意外字符: {char}",
+        "endOfInput": "输入末尾",
+        "errorPrefix": "错误: {message}"
+      },
+      "mathEvaluator": {
+        "expressionPlaceholder": "输入数学表达式...",
+        "supportedOperators": "支持的运算符",
+        "operatorsList": "+, -, *, /, ^ (幂), % (取模), () (分组)",
+        "divisionByZero": "除数不能为零",
+        "missingClosingParenthesis": "缺少右括号",
+        "unexpectedCharacter": "无法识别的字符: {char}",
+        "endOfInput": "输入末尾",
+        "errorPrefix": "错误: {message}"
+      },
+      "numberSum": {
+        "average": "平均值",
+        "median": "中位数"
+      },
+      "percentageCalc": {
+        "whatIsPercentOf": "X% 的 Y 是多少？",
+        "isWhatPercentOf": "X 是 Y 的百分之几？",
+        "percentChangeFromTo": "从 X 到 Y 的百分比变化",
+        "percentOf": "% 的",
+        "is": "是"
+      }
+    }
+  }
+}

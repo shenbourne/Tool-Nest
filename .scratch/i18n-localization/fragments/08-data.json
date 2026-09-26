@@ -1,0 +1,66 @@
+{
+  "en": {
+    "common": {
+      "csvInputPlaceholder": "CSV input...",
+      "listItemsPlaceholder": "List items..."
+    },
+    "tools": {
+      "csvChangeSeparator": {
+        "semicolon": "Semicolon (;)",
+        "pipe": "Pipe (|)",
+        "tab": "Tab",
+        "comma": "Comma (,)"
+      },
+      "csvFindIncomplete": {
+        "incompleteRow": "Line {line}: {cols} columns (expected {expected})",
+        "allRowsValid": "All rows have {expected} columns."
+      },
+      "csvInsertColumns": {
+        "position": "Position",
+        "headerName": "Header name",
+        "defaultValue": "Default value"
+      },
+      "csvSwapColumns": {
+        "columnA": "Column A",
+        "columnB": "Column B"
+      },
+      "listGroup": {
+        "inputPlaceholder": "List items (one per line)...",
+        "groupSize": "Group size",
+        "groupLabel": "--- Group {number} ---"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "csvInputPlaceholder": "输入 CSV...",
+      "listItemsPlaceholder": "输入列表项..."
+    },
+    "tools": {
+      "csvChangeSeparator": {
+        "semicolon": "分号 (;)",
+        "pipe": "竖线 (|)",
+        "tab": "制表符",
+        "comma": "逗号 (,)"
+      },
+      "csvFindIncomplete": {
+        "incompleteRow": "第 {line} 行：{cols} 列（应有 {expected} 列）",
+        "allRowsValid": "所有行都有 {expected} 列。"
+      },
+      "csvInsertColumns": {
+        "position": "位置",
+        "headerName": "列名",
+        "defaultValue": "默认值"
+      },
+      "csvSwapColumns": {
+        "columnA": "列 A",
+        "columnB": "列 B"
+      },
+      "listGroup": {
+        "inputPlaceholder": "输入列表项（每行一项）...",
+        "groupSize": "每组大小",
+        "groupLabel": "--- 第 {number} 组 ---"
+      }
+    }
+  }
+}

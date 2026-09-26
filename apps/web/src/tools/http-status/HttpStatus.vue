@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NTag, NDataTable } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+const { t } = useI18n();
 const codes: Record<number, [string, string]> = {
   100:['Continue','info'],101:['Switching Protocols','info'],102:['Processing','info'],103:['Early Hints','info'],
   200:['OK','success'],201:['Created','success'],202:['Accepted','success'],204:['No Content','success'],206:['Partial Content','success'],
@@ -12,17 +14,17 @@ const codes: Record<number, [string, string]> = {
 };
 const search = ref('');
 const filtered = computed(() => Object.entries(codes).filter(([code, [desc]]) => !search.value || code.includes(search.value) || desc.toLowerCase().includes(search.value.toLowerCase())));
-const columns = [
-  { title: 'Code', key: 'code', width: 100 },
-  { title: 'Description', key: 'desc' },
-  { title: 'Class', key: 'class' },
-];
+const columns = computed(() => [
+  { title: t('tools.httpStatus.code'), key: 'code', width: 100 },
+  { title: t('tools.httpStatus.descriptionColumn'), key: 'desc' },
+  { title: t('tools.httpStatus.class'), key: 'class' },
+]);
 const data = computed(() => filtered.value.map(([code, [desc, type]]) => ({ code, desc, class: type, type })));
 </script>
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="search" placeholder="Search status codes..." clearable />
+      <NInput v-model:value="search" :placeholder="t('tools.httpStatus.searchPlaceholder')" clearable />
       <NDataTable :columns="columns" :data="data" :bordered="false" :row-class-name="(row:any)=>row.type" size="small" />
     </NSpace></NCard>
   </ToolLayout>

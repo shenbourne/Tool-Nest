@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
+const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
 
 const file = ref<File | null>(null);
@@ -60,7 +62,7 @@ async function process() {
     const blob = new Blob([result], { type: 'video/mp4' });
     resultUrl.value = URL.createObjectURL(blob);
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Processing failed';
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
@@ -72,7 +74,7 @@ async function process() {
     <NCard>
       <NSpace vertical :size="12">
         <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          Load FFmpeg
+          {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
@@ -82,13 +84,13 @@ async function process() {
           <NInputNumber
             v-model:value="startTime"
             :min="0"
-            placeholder="Start (s)"
+            :placeholder="t('tools.videoTrim.startTime')"
             style="width: 140px"
           />
           <NInputNumber
             v-model:value="endTime"
             :min="0"
-            placeholder="End (s)"
+            :placeholder="t('tools.videoTrim.endTime')"
             style="width: 140px"
           />
         </NSpace>
@@ -99,14 +101,14 @@ async function process() {
           :disabled="!file || !isLoaded"
           @click="process"
         >
-          Trim
+          {{ t('common.trim') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
         <NAlert v-if="error" type="error" :title="error" />
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'trimmed.mp4', 'video/mp4')">
-          Download
+          {{ t('tool.download') }}
         </NButton>
       </NSpace>
     </NCard>

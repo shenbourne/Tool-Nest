@@ -30,30 +30,30 @@ function copyOutput() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Input XML">
+      <NCard :title="t('tools.xmlFormatter.inputTitle')">
         <NInput
           v-model:value="input"
           type="textarea"
-          placeholder="Paste your XML here..."
+          :placeholder="t('tools.xmlFormatter.inputPlaceholder')"
           :autosize="{ minRows: 6, maxRows: 20 }"
           monospace
         />
         <NSpace align="center" :size="12" style="margin-top: 8px;">
           <NRadioGroup v-model:value="mode">
-            <NRadioButton value="format">Format</NRadioButton>
-            <NRadioButton value="minify">Minify</NRadioButton>
+            <NRadioButton value="format">{{ t('common.format') }}</NRadioButton>
+            <NRadioButton value="minify">{{ t('tools.xmlFormatter.minify') }}</NRadioButton>
           </NRadioGroup>
           <template v-if="mode === 'format'">
-            <span>Indent:</span>
+            <span>{{ t('common.indent') }}:</span>
             <NRadioGroup v-model:value="indentSize" size="small">
-              <NRadioButton :value="2">2 spaces</NRadioButton>
-              <NRadioButton :value="4">4 spaces</NRadioButton>
+              <NRadioButton :value="2">{{ t('tools.xmlFormatter.spaces', { n: 2 }) }}</NRadioButton>
+              <NRadioButton :value="4">{{ t('tools.xmlFormatter.spaces', { n: 4 }) }}</NRadioButton>
             </NRadioGroup>
           </template>
         </NSpace>
       </NCard>
 
-      <NCard title="Output">
+      <NCard :title="t('common.output')">
         <NAlert v-if="result.error" type="error" style="margin-bottom: 12px;">
           {{ result.error }}
         </NAlert>

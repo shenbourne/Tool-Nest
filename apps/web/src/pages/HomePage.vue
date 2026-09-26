@@ -95,7 +95,7 @@ const sortedCategories = computed(() =>
         </template>
       </div>
 
-      <NEmpty v-if="toolStore.tools.length === 0" description="No tools installed yet" style="padding: 48px 0;" />
+      <NEmpty v-if="toolStore.tools.length === 0" :description="t('home.noToolsInstalled')" style="padding: 48px 0;" />
     </div>
   </div>
 </template>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
+const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
 
 const file = ref<File | null>(null);
@@ -13,10 +15,10 @@ const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 const resultUrl = ref('');
 
-const directionOptions = [
-  { label: 'Horizontal', value: 'horizontal' },
-  { label: 'Vertical', value: 'vertical' },
-];
+const directionOptions = computed(() => [
+  { label: t('common.horizontal'), value: 'horizontal' },
+  { label: t('common.vertical'), value: 'vertical' },
+]);
 
 const flipFilter = computed(() => {
   return direction.value === 'horizontal' ? 'hflip' : 'vflip';
@@ -66,7 +68,7 @@ async function process() {
     const blob = new Blob([result], { type: 'video/mp4' });
     resultUrl.value = URL.createObjectURL(blob);
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Processing failed';
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
@@ -78,7 +80,7 @@ async function process() {
     <NCard>
       <NSpace vertical :size="12">
         <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          Load FFmpeg
+          {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
@@ -88,7 +90,7 @@ async function process() {
           v-model:value="direction"
           :options="directionOptions"
           style="width: 200px"
-          placeholder="Select direction"
+          :placeholder="t('tools.videoFlip.selectDirection')"
         />
 
         <NButton
@@ -97,14 +99,14 @@ async function process() {
           :disabled="!file || !isLoaded"
           @click="process"
         >
-          Flip
+          {{ t('common.flip') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
         <NAlert v-if="error" type="error" :title="error" />
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'flipped.mp4', 'video/mp4')">
-          Download
+          {{ t('tool.download') }}
         </NButton>
       </NSpace>
     </NCard>

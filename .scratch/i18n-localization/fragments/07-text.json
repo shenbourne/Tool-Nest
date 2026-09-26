@@ -1,0 +1,138 @@
+{
+  "en": {
+    "common": {
+      "end": "End",
+      "regex": "Regex"
+    },
+    "tools": {
+      "emailExtractor": {
+        "noEmailsFound": "No emails found."
+      },
+      "emojiPicker": {
+        "searchPlaceholder": "Search emoji..."
+      },
+      "extractSubstring": {
+        "inputPlaceholder": "Input text..."
+      },
+      "hiddenCharDetector": {
+        "noneDetected": "No hidden characters detected."
+      },
+      "numeronymGenerator": {
+        "inputPlaceholder": "Enter a word, e.g. 'internationalization'"
+      },
+      "palindromeChecker": {
+        "isPalindrome": "✅ Yes! This is a palindrome.",
+        "notPalindrome": "❌ Not a palindrome."
+      },
+      "quoteGenerator": {
+        "nextQuote": "Next Quote"
+      },
+      "textDiff": {
+        "original": "Original",
+        "modified": "Modified",
+        "diff": "Diff",
+        "same": "Same: {count}",
+        "changed": "Changed: {count}",
+        "removed": "Removed: {count}",
+        "added": "Added: {count}"
+      },
+      "textRepeat": {
+        "inputPlaceholder": "Text to repeat..."
+      },
+      "textReplacer": {
+        "inputPlaceholder": "Input text...",
+        "findPlaceholder": "Find...",
+        "replacePlaceholder": "Replace...",
+        "invalidRegex": "Invalid regex"
+      },
+      "textRotate": {
+        "inputPlaceholder": "Input lines..."
+      },
+      "textStats": {
+        "inputPlaceholder": "Paste or type text here...",
+        "characters": "Characters",
+        "charactersNoSpaces": "Characters (no spaces)",
+        "words": "Words",
+        "lines": "Lines",
+        "sentences": "Sentences",
+        "paragraphs": "Paragraphs",
+        "readingTime": "Reading time",
+        "readingTimeValue": "{count} min"
+      },
+      "textTruncate": {
+        "inputPlaceholder": "Input text...",
+        "characters": "Characters",
+        "words": "Words",
+        "lines": "Lines"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "end": "结束",
+      "regex": "正则"
+    },
+    "tools": {
+      "emailExtractor": {
+        "noEmailsFound": "未找到邮箱。"
+      },
+      "emojiPicker": {
+        "searchPlaceholder": "搜索表情..."
+      },
+      "extractSubstring": {
+        "inputPlaceholder": "输入文本..."
+      },
+      "hiddenCharDetector": {
+        "noneDetected": "未检测到隐藏字符。"
+      },
+      "numeronymGenerator": {
+        "inputPlaceholder": "输入单词，例如 'internationalization'"
+      },
+      "palindromeChecker": {
+        "isPalindrome": "✅ 是的！这是回文。",
+        "notPalindrome": "❌ 不是回文。"
+      },
+      "quoteGenerator": {
+        "nextQuote": "下一条名言"
+      },
+      "textDiff": {
+        "original": "原文",
+        "modified": "修改后",
+        "diff": "差异",
+        "same": "相同: {count}",
+        "changed": "已修改: {count}",
+        "removed": "已删除: {count}",
+        "added": "已新增: {count}"
+      },
+      "textRepeat": {
+        "inputPlaceholder": "要重复的文本..."
+      },
+      "textReplacer": {
+        "inputPlaceholder": "输入文本...",
+        "findPlaceholder": "查找...",
+        "replacePlaceholder": "替换...",
+        "invalidRegex": "无效的正则表达式"
+      },
+      "textRotate": {
+        "inputPlaceholder": "输入行..."
+      },
+      "textStats": {
+        "inputPlaceholder": "在此粘贴或输入文本...",
+        "characters": "字符数",
+        "charactersNoSpaces": "字符数（不含空格）",
+        "words": "单词数",
+        "lines": "行数",
+        "sentences": "句子数",
+        "paragraphs": "段落数",
+        "readingTime": "阅读时间",
+        "readingTimeValue": "{count} 分钟"
+      },
+      "textTruncate": {
+        "inputPlaceholder": "输入文本...",
+        "characters": "字符",
+        "words": "单词",
+        "lines": "行"
+      }
+    }
+  }
+}

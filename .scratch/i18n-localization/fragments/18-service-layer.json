@@ -1,0 +1,162 @@
+{
+  "en": {
+    "common": {
+      "notAvailable": "N/A"
+    },
+    "tools": {
+      "dateTimeConverter": {
+        "errorInvalidUnixSeconds": "Invalid Unix timestamp (seconds)",
+        "errorInvalidUnixMs": "Invalid Unix timestamp (ms)",
+        "errorInvalidIso": "Invalid ISO 8601 date",
+        "errorInvalidRfc": "Invalid RFC 3339 date",
+        "errorInvalidUtc": "Invalid UTC string",
+        "errorCustomFormatRequired": "Custom format string required",
+        "errorFormatMismatch": "Input does not match format \"{format}\"",
+        "errorInvalidDate": "Invalid date input",
+        "labelUnixSeconds": "Unix Timestamp (s)",
+        "labelUnixMilliseconds": "Unix Timestamp (ms)",
+        "labelUtcString": "UTC String",
+        "labelLocalDateTime": "Local Date Time",
+        "labelRelative": "Relative"
+      },
+      "dockerComposeTo1panel": {
+        "errorInvalidYaml": "Invalid YAML: not an object",
+        "errorUnknown": "Unknown error",
+        "errorYamlParse": "YAML parse error: {message}"
+      },
+      "dockerRunToCompose": {
+        "errorNoImage": "No image specified in docker run command",
+        "errorParseFailed": "Failed to parse docker run command",
+        "warnLogOpt": "--log-opt is not directly translatable to docker-compose service level",
+        "warnUnsupportedFlag": "Flag {flag} is not supported in this converter"
+      },
+      "emailNormalizer": {
+        "errorMissingAt": "Invalid email format: missing @"
+      },
+      "jsonToCsv": {
+        "errorNotArray": "Input must be a JSON array of objects",
+        "errorItemNotObject": "Each item in the array must be a JSON object"
+      },
+      "regexTester": {
+        "errorInvalidPattern": "Invalid regex pattern"
+      },
+      "xmlFormatter": {
+        "errorInvalidXml": "Invalid XML",
+        "errorParseFailed": "Failed to parse XML"
+      },
+      "infoMasking": {
+        "patternEmail": "Email",
+        "patternPhone": "Phone",
+        "patternIp": "IPv4 Address",
+        "patternCreditCard": "Credit Card"
+      },
+      "etaCalculator": {
+        "durationDays": "{n}d",
+        "durationHours": "{n}h",
+        "durationMinutes": "{n}m",
+        "durationSeconds": "{n}s"
+      },
+      "passwordStrength": {
+        "labelNone": "None",
+        "labelVeryWeak": "Very Weak",
+        "labelWeak": "Weak",
+        "labelFair": "Fair",
+        "labelStrong": "Strong",
+        "labelVeryStrong": "Very Strong",
+        "crackInstant": "Instant",
+        "crackSeconds": "{n} seconds",
+        "crackMinutes": "{n} minutes",
+        "crackHours": "{n} hours",
+        "crackDays": "{n} days",
+        "crackYears": "{n} years",
+        "crackCenturies": "Centuries",
+        "suggestLength": "Use at least 8 characters",
+        "suggestVariety": "Add more character types (uppercase, numbers, symbols)",
+        "suggestAddNumbersSymbols": "Add numbers and symbols",
+        "suggestAvoidOnlyNumbers": "Avoid using only numbers",
+        "suggestAvoidRepeats": "Avoid repeated characters",
+        "suggestAvoidCommon": "Avoid common patterns"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "notAvailable": "暂无"
+    },
+    "tools": {
+      "dateTimeConverter": {
+        "errorInvalidUnixSeconds": "无效的 Unix 时间戳（秒）",
+        "errorInvalidUnixMs": "无效的 Unix 时间戳（毫秒）",
+        "errorInvalidIso": "无效的 ISO 8601 日期",
+        "errorInvalidRfc": "无效的 RFC 3339 日期",
+        "errorInvalidUtc": "无效的 UTC 字符串",
+        "errorCustomFormatRequired": "需要自定义格式字符串",
+        "errorFormatMismatch": "输入与格式“{format}”不匹配",
+        "errorInvalidDate": "无效的日期输入",
+        "labelUnixSeconds": "Unix 时间戳（秒）",
+        "labelUnixMilliseconds": "Unix 时间戳（毫秒）",
+        "labelUtcString": "UTC 字符串",
+        "labelLocalDateTime": "本地日期时间",
+        "labelRelative": "相对时间"
+      },
+      "dockerComposeTo1panel": {
+        "errorInvalidYaml": "无效的 YAML：不是对象",
+        "errorUnknown": "未知错误",
+        "errorYamlParse": "YAML 解析错误：{message}"
+      },
+      "dockerRunToCompose": {
+        "errorNoImage": "docker run 命令中未指定镜像",
+        "errorParseFailed": "解析 docker run 命令失败",
+        "warnLogOpt": "--log-opt 无法直接映射到 docker-compose 服务层级",
+        "warnUnsupportedFlag": "本转换器不支持参数 {flag}"
+      },
+      "emailNormalizer": {
+        "errorMissingAt": "邮箱格式无效：缺少 @"
+      },
+      "jsonToCsv": {
+        "errorNotArray": "输入必须是对象数组形式的 JSON",
+        "errorItemNotObject": "数组中的每一项都必须是 JSON 对象"
+      },
+      "regexTester": {
+        "errorInvalidPattern": "无效的正则表达式"
+      },
+      "xmlFormatter": {
+        "errorInvalidXml": "无效的 XML",
+        "errorParseFailed": "XML 解析失败"
+      },
+      "infoMasking": {
+        "patternEmail": "邮箱",
+        "patternPhone": "电话",
+        "patternIp": "IPv4 地址",
+        "patternCreditCard": "信用卡"
+      },
+      "etaCalculator": {
+        "durationDays": "{n}天",
+        "durationHours": "{n}小时",
+        "durationMinutes": "{n}分",
+        "durationSeconds": "{n}秒"
+      },
+      "passwordStrength": {
+        "labelNone": "无",
+        "labelVeryWeak": "非常弱",
+        "labelWeak": "弱",
+        "labelFair": "一般",
+        "labelStrong": "强",
+        "labelVeryStrong": "非常强",
+        "crackInstant": "瞬间",
+        "crackSeconds": "{n} 秒",
+        "crackMinutes": "{n} 分钟",
+        "crackHours": "{n} 小时",
+        "crackDays": "{n} 天",
+        "crackYears": "{n} 年",
+        "crackCenturies": "数百年",
+        "suggestLength": "至少使用 8 个字符",
+        "suggestVariety": "增加更多字符类型（大写字母、数字、符号）",
+        "suggestAddNumbersSymbols": "添加数字和符号",
+        "suggestAvoidOnlyNumbers": "避免仅使用数字",
+        "suggestAvoidRepeats": "避免重复字符",
+        "suggestAvoidCommon": "避免常见模式"
+      }
+    }
+  }
+}

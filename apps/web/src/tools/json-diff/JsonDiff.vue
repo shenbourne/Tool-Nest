@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NSpace, NButton, NInput, NTag, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 
 interface DiffEntry {
   path: string;
@@ -52,7 +55,7 @@ const diffResult = computed<DiffEntry[]>(() => {
     return diff(a, b);
   }
   catch (e: any) {
-    errorMsg.value = e?.message || 'Invalid JSON';
+    errorMsg.value = e?.message || t('common.invalidJson');
     return [];
   }
 });
@@ -72,19 +75,19 @@ function formatVal(v: any): string {
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
       <div style="display:flex;gap:12px;">
-        <NCard title="Left JSON" style="flex:1;"><NInput v-model:value="leftJson" type="textarea" :rows="10" placeholder="Paste left JSON..." /></NCard>
-        <NCard title="Right JSON" style="flex:1;"><NInput v-model:value="rightJson" type="textarea" :rows="10" placeholder="Paste right JSON..." /></NCard>
+        <NCard :title="t('tools.jsonDiff.leftJson')" style="flex:1;"><NInput v-model:value="leftJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.leftPlaceholder')" /></NCard>
+        <NCard :title="t('tools.jsonDiff.rightJson')" style="flex:1;"><NInput v-model:value="rightJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.rightPlaceholder')" /></NCard>
       </div>
       <NAlert v-if="errorMsg" type="error" :title="errorMsg" />
       <NSpace v-if="diffResult.length">
-        <NTag type="success">Added: {{ stats.added }}</NTag>
-        <NTag type="error">Removed: {{ stats.removed }}</NTag>
-        <NTag type="warning">Changed: {{ stats.changed }}</NTag>
+        <NTag type="success">{{ t('tools.jsonDiff.added') }}: {{ stats.added }}</NTag>
+        <NTag type="error">{{ t('tools.jsonDiff.removed') }}: {{ stats.removed }}</NTag>
+        <NTag type="warning">{{ t('tools.jsonDiff.changed') }}: {{ stats.changed }}</NTag>
       </NSpace>
-      <NCard v-if="diffResult.length" title="Differences">
+      <NCard v-if="diffResult.length" :title="t('tools.jsonDiff.differences')">
         <div style="font-family:monospace;font-size:13px;">
           <div v-for="(d, i) in diffResult" :key="i" :style="{ padding: '4px 8px', borderBottom: '1px solid var(--color-hairline)', background: d.type==='added'?'#e6ffed':d.type==='removed'?'#ffeef0':'#fff5b1' }">
-            <NTag :type="d.type==='added'?'success':d.type==='removed'?'error':'warning'" size="small" style="margin-right:8px;">{{ d.type }}</NTag>
+            <NTag :type="d.type==='added'?'success':d.type==='removed'?'error':'warning'" size="small" style="margin-right:8px;">{{ t(`tools.jsonDiff.${d.type}`) }}</NTag>
             <strong>{{ d.path }}</strong>
             <span v-if="d.type==='removed'" style="color:var(--color-error);margin-left:8px;">{{ formatVal(d.oldValue) }}</span>
             <span v-else-if="d.type==='added'" style="color:var(--color-success);margin-left:8px;">{{ formatVal(d.newValue) }}</span>

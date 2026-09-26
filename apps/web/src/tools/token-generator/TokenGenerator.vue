@@ -27,24 +27,24 @@ function copy() { navigator.clipboard.writeText(token.value); }
       <NSpace vertical :size="16">
         <div style="display: flex; justify-content: center; gap: 32px;">
           <div>
-            <NFormItem label="Uppercase" label-placement="left">
+            <NFormItem :label="t('common.uppercase')" label-placement="left">
               <NSwitch v-model:value="withUppercase" />
             </NFormItem>
-            <NFormItem label="Lowercase" label-placement="left">
+            <NFormItem :label="t('common.lowercase')" label-placement="left">
               <NSwitch v-model:value="withLowercase" />
             </NFormItem>
           </div>
           <div>
-            <NFormItem label="Numbers" label-placement="left">
+            <NFormItem :label="t('common.numbers')" label-placement="left">
               <NSwitch v-model:value="withNumbers" />
             </NFormItem>
-            <NFormItem label="Symbols" label-placement="left">
+            <NFormItem :label="t('common.symbols')" label-placement="left">
               <NSwitch v-model:value="withSymbols" />
             </NFormItem>
           </div>
         </div>
 
-        <NFormItem :label="`Length (${length})`" label-placement="left">
+        <NFormItem :label="`${t('common.length')} (${length})`" label-placement="left">
           <NSlider v-model:value="length" :step="1" :min="1" :max="512" />
         </NFormItem>
 

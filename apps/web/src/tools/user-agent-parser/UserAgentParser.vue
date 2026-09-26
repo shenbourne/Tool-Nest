@@ -26,50 +26,50 @@ onMounted(() => {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="User-Agent String">
+      <NCard :title="t('tools.userAgentParser.uaString')">
         <NSpace vertical :size="12">
           <NInput
             v-model:value="uaString"
             type="textarea"
             :autosize="{ minRows: 3, maxRows: 6 }"
-            placeholder="Enter a user-agent string..."
+            :placeholder="t('tools.userAgentParser.inputPlaceholder')"
           />
           <NButton @click="copyUa">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>
 
-      <NCard title="Browser">
+      <NCard :title="t('tools.userAgentParser.browser')">
         <NDescriptions label-placement="left" bordered :column="2" size="small">
-          <NDescriptionsItem label="Name">{{ parsed.browser.name }}</NDescriptionsItem>
-          <NDescriptionsItem label="Version">{{ parsed.browser.version }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('common.name')">{{ parsed.browser.name }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('common.version')">{{ parsed.browser.version }}</NDescriptionsItem>
         </NDescriptions>
       </NCard>
 
-      <NCard title="Operating System">
+      <NCard :title="t('tools.userAgentParser.operatingSystem')">
         <NDescriptions label-placement="left" bordered :column="2" size="small">
-          <NDescriptionsItem label="Name">{{ parsed.os.name }}</NDescriptionsItem>
-          <NDescriptionsItem label="Version">{{ parsed.os.version }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('common.name')">{{ parsed.os.name }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('common.version')">{{ parsed.os.version }}</NDescriptionsItem>
         </NDescriptions>
       </NCard>
 
-      <NCard title="Device">
+      <NCard :title="t('tools.userAgentParser.device')">
         <NDescriptions label-placement="left" bordered :column="3" size="small">
-          <NDescriptionsItem label="Type">{{ parsed.device.type }}</NDescriptionsItem>
-          <NDescriptionsItem label="Vendor">{{ parsed.device.vendor }}</NDescriptionsItem>
-          <NDescriptionsItem label="Model">{{ parsed.device.model }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('tools.userAgentParser.deviceType')">{{ parsed.device.type }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('tools.userAgentParser.vendor')">{{ parsed.device.vendor }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('tools.userAgentParser.model')">{{ parsed.device.model }}</NDescriptionsItem>
         </NDescriptions>
       </NCard>
 
-      <NCard title="Engine">
+      <NCard :title="t('tools.userAgentParser.engine')">
         <NDescriptions label-placement="left" bordered :column="2" size="small">
-          <NDescriptionsItem label="Name">{{ parsed.engine.name }}</NDescriptionsItem>
-          <NDescriptionsItem label="Version">{{ parsed.engine.version }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('common.name')">{{ parsed.engine.name }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('common.version')">{{ parsed.engine.version }}</NDescriptionsItem>
         </NDescriptions>
       </NCard>
 
       <NCard title="CPU">
         <NDescriptions label-placement="left" bordered :column="1" size="small">
-          <NDescriptionsItem label="Architecture">{{ parsed.cpu.architecture }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('tools.userAgentParser.architecture')">{{ parsed.cpu.architecture }}</NDescriptionsItem>
         </NDescriptions>
       </NCard>
     </NSpace>

@@ -94,15 +94,15 @@ function download() {
       <NCard :title="t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <div>
-            <label>Target Color: </label>
+            <label>{{ t('tools.imageCreateTransparent.targetColor') }}</label>
             <NColorPicker v-model:value="targetColor" style="width:200px;" />
           </div>
           <div>
-            <label>Tolerance (0-100): </label>
+            <label>{{ t('tools.imageCreateTransparent.toleranceRange') }}</label>
             <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" />
           </div>
-          <NButton type="primary" :disabled="!file" @click="processImage">Apply</NButton>
-          <NButton type="success" :disabled="!file" @click="download">{{ t('common.download', 'Download') }}</NButton>
+          <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
+          <NButton type="success" :disabled="!file" @click="download">{{ t('tool.download') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

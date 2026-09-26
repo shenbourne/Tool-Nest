@@ -15,11 +15,11 @@ const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 const resultUrl = ref('');
 
-const qualityOptions = [
-  { label: 'Low (smaller file)', value: 'low' },
-  { label: 'Medium (balanced)', value: 'medium' },
-  { label: 'High (better quality)', value: 'high' },
-];
+const qualityOptions = computed(() => [
+  { label: t('tools.videoCompress.qualityLow'), value: 'low' },
+  { label: t('tools.videoCompress.qualityMedium'), value: 'medium' },
+  { label: t('tools.videoCompress.qualityHigh'), value: 'high' },
+]);
 
 const crfMap: Record<string, string> = { low: '28', medium: '23', high: '18' };
 const crf = computed(() => crfMap[quality.value] ?? '23');
@@ -69,7 +69,7 @@ async function process() {
     const blob = new Blob([result], { type: 'video/mp4' });
     resultUrl.value = URL.createObjectURL(blob);
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Processing failed';
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
@@ -81,7 +81,7 @@ async function process() {
     <NCard>
       <NSpace vertical :size="12">
         <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          Load FFmpeg
+          {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
@@ -91,7 +91,7 @@ async function process() {
           v-model:value="quality"
           :options="qualityOptions"
           style="width: 240px"
-          placeholder="Select quality"
+          :placeholder="t('tools.videoCompress.selectQuality')"
         />
 
         <NButton
@@ -100,14 +100,14 @@ async function process() {
           :disabled="!file || !isLoaded"
           @click="process"
         >
-          Compress
+          {{ t('common.compress') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
         <NAlert v-if="error" type="error" :title="error" />
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'compressed.mp4', 'video/mp4')">
-          Download
+          {{ t('tool.download') }}
         </NButton>
       </NSpace>
     </NCard>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { NCard, NSpace, NButton, NUpload, NInput, NInputNumber, NSelect, NColorPicker, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 
+const { t } = useI18n();
 const file = ref<File | null>(null);
 const text = ref('');
 const position = ref<string>('center');
@@ -13,15 +15,15 @@ const resultUrl = ref('');
 const processing = ref(false);
 const error = ref('');
 
-const positionOptions = [
-  { label: 'Top Left', value: 'top-left' },
-  { label: 'Top Center', value: 'top-center' },
-  { label: 'Top Right', value: 'top-right' },
-  { label: 'Center', value: 'center' },
-  { label: 'Bottom Left', value: 'bottom-left' },
-  { label: 'Bottom Center', value: 'bottom-center' },
-  { label: 'Bottom Right', value: 'bottom-right' },
-];
+const positionOptions = computed(() => [
+  { label: t('tools.pdfEditor.position.topLeft'), value: 'top-left' },
+  { label: t('tools.pdfEditor.position.topCenter'), value: 'top-center' },
+  { label: t('tools.pdfEditor.position.topRight'), value: 'top-right' },
+  { label: t('tools.pdfEditor.position.center'), value: 'center' },
+  { label: t('tools.pdfEditor.position.bottomLeft'), value: 'bottom-left' },
+  { label: t('tools.pdfEditor.position.bottomCenter'), value: 'bottom-center' },
+  { label: t('tools.pdfEditor.position.bottomRight'), value: 'bottom-right' },
+]);
 
 function onFile(f: File | null) { file.value = f; resultUrl.value = ''; error.value = ''; }
 
@@ -96,7 +98,7 @@ async function apply() {
     const bytes = await doc.save();
     resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
   } catch (e: any) {
-    error.value = e.message || 'Failed to edit PDF';
+    error.value = e.message || t('tools.pdfEditor.failed');
   }
   processing.value = false;
 }
@@ -105,17 +107,17 @@ async function apply() {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
-      <NInput v-model:value="text" placeholder="Enter text to add" />
-      <NSelect v-model:value="position" :options="positionOptions" placeholder="Select position" />
+      <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')" />
+      <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
       <NSpace>
-        <NInputNumber v-model:value="fontSize" :min="8" :max="120" placeholder="Font size" style="width: 150px;" />
+        <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" style="width: 150px;" />
         <NColorPicker v-model:value="color" style="width: 100px;" />
       </NSpace>
       <NButton type="primary" :loading="processing" @click="apply" :disabled="!file || !text">
-        Apply
+        {{ t('common.apply') }}
       </NButton>
       <NAlert v-if="error" type="error" :title="error" />
-      <NButton v-if="resultUrl" @click="download">Download Edited PDF</NButton>
+      <NButton v-if="resultUrl" @click="download">{{ t('tools.pdfEditor.downloadEditedPdf') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

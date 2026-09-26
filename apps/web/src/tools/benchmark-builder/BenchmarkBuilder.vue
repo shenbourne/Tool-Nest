@@ -11,8 +11,8 @@ const { t } = useI18n();
 const tool = useCurrentTool();
 
 const suites = ref<BenchmarkSuite[]>([
-  { id: '1', name: 'Suite 1', code: 'let sum = 0;\nfor (let i = 0; i < 1000; i++) sum += i;\nreturn sum;' },
-  { id: '2', name: 'Suite 2', code: 'let sum = 0;\nlet i = 0;\nwhile (i < 1000) { sum += i; i++; }\nreturn sum;' },
+  { id: '1', name: t('tools.benchmarkBuilder.suite', { n: 1 }), code: 'let sum = 0;\nfor (let i = 0; i < 1000; i++) sum += i;\nreturn sum;' },
+  { id: '2', name: t('tools.benchmarkBuilder.suite', { n: 2 }), code: 'let sum = 0;\nlet i = 0;\nwhile (i < 1000) { sum += i; i++; }\nreturn sum;' },
 ]);
 
 const iterations = ref(100);
@@ -25,7 +25,7 @@ let nextId = 3;
 function addSuite() {
   suites.value.push({
     id: String(nextId++),
-    name: `Suite ${suites.value.length + 1}`,
+    name: t('tools.benchmarkBuilder.suite', { n: suites.value.length + 1 }),
     code: '',
   });
 }
@@ -43,10 +43,10 @@ function run() {
     try {
       results.value = runBenchmark(suites.value, iterations.value);
       if (results.value.length === 0) {
-        error.value = 'No suites produced results. Check your code for errors.';
+        error.value = t('tools.benchmarkBuilder.noResults');
       }
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Benchmark failed';
+      error.value = e instanceof Error ? e.message : t('tools.benchmarkBuilder.failed');
     } finally {
       isRunning.value = false;
     }
@@ -55,8 +55,8 @@ function run() {
 
 function reset() {
   suites.value = [
-    { id: '1', name: 'Suite 1', code: '' },
-    { id: '2', name: 'Suite 2', code: '' },
+    { id: '1', name: t('tools.benchmarkBuilder.suite', { n: 1 }), code: '' },
+    { id: '2', name: t('tools.benchmarkBuilder.suite', { n: 2 }), code: '' },
   ];
   results.value = [];
   error.value = '';
@@ -64,27 +64,27 @@ function reset() {
 
 const round = (v: number) => Math.round(v * 1000) / 1000;
 
-const resultColumns: DataTableColumn<BenchmarkResult>[] = [
-  { title: 'Suite', key: 'suiteName' },
-  { title: 'Iterations', key: 'iterations', width: 100 },
-  { title: 'Avg (ms)', key: 'avgMs', width: 120, render: (row) => `${round(row.avgMs)}` },
-  { title: 'Min (ms)', key: 'minMs', width: 120, render: (row) => `${round(row.minMs)}` },
-  { title: 'Max (ms)', key: 'maxMs', width: 120, render: (row) => `${round(row.maxMs)}` },
-  { title: 'Ops/sec', key: 'opsPerSec', width: 120, render: (row) => `${round(row.opsPerSec)}` },
-];
+const resultColumns = computed<DataTableColumn<BenchmarkResult>[]>(() => [
+  { title: t('tools.benchmarkBuilder.suiteColumn'), key: 'suiteName' },
+  { title: t('tools.benchmarkBuilder.iterations'), key: 'iterations', width: 100 },
+  { title: t('tools.benchmarkBuilder.avgMs'), key: 'avgMs', width: 120, render: (row) => `${round(row.avgMs)}` },
+  { title: t('tools.benchmarkBuilder.minMs'), key: 'minMs', width: 120, render: (row) => `${round(row.minMs)}` },
+  { title: t('tools.benchmarkBuilder.maxMs'), key: 'maxMs', width: 120, render: (row) => `${round(row.maxMs)}` },
+  { title: t('tools.benchmarkBuilder.opsPerSec'), key: 'opsPerSec', width: 120, render: (row) => `${round(row.opsPerSec)}` },
+]);
 </script>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Benchmark Suites">
+      <NCard :title="t('tools.benchmarkBuilder.suitesTitle')">
         <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
-          <div v-for="(suite, index) in suites" :key="suite.id" style="flex: 1; min-width: 300px;">
+          <div v-for="suite in suites" :key="suite.id" style="flex: 1; min-width: 300px;">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
               <NInput
                 :value="suite.name"
                 @update:value="(v: string) => suite.name = v"
-                placeholder="Suite name"
+                :placeholder="t('tools.benchmarkBuilder.suiteNamePlaceholder')"
                 size="small"
                 style="flex: 1;"
               />
@@ -100,7 +100,7 @@ const resultColumns: DataTableColumn<BenchmarkResult>[] = [
               :value="suite.code"
               @update:value="(v: string) => suite.code = v"
               type="textarea"
-              placeholder="// JavaScript code to benchmark"
+              :placeholder="t('tools.benchmarkBuilder.codePlaceholder')"
               :autosize="{ minRows: 5, maxRows: 15 }"
               style="font-family: monospace;"
             />
@@ -108,19 +108,19 @@ const resultColumns: DataTableColumn<BenchmarkResult>[] = [
         </div>
 
         <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-          <NButton @click="addSuite">+ Add Suite</NButton>
+          <NButton @click="addSuite">{{ t('tools.benchmarkBuilder.addSuite') }}</NButton>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <label>Iterations:</label>
+            <label>{{ t('tools.benchmarkBuilder.iterations') }}:</label>
             <NInputNumber v-model:value="iterations" :min="1" :max="100000" style="width: 120px;" />
           </div>
-          <NButton type="primary" @click="run" :loading="isRunning">Run Benchmark</NButton>
-          <NButton @click="reset">Reset</NButton>
+          <NButton type="primary" @click="run" :loading="isRunning">{{ t('tools.benchmarkBuilder.run') }}</NButton>
+          <NButton @click="reset">{{ t('common.reset') }}</NButton>
         </div>
       </NCard>
 
       <NAlert v-if="error" type="error">{{ error }}</NAlert>
 
-      <NCard v-if="results.length > 0" title="Results">
+      <NCard v-if="results.length > 0" :title="t('common.results')">
         <NDataTable
           :columns="resultColumns"
           :data="results"
@@ -132,12 +132,10 @@ const resultColumns: DataTableColumn<BenchmarkResult>[] = [
 
       <NDivider />
 
-      <NCard title="About">
-        <div style="opacity: 0.8; line-height: 1.6;">
-          Write JavaScript code in each suite and run benchmarks to compare execution speed.
-          Results show average, min, max execution time and operations per second across all iterations.
-          Code runs via <code>new Function()</code> with a warmup pass before measured iterations.
-        </div>
+      <NCard :title="t('common.about')">
+        <i18n-t keypath="tools.benchmarkBuilder.aboutText" tag="div" style="opacity: 0.8; line-height: 1.6;">
+          <template #code><code>new Function()</code></template>
+        </i18n-t>
       </NCard>
     </NSpace>
   </ToolLayout>

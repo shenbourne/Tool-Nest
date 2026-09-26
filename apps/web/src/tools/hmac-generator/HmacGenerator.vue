@@ -36,11 +36,11 @@ function copy() { navigator.clipboard.writeText(hmac.value); }
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="plainText" type="textarea" :rows="3" placeholder="Plain text to compute HMAC..." />
-        <NInput v-model:value="secret" placeholder="Secret key..." />
+        <NInput v-model:value="plainText" type="textarea" :rows="3" :placeholder="t('tools.hmacGenerator.inputPlaceholder')" />
+        <NInput v-model:value="secret" :placeholder="t('common.secretKeyPlaceholder')" />
         <div style="display: flex; gap: 12px;">
-          <NSelect v-model:value="hashFunction" :options="Object.keys(algos).map(l => ({ label: l, value: l }))" label="Hash function" style="flex: 1;" />
-          <NSelect v-model:value="encoding" :options="encodingOptions" label="Encoding" style="flex: 1;" />
+          <NSelect v-model:value="hashFunction" :options="Object.keys(algos).map(l => ({ label: l, value: l }))" :label="t('tools.hmacGenerator.hashFunction')" style="flex: 1;" />
+          <NSelect v-model:value="encoding" :options="encodingOptions" :label="t('tools.hmacGenerator.encoding')" style="flex: 1;" />
         </div>
         <NInput :value="hmac" readonly type="textarea" :rows="2" style="font-family: monospace;" />
         <NButton @click="copy">{{ t('tool.copy') }}</NButton>

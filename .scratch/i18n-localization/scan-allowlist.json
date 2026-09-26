@@ -1,0 +1,20 @@
+{
+  "_comment": "Literals intentionally NOT translated. Per spec §非目标: sample data payloads, technical identifiers, format templates and canonical key names. Keys are the exact JSON.stringify() form the scanner prints.",
+  "exact": [
+    "name: example",
+    "name: example&#10;version: 1.0",
+    "title: example",
+    "name,age&#10;John,30",
+    "<root>\\n  <item>example</item>\\n</root>",
+    "SELECT id, name FROM users WHERE active = 1 ORDER BY name",
+    "new Function()",
+    "com.1panel.appName",
+    "restart: always",
+    "YYYY-MM-DD",
+    "YYYY-MM-DDTHH:mm",
+    "Ctrl",
+    "Shift",
+    "Alt",
+    "Meta"
+  ]
+}

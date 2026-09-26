@@ -17,7 +17,7 @@ function execCmd(command: string, value?: string) {
 }
 
 function insertLink() {
-  const url = prompt('Enter URL:');
+  const url = prompt(t('tools.htmlWysiwygEditor.enterUrl'));
   if (url) {
     document.execCommand('createLink', false, url);
     updateOutput();
@@ -43,7 +43,7 @@ function copyHtml() {
 
 onMounted(() => {
   if (editorRef.value) {
-    editorRef.value.innerHTML = '<p>Start typing here...</p>';
+    editorRef.value.innerHTML = `<p>${t('tools.htmlWysiwygEditor.startTyping')}</p>`;
     updateOutput();
   }
 });
@@ -52,7 +52,7 @@ onMounted(() => {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Editor">
+      <NCard :title="t('tools.htmlWysiwygEditor.editor')">
         <NSpace vertical :size="12">
           <NSpace>
             <NButton size="small" @click="execCmd('bold')"><strong>B</strong></NButton>
@@ -64,8 +64,8 @@ onMounted(() => {
             <NButton size="small" @click="execCmd('formatBlock', '<h3>')">H3</NButton>
             <NButton size="small" @click="execCmd('insertUnorderedList')">UL</NButton>
             <NButton size="small" @click="execCmd('insertOrderedList')">OL</NButton>
-            <NButton size="small" @click="insertLink">Link</NButton>
-            <NButton size="small" @click="clearFormat">Clear</NButton>
+            <NButton size="small" @click="insertLink">{{ t('tools.htmlWysiwygEditor.link') }}</NButton>
+            <NButton size="small" @click="clearFormat">{{ t('tool.clear') }}</NButton>
           </NSpace>
           <div
             ref="editorRef"
@@ -76,7 +76,7 @@ onMounted(() => {
         </NSpace>
       </NCard>
 
-      <NCard title="HTML Output">
+      <NCard :title="t('tools.htmlWysiwygEditor.htmlOutput')">
         <NSpace vertical :size="12">
           <NInput
             type="textarea"

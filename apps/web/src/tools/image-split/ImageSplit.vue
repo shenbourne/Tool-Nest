@@ -80,25 +80,25 @@ function downloadAll() {
       <NCard :title="t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <div>
-            <label>Rows (1-10): </label>
+            <label>{{ t('tools.imageSplit.rows') }}</label>
             <NInputNumber v-model:value="rows" :min="1" :max="10" :step="1" />
           </div>
           <div>
-            <label>Columns (1-10): </label>
+            <label>{{ t('tools.imageSplit.columns') }}</label>
             <NInputNumber v-model:value="cols" :min="1" :max="10" :step="1" />
           </div>
-          <NButton type="primary" :disabled="!file" @click="splitImage">Split</NButton>
+          <NButton type="primary" :disabled="!file" @click="splitImage">{{ t('tools.imageSplit.split') }}</NButton>
         </NSpace>
       </NCard>
-      <NCard v-if="tiles.length" title="Tiles">
+      <NCard v-if="tiles.length" :title="t('tools.imageSplit.tiles')">
         <NSpace vertical :size="12">
           <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:8px;">
             <div v-for="(tile, idx) in tiles" :key="idx">
               <img :src="tile" style="width:100%;border:1px solid var(--color-hairline);" />
-              <NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">Download</NButton>
+              <NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">{{ t('tool.download') }}</NButton>
             </div>
           </div>
-          <NButton type="success" @click="downloadAll">Download All</NButton>
+          <NButton type="success" @click="downloadAll">{{ t('tools.imageSplit.downloadAll') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

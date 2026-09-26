@@ -75,13 +75,13 @@ function copyText() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Image Upload">
+      <NCard :title="t('tools.imageToTextOcr.imageUpload')">
         <NSpace vertical :size="12">
           <input type="file" accept="image/*" @change="onFileChange" />
           <NSelect v-model:value="selectedLang" :options="languageOptions" style="width: 200px" />
           <img v-if="imagePreview" :src="imagePreview" style="max-width: 100%; max-height: 300px;" />
           <NButton type="primary" :loading="loading" :disabled="!selectedFile" @click="extractText">
-            Extract Text
+            {{ t('tools.imageToTextOcr.extractText') }}
           </NButton>
           <NProgress v-if="loading" type="line" :percentage="progress" />
         </NSpace>
@@ -91,7 +91,7 @@ function copyText() {
         {{ error }}
       </NAlert>
 
-      <NCard v-if="extractedText" title="Extracted Text">
+      <NCard v-if="extractedText" :title="t('tools.imageToTextOcr.extractedText')">
         <NSpace vertical :size="12">
           <NInput
             type="textarea"

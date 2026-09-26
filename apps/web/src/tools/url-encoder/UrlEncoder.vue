@@ -14,17 +14,17 @@ function copyDecoded() { navigator.clipboard.writeText(decoded.value); }
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Encode">
+      <NCard :title="t('common.encode')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="input" type="textarea" :rows="3" placeholder="Text to encode/decode..." />
-          <NInput :value="encoded" readonly label="Encoded" />
-          <NButton size="small" @click="copyEncoded">{{ t('tool.copy') }} Encoded</NButton>
+          <NInput v-model:value="input" type="textarea" :rows="3" :placeholder="t('tools.urlEncoder.inputPlaceholder')" />
+          <NInput :value="encoded" readonly :label="t('tools.urlEncoder.encoded')" />
+          <NButton size="small" @click="copyEncoded">{{ t('tools.urlEncoder.copyEncoded') }}</NButton>
         </NSpace>
       </NCard>
-      <NCard title="Decode">
+      <NCard :title="t('common.decode')">
         <NSpace vertical :size="8">
-          <NInput :value="decoded" readonly label="Decoded" />
-          <NButton size="small" @click="copyDecoded">{{ t('tool.copy') }} Decoded</NButton>
+          <NInput :value="decoded" readonly :label="t('tools.urlEncoder.decoded')" />
+          <NButton size="small" @click="copyDecoded">{{ t('tools.urlEncoder.copyDecoded') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

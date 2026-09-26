@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NInput, NSlider, NSelect, NSpace, NFormItem } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
+
 const input = ref('my-secret-password-123');
 const method = ref<'mask' | 'redact' | 'partial'>('mask');
+const methodOptions = computed(() => [
+  { label: t('tools.stringObfuscator.maskAll'), value: 'mask' },
+  { label: t('tools.stringObfuscator.redact'), value: 'redact' },
+  { label: t('tools.stringObfuscator.partial'), value: 'partial' },
+]);
 const keepChars = ref(3);
 const maskChar = ref('*');
 const output = computed(() => {
@@ -19,9 +28,9 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" placeholder="String to obfuscate..." />
-      <NSelect v-model:value="method" :options="[{label:'Mask all',value:'mask'},{label:'Redact',value:'redact'},{label:'Partial (keep edges)',value:'partial'}]" />
-      <NFormItem v-if="method==='partial'" label="Keep characters" label-placement="left">
+      <NInput v-model:value="input" :placeholder="t('tools.stringObfuscator.inputPlaceholder')" />
+      <NSelect v-model:value="method" :options="methodOptions" />
+      <NFormItem v-if="method==='partial'" :label="t('tools.stringObfuscator.keepCharacters')" label-placement="left">
         <NSlider v-model:value="keepChars" :min="1" :max="10" style="flex:1;" />
       </NFormItem>
       <NInput :value="output" readonly />

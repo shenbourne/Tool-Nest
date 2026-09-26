@@ -20,11 +20,11 @@ function copyOutput() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Input">
-        <NInput v-model:value="input" type="textarea" :rows="4" placeholder="Enter text to convert to NATO phonetic alphabet..." />
+      <NCard :title="t('common.input')">
+        <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textToNatoAlphabet.inputPlaceholder')" />
       </NCard>
-      <NCard title="NATO Phonetic Alphabet">
-        <NInput :value="natoOutput" type="textarea" :rows="4" readonly placeholder="NATO output will appear here..." />
+      <NCard :title="t('tools.textToNatoAlphabet.natoAlphabet')">
+        <NInput :value="natoOutput" type="textarea" :rows="4" readonly :placeholder="t('tools.textToNatoAlphabet.outputPlaceholder')" />
       </NCard>
       <NButton type="primary" :disabled="!natoOutput" @click="copyOutput">{{ t('tool.copy') }}</NButton>
     </NSpace>

@@ -20,7 +20,7 @@ function refresh() { count.value = count.value; }
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="16">
-        <NFormItem label="Quantity" label-placement="left">
+        <NFormItem :label="t('common.quantity')" label-placement="left">
           <NInputNumber v-model:value="count" :min="1" :max="50" style="width: 200px;" />
         </NFormItem>
         <NInput :value="ulids" type="textarea" readonly :rows="Math.min(count + 1, 10)" style="font-family: monospace; text-align: center;" />

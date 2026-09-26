@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { NCard, NSpace, NButton, NAlert, NProgress } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
+const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
 
 const files = ref<File[]>([]);
@@ -85,7 +87,7 @@ async function process() {
 
     resultData.value = result;
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Processing failed';
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
@@ -97,7 +99,7 @@ async function process() {
     <NCard>
       <NSpace vertical :size="12">
         <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          Load FFmpeg
+          {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
@@ -106,9 +108,9 @@ async function process() {
         <div v-if="files.length > 0">
           <div v-for="(f, i) in files" :key="i" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
             <span>{{ f.name }}</span>
-            <NButton size="tiny" @click="moveUp(i)" :disabled="i === 0">Up</NButton>
-            <NButton size="tiny" @click="moveDown(i)" :disabled="i === files.length - 1">Down</NButton>
-            <NButton size="tiny" type="error" @click="removeFile(i)">Remove</NButton>
+            <NButton size="tiny" @click="moveUp(i)" :disabled="i === 0">{{ t('common.moveUp') }}</NButton>
+            <NButton size="tiny" @click="moveDown(i)" :disabled="i === files.length - 1">{{ t('common.moveDown') }}</NButton>
+            <NButton size="tiny" type="error" @click="removeFile(i)">{{ t('common.remove') }}</NButton>
           </div>
         </div>
 
@@ -118,14 +120,14 @@ async function process() {
           :disabled="files.length < 2 || !isLoaded"
           @click="process"
         >
-          Merge
+          {{ t('common.merge') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
         <NAlert v-if="error" type="error" :title="error" />
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'merged.mp4', 'video/mp4')">
-          Download
+          {{ t('tool.download') }}
         </NButton>
       </NSpace>
     </NCard>

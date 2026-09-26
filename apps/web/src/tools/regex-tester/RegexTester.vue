@@ -60,11 +60,11 @@ function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-const matchColumns = [
-  { title: 'Index', key: 'index', width: 80 },
-  { title: 'Match', key: 'value' },
-  { title: 'Groups', key: 'groups' },
-];
+const matchColumns = computed(() => [
+  { title: t('tools.regexTester.colIndex'), key: 'index', width: 80 },
+  { title: t('tools.regexTester.colMatch'), key: 'value' },
+  { title: t('tools.regexTester.colGroups'), key: 'groups' },
+]);
 
 const matchTableData = computed(() =>
   result.value.matches.map((m, i) => ({
@@ -83,39 +83,43 @@ const matchTableData = computed(() =>
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Regular Expression">
+      <NCard :title="t('tools.regexTester.patternTitle')">
         <NInput
           v-model:value="pattern"
-          placeholder="Enter regex pattern..."
+          :placeholder="t('tools.regexTester.patternPlaceholder')"
           monospace
           style="margin-bottom: 8px;"
         />
         <NSpace :size="12">
-          <NCheckbox v-model:checked="globalFlag">Global (g)</NCheckbox>
-          <NCheckbox v-model:checked="ignoreCase">Ignore Case (i)</NCheckbox>
-          <NCheckbox v-model:checked="multiline">Multiline (m)</NCheckbox>
-          <NCheckbox v-model:checked="dotAll">DotAll (s)</NCheckbox>
-          <NCheckbox v-model:checked="unicode">Unicode (u)</NCheckbox>
+          <NCheckbox v-model:checked="globalFlag">{{ t('tools.regexTester.global') }} (g)</NCheckbox>
+          <NCheckbox v-model:checked="ignoreCase">{{ t('tools.regexTester.ignoreCase') }} (i)</NCheckbox>
+          <NCheckbox v-model:checked="multiline">{{ t('tools.regexTester.multiline') }} (m)</NCheckbox>
+          <NCheckbox v-model:checked="dotAll">{{ t('tools.regexTester.dotAll') }} (s)</NCheckbox>
+          <NCheckbox v-model:checked="unicode">{{ t('tools.regexTester.unicode') }} (u)</NCheckbox>
         </NSpace>
       </NCard>
 
-      <NCard title="Test Text">
+      <NCard :title="t('tools.regexTester.textTitle')">
         <NInput
           v-model:value="text"
           type="textarea"
-          placeholder="Enter text to match against..."
+          :placeholder="t('tools.regexTester.textPlaceholder')"
           :autosize="{ minRows: 3, maxRows: 10 }"
         />
       </NCard>
 
-      <NCard title="Match Results">
+      <NCard :title="t('tools.regexTester.resultsTitle')">
         <NAlert v-if="result.error" type="error" style="margin-bottom: 12px;">
           {{ result.error }}
         </NAlert>
         <template v-else>
           <NSpace style="margin-bottom: 12px;">
-            <NTag type="info" size="small">{{ result.matchCount }} match{{ result.matchCount !== 1 ? 'es' : '' }}</NTag>
-            <NTag type="default" size="small">Flags: {{ flags || 'none' }}</NTag>
+            <NTag type="info" size="small">
+              {{ result.matchCount !== 1
+                ? t('tools.regexTester.matchCountPlural', { count: result.matchCount })
+                : t('tools.regexTester.matchCountSingle', { count: result.matchCount }) }}
+            </NTag>
+            <NTag type="default" size="small">{{ t('tools.regexTester.flags') }}: {{ flags || t('tools.regexTester.none') }}</NTag>
           </NSpace>
 
           <div v-if="text" style="margin-bottom: 12px; padding: 8px; background: var(--color-surface-2); border-radius: 4px; font-family: monospace; white-space: pre-wrap; word-break: break-all;" v-html="highlightedHtml" />
@@ -128,7 +132,7 @@ const matchTableData = computed(() =>
             size="small"
           />
           <NAlert v-else-if="!result.error" type="info">
-            No matches found
+            {{ t('tools.regexTester.noMatches') }}
           </NAlert>
         </template>
       </NCard>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 const downloadSpeed = ref(0);
 const latency = ref(0);
 const testing = ref(false);
@@ -25,10 +28,10 @@ async function test() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="16">
-      <NButton type="primary" :loading="testing" @click="test">Start Speed Test</NButton>
+      <NButton type="primary" :loading="testing" @click="test">{{ t('tools.speedTest.start') }}</NButton>
       <NSpace v-if="downloadSpeed || latency">
-        <NAlert type="info" :title="'Latency: ' + latency + ' ms'" />
-        <NAlert type="success" :title="'Download: ' + downloadSpeed + ' Mbps'" />
+        <NAlert type="info" :title="t('tools.speedTest.latencyValue', { n: latency })" />
+        <NAlert type="success" :title="t('tools.speedTest.downloadValue', { n: downloadSpeed })" />
       </NSpace>
     </NSpace></NCard>
   </ToolLayout>

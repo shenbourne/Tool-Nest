@@ -1,0 +1,190 @@
+{
+  "en": {
+    "tools": {
+      "cameraRecorder": {
+        "unsupportedBrowser": "Your browser does not support camera recording. Please use a modern browser with WebRTC support.",
+        "permissionTitle": "Camera Permission",
+        "permissionHint": "You need to grant permission to use your camera and microphone.",
+        "permissionDenied": "Permission denied",
+        "grantPermission": "Grant Permission",
+        "failedToStart": "Failed to start camera",
+        "cameraPreview": "Camera Preview",
+        "selectCamera": "Select camera",
+        "selectMicrophone": "Select microphone",
+        "cameraLabel": "Camera {n}",
+        "microphoneLabel": "Microphone {n}",
+        "startRecording": "Start Recording",
+        "pause": "Pause",
+        "resume": "Resume",
+        "recordingUnsupported": "Video recording is not supported in your browser",
+        "recordings": "Recordings"
+      },
+      "convertToJpg": {
+        "convert": "Convert to JPG",
+        "downloadJpg": "Download JPG"
+      },
+      "convertToWebp": {
+        "convert": "Convert to WebP",
+        "downloadWebp": "Download WebP"
+      },
+      "imageChangeColors": {
+        "hueRotate": "Hue Rotate (0-360): ",
+        "saturate": "Saturate (0-200): ",
+        "brightness": "Brightness (0-200): ",
+        "contrast": "Contrast (0-200): "
+      },
+      "imageChangeOpacity": {
+        "downloadPng": "Download PNG"
+      },
+      "imageCompress": {
+        "quality": "Quality",
+        "compress": "Compress",
+        "sizeInfo": "Original: {orig} KB → New: {next} KB"
+      },
+      "imageCreateTransparent": {
+        "targetColor": "Target Color: ",
+        "toleranceRange": "Tolerance (0-100): "
+      },
+      "imageCrop": {
+        "cropAndDownload": "Crop & Download"
+      },
+      "imageEditor": {
+        "addText": "Add Text",
+        "drawLine": "Draw Line",
+        "clearAll": "Clear All",
+        "color": "Color: ",
+        "lineWidth": "Line Width: ",
+        "fontSize": "Font Size: ",
+        "text": "Text: ",
+        "textPlaceholder": "Enter text...",
+        "defaultText": "Text"
+      },
+      "imageFlip": {
+        "horizontal": "Horizontal",
+        "vertical": "Vertical",
+        "flip": "Flip"
+      },
+      "imageRemoveBackground": {
+        "backgroundColor": "Background Color: ",
+        "toleranceRange": "Tolerance (0-100): "
+      },
+      "imageResize": {
+        "resize": "Resize"
+      },
+      "imageRotate": {
+        "degrees": "Degrees",
+        "rotate": "Rotate"
+      },
+      "imageSplit": {
+        "rows": "Rows (1-10): ",
+        "columns": "Columns (1-10): ",
+        "split": "Split",
+        "tiles": "Tiles",
+        "downloadAll": "Download All"
+      },
+      "imageToTextOcr": {
+        "imageUpload": "Image Upload",
+        "extractText": "Extract Text",
+        "extractedText": "Extracted Text"
+      },
+      "imageWatermark": {
+        "watermarkPlaceholder": "Watermark text...",
+        "addWatermark": "Add Watermark"
+      }
+    }
+  },
+  "zh": {
+    "tools": {
+      "cameraRecorder": {
+        "unsupportedBrowser": "您的浏览器不支持摄像头录制。请使用支持 WebRTC 的现代浏览器。",
+        "permissionTitle": "摄像头权限",
+        "permissionHint": "您需要授予摄像头和麦克风的使用权限。",
+        "permissionDenied": "权限被拒绝",
+        "grantPermission": "授予权限",
+        "failedToStart": "无法启动摄像头",
+        "cameraPreview": "摄像头预览",
+        "selectCamera": "选择摄像头",
+        "selectMicrophone": "选择麦克风",
+        "cameraLabel": "摄像头 {n}",
+        "microphoneLabel": "麦克风 {n}",
+        "startRecording": "开始录制",
+        "pause": "暂停",
+        "resume": "继续",
+        "recordingUnsupported": "您的浏览器不支持视频录制",
+        "recordings": "录制列表"
+      },
+      "convertToJpg": {
+        "convert": "转换为 JPG",
+        "downloadJpg": "下载 JPG"
+      },
+      "convertToWebp": {
+        "convert": "转换为 WebP",
+        "downloadWebp": "下载 WebP"
+      },
+      "imageChangeColors": {
+        "hueRotate": "色相旋转 (0-360)：",
+        "saturate": "饱和度 (0-200)：",
+        "brightness": "亮度 (0-200)：",
+        "contrast": "对比度 (0-200)："
+      },
+      "imageChangeOpacity": {
+        "downloadPng": "下载 PNG"
+      },
+      "imageCompress": {
+        "quality": "质量",
+        "compress": "压缩",
+        "sizeInfo": "原图：{orig} KB → 新图：{next} KB"
+      },
+      "imageCreateTransparent": {
+        "targetColor": "目标颜色：",
+        "toleranceRange": "容差 (0-100)："
+      },
+      "imageCrop": {
+        "cropAndDownload": "裁剪并下载"
+      },
+      "imageEditor": {
+        "addText": "添加文本",
+        "drawLine": "绘制线条",
+        "clearAll": "全部清除",
+        "color": "颜色：",
+        "lineWidth": "线宽：",
+        "fontSize": "字号：",
+        "text": "文本：",
+        "textPlaceholder": "输入文本...",
+        "defaultText": "文本"
+      },
+      "imageFlip": {
+        "horizontal": "水平",
+        "vertical": "垂直",
+        "flip": "翻转"
+      },
+      "imageRemoveBackground": {
+        "backgroundColor": "背景颜色：",
+        "toleranceRange": "容差 (0-100)："
+      },
+      "imageResize": {
+        "resize": "调整尺寸"
+      },
+      "imageRotate": {
+        "degrees": "角度",
+        "rotate": "旋转"
+      },
+      "imageSplit": {
+        "rows": "行数 (1-10)：",
+        "columns": "列数 (1-10)：",
+        "split": "分割",
+        "tiles": "瓦片",
+        "downloadAll": "全部下载"
+      },
+      "imageToTextOcr": {
+        "imageUpload": "图片上传",
+        "extractText": "提取文本",
+        "extractedText": "提取结果"
+      },
+      "imageWatermark": {
+        "watermarkPlaceholder": "水印文本...",
+        "addWatermark": "添加水印"
+      }
+    }
+  }
+}

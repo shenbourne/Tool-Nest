@@ -28,11 +28,11 @@ const dialectOptions = [
   { label: 'Trino', value: 'trino' as SqlLanguage },
 ];
 
-const keywordCaseOptions = [
+const keywordCaseOptions = computed(() => [
   { label: 'UPPER', value: 'upper' as const },
   { label: 'lower', value: 'lower' as const },
-  { label: 'Preserve', value: 'preserve' as const },
-];
+  { label: t('tools.sqlPrettify.preserve'), value: 'preserve' as const },
+]);
 
 const options = computed<SqlFormatOptions>(() => ({
   language: language.value,
@@ -52,10 +52,10 @@ function copyOutput() {
       <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
         {{ errorMsg }}
       </NAlert>
-      <NCard title="Configuration">
+      <NCard :title="t('common.settings')">
         <NSpace :size="16">
           <div>
-            <div style="margin-bottom: 4px; font-weight: 500;">SQL Dialect</div>
+            <div style="margin-bottom: 4px; font-weight: 500;">{{ t('tools.sqlPrettify.dialect') }}</div>
             <NSelect
               v-model:value="language"
               :options="dialectOptions"
@@ -63,7 +63,7 @@ function copyOutput() {
             />
           </div>
           <div>
-            <div style="margin-bottom: 4px; font-weight: 500;">Keyword Case</div>
+            <div style="margin-bottom: 4px; font-weight: 500;">{{ t('tools.sqlPrettify.keywordCase') }}</div>
             <NSelect
               v-model:value="keywordCase"
               :options="keywordCaseOptions"
@@ -72,7 +72,7 @@ function copyOutput() {
           </div>
         </NSpace>
       </NCard>
-      <NCard title="Input SQL">
+      <NCard :title="t('tools.sqlPrettify.inputTitle')">
         <NSpace vertical :size="12">
           <NInput
             v-model:value="input"
@@ -83,14 +83,14 @@ function copyOutput() {
           />
         </NSpace>
       </NCard>
-      <NCard title="Output SQL">
+      <NCard :title="t('tools.sqlPrettify.outputTitle')">
         <NSpace vertical :size="12">
           <NInput
             :value="output"
             type="textarea"
             :rows="10"
             readonly
-            placeholder="Formatted SQL will appear here..."
+            :placeholder="t('tools.sqlPrettify.outputPlaceholder')"
             style="font-family: monospace;"
           />
           <NButton :disabled="!output" @click="copyOutput">

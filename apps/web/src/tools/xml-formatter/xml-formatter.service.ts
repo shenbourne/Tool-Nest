@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n';
 export interface XmlFormatResult {
   formatted: string;
   error: string | null;
@@ -78,7 +79,7 @@ export function formatXml(input: string, indentSize: number = 2): XmlFormatResul
 
     const parseError = doc.querySelector('parsererror');
     if (parseError) {
-      return { formatted: '', error: parseError.textContent || 'Invalid XML' };
+      return { formatted: '', error: parseError.textContent || i18n.global.t('tools.xmlFormatter.errorInvalidXml') };
     }
 
     const indent = ' '.repeat(indentSize);
@@ -98,7 +99,7 @@ export function formatXml(input: string, indentSize: number = 2): XmlFormatResul
 
     return { formatted: lines.join('\n'), error: null };
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Failed to parse XML';
+    const message = e instanceof Error ? e.message : i18n.global.t('tools.xmlFormatter.errorParseFailed');
     return { formatted: '', error: message };
   }
 }
@@ -114,7 +115,7 @@ export function minifyXml(input: string): XmlFormatResult {
 
     const parseError = doc.querySelector('parsererror');
     if (parseError) {
-      return { formatted: '', error: parseError.textContent || 'Invalid XML' };
+      return { formatted: '', error: parseError.textContent || i18n.global.t('tools.xmlFormatter.errorInvalidXml') };
     }
 
     const serializer = new XMLSerializer();
@@ -123,7 +124,7 @@ export function minifyXml(input: string): XmlFormatResult {
     result = result.replace(/>\s+</g, '><');
     return { formatted: result, error: null };
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Failed to parse XML';
+    const message = e instanceof Error ? e.message : i18n.global.t('tools.xmlFormatter.errorParseFailed');
     return { formatted: '', error: message };
   }
 }

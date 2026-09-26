@@ -1,0 +1,246 @@
+{
+  "en": {
+    "common": {
+      "format": "Format",
+      "invalidJson": "Invalid JSON",
+      "inputJson": "Input JSON"
+    },
+    "tools": {
+      "crontabGenerator": {
+        "cronFields": "Cron Fields",
+        "cronExpression": "Cron Expression",
+        "invalidCronExpression": "Invalid cron expression",
+        "nextExecutionTimes": "Next Execution Times",
+        "nextExecution": "Next Execution",
+        "syntaxReference": "Syntax Reference",
+        "anyValue": "Any value",
+        "rangeOfValues": "Range of values",
+        "listOfValues": "List of values",
+        "stepValues": "Step values"
+      },
+      "dockerComposeTo1panel": {
+        "inputTitle": "Docker Compose YAML (Input)",
+        "inputPlaceholder": "Paste docker-compose YAML here...",
+        "outputTitle": "1Panel Format (Output)",
+        "aboutIntro": "Converts standard docker-compose YAML to 1Panel-compatible format by:",
+        "addsVersionField": "Adding {field} field if missing (defaults to 3.8)",
+        "addsAppNameLabels": "Adding {field} labels",
+        "setsRestartPolicy": "Setting {field} if not specified",
+        "convertsNetworks": "Converting network arrays to map format",
+        "addsNetworkNames": "Adding explicit network names and volume drivers"
+      },
+      "dockerRunToCompose": {
+        "inputTitle": "Docker Run Command",
+        "inputPlaceholder": "Paste your docker run command here...",
+        "outputTitle": "Docker Compose YAML",
+        "warnings": "Warnings"
+      },
+      "emailNormalizer": {
+        "inputTitle": "Input Email Addresses",
+        "inputPlaceholder": "Enter email addresses (one per line)...",
+        "outputTitle": "Normalized Output",
+        "original": "Original",
+        "normalized": "Normalized",
+        "status": "Status",
+        "ok": "OK"
+      },
+      "jsonDiff": {
+        "leftJson": "Left JSON",
+        "rightJson": "Right JSON",
+        "leftPlaceholder": "Paste left JSON...",
+        "rightPlaceholder": "Paste right JSON...",
+        "added": "Added",
+        "removed": "Removed",
+        "changed": "Changed",
+        "differences": "Differences"
+      },
+      "jsonEscape": {
+        "toggle": "Escape / Unescape",
+        "escapePlaceholder": "Text to escape...",
+        "unescapePlaceholder": "JSON string to unescape...",
+        "invalidInput": "Invalid input"
+      },
+      "jsonMinify": {
+        "inputPlaceholder": "Paste JSON to minify...",
+        "outputTitle": "Minified Output",
+        "outputPlaceholder": "Minified JSON output..."
+      },
+      "jsonToCsv": {
+        "outputTitle": "Output CSV"
+      },
+      "jsonValidate": {
+        "valid": "Valid JSON"
+      },
+      "jsonViewer": {
+        "inputPlaceholder": "Paste your JSON here...",
+        "outputTitle": "Formatted Output"
+      },
+      "regexTester": {
+        "patternTitle": "Regular Expression",
+        "patternPlaceholder": "Enter regex pattern...",
+        "global": "Global",
+        "ignoreCase": "Ignore Case",
+        "multiline": "Multiline",
+        "dotAll": "DotAll",
+        "unicode": "Unicode",
+        "textTitle": "Test Text",
+        "textPlaceholder": "Enter text to match against...",
+        "resultsTitle": "Match Results",
+        "colIndex": "Index",
+        "colMatch": "Match",
+        "colGroups": "Groups",
+        "matchCountSingle": "{count} match",
+        "matchCountPlural": "{count} matches",
+        "flags": "Flags",
+        "none": "none",
+        "noMatches": "No matches found"
+      },
+      "sqlPrettify": {
+        "dialect": "SQL Dialect",
+        "keywordCase": "Keyword Case",
+        "preserve": "Preserve",
+        "inputTitle": "Input SQL",
+        "outputTitle": "Output SQL",
+        "outputPlaceholder": "Formatted SQL will appear here..."
+      },
+      "xmlFormatter": {
+        "inputTitle": "Input XML",
+        "inputPlaceholder": "Paste your XML here...",
+        "minify": "Minify",
+        "spaces": "{n} spaces"
+      },
+      "xmlValidator": {
+        "validXml": "Valid XML",
+        "invalidXml": "Invalid XML"
+      },
+      "yamlViewer": {
+        "inputTitle": "Input YAML",
+        "outputTitle": "Output YAML",
+        "indentSize": "Indent size",
+        "sortKeys": "Sort keys"
+      }
+    }
+  },
+  "zh": {
+    "common": {
+      "format": "格式",
+      "invalidJson": "无效的 JSON",
+      "inputJson": "输入 JSON"
+    },
+    "tools": {
+      "crontabGenerator": {
+        "cronFields": "Cron 字段",
+        "cronExpression": "Cron 表达式",
+        "invalidCronExpression": "Cron 表达式无效",
+        "nextExecutionTimes": "下次执行时间",
+        "nextExecution": "下次执行",
+        "syntaxReference": "语法参考",
+        "anyValue": "任意值",
+        "rangeOfValues": "范围值",
+        "listOfValues": "列表值",
+        "stepValues": "步进值"
+      },
+      "dockerComposeTo1panel": {
+        "inputTitle": "Docker Compose YAML（输入）",
+        "inputPlaceholder": "在此粘贴 docker-compose YAML...",
+        "outputTitle": "1Panel 格式（输出）",
+        "aboutIntro": "通过以下方式将标准 docker-compose YAML 转换为 1Panel 兼容格式：",
+        "addsVersionField": "缺少时添加 {field} 字段（默认为 3.8）",
+        "addsAppNameLabels": "添加 {field} 标签",
+        "setsRestartPolicy": "未指定时设置 {field}",
+        "convertsNetworks": "将网络数组转换为映射格式",
+        "addsNetworkNames": "添加显式网络名称和卷驱动"
+      },
+      "dockerRunToCompose": {
+        "inputTitle": "Docker Run 命令",
+        "inputPlaceholder": "在此粘贴你的 docker run 命令...",
+        "outputTitle": "Docker Compose YAML 输出",
+        "warnings": "警告"
+      },
+      "emailNormalizer": {
+        "inputTitle": "输入电子邮箱地址",
+        "inputPlaceholder": "输入电子邮箱地址（每行一个）...",
+        "outputTitle": "标准化输出",
+        "original": "原始",
+        "normalized": "标准化",
+        "status": "状态",
+        "ok": "正常"
+      },
+      "jsonDiff": {
+        "leftJson": "左侧 JSON",
+        "rightJson": "右侧 JSON",
+        "leftPlaceholder": "粘贴左侧 JSON...",
+        "rightPlaceholder": "粘贴右侧 JSON...",
+        "added": "新增",
+        "removed": "移除",
+        "changed": "修改",
+        "differences": "差异"
+      },
+      "jsonEscape": {
+        "toggle": "转义 / 反转义",
+        "escapePlaceholder": "要转义的文本...",
+        "unescapePlaceholder": "要反转义的 JSON 字符串...",
+        "invalidInput": "输入无效"
+      },
+      "jsonMinify": {
+        "inputPlaceholder": "粘贴要压缩的 JSON...",
+        "outputTitle": "压缩后的输出",
+        "outputPlaceholder": "压缩后的 JSON 输出..."
+      },
+      "jsonToCsv": {
+        "outputTitle": "输出 CSV"
+      },
+      "jsonValidate": {
+        "valid": "有效的 JSON"
+      },
+      "jsonViewer": {
+        "inputPlaceholder": "在此粘贴你的 JSON...",
+        "outputTitle": "格式化输出"
+      },
+      "regexTester": {
+        "patternTitle": "正则表达式",
+        "patternPlaceholder": "输入正则表达式模式...",
+        "global": "全局",
+        "ignoreCase": "忽略大小写",
+        "multiline": "多行",
+        "dotAll": "单行模式（DotAll）",
+        "unicode": "Unicode",
+        "textTitle": "测试文本",
+        "textPlaceholder": "输入要匹配的文本...",
+        "resultsTitle": "匹配结果",
+        "colIndex": "索引",
+        "colMatch": "匹配",
+        "colGroups": "分组",
+        "matchCountSingle": "{count} 个匹配",
+        "matchCountPlural": "{count} 个匹配",
+        "flags": "标志",
+        "none": "无",
+        "noMatches": "未找到匹配"
+      },
+      "sqlPrettify": {
+        "dialect": "SQL 方言",
+        "keywordCase": "关键字大小写",
+        "preserve": "保留",
+        "inputTitle": "输入 SQL",
+        "outputTitle": "输出 SQL",
+        "outputPlaceholder": "格式化后的 SQL 将显示在这里..."
+      },
+      "xmlFormatter": {
+        "inputTitle": "输入 XML",
+        "inputPlaceholder": "在此粘贴你的 XML...",
+        "minify": "压缩",
+        "spaces": "{n} 个空格"
+      },
+      "xmlValidator": {
+        "validXml": "有效的 XML",
+        "invalidXml": "无效的 XML"
+      },
+      "yamlViewer": {
+        "inputTitle": "输入 YAML",
+        "outputTitle": "输出 YAML",
+        "indentSize": "缩进大小",
+        "sortKeys": "键排序"
+      }
+    }
+  }
+}

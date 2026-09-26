@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NTag } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+const { t } = useI18n();
 const text1 = ref('');
 const text2 = ref('');
 // Simple line-by-line diff
@@ -30,11 +32,11 @@ const stats = computed(() => {
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
       <div style="display:flex;gap:12px;">
-        <NCard title="Original" style="flex:1;"><NInput v-model:value="text1" type="textarea" :rows="8" /></NCard>
-        <NCard title="Modified" style="flex:1;"><NInput v-model:value="text2" type="textarea" :rows="8" /></NCard>
+        <NCard :title="t('tools.textDiff.original')" style="flex:1;"><NInput v-model:value="text1" type="textarea" :rows="8" /></NCard>
+        <NCard :title="t('tools.textDiff.modified')" style="flex:1;"><NInput v-model:value="text2" type="textarea" :rows="8" /></NCard>
       </div>
-      <NSpace><NTag type="success">Same: {{ stats.same }}</NTag><NTag type="warning">Changed: {{ stats.changed }}</NTag><NTag type="error">Removed: {{ stats.removed }}</NTag><NTag type="info">Added: {{ stats.added }}</NTag></NSpace>
-      <NCard v-if="text1 || text2" title="Diff"><div style="font-family:monospace;font-size:13px;">
+      <NSpace><NTag type="success">{{ t('tools.textDiff.same', { count: stats.same }) }}</NTag><NTag type="warning">{{ t('tools.textDiff.changed', { count: stats.changed }) }}</NTag><NTag type="error">{{ t('tools.textDiff.removed', { count: stats.removed }) }}</NTag><NTag type="info">{{ t('tools.textDiff.added', { count: stats.added }) }}</NTag></NSpace>
+      <NCard v-if="text1 || text2" :title="t('tools.textDiff.diff')"><div style="font-family:monospace;font-size:13px;">
         <div v-for="d in diff" :key="d.num" :style="{ padding: '2px 8px', background: d.type==='added'?'#e6ffed':d.type==='removed'?'#ffeef0':d.type==='changed'?'#fff5b1':'transparent' }">
           <span style="opacity:0.4;width:30px;display:inline-block;">{{ d.num }}</span>
           <span v-if="d.type==='removed'" style="color:var(--color-error);">- {{ d.line1 }}</span>

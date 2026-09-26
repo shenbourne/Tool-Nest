@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
+const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
 
 const file = ref<File | null>(null);
@@ -12,14 +14,14 @@ const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 
-const speedOptions = [
-  { label: '0.5x (Half speed)', value: '0.5' },
+const speedOptions = computed(() => [
+  { label: t('tools.audioChangeSpeed.speedHalf'), value: '0.5' },
   { label: '0.75x', value: '0.75' },
-  { label: '1x (Normal)', value: '1' },
+  { label: t('tools.audioChangeSpeed.speedNormal'), value: '1' },
   { label: '1.25x', value: '1.25' },
   { label: '1.5x', value: '1.5' },
-  { label: '2x (Double speed)', value: '2' },
-];
+  { label: t('tools.audioChangeSpeed.speedDouble'), value: '2' },
+]);
 
 function onFileChange(event: Event) {
   const input = event.target as HTMLInputElement;
@@ -64,7 +66,7 @@ async function process() {
     const baseName = file.value.name.replace(/\.[^.]+$/, '');
     downloadBlob(result, `${baseName}_${factor}x.mp3`, 'audio/mpeg');
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Processing failed';
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
@@ -76,7 +78,7 @@ async function process() {
     <NCard>
       <NSpace vertical :size="12">
         <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          Load FFmpeg
+          {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
@@ -86,7 +88,7 @@ async function process() {
           v-model:value="speed"
           :options="speedOptions"
           style="width: 240px"
-          placeholder="Select speed"
+          :placeholder="t('tools.audioChangeSpeed.selectSpeed')"
         />
 
         <NButton
@@ -95,13 +97,13 @@ async function process() {
           :disabled="!file || !isLoaded"
           @click="process"
         >
-          Change Speed
+          {{ t('tools.audioChangeSpeed.changeSpeed') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
         <NAlert v-if="error" type="error" :title="error" />
 
-        <NAlert v-if="resultData" type="success" title="Speed changed! File downloaded." />
+        <NAlert v-if="resultData" type="success" :title="t('tools.audioChangeSpeed.speedChanged')" />
       </NSpace>
     </NCard>
   </ToolLayout>

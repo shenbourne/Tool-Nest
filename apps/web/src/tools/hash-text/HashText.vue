@@ -19,9 +19,9 @@ function copy() { navigator.clipboard.writeText(output.value); }
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Hash Text">
+      <NCard :title="t('tools.hashText.name')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="inputText" type="textarea" :rows="3" placeholder="Text to hash..." />
+          <NInput v-model:value="inputText" type="textarea" :rows="3" :placeholder="t('tools.hashText.inputPlaceholder')" />
           <NSelect v-model:value="algorithm" :options="algoOptions" />
           <NInput :value="output" readonly type="textarea" :rows="2" style="font-family: monospace;" />
           <NButton @click="copy">{{ t('tool.copy') }}</NButton>

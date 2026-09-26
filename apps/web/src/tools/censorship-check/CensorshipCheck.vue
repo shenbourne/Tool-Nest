@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 
 const urls = ref('');
 const loading = ref(false);
@@ -15,7 +18,7 @@ async function run() {
   result.value = null;
   const urlList = urls.value.split('\n').map(u => u.trim()).filter(Boolean);
   if (!urlList.length) {
-    error.value = 'Please enter at least one URL';
+    error.value = t('tools.censorshipCheck.emptyError');
     loading.value = false;
     return;
   }
@@ -26,10 +29,10 @@ async function run() {
       body: JSON.stringify({ urls: urlList }),
     });
     const json = await res.json();
-    if (!json.success) throw new Error(json.error?.message ?? 'Request failed');
+    if (!json.success) throw new Error(json.error?.message ?? t('common.requestFailed'));
     result.value = json.data;
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Request failed';
+    error.value = e instanceof Error ? e.message : t('common.requestFailed');
   } finally {
     loading.value = false;
   }
@@ -43,10 +46,10 @@ async function run() {
         <NInput
           v-model:value="urls"
           type="textarea"
-          placeholder="Enter URLs (one per line)..."
+          :placeholder="t('tools.censorshipCheck.inputPlaceholder')"
           :rows="4"
         />
-        <NButton type="primary" :loading="loading" :disabled="!urls.trim()" @click="run">Check</NButton>
+        <NButton type="primary" :loading="loading" :disabled="!urls.trim()" @click="run">{{ t('tools.censorshipCheck.check') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
         <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>
       </NSpace>

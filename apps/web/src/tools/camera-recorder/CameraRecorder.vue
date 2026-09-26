@@ -36,7 +36,7 @@ async function requestPermission() {
     await enumerateDevices();
     startStream();
   } catch (e) {
-    permissionError.value = e instanceof Error ? e.message : 'Permission denied';
+    permissionError.value = e instanceof Error ? e.message : t('tools.cameraRecorder.permissionDenied');
   }
 }
 
@@ -44,10 +44,10 @@ async function enumerateDevices() {
   const devices = await navigator.mediaDevices.enumerateDevices();
   cameras.value = devices
     .filter(d => d.kind === 'videoinput')
-    .map((d, i) => ({ label: d.label || `Camera ${i + 1}`, value: d.deviceId }));
+    .map((d, i) => ({ label: d.label || t('tools.cameraRecorder.cameraLabel', { n: i + 1 }), value: d.deviceId }));
   microphones.value = devices
     .filter(d => d.kind === 'audioinput')
-    .map((d, i) => ({ label: d.label || `Microphone ${i + 1}`, value: d.deviceId }));
+    .map((d, i) => ({ label: d.label || t('tools.cameraRecorder.microphoneLabel', { n: i + 1 }), value: d.deviceId }));
 
   if (cameras.value.length && !selectedCamera.value) {
     selectedCamera.value = cameras.value[0].value;
@@ -73,7 +73,7 @@ async function startStream() {
       videoRef.value.srcObject = stream.value;
     }
   } catch (e) {
-    permissionError.value = e instanceof Error ? e.message : 'Failed to start camera';
+    permissionError.value = e instanceof Error ? e.message : t('tools.cameraRecorder.failedToStart');
   }
 }
 
@@ -150,35 +150,35 @@ onBeforeUnmount(() => {
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
       <NAlert v-if="!isSupported" type="warning">
-        Your browser does not support camera recording. Please use a modern browser with WebRTC support.
+        {{ t('tools.cameraRecorder.unsupportedBrowser') }}
       </NAlert>
 
-      <NCard v-else-if="!permissionGranted" title="Camera Permission">
+      <NCard v-else-if="!permissionGranted" :title="t('tools.cameraRecorder.permissionTitle')">
         <div style="text-align: center;">
-          <p>You need to grant permission to use your camera and microphone.</p>
+          <p>{{ t('tools.cameraRecorder.permissionHint') }}</p>
           <NAlert v-if="permissionError" type="error" style="margin: 12px 0;">
             {{ permissionError }}
           </NAlert>
           <NButton type="primary" @click="requestPermission" style="margin-top: 12px;">
-            Grant Permission
+            {{ t('tools.cameraRecorder.grantPermission') }}
           </NButton>
         </div>
       </NCard>
 
-      <NCard v-else title="Camera Preview">
+      <NCard v-else :title="t('tools.cameraRecorder.cameraPreview')">
         <NSpace vertical :size="12">
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
             <NSelect
               v-model:value="selectedCamera"
               :options="cameras"
-              placeholder="Select camera"
+              :placeholder="t('tools.cameraRecorder.selectCamera')"
               style="min-width: 200px; flex: 1;"
             />
             <NSelect
               v-if="microphones.length > 0"
               v-model:value="selectedMic"
               :options="microphones"
-              placeholder="Select microphone"
+              :placeholder="t('tools.cameraRecorder.selectMicrophone')"
               style="min-width: 200px; flex: 1;"
             />
           </div>
@@ -193,26 +193,26 @@ onBeforeUnmount(() => {
 
           <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
             <NButton v-if="recordingState === 'stopped'" type="primary" @click="startRecording" :disabled="!isRecordingSupported">
-              Start Recording
+              {{ t('tools.cameraRecorder.startRecording') }}
             </NButton>
             <NButton v-if="recordingState === 'recording'" @click="pauseRecording">
-              Pause
+              {{ t('tools.cameraRecorder.pause') }}
             </NButton>
             <NButton v-if="recordingState === 'paused'" @click="resumeRecording">
-              Resume
+              {{ t('tools.cameraRecorder.resume') }}
             </NButton>
             <NButton v-if="recordingState !== 'stopped'" type="error" @click="stopRecording">
-              Stop
+              {{ t('common.stop') }}
             </NButton>
           </div>
 
           <div v-if="!isRecordingSupported" style="text-align: center; opacity: 0.6; font-style: italic;">
-            Video recording is not supported in your browser
+            {{ t('tools.cameraRecorder.recordingUnsupported') }}
           </div>
         </NSpace>
       </NCard>
 
-      <NCard v-if="recordings.length > 0" title="Recordings">
+      <NCard v-if="recordings.length > 0" :title="t('tools.cameraRecorder.recordings')">
         <NSpace vertical :size="12">
           <div v-for="(item, index) in recordings" :key="index" style="border: 1px solid var(--color-hairline); border-radius: 8px; padding: 12px;">
             <video :src="item.url" controls style="width: 100%; max-height: 300px;" />

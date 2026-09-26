@@ -35,17 +35,17 @@ function copyText() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Text → ASCII Binary">
+      <NCard :title="t('tools.textToBinary.textToAsciiBinary')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputText" type="textarea" :rows="4" placeholder="e.g. 'Hello world'" />
-          <NInput :value="binaryFromText" type="textarea" :rows="4" readonly placeholder="Binary output..." />
+          <NInput v-model:value="inputText" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.inputPlaceholder')" />
+          <NInput :value="binaryFromText" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.binaryOutputPlaceholder')" />
           <NButton :disabled="!binaryFromText" @click="copyBinary">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>
-      <NCard title="ASCII Binary → Text">
+      <NCard :title="t('tools.textToBinary.asciiBinaryToText')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputBinary" type="textarea" :rows="4" placeholder="e.g. '01001000 01100101 01101100 01101100 01101111'" :status="inputBinary && !isValidBinary(inputBinary) ? 'error' : undefined" />
-          <NInput :value="textFromBinary" type="textarea" :rows="4" readonly placeholder="Text output..." />
+          <NInput v-model:value="inputBinary" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.binaryInputPlaceholder')" :status="inputBinary && !isValidBinary(inputBinary) ? 'error' : undefined" />
+          <NInput :value="textFromBinary" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.textOutputPlaceholder')" />
           <NButton :disabled="!textFromBinary" @click="copyText">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

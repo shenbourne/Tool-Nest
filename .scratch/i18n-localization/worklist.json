@@ -1,0 +1,1018 @@
+{
+  "byCategory": {
+    "__app__": [
+      {
+        "f": "apps/web/src/components/CommandPalette.vue",
+        "n": 1,
+        "dir": null
+      },
+      {
+        "f": "apps/web/src/pages/HomePage.vue",
+        "n": 1,
+        "dir": null
+      },
+      {
+        "f": "apps/web/src/pages/NotFoundPage.vue",
+        "n": 2,
+        "dir": null
+      },
+      {
+        "f": "apps/web/src/pages/ToolPage.vue",
+        "n": 1,
+        "dir": null
+      }
+    ],
+    "math": [
+      {
+        "f": "apps/web/src/tools/arithmetic-sequence/ArithmeticSequence.vue",
+        "n": 3,
+        "dir": "arithmetic-sequence"
+      },
+      {
+        "f": "apps/web/src/tools/eta-calculator/EtaCalculator.vue",
+        "n": 12,
+        "dir": "eta-calculator"
+      },
+      {
+        "f": "apps/web/src/tools/generic-calculator/GenericCalculator.vue",
+        "n": 4,
+        "dir": "generic-calculator"
+      },
+      {
+        "f": "apps/web/src/tools/math-evaluator/MathEvaluator.vue",
+        "n": 3,
+        "dir": "math-evaluator"
+      },
+      {
+        "f": "apps/web/src/tools/number-sum/NumberSum.vue",
+        "n": 2,
+        "dir": "number-sum"
+      },
+      {
+        "f": "apps/web/src/tools/percentage-calc/PercentageCalc.vue",
+        "n": 4,
+        "dir": "percentage-calc"
+      }
+    ],
+    "audio": [
+      {
+        "f": "apps/web/src/tools/audio-change-speed/AudioChangeSpeed.vue",
+        "n": 5,
+        "dir": "audio-change-speed"
+      },
+      {
+        "f": "apps/web/src/tools/audio-converter/AudioConverter.vue",
+        "n": 5,
+        "dir": "audio-converter"
+      },
+      {
+        "f": "apps/web/src/tools/audio-extract/AudioExtract.vue",
+        "n": 5,
+        "dir": "audio-extract"
+      },
+      {
+        "f": "apps/web/src/tools/audio-loop/AudioLoop.vue",
+        "n": 5,
+        "dir": "audio-loop"
+      },
+      {
+        "f": "apps/web/src/tools/audio-merge/AudioMerge.vue",
+        "n": 4,
+        "dir": "audio-merge"
+      },
+      {
+        "f": "apps/web/src/tools/audio-trim/AudioTrim.vue",
+        "n": 6,
+        "dir": "audio-trim"
+      }
+    ],
+    "converter": [
+      {
+        "f": "apps/web/src/tools/base-converter/BaseConverter.vue",
+        "n": 4,
+        "dir": "base-converter"
+      },
+      {
+        "f": "apps/web/src/tools/base64-encoder/Base64Encoder.vue",
+        "n": 5,
+        "dir": "base64-encoder"
+      },
+      {
+        "f": "apps/web/src/tools/base64-file-converter/Base64FileConverter.vue",
+        "n": 9,
+        "dir": "base64-file-converter"
+      },
+      {
+        "f": "apps/web/src/tools/byte-converter/ByteConverter.vue",
+        "n": 1,
+        "dir": "byte-converter"
+      },
+      {
+        "f": "apps/web/src/tools/case-converter/CaseConverter.vue",
+        "n": 1,
+        "dir": "case-converter"
+      },
+      {
+        "f": "apps/web/src/tools/date-time-converter/DateTimeConverter.vue",
+        "n": 6,
+        "dir": "date-time-converter"
+      },
+      {
+        "f": "apps/web/src/tools/json-to-toml/JsonToToml.vue",
+        "n": 2,
+        "dir": "json-to-toml"
+      },
+      {
+        "f": "apps/web/src/tools/json-to-xml/JsonToXml.vue",
+        "n": 3,
+        "dir": "json-to-xml"
+      },
+      {
+        "f": "apps/web/src/tools/json-to-yaml/JsonToYaml.vue",
+        "n": 3,
+        "dir": "json-to-yaml"
+      },
+      {
+        "f": "apps/web/src/tools/list-converter/ListConverter.vue",
+        "n": 15,
+        "dir": "list-converter"
+      },
+      {
+        "f": "apps/web/src/tools/markdown-to-html/MarkdownToHtml.vue",
+        "n": 6,
+        "dir": "markdown-to-html"
+      },
+      {
+        "f": "apps/web/src/tools/morse-code/MorseCode.vue",
+        "n": 2,
+        "dir": "morse-code"
+      },
+      {
+        "f": "apps/web/src/tools/number-to-words/NumberToWords.vue",
+        "n": 2,
+        "dir": "number-to-words"
+      },
+      {
+        "f": "apps/web/src/tools/roman-numeral-converter/RomanNumeralConverter.vue",
+        "n": 4,
+        "dir": "roman-numeral-converter"
+      },
+      {
+        "f": "apps/web/src/tools/temperature/Temperature.vue",
+        "n": 3,
+        "dir": "temperature"
+      },
+      {
+        "f": "apps/web/src/tools/text-to-binary/TextToBinary.vue",
+        "n": 5,
+        "dir": "text-to-binary"
+      },
+      {
+        "f": "apps/web/src/tools/text-to-nato-alphabet/TextToNatoAlphabet.vue",
+        "n": 4,
+        "dir": "text-to-nato-alphabet"
+      },
+      {
+        "f": "apps/web/src/tools/text-to-unicode/TextToUnicode.vue",
+        "n": 5,
+        "dir": "text-to-unicode"
+      },
+      {
+        "f": "apps/web/src/tools/toml-to-json/TomlToJson.vue",
+        "n": 2,
+        "dir": "toml-to-json"
+      },
+      {
+        "f": "apps/web/src/tools/toml-to-yaml/TomlToYaml.vue",
+        "n": 3,
+        "dir": "toml-to-yaml"
+      },
+      {
+        "f": "apps/web/src/tools/xml-to-json/XmlToJson.vue",
+        "n": 2,
+        "dir": "xml-to-json"
+      },
+      {
+        "f": "apps/web/src/tools/yaml-to-json/YamlToJson.vue",
+        "n": 3,
+        "dir": "yaml-to-json"
+      },
+      {
+        "f": "apps/web/src/tools/yaml-to-toml/YamlToToml.vue",
+        "n": 3,
+        "dir": "yaml-to-toml"
+      }
+    ],
+    "crypto": [
+      {
+        "f": "apps/web/src/tools/bcrypt/BcryptTool.vue",
+        "n": 6,
+        "dir": "bcrypt"
+      },
+      {
+        "f": "apps/web/src/tools/bip39-generator/Bip39Generator.vue",
+        "n": 3,
+        "dir": "bip39-generator"
+      },
+      {
+        "f": "apps/web/src/tools/encryption/EncryptionTool.vue",
+        "n": 8,
+        "dir": "encryption"
+      },
+      {
+        "f": "apps/web/src/tools/hash-text/HashText.vue",
+        "n": 2,
+        "dir": "hash-text"
+      },
+      {
+        "f": "apps/web/src/tools/hmac-generator/HmacGenerator.vue",
+        "n": 4,
+        "dir": "hmac-generator"
+      },
+      {
+        "f": "apps/web/src/tools/password-strength-analyser/PasswordStrength.vue",
+        "n": 4,
+        "dir": "password-strength-analyser"
+      },
+      {
+        "f": "apps/web/src/tools/rsa-key-pair-generator/RsaKeyPair.vue",
+        "n": 4,
+        "dir": "rsa-key-pair-generator"
+      },
+      {
+        "f": "apps/web/src/tools/string-obfuscator/StringObfuscator.vue",
+        "n": 2,
+        "dir": "string-obfuscator"
+      },
+      {
+        "f": "apps/web/src/tools/token-generator/TokenGenerator.vue",
+        "n": 4,
+        "dir": "token-generator"
+      },
+      {
+        "f": "apps/web/src/tools/ulid-generator/UlidGenerator.vue",
+        "n": 1,
+        "dir": "ulid-generator"
+      },
+      {
+        "f": "apps/web/src/tools/uuid-generator/UuidGenerator.vue",
+        "n": 1,
+        "dir": "uuid-generator"
+      }
+    ],
+    "measurement": [
+      {
+        "f": "apps/web/src/tools/benchmark-builder/BenchmarkBuilder.vue",
+        "n": 12,
+        "dir": "benchmark-builder"
+      },
+      {
+        "f": "apps/web/src/tools/check-leap-years/CheckLeapYears.vue",
+        "n": 2,
+        "dir": "check-leap-years"
+      },
+      {
+        "f": "apps/web/src/tools/chronometer/Chronometer.vue",
+        "n": 4,
+        "dir": "chronometer"
+      },
+      {
+        "f": "apps/web/src/tools/date-weekday-calculator/DateWeekdayCalculator.vue",
+        "n": 1,
+        "dir": "date-weekday-calculator"
+      },
+      {
+        "f": "apps/web/src/tools/days-to-hours/DaysToHours.vue",
+        "n": 2,
+        "dir": "days-to-hours"
+      },
+      {
+        "f": "apps/web/src/tools/discord-timestamp/DiscordTimestamp.vue",
+        "n": 1,
+        "dir": "discord-timestamp"
+      },
+      {
+        "f": "apps/web/src/tools/hours-to-days/HoursToDays.vue",
+        "n": 2,
+        "dir": "hours-to-days"
+      },
+      {
+        "f": "apps/web/src/tools/seconds-to-time/SecondsToTime.vue",
+        "n": 2,
+        "dir": "seconds-to-time"
+      },
+      {
+        "f": "apps/web/src/tools/time-between-dates/TimeBetweenDates.vue",
+        "n": 2,
+        "dir": "time-between-dates"
+      },
+      {
+        "f": "apps/web/src/tools/time-to-decimal/TimeToDecimal.vue",
+        "n": 2,
+        "dir": "time-to-decimal"
+      },
+      {
+        "f": "apps/web/src/tools/time-to-seconds/TimeToSeconds.vue",
+        "n": 2,
+        "dir": "time-to-seconds"
+      },
+      {
+        "f": "apps/web/src/tools/truncate-clock-time/TruncateClockTime.vue",
+        "n": 2,
+        "dir": "truncate-clock-time"
+      }
+    ],
+    "image": [
+      {
+        "f": "apps/web/src/tools/camera-recorder/CameraRecorder.vue",
+        "n": 13,
+        "dir": "camera-recorder"
+      },
+      {
+        "f": "apps/web/src/tools/convert-to-jpg/ConvertToJpg.vue",
+        "n": 2,
+        "dir": "convert-to-jpg"
+      },
+      {
+        "f": "apps/web/src/tools/convert-to-webp/ConvertToWebp.vue",
+        "n": 2,
+        "dir": "convert-to-webp"
+      },
+      {
+        "f": "apps/web/src/tools/image-change-colors/ImageChangeColors.vue",
+        "n": 4,
+        "dir": "image-change-colors"
+      },
+      {
+        "f": "apps/web/src/tools/image-change-opacity/ImageChangeOpacity.vue",
+        "n": 2,
+        "dir": "image-change-opacity"
+      },
+      {
+        "f": "apps/web/src/tools/image-compress/ImageCompress.vue",
+        "n": 3,
+        "dir": "image-compress"
+      },
+      {
+        "f": "apps/web/src/tools/image-create-transparent/ImageCreateTransparent.vue",
+        "n": 3,
+        "dir": "image-create-transparent"
+      },
+      {
+        "f": "apps/web/src/tools/image-crop/ImageCrop.vue",
+        "n": 3,
+        "dir": "image-crop"
+      },
+      {
+        "f": "apps/web/src/tools/image-editor/ImageEditor.vue",
+        "n": 10,
+        "dir": "image-editor"
+      },
+      {
+        "f": "apps/web/src/tools/image-flip/ImageFlip.vue",
+        "n": 4,
+        "dir": "image-flip"
+      },
+      {
+        "f": "apps/web/src/tools/image-remove-background/ImageRemoveBackground.vue",
+        "n": 3,
+        "dir": "image-remove-background"
+      },
+      {
+        "f": "apps/web/src/tools/image-resize/ImageResize.vue",
+        "n": 4,
+        "dir": "image-resize"
+      },
+      {
+        "f": "apps/web/src/tools/image-rotate/ImageRotate.vue",
+        "n": 3,
+        "dir": "image-rotate"
+      },
+      {
+        "f": "apps/web/src/tools/image-split/ImageSplit.vue",
+        "n": 6,
+        "dir": "image-split"
+      },
+      {
+        "f": "apps/web/src/tools/image-to-text-ocr/ImageToTextOcr.vue",
+        "n": 3,
+        "dir": "image-to-text-ocr"
+      },
+      {
+        "f": "apps/web/src/tools/image-watermark/ImageWatermark.vue",
+        "n": 3,
+        "dir": "image-watermark"
+      }
+    ],
+    "network-test": [
+      {
+        "f": "apps/web/src/tools/censorship-check/CensorshipCheck.vue",
+        "n": 3,
+        "dir": "censorship-check"
+      },
+      {
+        "f": "apps/web/src/tools/connectivity-check/ConnectivityCheck.vue",
+        "n": 1,
+        "dir": "connectivity-check"
+      },
+      {
+        "f": "apps/web/src/tools/dns-leak-test/DnsLeakTest.vue",
+        "n": 1,
+        "dir": "dns-leak-test"
+      },
+      {
+        "f": "apps/web/src/tools/dns-resolver/DnsResolver.vue",
+        "n": 2,
+        "dir": "dns-resolver"
+      },
+      {
+        "f": "apps/web/src/tools/global-latency-test/GlobalLatencyTest.vue",
+        "n": 2,
+        "dir": "global-latency-test"
+      },
+      {
+        "f": "apps/web/src/tools/ip-info/IpInfo.vue",
+        "n": 1,
+        "dir": "ip-info"
+      },
+      {
+        "f": "apps/web/src/tools/mac-lookup/MacLookup.vue",
+        "n": 3,
+        "dir": "mac-lookup"
+      },
+      {
+        "f": "apps/web/src/tools/mtr-test/MtrTest.vue",
+        "n": 2,
+        "dir": "mtr-test"
+      },
+      {
+        "f": "apps/web/src/tools/ping-test/PingTest.vue",
+        "n": 2,
+        "dir": "ping-test"
+      },
+      {
+        "f": "apps/web/src/tools/rule-test/RuleTest.vue",
+        "n": 3,
+        "dir": "rule-test"
+      },
+      {
+        "f": "apps/web/src/tools/service-status/ServiceStatus.vue",
+        "n": 2,
+        "dir": "service-status"
+      },
+      {
+        "f": "apps/web/src/tools/speed-test/SpeedTest.vue",
+        "n": 1,
+        "dir": "speed-test"
+      },
+      {
+        "f": "apps/web/src/tools/webrtc-detection/WebrtcDetection.vue",
+        "n": 4,
+        "dir": "webrtc-detection"
+      },
+      {
+        "f": "apps/web/src/tools/whois-lookup/WhoisLookup.vue",
+        "n": 2,
+        "dir": "whois-lookup"
+      }
+    ],
+    "pdf": [
+      {
+        "f": "apps/web/src/tools/compress-pdf/CompressPdf.vue",
+        "n": 2,
+        "dir": "compress-pdf"
+      },
+      {
+        "f": "apps/web/src/tools/convert-to-pdf/ConvertToPdf.vue",
+        "n": 3,
+        "dir": "convert-to-pdf"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-editor/PdfEditor.vue",
+        "n": 5,
+        "dir": "pdf-editor"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-extract-images/PdfExtractImages.vue",
+        "n": 2,
+        "dir": "pdf-extract-images"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-merge/PdfMerge.vue",
+        "n": 3,
+        "dir": "pdf-merge"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-protect/PdfProtect.vue",
+        "n": 3,
+        "dir": "pdf-protect"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-rotate/PdfRotate.vue",
+        "n": 2,
+        "dir": "pdf-rotate"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-signature-checker/PdfSignatureChecker.vue",
+        "n": 1,
+        "dir": "pdf-signature-checker"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-split/PdfSplit.vue",
+        "n": 3,
+        "dir": "pdf-split"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-to-epub/PdfToEpub.vue",
+        "n": 3,
+        "dir": "pdf-to-epub"
+      },
+      {
+        "f": "apps/web/src/tools/pdf-to-png/PdfToPng.vue",
+        "n": 3,
+        "dir": "pdf-to-png"
+      }
+    ],
+    "text": [
+      {
+        "f": "apps/web/src/tools/create-palindrome/CreatePalindrome.vue",
+        "n": 2,
+        "dir": "create-palindrome"
+      },
+      {
+        "f": "apps/web/src/tools/email-extractor/EmailExtractor.vue",
+        "n": 2,
+        "dir": "email-extractor"
+      },
+      {
+        "f": "apps/web/src/tools/emoji-picker/EmojiPicker.vue",
+        "n": 1,
+        "dir": "emoji-picker"
+      },
+      {
+        "f": "apps/web/src/tools/extract-substring/ExtractSubstring.vue",
+        "n": 3,
+        "dir": "extract-substring"
+      },
+      {
+        "f": "apps/web/src/tools/hidden-char-detector/HiddenCharDetector.vue",
+        "n": 2,
+        "dir": "hidden-char-detector"
+      },
+      {
+        "f": "apps/web/src/tools/numeronym-generator/NumeronymGenerator.vue",
+        "n": 1,
+        "dir": "numeronym-generator"
+      },
+      {
+        "f": "apps/web/src/tools/palindrome-checker/PalindromeChecker.vue",
+        "n": 2,
+        "dir": "palindrome-checker"
+      },
+      {
+        "f": "apps/web/src/tools/quote-generator/QuoteGenerator.vue",
+        "n": 1,
+        "dir": "quote-generator"
+      },
+      {
+        "f": "apps/web/src/tools/remove-duplicate-lines/RemoveDuplicateLines.vue",
+        "n": 2,
+        "dir": "remove-duplicate-lines"
+      },
+      {
+        "f": "apps/web/src/tools/rot13/Rot13.vue",
+        "n": 2,
+        "dir": "rot13"
+      },
+      {
+        "f": "apps/web/src/tools/text-censor/TextCensor.vue",
+        "n": 2,
+        "dir": "text-censor"
+      },
+      {
+        "f": "apps/web/src/tools/text-diff/TextDiff.vue",
+        "n": 3,
+        "dir": "text-diff"
+      },
+      {
+        "f": "apps/web/src/tools/text-join/TextJoin.vue",
+        "n": 2,
+        "dir": "text-join"
+      },
+      {
+        "f": "apps/web/src/tools/text-repeat/TextRepeat.vue",
+        "n": 2,
+        "dir": "text-repeat"
+      },
+      {
+        "f": "apps/web/src/tools/text-replacer/TextReplacer.vue",
+        "n": 4,
+        "dir": "text-replacer"
+      },
+      {
+        "f": "apps/web/src/tools/text-reverse/TextReverse.vue",
+        "n": 2,
+        "dir": "text-reverse"
+      },
+      {
+        "f": "apps/web/src/tools/text-rotate/TextRotate.vue",
+        "n": 2,
+        "dir": "text-rotate"
+      },
+      {
+        "f": "apps/web/src/tools/text-split/TextSplit.vue",
+        "n": 2,
+        "dir": "text-split"
+      },
+      {
+        "f": "apps/web/src/tools/text-statistics/TextStatistics.vue",
+        "n": 8,
+        "dir": "text-statistics"
+      },
+      {
+        "f": "apps/web/src/tools/text-truncate/TextTruncate.vue",
+        "n": 1,
+        "dir": "text-truncate"
+      }
+    ],
+    "developer": [
+      {
+        "f": "apps/web/src/tools/crontab-generator/CrontabGenerator.vue",
+        "n": 6,
+        "dir": "crontab-generator"
+      },
+      {
+        "f": "apps/web/src/tools/docker-compose-to-1panel/DockerComposeTo1panel.vue",
+        "n": 14,
+        "dir": "docker-compose-to-1panel"
+      },
+      {
+        "f": "apps/web/src/tools/docker-run-to-compose/DockerRunToCompose.vue",
+        "n": 4,
+        "dir": "docker-run-to-compose"
+      },
+      {
+        "f": "apps/web/src/tools/email-normalizer/EmailNormalizer.vue",
+        "n": 4,
+        "dir": "email-normalizer"
+      },
+      {
+        "f": "apps/web/src/tools/json-diff/JsonDiff.vue",
+        "n": 5,
+        "dir": "json-diff"
+      },
+      {
+        "f": "apps/web/src/tools/json-escape/JsonEscape.vue",
+        "n": 2,
+        "dir": "json-escape"
+      },
+      {
+        "f": "apps/web/src/tools/json-minify/JsonMinify.vue",
+        "n": 5,
+        "dir": "json-minify"
+      },
+      {
+        "f": "apps/web/src/tools/json-sort/JsonSort.vue",
+        "n": 2,
+        "dir": "json-sort"
+      },
+      {
+        "f": "apps/web/src/tools/json-stringify/JsonStringify.vue",
+        "n": 2,
+        "dir": "json-stringify"
+      },
+      {
+        "f": "apps/web/src/tools/json-to-csv/JsonToCsv.vue",
+        "n": 3,
+        "dir": "json-to-csv"
+      },
+      {
+        "f": "apps/web/src/tools/json-validate/JsonValidate.vue",
+        "n": 2,
+        "dir": "json-validate"
+      },
+      {
+        "f": "apps/web/src/tools/json-viewer/JsonViewer.vue",
+        "n": 4,
+        "dir": "json-viewer"
+      },
+      {
+        "f": "apps/web/src/tools/regex-tester/RegexTester.vue",
+        "n": 11,
+        "dir": "regex-tester"
+      },
+      {
+        "f": "apps/web/src/tools/sql-prettify/SqlPrettify.vue",
+        "n": 7,
+        "dir": "sql-prettify"
+      },
+      {
+        "f": "apps/web/src/tools/xml-formatter/XmlFormatter.vue",
+        "n": 8,
+        "dir": "xml-formatter"
+      },
+      {
+        "f": "apps/web/src/tools/xml-validator/XmlValidator.vue",
+        "n": 2,
+        "dir": "xml-validator"
+      },
+      {
+        "f": "apps/web/src/tools/yaml-viewer/YamlViewer.vue",
+        "n": 7,
+        "dir": "yaml-viewer"
+      }
+    ],
+    "data": [
+      {
+        "f": "apps/web/src/tools/csv-change-separator/CsvChangeSeparator.vue",
+        "n": 1,
+        "dir": "csv-change-separator"
+      },
+      {
+        "f": "apps/web/src/tools/csv-find-incomplete/CsvFindIncomplete.vue",
+        "n": 2,
+        "dir": "csv-find-incomplete"
+      },
+      {
+        "f": "apps/web/src/tools/csv-insert-columns/CsvInsertColumns.vue",
+        "n": 4,
+        "dir": "csv-insert-columns"
+      },
+      {
+        "f": "apps/web/src/tools/csv-rows-to-columns/CsvRowsToColumns.vue",
+        "n": 2,
+        "dir": "csv-rows-to-columns"
+      },
+      {
+        "f": "apps/web/src/tools/csv-swap-columns/CsvSwapColumns.vue",
+        "n": 3,
+        "dir": "csv-swap-columns"
+      },
+      {
+        "f": "apps/web/src/tools/csv-to-json/CsvToJson.vue",
+        "n": 2,
+        "dir": "csv-to-json"
+      },
+      {
+        "f": "apps/web/src/tools/csv-to-tsv/CsvToTsv.vue",
+        "n": 2,
+        "dir": "csv-to-tsv"
+      },
+      {
+        "f": "apps/web/src/tools/csv-to-xml/CsvToXml.vue",
+        "n": 2,
+        "dir": "csv-to-xml"
+      },
+      {
+        "f": "apps/web/src/tools/csv-to-yaml/CsvToYaml.vue",
+        "n": 2,
+        "dir": "csv-to-yaml"
+      },
+      {
+        "f": "apps/web/src/tools/csv-transpose/CsvTranspose.vue",
+        "n": 2,
+        "dir": "csv-transpose"
+      },
+      {
+        "f": "apps/web/src/tools/list-duplicate/ListDuplicate.vue",
+        "n": 2,
+        "dir": "list-duplicate"
+      },
+      {
+        "f": "apps/web/src/tools/list-find-popular/ListFindPopular.vue",
+        "n": 2,
+        "dir": "list-find-popular"
+      },
+      {
+        "f": "apps/web/src/tools/list-find-unique/ListFindUnique.vue",
+        "n": 2,
+        "dir": "list-find-unique"
+      },
+      {
+        "f": "apps/web/src/tools/list-group/ListGroup.vue",
+        "n": 2,
+        "dir": "list-group"
+      },
+      {
+        "f": "apps/web/src/tools/list-reverse/ListReverse.vue",
+        "n": 2,
+        "dir": "list-reverse"
+      },
+      {
+        "f": "apps/web/src/tools/list-rotate/ListRotate.vue",
+        "n": 2,
+        "dir": "list-rotate"
+      },
+      {
+        "f": "apps/web/src/tools/list-shuffle/ListShuffle.vue",
+        "n": 2,
+        "dir": "list-shuffle"
+      },
+      {
+        "f": "apps/web/src/tools/list-sort/ListSort.vue",
+        "n": 2,
+        "dir": "list-sort"
+      },
+      {
+        "f": "apps/web/src/tools/list-truncate/ListTruncate.vue",
+        "n": 1,
+        "dir": "list-truncate"
+      },
+      {
+        "f": "apps/web/src/tools/list-unwrap/ListUnwrap.vue",
+        "n": 2,
+        "dir": "list-unwrap"
+      },
+      {
+        "f": "apps/web/src/tools/list-wrap/ListWrap.vue",
+        "n": 3,
+        "dir": "list-wrap"
+      },
+      {
+        "f": "apps/web/src/tools/tsv-to-json/TsvToJson.vue",
+        "n": 2,
+        "dir": "tsv-to-json"
+      }
+    ],
+    "video": [
+      {
+        "f": "apps/web/src/tools/gif-change-speed/GifChangeSpeed.vue",
+        "n": 5,
+        "dir": "gif-change-speed"
+      },
+      {
+        "f": "apps/web/src/tools/images-to-gif/ImagesToGif.vue",
+        "n": 5,
+        "dir": "images-to-gif"
+      },
+      {
+        "f": "apps/web/src/tools/video-add-audio/VideoAddAudio.vue",
+        "n": 6,
+        "dir": "video-add-audio"
+      },
+      {
+        "f": "apps/web/src/tools/video-change-speed/VideoChangeSpeed.vue",
+        "n": 5,
+        "dir": "video-change-speed"
+      },
+      {
+        "f": "apps/web/src/tools/video-compress/VideoCompress.vue",
+        "n": 5,
+        "dir": "video-compress"
+      },
+      {
+        "f": "apps/web/src/tools/video-crop/VideoCrop.vue",
+        "n": 6,
+        "dir": "video-crop"
+      },
+      {
+        "f": "apps/web/src/tools/video-flip/VideoFlip.vue",
+        "n": 5,
+        "dir": "video-flip"
+      },
+      {
+        "f": "apps/web/src/tools/video-loop/VideoLoop.vue",
+        "n": 5,
+        "dir": "video-loop"
+      },
+      {
+        "f": "apps/web/src/tools/video-merge/VideoMerge.vue",
+        "n": 7,
+        "dir": "video-merge"
+      },
+      {
+        "f": "apps/web/src/tools/video-resize/VideoResize.vue",
+        "n": 7,
+        "dir": "video-resize"
+      },
+      {
+        "f": "apps/web/src/tools/video-rotate/VideoRotate.vue",
+        "n": 5,
+        "dir": "video-rotate"
+      },
+      {
+        "f": "apps/web/src/tools/video-to-gif/VideoToGif.vue",
+        "n": 6,
+        "dir": "video-to-gif"
+      },
+      {
+        "f": "apps/web/src/tools/video-trim/VideoTrim.vue",
+        "n": 6,
+        "dir": "video-trim"
+      }
+    ],
+    "web": [
+      {
+        "f": "apps/web/src/tools/html-entities/HtmlEntities.vue",
+        "n": 3,
+        "dir": "html-entities"
+      },
+      {
+        "f": "apps/web/src/tools/html-wysiwyg-editor/HtmlWysiwygEditor.vue",
+        "n": 4,
+        "dir": "html-wysiwyg-editor"
+      },
+      {
+        "f": "apps/web/src/tools/http-status/HttpStatus.vue",
+        "n": 1,
+        "dir": "http-status"
+      },
+      {
+        "f": "apps/web/src/tools/jwt-parser/JwtParser.vue",
+        "n": 4,
+        "dir": "jwt-parser"
+      },
+      {
+        "f": "apps/web/src/tools/keycode-info/KeycodeInfo.vue",
+        "n": 4,
+        "dir": "keycode-info"
+      },
+      {
+        "f": "apps/web/src/tools/slugify/Slugify.vue",
+        "n": 2,
+        "dir": "slugify"
+      },
+      {
+        "f": "apps/web/src/tools/url-encoder/UrlEncoder.vue",
+        "n": 5,
+        "dir": "url-encoder"
+      },
+      {
+        "f": "apps/web/src/tools/url-parser/UrlParser.vue",
+        "n": 4,
+        "dir": "url-parser"
+      },
+      {
+        "f": "apps/web/src/tools/user-agent-parser/UserAgentParser.vue",
+        "n": 16,
+        "dir": "user-agent-parser"
+      }
+    ],
+    "platform": [
+      {
+        "f": "apps/web/src/tools/info-masking/InfoMasking.vue",
+        "n": 12,
+        "dir": "info-masking"
+      },
+      {
+        "f": "apps/web/src/tools/screenshot-share/ScreenshotShare.vue",
+        "n": 7,
+        "dir": "screenshot-share"
+      }
+    ],
+    "network": [
+      {
+        "f": "apps/web/src/tools/ipv4-range-expander/Ipv4RangeExpander.vue",
+        "n": 9,
+        "dir": "ipv4-range-expander"
+      },
+      {
+        "f": "apps/web/src/tools/ipv4-subnet-calculator/Ipv4SubnetCalculator.vue",
+        "n": 3,
+        "dir": "ipv4-subnet-calculator"
+      },
+      {
+        "f": "apps/web/src/tools/mac-address-generator/MacAddressGenerator.vue",
+        "n": 10,
+        "dir": "mac-address-generator"
+      }
+    ],
+    "generator": [
+      {
+        "f": "apps/web/src/tools/number-generator/NumberGenerator.vue",
+        "n": 2,
+        "dir": "number-generator"
+      },
+      {
+        "f": "apps/web/src/tools/otp-generator/OtpGenerator.vue",
+        "n": 14,
+        "dir": "otp-generator"
+      },
+      {
+        "f": "apps/web/src/tools/password-generator/PasswordGenerator.vue",
+        "n": 8,
+        "dir": "password-generator"
+      },
+      {
+        "f": "apps/web/src/tools/qr-code-generator/QrCodeGenerator.vue",
+        "n": 8,
+        "dir": "qr-code-generator"
+      },
+      {
+        "f": "apps/web/src/tools/random-number-generator/RandomNumberGenerator.vue",
+        "n": 5,
+        "dir": "random-number-generator"
+      },
+      {
+        "f": "apps/web/src/tools/svg-placeholder-generator/SvgPlaceholderGenerator.vue",
+        "n": 12,
+        "dir": "svg-placeholder-generator"
+      },
+      {
+        "f": "apps/web/src/tools/wifi-qr-code-generator/WifiQrCodeGenerator.vue",
+        "n": 12,
+        "dir": "wifi-qr-code-generator"
+      }
+    ]
+  }
+}

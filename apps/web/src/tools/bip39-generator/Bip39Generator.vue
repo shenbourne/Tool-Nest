@@ -8,13 +8,9 @@ import { tool } from './index';
 
 const { t } = useI18n();
 
-const wordCountOptions = [
-  { label: '12 words', value: 12 },
-  { label: '15 words', value: 15 },
-  { label: '18 words', value: 18 },
-  { label: '21 words', value: 21 },
-  { label: '24 words', value: 24 },
-];
+const wordCountOptions = computed(() =>
+  [12, 15, 18, 21, 24].map(n => ({ label: t('tools.bip39Generator.wordCount', { n }), value: n }))
+);
 
 const words = ref(12);
 const mnemonic = computed(() => {
@@ -34,7 +30,7 @@ function refresh() { words.value = words.value; }
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Generate Mnemonic">
+      <NCard :title="t('tools.bip39Generator.generateMnemonic')">
         <NSpace vertical :size="12">
           <NSelect v-model:value="words" :options="wordCountOptions" />
           <NInput :value="mnemonic" type="textarea" readonly :rows="4" style="font-family: monospace;" />
@@ -45,11 +41,11 @@ function refresh() { words.value = words.value; }
         </NSpace>
       </NCard>
 
-      <NCard title="Validate Mnemonic">
+      <NCard :title="t('tools.bip39Generator.validateMnemonic')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="inputMnemonic" type="textarea" :rows="3" placeholder="Enter mnemonic to validate..." />
+          <NInput v-model:value="inputMnemonic" type="textarea" :rows="3" :placeholder="t('tools.bip39Generator.validatePlaceholder')" />
           <div v-if="isValid !== null" :style="{ color: isValid ? 'var(--color-success)' : 'var(--color-error)', fontWeight: 600 }">
-            {{ isValid ? 'Valid mnemonic ✓' : 'Invalid mnemonic ✗' }}
+            {{ isValid ? t('tools.bip39Generator.validMnemonic') : t('tools.bip39Generator.invalidMnemonic') }}
           </div>
         </NSpace>
       </NCard>

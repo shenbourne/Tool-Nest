@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
+const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
 
 const file = ref<File | null>(null);
@@ -12,14 +14,14 @@ const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 
-const speedOptions = [
-  { label: '0.25x (very slow)', value: '0.25' },
-  { label: '0.5x (slow)', value: '0.5' },
-  { label: '1x (normal)', value: '1' },
-  { label: '1.5x (fast)', value: '1.5' },
-  { label: '2x (faster)', value: '2' },
-  { label: '4x (very fast)', value: '4' },
-];
+const speedOptions = computed(() => [
+  { label: t('tools.videoChangeSpeed.speedVerySlow'), value: '0.25' },
+  { label: t('tools.videoChangeSpeed.speedSlow'), value: '0.5' },
+  { label: t('tools.videoChangeSpeed.speedNormal'), value: '1' },
+  { label: t('tools.videoChangeSpeed.speedFast'), value: '1.5' },
+  { label: t('tools.videoChangeSpeed.speedFaster'), value: '2' },
+  { label: t('tools.videoChangeSpeed.speedVeryFast'), value: '4' },
+]);
 
 function onFileChange(event: Event) {
   const input = event.target as HTMLInputElement;
@@ -64,7 +66,7 @@ async function process() {
 
     resultData.value = result;
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Processing failed';
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
@@ -76,7 +78,7 @@ async function process() {
     <NCard>
       <NSpace vertical :size="12">
         <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          Load FFmpeg
+          {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
@@ -86,7 +88,7 @@ async function process() {
           v-model:value="speed"
           :options="speedOptions"
           style="width: 240px"
-          placeholder="Select speed"
+          :placeholder="t('tools.videoChangeSpeed.selectSpeed')"
         />
 
         <NButton
@@ -95,14 +97,14 @@ async function process() {
           :disabled="!file || !isLoaded"
           @click="process"
         >
-          Change Speed
+          {{ t('tools.videoChangeSpeed.changeSpeed') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
         <NAlert v-if="error" type="error" :title="error" />
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'speed-changed.mp4', 'video/mp4')">
-          Download
+          {{ t('tool.download') }}
         </NButton>
       </NSpace>
     </NCard>

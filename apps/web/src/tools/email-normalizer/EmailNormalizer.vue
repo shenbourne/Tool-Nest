@@ -23,17 +23,17 @@ function copyOutput() {
   }
 }
 
-const columns = [
-  { title: 'Original', key: 'original' },
-  { title: 'Normalized', key: 'normalized' },
-  { title: 'Status', key: 'status', width: 100 },
-];
+const columns = computed(() => [
+  { title: t('tools.emailNormalizer.original'), key: 'original' },
+  { title: t('tools.emailNormalizer.normalized'), key: 'normalized' },
+  { title: t('tools.emailNormalizer.status'), key: 'status', width: 100 },
+]);
 
 const tableData = computed(() =>
   results.value.map(r => ({
     original: r.original,
     normalized: r.normalized || r.error || '',
-    status: r.error ? 'Error' : 'OK',
+    status: r.error ? t('common.error') : t('tools.emailNormalizer.ok'),
   })),
 );
 </script>
@@ -41,16 +41,16 @@ const tableData = computed(() =>
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Input Email Addresses">
+      <NCard :title="t('tools.emailNormalizer.inputTitle')">
         <NInput
           v-model:value="input"
           type="textarea"
-          placeholder="Enter email addresses (one per line)..."
+          :placeholder="t('tools.emailNormalizer.inputPlaceholder')"
           :autosize="{ minRows: 3, maxRows: 10 }"
         />
       </NCard>
 
-      <NCard title="Results">
+      <NCard :title="t('common.results')">
         <NDataTable
           v-if="results.length > 0"
           :columns="columns"
@@ -60,7 +60,7 @@ const tableData = computed(() =>
         />
       </NCard>
 
-      <NCard title="Normalized Output">
+      <NCard :title="t('tools.emailNormalizer.outputTitle')">
         <NInput
           :value="normalizedOutput"
           type="textarea"

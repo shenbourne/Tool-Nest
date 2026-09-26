@@ -24,21 +24,21 @@ function copyOutput() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Input JSON">
+      <NCard :title="t('common.inputJson')">
         <NInput
           v-model:value="input"
           type="textarea"
-          placeholder="Paste your JSON here..."
+          :placeholder="t('tools.jsonViewer.inputPlaceholder')"
           :autosize="{ minRows: 6, maxRows: 20 }"
           monospace
         />
         <NSpace align="center" :size="12" style="margin-top: 8px;">
-          <span>Indent:</span>
+          <span>{{ t('common.indent') }}:</span>
           <NInputNumber v-model:value="indentSize" :min="1" :max="8" :show-button="false" style="width: 80px" />
         </NSpace>
       </NCard>
 
-      <NCard title="Formatted Output">
+      <NCard :title="t('tools.jsonViewer.outputTitle')">
         <NAlert v-if="result.error" type="error" style="margin-bottom: 12px;">
           {{ result.error }}
         </NAlert>

@@ -26,10 +26,10 @@ function copy() { navigator.clipboard.writeText(hashed.value); }
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Hash">
+      <NCard :title="t('tools.bcrypt.hash')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="input" placeholder="Your string to bcrypt..." />
-          <NFormItem label="Salt rounds:" label-placement="left">
+          <NInput v-model:value="input" :placeholder="t('tools.bcrypt.inputPlaceholder')" />
+          <NFormItem :label="t('tools.bcrypt.saltRounds')" label-placement="left">
             <NInputNumber v-model:value="saltCount" :min="0" :max="100" style="width: 200px;" />
           </NFormItem>
           <NInput :value="hashed" readonly style="font-family: monospace;" />
@@ -37,13 +37,13 @@ function copy() { navigator.clipboard.writeText(hashed.value); }
         </NSpace>
       </NCard>
 
-      <NCard title="Compare string with hash">
+      <NCard :title="t('tools.bcrypt.compareTitle')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="compareString" placeholder="Your string..." />
-          <NInput v-model:value="compareHash" placeholder="Your hash..." />
+          <NInput v-model:value="compareString" :placeholder="t('tools.bcrypt.compareStringPlaceholder')" />
+          <NInput v-model:value="compareHash" :placeholder="t('tools.bcrypt.compareHashPlaceholder')" />
           <div>
             <NTag :type="compareMatch ? 'success' : 'error'" size="large">
-              {{ compareMatch ? 'Match ✓' : 'No match ✗' }}
+              {{ compareMatch ? t('tools.bcrypt.match') : t('tools.bcrypt.noMatch') }}
             </NTag>
           </div>
         </NSpace>

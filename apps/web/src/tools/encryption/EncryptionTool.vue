@@ -28,7 +28,7 @@ function doDecrypt() {
     decryptOutput.value = algos[decryptAlgo.value].decrypt(decryptInput.value, decryptSecret.value).toString(enc.Utf8);
   } catch {
     decryptOutput.value = '';
-    decryptError.value = 'Unable to decrypt your text';
+    decryptError.value = t('tools.encryption.decryptFailed');
   }
 }
 
@@ -38,24 +38,24 @@ function copy() { navigator.clipboard.writeText(encryptOutput.value); }
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Encrypt">
+      <NCard :title="t('common.encrypt')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="encryptInput" type="textarea" :rows="3" placeholder="Text to encrypt..." />
-          <NInput v-model:value="encryptSecret" placeholder="Secret key..." />
+          <NInput v-model:value="encryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.encryptPlaceholder')" />
+          <NInput v-model:value="encryptSecret" :placeholder="t('common.secretKeyPlaceholder')" />
           <NSelect v-model:value="encryptAlgo" :options="algoOptions" />
           <NInput :value="encryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;" />
           <NButton @click="copy">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>
 
-      <NCard title="Decrypt">
+      <NCard :title="t('common.decrypt')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="decryptInput" type="textarea" :rows="3" placeholder="Encrypted text..." />
-          <NInput v-model:value="decryptSecret" placeholder="Secret key..." />
+          <NInput v-model:value="decryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.decryptPlaceholder')" />
+          <NInput v-model:value="decryptSecret" :placeholder="t('common.secretKeyPlaceholder')" />
           <NSelect v-model:value="decryptAlgo" :options="algoOptions" />
           <NAlert v-if="decryptError" type="error">{{ decryptError }}</NAlert>
           <NInput v-else-if="decryptOutput" :value="decryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;" />
-          <NButton @click="doDecrypt">Decrypt</NButton>
+          <NButton @click="doDecrypt">{{ t('common.decrypt') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

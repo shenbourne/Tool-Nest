@@ -21,7 +21,7 @@ const stageHeight = ref(600);
 const drawColor = ref('#ff0000');
 const lineWidth = ref(3);
 const fontSize = ref(24);
-const textContent = ref('Text');
+const textContent = ref(t('tools.imageEditor.defaultText'));
 
 // Active tool: 'none' | 'text' | 'line'
 const activeTool = ref<'none' | 'text' | 'line'>('none');
@@ -239,30 +239,30 @@ function downloadImage() {
       <NCard :title="t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <NSpace :size="8">
-            <NButton :type="activeTool === 'text' ? 'primary' : 'default'" @click="setTool('text')">Add Text</NButton>
-            <NButton :type="activeTool === 'line' ? 'primary' : 'default'" @click="setTool('line')">Draw Line</NButton>
-            <NButton @click="setTool('none')">Select</NButton>
-            <NButton type="error" @click="clearAll">Clear All</NButton>
+            <NButton :type="activeTool === 'text' ? 'primary' : 'default'" @click="setTool('text')">{{ t('tools.imageEditor.addText') }}</NButton>
+            <NButton :type="activeTool === 'line' ? 'primary' : 'default'" @click="setTool('line')">{{ t('tools.imageEditor.drawLine') }}</NButton>
+            <NButton @click="setTool('none')">{{ t('common.select') }}</NButton>
+            <NButton type="error" @click="clearAll">{{ t('tools.imageEditor.clearAll') }}</NButton>
           </NSpace>
           <NSpace :size="16">
             <div>
-              <label>Color: </label>
+              <label>{{ t('tools.imageEditor.color') }}</label>
               <NColorPicker v-model:value="drawColor" style="width:160px;" />
             </div>
             <div>
-              <label>Line Width: </label>
+              <label>{{ t('tools.imageEditor.lineWidth') }}</label>
               <NInputNumber v-model:value="lineWidth" :min="1" :max="50" :step="1" style="width:120px;" />
             </div>
             <div>
-              <label>Font Size: </label>
+              <label>{{ t('tools.imageEditor.fontSize') }}</label>
               <NInputNumber v-model:value="fontSize" :min="8" :max="200" :step="1" style="width:120px;" />
             </div>
           </NSpace>
           <div v-if="activeTool === 'text'">
-            <label>Text: </label>
-            <NInput v-model:value="textContent" placeholder="Enter text..." style="width:250px;" />
+            <label>{{ t('tools.imageEditor.text') }}</label>
+            <NInput v-model:value="textContent" :placeholder="t('tools.imageEditor.textPlaceholder')" style="width:250px;" />
           </div>
-          <NButton type="success" :disabled="!file" @click="downloadImage">Download</NButton>
+          <NButton type="success" :disabled="!file" @click="downloadImage">{{ t('tool.download') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>

@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n';
 // ETA Calculator - business logic
 
 export interface EtaInput {
@@ -53,7 +54,7 @@ export function calculateEta(input: EtaInput): EtaResult | null {
 }
 
 export function formatDuration(ms: number): string {
-  if (!isFinite(ms) || ms < 0) return 'N/A';
+  if (!isFinite(ms) || ms < 0) return i18n.global.t('common.notAvailable');
   if (ms < 1000) return `${Math.round(ms)} ms`;
 
   const totalSeconds = Math.floor(ms / 1000);
@@ -63,15 +64,15 @@ export function formatDuration(ms: number): string {
   const seconds = totalSeconds % 60;
 
   const parts: string[] = [];
-  if (days > 0) parts.push(`${days}d`);
-  if (hours > 0) parts.push(`${hours}h`);
-  if (minutes > 0) parts.push(`${minutes}m`);
-  if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
+  if (days > 0) parts.push(i18n.global.t('tools.etaCalculator.durationDays', { n: days }));
+  if (hours > 0) parts.push(i18n.global.t('tools.etaCalculator.durationHours', { n: hours }));
+  if (minutes > 0) parts.push(i18n.global.t('tools.etaCalculator.durationMinutes', { n: minutes }));
+  if (seconds > 0 || parts.length === 0) parts.push(i18n.global.t('tools.etaCalculator.durationSeconds', { n: seconds }));
 
   return parts.join(' ');
 }
 
 export function formatEndTime(date: Date): string {
-  if (date.getTime() === 0) return 'N/A';
-  return date.toLocaleString();
+  if (date.getTime() === 0) return i18n.global.t('common.notAvailable');
+  return date.toLocaleString(i18n.global.locale.value === 'zh' ? 'zh-CN' : 'en-US');
 }

@@ -34,14 +34,14 @@ function previewImage() {
     previewUrl.value = dataUrl.value;
     downloadError.value = '';
   } else {
-    downloadError.value = 'Invalid Base64 input';
+    downloadError.value = t('tools.base64FileConverter.invalidBase64');
     previewUrl.value = '';
   }
 }
 
 function downloadFile() {
   if (!isValidBase64.value) {
-    downloadError.value = 'Invalid Base64 input';
+    downloadError.value = t('tools.base64FileConverter.invalidBase64');
     return;
   }
   downloadError.value = '';
@@ -79,30 +79,30 @@ function copyBase64() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Base64 → File">
+      <NCard :title="t('tools.base64FileConverter.base64ToFile')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="base64Input" type="textarea" :rows="6" placeholder="Paste Base64 string or data URL..." />
+          <NInput v-model:value="base64Input" type="textarea" :rows="6" :placeholder="t('tools.base64FileConverter.inputPlaceholder')" />
           <NSpace :size="8" align="center">
-            <span>Filename:</span>
+            <span>{{ t('tools.base64FileConverter.filenameLabel') }}</span>
             <NInput v-model:value="fileName" style="width: 140px;" />
             <span>.{{ fileExt }}</span>
             <NInput v-model:value="fileExt" style="width: 80px;" placeholder="ext" />
           </NSpace>
           <NSpace>
-            <NButton :disabled="!isValidBase64" @click="previewImage">Preview</NButton>
+            <NButton :disabled="!isValidBase64" @click="previewImage">{{ t('common.preview') }}</NButton>
             <NButton :disabled="!isValidBase64" @click="downloadFile">{{ t('tool.download') }}</NButton>
           </NSpace>
           <div v-if="downloadError" style="color: var(--color-error);">{{ downloadError }}</div>
           <div v-if="previewUrl" style="margin-top: 8px;">
-            <img :src="previewUrl" alt="Preview" style="max-width: 100%; max-height: 300px; border: 1px solid var(--color-hairline);" />
+            <img :src="previewUrl" :alt="t('common.preview')" style="max-width: 100%; max-height: 300px; border: 1px solid var(--color-hairline);" />
           </div>
         </NSpace>
       </NCard>
 
-      <NCard title="File → Base64">
+      <NCard :title="t('tools.base64FileConverter.fileToBase64')">
         <NSpace vertical :size="8">
           <input type="file" @change="handleFileChange" />
-          <NInput :value="fileBase64Output" type="textarea" :rows="6" readonly placeholder="Base64 output will appear here..." />
+          <NInput :value="fileBase64Output" type="textarea" :rows="6" readonly :placeholder="t('tools.base64FileConverter.outputPlaceholder')" />
           <NButton :disabled="!fileBase64Output" @click="copyBase64">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

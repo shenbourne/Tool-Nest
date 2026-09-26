@@ -4,6 +4,9 @@ import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import html2canvas from 'html2canvas';
 import { tool } from './index';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const selector = ref('body');
 const previewUrl = ref('');
@@ -17,14 +20,14 @@ async function capture() {
   try {
     const el = document.querySelector(selector.value);
     if (!el) {
-      errorMsg.value = `No element found for selector: ${selector.value}`;
+      errorMsg.value = t('tools.screenshotShare.noElementFound', { selector: selector.value });
       return;
     }
     const canvas = await html2canvas(el as HTMLElement);
     previewUrl.value = canvas.toDataURL('image/png');
   }
   catch (e: any) {
-    errorMsg.value = e?.message || 'Failed to capture screenshot';
+    errorMsg.value = e?.message || t('tools.screenshotShare.captureFailed');
   }
   finally {
     capturing.value = false;
@@ -47,26 +50,26 @@ async function copyToClipboard() {
     await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
   }
   catch (e: any) {
-    errorMsg.value = e?.message || 'Failed to copy to clipboard';
+    errorMsg.value = e?.message || t('tools.screenshotShare.copyFailed');
   }
 }
 </script>
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="12">
-      <NCard title="CSS Selector">
+      <NCard :title="t('tools.screenshotShare.cssSelector')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="selector" placeholder="Enter CSS selector (default: body)" />
-          <NButton type="primary" :loading="capturing" @click="capture">Capture</NButton>
+          <NInput v-model:value="selector" :placeholder="t('tools.screenshotShare.selectorPlaceholder')" />
+          <NButton type="primary" :loading="capturing" @click="capture">{{ t('tools.screenshotShare.capture') }}</NButton>
         </NSpace>
       </NCard>
       <NAlert v-if="errorMsg" type="error" :title="errorMsg" />
-      <NCard v-if="previewUrl" title="Preview">
+      <NCard v-if="previewUrl" :title="t('common.preview')">
         <NSpace vertical :size="8">
           <img :src="previewUrl" style="max-width:100%;border:1px solid var(--color-hairline);border-radius:4px;" />
           <NSpace>
-            <NButton type="primary" @click="downloadPng">Download PNG</NButton>
-            <NButton @click="copyToClipboard">Copy to Clipboard</NButton>
+            <NButton type="primary" @click="downloadPng">{{ t('tools.screenshotShare.downloadPng') }}</NButton>
+            <NButton @click="copyToClipboard">{{ t('tools.screenshotShare.copyToClipboard') }}</NButton>
           </NSpace>
         </NSpace>
       </NCard>

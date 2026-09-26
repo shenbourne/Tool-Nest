@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+const { t } = useI18n();
 const input = ref('');
 const output = computed(() => {
   const lines = input.value.trim().split('\n');
@@ -12,14 +14,14 @@ const output = computed(() => {
   if (type === 'primes') { const p=[]; for(let i=2;p.length<n;i++){if([2,3].includes(i)||![2,3].some(d=>i%d===0)&&i>3&&Array.from({length:Math.floor(Math.sqrt(i))},(_,j)=>j+2).every(d=>i%d!==0))p.push(i);} return p.join(', '); }
   if (type === 'even') return Array.from({length:n},(_,i)=>i*2).join(', ');
   if (type === 'odd') return Array.from({length:n},(_,i)=>i*2+1).join(', ');
-  return 'Line 1: type (fibonacci/primes/even/odd)\nLine 2: count';
+  return t('tools.numberGenerator.usageHint');
 });
 </script>
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" placeholder="Input..." />
-      <NInput :value="output" type="textarea" :rows="6" readonly placeholder="Output..." />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')" />
+      <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')" />
     </NSpace></NCard>
   </ToolLayout>
 </template>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
+const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
 
 const file = ref<File | null>(null);
@@ -55,7 +57,7 @@ async function process() {
 
     resultData.value = result;
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Processing failed';
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
@@ -67,7 +69,7 @@ async function process() {
     <NCard>
       <NSpace vertical :size="12">
         <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          Load FFmpeg
+          {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
@@ -77,13 +79,13 @@ async function process() {
           <NInputNumber
             v-model:value="width"
             :min="1"
-            placeholder="Width"
+            :placeholder="t('common.width')"
             style="width: 120px"
           />
           <NInputNumber
             v-model:value="height"
             :min="1"
-            placeholder="Height"
+            :placeholder="t('common.height')"
             style="width: 120px"
           />
           <NInputNumber
@@ -106,14 +108,14 @@ async function process() {
           :disabled="!file || !isLoaded"
           @click="process"
         >
-          Crop
+          {{ t('common.crop') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" title="Processing..." />
+        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
         <NAlert v-if="error" type="error" :title="error" />
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'cropped.mp4', 'video/mp4')">
-          Download
+          {{ t('tool.download') }}
         </NButton>
       </NSpace>
     </NCard>

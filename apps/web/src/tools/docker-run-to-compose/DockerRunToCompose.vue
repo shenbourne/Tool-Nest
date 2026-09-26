@@ -23,17 +23,17 @@ function copyOutput() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard title="Docker Run Command">
+      <NCard :title="t('tools.dockerRunToCompose.inputTitle')">
         <NInput
           v-model:value="input"
           type="textarea"
-          placeholder="Paste your docker run command here..."
+          :placeholder="t('tools.dockerRunToCompose.inputPlaceholder')"
           :autosize="{ minRows: 3, maxRows: 10 }"
           monospace
         />
       </NCard>
 
-      <NCard title="Docker Compose YAML">
+      <NCard :title="t('tools.dockerRunToCompose.outputTitle')">
         <NAlert v-if="result.error" type="error" style="margin-bottom: 12px;">
           {{ result.error }}
         </NAlert>
@@ -51,7 +51,7 @@ function copyOutput() {
       </NCard>
 
       <NAlert v-if="result.warnings.length > 0" type="warning">
-        <template #header>Warnings</template>
+        <template #header>{{ t('tools.dockerRunToCompose.warnings') }}</template>
         <ul style="margin: 0; padding-left: 16px;">
           <li v-for="(warning, idx) in result.warnings" :key="idx">{{ warning }}</li>
         </ul>

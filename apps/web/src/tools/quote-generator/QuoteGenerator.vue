@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+const { t } = useI18n();
 const QUOTES = [
   ["Any fool can write code that a computer can understand. Good programmers write code that humans can understand.", "Martin Fowler"],
   ["First, solve the problem. Then, write the code.", "John Johnson"],
@@ -25,7 +27,7 @@ function next() { idx.value = (idx.value + 1) % QUOTES.length; }
       <NSpace vertical :size="16" align="center">
         <div style="font-size:18px;font-style:italic;text-align:center;padding:20px;">"{{ QUOTES[idx][0] }}"</div>
         <div style="opacity:0.7;">— {{ QUOTES[idx][1] }}</div>
-        <NButton @click="next" type="primary">Next Quote</NButton>
+        <NButton @click="next" type="primary">{{ t('tools.quoteGenerator.nextQuote') }}</NButton>
       </NSpace>
     </NCard>
   </ToolLayout>
