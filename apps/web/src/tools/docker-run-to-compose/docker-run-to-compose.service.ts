@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n';
 export interface DockerComposeService {
   image: string;
   container_name?: string;
@@ -93,13 +94,13 @@ export function parseDockerRun(command: string): ParseResult {
         service.network_mode = tokens[i];
         i++;
       } else if (token === '--log-opt') {
-        warnings.push('--log-opt is not directly translatable to docker-compose service level');
+        warnings.push(i18n.global.t('tools.dockerRunToCompose.warnLogOpt'));
         i++;
         if (i < tokens.length && !tokens[i].startsWith('-')) {
           i++;
         }
       } else if (token.startsWith('-')) {
-        warnings.push(`Flag ${token} is not supported in this converter`);
+        warnings.push(i18n.global.t('tools.dockerRunToCompose.warnUnsupportedFlag', { flag: token }));
         i++;
         // Skip the value if the flag expects one
         if (i < tokens.length && !tokens[i].startsWith('-')) {
@@ -131,13 +132,13 @@ export function parseDockerRun(command: string): ParseResult {
     }
 
     if (!service.image) {
-      return { yaml: '', error: 'No image specified in docker run command', warnings };
+      return { yaml: '', error: i18n.global.t('tools.dockerRunToCompose.errorNoImage'), warnings };
     }
 
     const yaml = buildYaml(service);
     return { yaml, error: null, warnings };
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Failed to parse docker run command';
+    const message = e instanceof Error ? e.message : i18n.global.t('tools.dockerRunToCompose.errorParseFailed');
     return { yaml: '', error: message, warnings };
   }
 }

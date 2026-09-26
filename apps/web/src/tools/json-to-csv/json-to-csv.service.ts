@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+import { i18n } from '@/i18n';
 
 export interface ConvertResult { result: string; error: string | null; }
 
@@ -9,14 +10,14 @@ export function jsonToCsv(input: string): ConvertResult {
     }
     const parsed = JSON.parse(input);
     if (!Array.isArray(parsed)) {
-      return { result: '', error: 'Input must be a JSON array of objects' };
+      return { result: '', error: i18n.global.t('tools.jsonToCsv.errorNotArray') };
     }
     if (parsed.length === 0) {
       return { result: '', error: null };
     }
     for (const item of parsed) {
       if (typeof item !== 'object' || item === null || Array.isArray(item)) {
-        return { result: '', error: 'Each item in the array must be a JSON object' };
+        return { result: '', error: i18n.global.t('tools.jsonToCsv.errorItemNotObject') };
       }
     }
     return { result: Papa.unparse(parsed), error: null };

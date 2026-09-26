@@ -1,4 +1,5 @@
 import yaml from 'js-yaml';
+import { i18n } from '@/i18n';
 
 export interface ConversionResult {
   success: boolean;
@@ -11,7 +12,7 @@ export function convertDockerComposeTo1panel(input: string): ConversionResult {
     const parsed = yaml.load(input) as Record<string, unknown>;
 
     if (!parsed || typeof parsed !== 'object') {
-      return { success: false, output: '', error: 'Invalid YAML: not an object' };
+      return { success: false, output: '', error: i18n.global.t('tools.dockerComposeTo1panel.errorInvalidYaml') };
     }
 
     // Ensure version field (1Panel convention)
@@ -90,7 +91,7 @@ export function convertDockerComposeTo1panel(input: string): ConversionResult {
 
     return { success: true, output };
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Unknown error';
-    return { success: false, output: '', error: `YAML parse error: ${message}` };
+    const message = e instanceof Error ? e.message : i18n.global.t('tools.dockerComposeTo1panel.errorUnknown');
+    return { success: false, output: '', error: i18n.global.t('tools.dockerComposeTo1panel.errorYamlParse', { message }) };
   }
 }

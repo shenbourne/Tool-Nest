@@ -232,7 +232,8 @@
     "enterDomainOrIp": "Enter domain or IP...",
     "domainNamePlaceholder": "Domain name...",
     "calculate": "Calculate",
-    "sum": "Sum: {value}"
+    "sum": "Sum: {value}",
+    "notAvailable": "N/A"
   },
   "search": {
     "placeholder": "Search tools...",
@@ -335,7 +336,26 @@
       "inputPlaceholder": "Enter a password to analyze...",
       "score": "Score: {score}",
       "crackTime": "Estimated crack time:",
-      "suggestions": "Suggestions"
+      "suggestions": "Suggestions",
+      "labelNone": "None",
+      "labelVeryWeak": "Very Weak",
+      "labelWeak": "Weak",
+      "labelFair": "Fair",
+      "labelStrong": "Strong",
+      "labelVeryStrong": "Very Strong",
+      "crackInstant": "Instant",
+      "crackSeconds": "{n} seconds",
+      "crackMinutes": "{n} minutes",
+      "crackHours": "{n} hours",
+      "crackDays": "{n} days",
+      "crackYears": "{n} years",
+      "crackCenturies": "Centuries",
+      "suggestLength": "Use at least 8 characters",
+      "suggestVariety": "Add more character types (uppercase, numbers, symbols)",
+      "suggestAddNumbersSymbols": "Add numbers and symbols",
+      "suggestAvoidOnlyNumbers": "Avoid using only numbers",
+      "suggestAvoidRepeats": "Avoid repeated characters",
+      "suggestAvoidCommon": "Avoid common patterns"
     },
     "baseConverter": {
       "name": "Base Converter",
@@ -1216,7 +1236,11 @@
       "inputTitle": "Docker Run Command",
       "inputPlaceholder": "Paste your docker run command here...",
       "outputTitle": "Docker Compose YAML",
-      "warnings": "Warnings"
+      "warnings": "Warnings",
+      "errorNoImage": "No image specified in docker run command",
+      "errorParseFailed": "Failed to parse docker run command",
+      "warnLogOpt": "--log-opt is not directly translatable to docker-compose service level",
+      "warnUnsupportedFlag": "Flag {flag} is not supported in this converter"
     },
     "xmlFormatter": {
       "name": "XML Formatter",
@@ -1224,7 +1248,9 @@
       "inputTitle": "Input XML",
       "inputPlaceholder": "Paste your XML here...",
       "minify": "Minify",
-      "spaces": "{n} spaces"
+      "spaces": "{n} spaces",
+      "errorInvalidXml": "Invalid XML",
+      "errorParseFailed": "Failed to parse XML"
     },
     "emailNormalizer": {
       "name": "Email Normalizer",
@@ -1235,7 +1261,8 @@
       "original": "Original",
       "normalized": "Normalized",
       "status": "Status",
-      "ok": "OK"
+      "ok": "OK",
+      "errorMissingAt": "Invalid email format: missing @"
     },
     "regexTester": {
       "name": "Regex Tester",
@@ -1257,7 +1284,8 @@
       "matchCountPlural": "{count} matches",
       "flags": "Flags",
       "none": "none",
-      "noMatches": "No matches found"
+      "noMatches": "No matches found",
+      "errorInvalidPattern": "Invalid regex pattern"
     },
     "ipv4SubnetCalculator": {
       "name": "IPv4 Subnet Calculator",
@@ -1341,7 +1369,10 @@
       "addsAppNameLabels": "Adding {field} labels",
       "setsRestartPolicy": "Setting {field} if not specified",
       "convertsNetworks": "Converting network arrays to map format",
-      "addsNetworkNames": "Adding explicit network names and volume drivers"
+      "addsNetworkNames": "Adding explicit network names and volume drivers",
+      "errorInvalidYaml": "Invalid YAML: not an object",
+      "errorUnknown": "Unknown error",
+      "errorYamlParse": "YAML parse error: {message}"
     },
     "cameraRecorder": {
       "name": "Camera Recorder",
@@ -1376,7 +1407,11 @@
       "timeRemaining": "Time Remaining",
       "estimatedEnd": "Estimated End",
       "example": "Example",
-      "exampleText": "If you wash 5 plates in 3 minutes and you have 500 plates to wash, it will take you approximately 5 hours to wash them all. Enter the total task count, how many are completed, and when you started to see the estimated completion time."
+      "exampleText": "If you wash 5 plates in 3 minutes and you have 500 plates to wash, it will take you approximately 5 hours to wash them all. Enter the total task count, how many are completed, and when you started to see the estimated completion time.",
+      "durationDays": "{n}d",
+      "durationHours": "{n}h",
+      "durationMinutes": "{n}m",
+      "durationSeconds": "{n}s"
     },
     "benchmarkBuilder": {
       "name": "Benchmark Builder",
@@ -1410,7 +1445,11 @@
       "maskedOutput": "Masked Output",
       "comparison": "Before / After Comparison",
       "before": "Before",
-      "after": "After"
+      "after": "After",
+      "patternEmail": "Email",
+      "patternPhone": "Phone",
+      "patternIp": "IPv4 Address",
+      "patternCreditCard": "Credit Card"
     },
     "textToUnicode": {
       "name": "Text to Unicode",
@@ -1496,7 +1535,9 @@
     "jsonToCsv": {
       "name": "JSON to CSV",
       "description": "Convert JSON array to CSV",
-      "outputTitle": "Output CSV"
+      "outputTitle": "Output CSV",
+      "errorNotArray": "Input must be a JSON array of objects",
+      "errorItemNotObject": "Each item in the array must be a JSON object"
     },
     "xmlToJson": {
       "name": "XML to JSON",
@@ -1530,7 +1571,20 @@
       "custom": "Custom",
       "inputPlaceholder": "Enter date string or timestamp...",
       "now": "Now",
-      "customFormatPlaceholder": "Custom format (e.g. YYYY/MM/DD HH:mm)"
+      "customFormatPlaceholder": "Custom format (e.g. YYYY/MM/DD HH:mm)",
+      "errorInvalidUnixSeconds": "Invalid Unix timestamp (seconds)",
+      "errorInvalidUnixMs": "Invalid Unix timestamp (ms)",
+      "errorInvalidIso": "Invalid ISO 8601 date",
+      "errorInvalidRfc": "Invalid RFC 3339 date",
+      "errorInvalidUtc": "Invalid UTC string",
+      "errorCustomFormatRequired": "Custom format string required",
+      "errorFormatMismatch": "Input does not match format \"{format}\"",
+      "errorInvalidDate": "Invalid date input",
+      "labelUnixSeconds": "Unix Timestamp (s)",
+      "labelUnixMilliseconds": "Unix Timestamp (ms)",
+      "labelUtcString": "UTC String",
+      "labelLocalDateTime": "Local Date Time",
+      "labelRelative": "Relative"
     },
     "listConverter": {
       "name": "List Converter",

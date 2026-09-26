@@ -50,7 +50,7 @@ function copyOutput() {
         <div v-if="detectedPatterns.length > 0" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
           <span style="opacity: 0.6; font-size: 12px;">{{ t('tools.infoMasking.detected') }}</span>
           <NTag v-for="d in detectedPatterns" :key="d.pattern.key" size="small" type="warning">
-            {{ d.pattern.label }} ({{ d.count }})
+            {{ t(d.pattern.labelKey) }} ({{ d.count }})
           </NTag>
         </div>
       </NCard>
@@ -75,7 +75,7 @@ function copyOutput() {
             <label style="display: block; margin-bottom: 8px; font-weight: 500;">{{ t('tools.infoMasking.patternsToMask') }}</label>
             <NCheckboxGroup v-model:value="enabledPatterns">
               <NSpace>
-                <NCheckbox v-for="p in MASK_PATTERNS" :key="p.key" :value="p.key" :label="p.label" />
+                <NCheckbox v-for="p in MASK_PATTERNS" :key="p.key" :value="p.key" :label="t(p.labelKey)" />
               </NSpace>
             </NCheckboxGroup>
           </div>

@@ -4,29 +4,29 @@ export type MaskPattern = 'email' | 'phone' | 'ip' | 'creditCard' | 'idCard';
 
 export interface MaskPatternDef {
   key: MaskPattern;
-  label: string;
+  labelKey: string;
   regex: RegExp;
 }
 
 export const MASK_PATTERNS: MaskPatternDef[] = [
   {
     key: 'email',
-    label: 'Email',
+    labelKey: 'tools.infoMasking.patternEmail',
     regex: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
   },
   {
     key: 'phone',
-    label: 'Phone',
+    labelKey: 'tools.infoMasking.patternPhone',
     regex: /(?<!\d)(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}(?!\d)/g,
   },
   {
     key: 'ip',
-    label: 'IPv4 Address',
+    labelKey: 'tools.infoMasking.patternIp',
     regex: /\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\b/g,
   },
   {
     key: 'creditCard',
-    label: 'Credit Card',
+    labelKey: 'tools.infoMasking.patternCreditCard',
     regex: /\b(?:\d[ -]*?){13,16}\b/g,
   },
 ];

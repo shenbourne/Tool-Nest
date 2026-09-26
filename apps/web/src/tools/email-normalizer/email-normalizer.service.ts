@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n';
 export interface NormalizedEmail {
   original: string;
   normalized: string;
@@ -15,7 +16,7 @@ export function normalizeEmail(email: string): NormalizedEmail {
 
   const atIndex = trimmed.lastIndexOf('@');
   if (atIndex === -1 || atIndex === 0 || atIndex === trimmed.length - 1) {
-    return { original: trimmed, normalized: '', error: 'Invalid email format: missing @' };
+    return { original: trimmed, normalized: '', error: i18n.global.t('tools.emailNormalizer.errorMissingAt') };
   }
 
   const localPart = trimmed.substring(0, atIndex);

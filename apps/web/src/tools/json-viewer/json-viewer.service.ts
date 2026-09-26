@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n';
 export interface JsonFormatResult {
   formatted: string;
   error: string | null;
@@ -13,7 +14,7 @@ export function formatJson(input: string, indentSize: number = 2): JsonFormatRes
     const formatted = JSON.stringify(parsed, null, indentSize);
     return { formatted, error: null };
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Invalid JSON';
+    const message = e instanceof Error ? e.message : i18n.global.t('common.invalidJson');
     return { formatted: '', error: message };
   }
 }

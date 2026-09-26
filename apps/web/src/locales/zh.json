@@ -232,7 +232,8 @@
     "enterDomainOrIp": "输入域名或 IP...",
     "domainNamePlaceholder": "域名...",
     "calculate": "计算",
-    "sum": "和: {value}"
+    "sum": "和: {value}",
+    "notAvailable": "暂无"
   },
   "search": {
     "placeholder": "搜索工具...",
@@ -335,7 +336,26 @@
       "inputPlaceholder": "输入要分析的密码...",
       "score": "评分：{score}",
       "crackTime": "预计破解时间：",
-      "suggestions": "建议"
+      "suggestions": "建议",
+      "labelNone": "无",
+      "labelVeryWeak": "非常弱",
+      "labelWeak": "弱",
+      "labelFair": "一般",
+      "labelStrong": "强",
+      "labelVeryStrong": "非常强",
+      "crackInstant": "瞬间",
+      "crackSeconds": "{n} 秒",
+      "crackMinutes": "{n} 分钟",
+      "crackHours": "{n} 小时",
+      "crackDays": "{n} 天",
+      "crackYears": "{n} 年",
+      "crackCenturies": "数百年",
+      "suggestLength": "至少使用 8 个字符",
+      "suggestVariety": "增加更多字符类型（大写字母、数字、符号）",
+      "suggestAddNumbersSymbols": "添加数字和符号",
+      "suggestAvoidOnlyNumbers": "避免仅使用数字",
+      "suggestAvoidRepeats": "避免重复字符",
+      "suggestAvoidCommon": "避免常见模式"
     },
     "baseConverter": {
       "name": "进制转换器",
@@ -1216,7 +1236,11 @@
       "inputTitle": "Docker Run 命令",
       "inputPlaceholder": "在此粘贴你的 docker run 命令...",
       "outputTitle": "Docker Compose YAML 输出",
-      "warnings": "警告"
+      "warnings": "警告",
+      "errorNoImage": "docker run 命令中未指定镜像",
+      "errorParseFailed": "解析 docker run 命令失败",
+      "warnLogOpt": "--log-opt 无法直接映射到 docker-compose 服务层级",
+      "warnUnsupportedFlag": "本转换器不支持参数 {flag}"
     },
     "xmlFormatter": {
       "name": "XML 格式化器",
@@ -1224,7 +1248,9 @@
       "inputTitle": "输入 XML",
       "inputPlaceholder": "在此粘贴你的 XML...",
       "minify": "压缩",
-      "spaces": "{n} 个空格"
+      "spaces": "{n} 个空格",
+      "errorInvalidXml": "无效的 XML",
+      "errorParseFailed": "XML 解析失败"
     },
     "emailNormalizer": {
       "name": "邮箱地址规范化",
@@ -1235,7 +1261,8 @@
       "original": "原始",
       "normalized": "标准化",
       "status": "状态",
-      "ok": "正常"
+      "ok": "正常",
+      "errorMissingAt": "邮箱格式无效：缺少 @"
     },
     "regexTester": {
       "name": "正则表达式测试器",
@@ -1257,7 +1284,8 @@
       "matchCountPlural": "{count} 个匹配",
       "flags": "标志",
       "none": "无",
-      "noMatches": "未找到匹配"
+      "noMatches": "未找到匹配",
+      "errorInvalidPattern": "无效的正则表达式"
     },
     "ipv4SubnetCalculator": {
       "name": "IPv4 子网计算器",
@@ -1341,7 +1369,10 @@
       "addsAppNameLabels": "添加 {field} 标签",
       "setsRestartPolicy": "未指定时设置 {field}",
       "convertsNetworks": "将网络数组转换为映射格式",
-      "addsNetworkNames": "添加显式网络名称和卷驱动"
+      "addsNetworkNames": "添加显式网络名称和卷驱动",
+      "errorInvalidYaml": "无效的 YAML：不是对象",
+      "errorUnknown": "未知错误",
+      "errorYamlParse": "YAML 解析错误：{message}"
     },
     "cameraRecorder": {
       "name": "摄像头录制",
@@ -1376,7 +1407,11 @@
       "timeRemaining": "剩余时间",
       "estimatedEnd": "预计结束",
       "example": "示例",
-      "exampleText": "如果你 3 分钟洗 5 个盘子，而总共有 500 个盘子要洗，那么全部洗完大约需要 5 小时。输入总任务数、已完成数量和开始时间，即可查看预计完成时间。"
+      "exampleText": "如果你 3 分钟洗 5 个盘子，而总共有 500 个盘子要洗，那么全部洗完大约需要 5 小时。输入总任务数、已完成数量和开始时间，即可查看预计完成时间。",
+      "durationDays": "{n}天",
+      "durationHours": "{n}小时",
+      "durationMinutes": "{n}分",
+      "durationSeconds": "{n}秒"
     },
     "benchmarkBuilder": {
       "name": "基准测试构建器",
@@ -1410,7 +1445,11 @@
       "maskedOutput": "掩码输出",
       "comparison": "前后对比",
       "before": "前",
-      "after": "后"
+      "after": "后",
+      "patternEmail": "邮箱",
+      "patternPhone": "电话",
+      "patternIp": "IPv4 地址",
+      "patternCreditCard": "信用卡"
     },
     "textToUnicode": {
       "name": "文本转 Unicode",
@@ -1496,7 +1535,9 @@
     "jsonToCsv": {
       "name": "JSON 转 CSV",
       "description": "将 JSON 数组转换为 CSV",
-      "outputTitle": "输出 CSV"
+      "outputTitle": "输出 CSV",
+      "errorNotArray": "输入必须是对象数组形式的 JSON",
+      "errorItemNotObject": "数组中的每一项都必须是 JSON 对象"
     },
     "xmlToJson": {
       "name": "XML 转 JSON",
@@ -1530,7 +1571,20 @@
       "custom": "自定义",
       "inputPlaceholder": "输入日期字符串或时间戳...",
       "now": "现在",
-      "customFormatPlaceholder": "自定义格式（如 YYYY/MM/DD HH:mm）"
+      "customFormatPlaceholder": "自定义格式（如 YYYY/MM/DD HH:mm）",
+      "errorInvalidUnixSeconds": "无效的 Unix 时间戳（秒）",
+      "errorInvalidUnixMs": "无效的 Unix 时间戳（毫秒）",
+      "errorInvalidIso": "无效的 ISO 8601 日期",
+      "errorInvalidRfc": "无效的 RFC 3339 日期",
+      "errorInvalidUtc": "无效的 UTC 字符串",
+      "errorCustomFormatRequired": "需要自定义格式字符串",
+      "errorFormatMismatch": "输入与格式“{format}”不匹配",
+      "errorInvalidDate": "无效的日期输入",
+      "labelUnixSeconds": "Unix 时间戳（秒）",
+      "labelUnixMilliseconds": "Unix 时间戳（毫秒）",
+      "labelUtcString": "UTC 字符串",
+      "labelLocalDateTime": "本地日期时间",
+      "labelRelative": "相对时间"
     },
     "listConverter": {
       "name": "列表转换器",

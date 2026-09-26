@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n';
 export interface GroupCapture {
   name: string;
   value: string;
@@ -94,7 +95,7 @@ export function testRegex(pattern: string, text: string, flags: string): RegexTe
       matchCount: results.length,
     };
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Invalid regex pattern';
+    const message = e instanceof Error ? e.message : i18n.global.t('tools.regexTester.errorInvalidPattern');
     return { matches: [], error: message, matchCount: 0 };
   }
 }
