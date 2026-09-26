@@ -23,7 +23,7 @@ function walk(dir, out = []) {
 }
 
 // static keys only: t('a.b') / $t("a.b") / i18n.global.t('a.b')
-const KEY_RE = /(?<![\w$.])\$?t\(\s*(['"])([A-Za-z0-9_.-]+)\1/g;
+const KEY_RE = /(?<![\w$.])\$?t\(\s*(['"])([A-Za-z0-9_.-]+)\1|i18n\.global\.t\(\s*(['"])([A-Za-z0-9_.-]+)\3/g;
 
 const missing = new Map();
 const used = new Set();
@@ -37,7 +37,7 @@ for (const f of walk(SRC)) {
   let m;
   KEY_RE.lastIndex = 0;
   while ((m = KEY_RE.exec(src))) {
-    const key = m[2];
+    const key = m[2] ?? m[4];
     used.add(key);
     const line = src.slice(0, m.index).split('\n').length;
     if (!hasKey(en, key) || !hasKey(zh, key)) {
