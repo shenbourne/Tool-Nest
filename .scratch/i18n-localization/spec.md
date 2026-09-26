@@ -138,3 +138,38 @@ Created: 2026-09-24
 ## Comments
 
 - 2026-09-24：扫描基线建立，范围与键命名策略经用户确认（全量前端 196 文件；复用共享命名空间；分批原子提交）。
+
+## 实施结果
+
+### 补充批次（实施期间新发现）
+
+| # | 批次 | 说明 | Issue |
+| --- | --- | --- | --- |
+| 17 | crontab 语法图示 | `<pre>` 中硬编码的 cron 字段示意图 | [issues/17-crontab-diagram.md](issues/17-crontab-diagram.md) |
+| 18 | service 层文案 | 10 个 `.service.ts` + `password-strength-analyser/index.ts` 返回的 UI 可见英文 | [issues/18-service-layer.md](issues/18-service-layer.md) |
+| 19 | Naive UI locale | `NConfigProvider` 未绑定 `:locale`，组件库内置文案为英文 | [issues/19-naive-ui-locale.md](issues/19-naive-ui-locale.md) |
+| 20 | i18n localStorage 守卫 | service 引入 i18n 后测试环境缺少 localStorage | [issues/20-i18n-localstorage-guard.md](issues/20-i18n-localstorage-guard.md) |
+
+### 数据
+
+- 基线：196 个文件 / 754 处硬编码英文
+- 结果：0 个文件 / 0 处（18 处按 spec §非目标 豁免，见 `scan-allowlist.json`）
+- locale 键：560 → 1404（en/zh 完全对齐）
+- 代码中引用的 i18n 键：934 个，全部可解析（含 service 层 `i18n.global.t`）
+
+### 验收
+
+- [x] 扫描报告 0 处硬编码英文文案（豁免项见 `scan-allowlist.json`）
+- [x] `en.json` 与 `zh.json` 键集合完全一致
+- [x] `zh.json` 中每个值含中文（专有名词/纯符号白名单除外）
+- [x] `pnpm --filter @toolnest/web type-check` 通过
+- [x] `pnpm --filter @toolnest/web lint` 无新增错误（错误文件数 97 → 91）
+- [x] `pnpm --filter @toolnest/web test` 38/38 通过
+- [x] 浏览器实测 zh / en 双语渲染正确：首页、分类、工具页、service 层文案、Naive UI 内置文案、无键名泄漏
+
+### 遗留（明确不在本轮范围）
+
+- 第三方库自身产生的英文消息：`JSON.parse` 语法错误、`DOMParser.parseError.textContent`、
+  `sql-formatter`/`@iarna/toml` 等的原生报错
+- 服务端 `apps/server` 的 API 错误消息（前端按 code 映射属独立改造）
+- 工具标签（`tool.tags`，如 `converter`/`json`）为筛选用的技术标识，按设计不翻译

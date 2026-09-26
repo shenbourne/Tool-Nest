@@ -1,6 +1,6 @@
 # 05 — image 分类
 
-Status: ready-for-agent
+Status: resolved
 Type: task
 Blocked by: 00-shared-namespace
 
@@ -143,3 +143,5 @@ Blocked by: 00-shared-namespace
 - 完成后运行 `pnpm --filter @toolnest/web type-check` 与 `lint`
 
 ## Comments
+
+- 已完成：批次提交见 `git log --grep="feat(i18n)"`；本地化片段 `.scratch/i18n-localization/fragments/`。

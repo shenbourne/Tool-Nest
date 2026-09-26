@@ -1,6 +1,6 @@
 # 00 — 共享命名空间扩充
 
-Status: ready-for-agent
+Status: resolved
 Type: task
 Blocked by: —
 
@@ -64,3 +64,5 @@ Blocked by: —
 - 键必须同时加入 en 与 zh，且二者键集合保持一致
 
 ## Comments
+
+- 已完成：批次提交见 `git log --grep="feat(i18n)"`；本地化片段 `.scratch/i18n-localization/fragments/`。
