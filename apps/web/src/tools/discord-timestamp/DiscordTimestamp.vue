@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace } from 'naive-ui';
+import { NCard, NInput, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
@@ -23,9 +23,10 @@ const FORMATS = computed(() => [
   ['F', t('tools.discordTimestamp.longDateTime')],
   ['R', t('tools.discordTimestamp.relative')],
 ]);
+const dateError = computed(() => (input.value.trim() && isNaN(new Date(input.value).getTime()) ? t('common.invalidDate') : ''));
 const output = computed(() => {
   const d = new Date(input.value);
-  if (isNaN(d.getTime())) return t('common.invalidDate');
+  if (isNaN(d.getTime())) return '';
   const unix = Math.floor(d.getTime()/1000);
   return FORMATS.value.map(([f,label]) => '<t:' + unix + ':' + f + '>  (' + label + ')').join('\n');
 });
@@ -34,6 +35,7 @@ const output = computed(() => {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NInput v-model:value="input" placeholder="YYYY-MM-DDTHH:mm" />
+      <NAlert v-if="dateError" type="error" :title="dateError" />
       <NInput :value="output" type="textarea" :rows="8" readonly />
     </NSpace></NCard>
   </ToolLayout>
