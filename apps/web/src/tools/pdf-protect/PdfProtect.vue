@@ -11,7 +11,7 @@ const resultUrl = ref('');
 const processing = ref(false);
 const error = ref('');
 function onFile(f: File | null) { file.value = f; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; error.value = ''; }
-function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'protected.pdf'; a.click(); } }
+function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'document-resaved.pdf'; a.click(); } }
 async function process() {
   if (!file.value) return;
   processing.value = true;

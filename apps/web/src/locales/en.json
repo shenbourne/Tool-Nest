@@ -938,7 +938,8 @@
       "fontSize": "Font Size: ",
       "text": "Text: ",
       "textPlaceholder": "Enter text...",
-      "defaultText": "Text"
+      "defaultText": "Text",
+      "confirmClearAll": "Clear all annotations?"
     },
     "imageRemoveBackground": {
       "name": "Image Remove Background",
@@ -975,7 +976,7 @@
     "pdfProtect": {
       "name": "PDF Protect",
       "description": "Add protection to PDF documents",
-      "note": "Note: Basic PDF re-save. Full encryption requires server-side processing.",
+      "note": "Note: this only re-saves the PDF and updates metadata. It does NOT encrypt or password-protect the file.",
       "process": "Process PDF"
     },
     "convertToPdf": {
@@ -1411,7 +1412,8 @@
       "pause": "Pause",
       "resume": "Resume",
       "recordingUnsupported": "Video recording is not supported in your browser",
-      "recordings": "Recordings"
+      "recordings": "Recordings",
+      "confirmDelete": "Delete this recording?"
     },
     "etaCalculator": {
       "name": "ETA Calculator",
