@@ -791,7 +791,8 @@
     },
     "daysToHours": {
       "name": "Days to Hours",
-      "description": "Convert days to hours, minutes, and seconds"
+      "description": "Convert days to hours, minutes, and seconds",
+      "invalidInput": "Please enter a single number"
     },
     "hoursToDays": {
       "name": "Hours to Days",

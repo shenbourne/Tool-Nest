@@ -791,7 +791,8 @@
     },
     "daysToHours": {
       "name": "天转小时",
-      "description": "将天数转换为小时、分钟和秒"
+      "description": "将天数转换为小时、分钟和秒",
+      "invalidInput": "请输入一个数字"
     },
     "hoursToDays": {
       "name": "小时转天",
