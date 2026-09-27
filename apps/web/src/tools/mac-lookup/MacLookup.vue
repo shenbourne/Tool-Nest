@@ -12,8 +12,10 @@ const loading = ref(false);
 const error = ref('');
 async function lookup() {
   loading.value = true; vendor.value = ''; error.value = '';
-  const prefix = mac.value.replace(/[:-]/g, '').slice(0, 6).toUpperCase();
-  if (prefix.length < 6) { error.value = t('tools.macLookup.invalidMac'); loading.value = false; return; }
+  // Accept the common Cisco dotted form (6416.7F00.0001) alongside colon and
+  // hyphen separators, then require a valid hex prefix before calling the API.
+  const prefix = mac.value.replace(/[.:\-]/g, '').slice(0, 6).toUpperCase();
+  if (!/^[0-9A-F]{6}$/.test(prefix)) { error.value = t('tools.macLookup.invalidMac'); loading.value = false; return; }
   try {
     const r = await fetch('https://api.maclookup.app/v2/macs/' + prefix);
     const j = await r.json();
