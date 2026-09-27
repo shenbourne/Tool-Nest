@@ -22,7 +22,15 @@ async function process() {
     const buf = await file.value.arrayBuffer();
     const src = await PDFDocument.load(buf);
     const out = await PDFDocument.create();
-    const indices = pages.value.split(/[,\s]+/).map(s => { const n = parseInt(s) - 1; return n >= 0 && n < src.getPageCount() ? n : -1; }).filter(n => n >= 0);
+    const pageCount = src.getPageCount();
+    const tokens = pages.value.split(/[,\s]+/).filter(Boolean);
+    const invalid = tokens.filter((s) => !/^\d+$/.test(s) || Number(s) < 1 || Number(s) > pageCount);
+    if (invalid.length) {
+      error.value = t('tools.pdfSplit.invalidPages', { pages: invalid.join(', ') });
+      processing.value = false;
+      return;
+    }
+    const indices = tokens.map(s => Number(s) - 1);
     if (indices.length === 0) { error.value = t('tools.pdfSplit.noValidPages'); processing.value = false; return; }
     const copied = await out.copyPages(src, indices);
     copied.forEach(p => out.addPage(p));
