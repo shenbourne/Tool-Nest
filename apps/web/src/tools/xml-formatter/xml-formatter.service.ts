@@ -9,8 +9,9 @@ function indentNode(node: Node, indent: string, level: number): string {
   const padInner = indent.repeat(level + 1);
 
   if (node.nodeType === Node.TEXT_NODE) {
+    // textContent is entity-decoded; re-escape so the output stays valid XML.
     const text = node.textContent?.trim() || '';
-    return text;
+    return text ? escapeText(text) : '';
   }
 
   if (node.nodeType === Node.COMMENT_NODE) {
@@ -45,7 +46,7 @@ function indentNode(node: Node, indent: string, level: number): string {
 
   if (childElements.length === 0 && textChildren.length === 1) {
     // Single text child — keep on one line
-    return `${pad}<${tagName}${attrs}>${textChildren[0].textContent?.trim()}</${tagName}>`;
+    return `${pad}<${tagName}${attrs}>${escapeText(textChildren[0].textContent?.trim() || '')}</${tagName}>`;
   }
 
   // Has child elements or multiple children
@@ -56,7 +57,7 @@ function indentNode(node: Node, indent: string, level: number): string {
     if (child.nodeType === Node.ELEMENT_NODE || child.nodeType === Node.COMMENT_NODE || child.nodeType === Node.CDATA_SECTION_NODE) {
       lines.push(indentNode(child, indent, level + 1));
     } else if (child.nodeType === Node.TEXT_NODE && child.textContent?.trim()) {
-      lines.push(`${padInner}${child.textContent.trim()}`);
+      lines.push(`${padInner}${escapeText(child.textContent.trim())}`);
     }
   }
 
@@ -66,6 +67,10 @@ function indentNode(node: Node, indent: string, level: number): string {
 
 function escapeAttrValue(value: string): string {
   return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function escapeText(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 export function formatXml(input: string, indentSize: number = 2): XmlFormatResult {
