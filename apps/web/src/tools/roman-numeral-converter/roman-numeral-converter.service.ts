@@ -19,7 +19,8 @@ export function arabicToRoman(num: number): string {
 }
 
 export function isValidRomanNumber(s: string): boolean {
-  return ROMAN_NUMBER_REGEX.test(s);
+  // The pattern alone matches the empty string, which would decode to 0.
+  return s.length > 0 && ROMAN_NUMBER_REGEX.test(s);
 }
 
 export function romanToArabic(s: string): number | null {
