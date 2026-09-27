@@ -12,7 +12,7 @@ const origSize = ref(0);
 const newSize = ref(0);
 const processing = ref(false);
 const error = ref('');
-function onFile(f: File | null) { file.value = f; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; error.value = ''; }
+function onFile(f: File | null) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; origSize.value = 0; newSize.value = 0; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'compressed.pdf'; a.click(); } }
 async function process() {
   if (!file.value) return;
@@ -42,7 +42,7 @@ onUnmounted(() => {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.compressPdf.compress') }}</NButton>
+      <NButton type="primary" :loading="processing" :disabled="!file || processing" @click="process">{{ t('tools.compressPdf.compress') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NAlert v-if="origSize" type="info" :title="t('tools.compressPdf.sizeResult', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />
       <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
