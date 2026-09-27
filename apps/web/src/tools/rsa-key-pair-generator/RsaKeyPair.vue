@@ -19,15 +19,17 @@ const error = ref('');
 function generate() {
   generating.value = true;
   error.value = '';
-  try {
-    const keypair = forge.pki.rsa.generateKeyPair({ bits: keySize.value, workers: -1 });
-    publicKey.value = forge.pki.publicKeyToPem(keypair.publicKey);
-    privateKey.value = forge.pki.privateKeyToPem(keypair.privateKey);
-  } catch (e: any) {
-    error.value = e.message || t('tools.rsaKeyPair.generateFailed');
-  } finally {
+  // The callback form runs off the main thread, so the loading state renders
+  // and the page stays responsive during key generation.
+  forge.pki.rsa.generateKeyPair({ bits: keySize.value }, (err, keypair) => {
+    if (err) {
+      error.value = err.message || t('tools.rsaKeyPair.generateFailed');
+    } else {
+      publicKey.value = forge.pki.publicKeyToPem(keypair.publicKey);
+      privateKey.value = forge.pki.privateKeyToPem(keypair.privateKey);
+    }
     generating.value = false;
-  }
+  });
 }
 
 function copyPublic() { copyToClipboard(publicKey.value); }
