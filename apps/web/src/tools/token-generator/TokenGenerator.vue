@@ -55,7 +55,7 @@ function copy() { copyToClipboard(token.value); }
         <NInput :value="token" type="textarea" readonly :rows="3" style="text-align: center; font-family: monospace;" />
 
         <div style="display: flex; justify-content: center; gap: 12px;">
-          <NButton @click="copy">{{ t('tool.copy') }}</NButton>
+          <NButton @click="copy" :disabled="!token">{{ t('tool.copy') }}</NButton>
           <NButton @click="refresh">{{ t('common.retry') }}</NButton>
         </div>
       </NSpace>
