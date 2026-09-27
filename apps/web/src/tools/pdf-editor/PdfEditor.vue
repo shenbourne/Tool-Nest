@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { NCard, NSpace, NButton, NUpload, NInput, NInputNumber, NSelect, NColorPicker, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -26,6 +26,13 @@ const positionOptions = computed(() => [
 ]);
 
 function onFile(f: File | null) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; }
+
+// Any edit invalidates a previously generated PDF; keep the download in sync
+// with the current inputs.
+watch([text, position, fontSize, color], () => {
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
+  resultUrl.value = '';
+});
 
 function hexToRgb(hex: string): [number, number, number] {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
