@@ -13,12 +13,16 @@ const imageUrl = ref<string>('');
 const targetColor = ref('#ffffff');
 const tolerance = ref(30);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
+// Only true once a processed result exists; prevents downloading a blank
+// canvas before the user has applied anything.
+const hasResult = ref(false);
 
 function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement;
   const f = input.files?.[0];
   if (f) {
     file.value = f;
+    hasResult.value = false;
     if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
     imageUrl.value = URL.createObjectURL(f);
   }
@@ -55,6 +59,7 @@ function processImage() {
       }
     }
     ctx.putImageData(imageData, 0, 0);
+    hasResult.value = true;
   };
   img.src = imageUrl.value;
 }
@@ -106,7 +111,7 @@ onUnmounted(() => {
             <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" />
           </div>
           <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
-          <NButton type="success" :disabled="!file" @click="download">{{ t('tool.download') }}</NButton>
+          <NButton type="success" :disabled="!hasResult" @click="download">{{ t('tool.download') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>
