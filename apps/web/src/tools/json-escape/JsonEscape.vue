@@ -12,7 +12,10 @@ const mode = ref<'escape'|'unescape'>('escape');
 const output = computed(() => {
   try {
     if (mode.value === 'escape') return JSON.stringify(input.value);
-    return JSON.parse(input.value);
+    // Unescaping a non-string JSON value (number, boolean, object) must not
+    // render as [object Object]; present its JSON text instead.
+    const parsed = JSON.parse(input.value);
+    return typeof parsed === 'string' ? parsed : JSON.stringify(parsed);
   } catch { return t('tools.jsonEscape.invalidInput'); }
 });
 </script>
