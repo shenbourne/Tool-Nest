@@ -14,6 +14,9 @@ async function fetchInfo() {
   try {
     const r = await fetch('https://ipapi.co/json/');
     const j = await r.json();
+    // Rate-limited/error responses are JSON without an `ip` field; treat them
+    // as failures instead of rendering a table of empty rows.
+    if (!r.ok || !j.ip) throw new Error(j.reason || `HTTP ${r.status}`);
     data.value = [
       { key: t('tools.ipInfo.ipAddress'), value: j.ip || '' },
       { key: t('common.version'), value: j.version || '' },
