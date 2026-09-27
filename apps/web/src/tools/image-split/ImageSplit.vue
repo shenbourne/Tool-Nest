@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { NCard, NSpace, NButton, NInputNumber } from 'naive-ui';
+import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
@@ -13,6 +13,7 @@ const imageUrl = ref<string>('');
 const rows = ref(2);
 const cols = ref(2);
 const tiles = ref<string[]>([]);
+const error = ref('');
 
 function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement;
@@ -26,6 +27,7 @@ function onFileChange(e: Event) {
 
 function splitImage() {
   if (!file.value) return;
+  error.value = '';
   const img = new Image();
   img.crossOrigin = 'anonymous';
   img.onload = () => {
@@ -44,6 +46,10 @@ function splitImage() {
       }
     }
     tiles.value = newTiles;
+  };
+  img.onerror = () => {
+    tiles.value = [];
+    error.value = t('common.processingFailed');
   };
   img.src = imageUrl.value;
 }
@@ -92,6 +98,7 @@ onUnmounted(() => {
             <NInputNumber v-model:value="cols" :min="1" :max="10" :step="1" />
           </div>
           <NButton type="primary" :disabled="!file" @click="splitImage">{{ t('tools.imageSplit.split') }}</NButton>
+          <NAlert v-if="error" type="error" :title="error" />
         </NSpace>
       </NCard>
       <NCard v-if="tiles.length" :title="t('tools.imageSplit.tiles')">
