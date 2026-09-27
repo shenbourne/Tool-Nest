@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSelect, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { convertBase } from './base-converter.service';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -17,13 +18,7 @@ const bases = computed(() => [
   { label: t('tools.baseConverter.base32'), value: 32 }, { label: t('tools.baseConverter.base36'), value: 36 },
 ]);
 
-const output = computed(() => {
-  try {
-    const decimal = parseInt(inputValue.value, inputBase.value);
-    if (isNaN(decimal)) return t('tools.baseConverter.invalidInput');
-    return decimal.toString(outputBase.value).toUpperCase();
-  } catch { return t('common.error'); }
-});
+const output = computed(() => convertBase(inputValue.value, inputBase.value, outputBase.value));
 </script>
 
 <template>
