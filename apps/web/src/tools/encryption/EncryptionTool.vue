@@ -34,6 +34,13 @@ function doDecrypt() {
   }
 }
 
+// A previously decrypted plaintext is tied to the inputs that produced it;
+// once they change, the stale result must not linger next to the new inputs.
+watch([decryptInput, decryptAlgo, decryptSecret], () => {
+  decryptOutput.value = '';
+  decryptError.value = '';
+});
+
 function copy() { copyToClipboard(encryptOutput.value); }
 </script>
 
