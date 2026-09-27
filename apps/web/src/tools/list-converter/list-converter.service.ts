@@ -39,9 +39,9 @@ export function convertList(input: string, options: ListOptions): string {
 
   // Sort
   if (options.sortItems === 'asc') {
-    items.sort((a, b) => a.localeCompare(b));
+    items.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
   } else if (options.sortItems === 'desc') {
-    items.sort((a, b) => b.localeCompare(a));
+    items.sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: 'base' }));
   }
 
   // Add prefix/suffix
