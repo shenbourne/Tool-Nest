@@ -5,6 +5,9 @@ export function useQrCode(text: Ref<string>, options?: { foreground?: Ref<string
   const dataUrl = ref('');
   // Distinguish a generation failure (e.g. text too long) from an empty input.
   const error = ref(false);
+  // Sequence guard: a slower earlier render must never overwrite the result of
+  // a newer input.
+  let sequence = 0;
 
   watch(
     () => [
@@ -14,13 +17,14 @@ export function useQrCode(text: Ref<string>, options?: { foreground?: Ref<string
       options?.errorCorrectionLevel?.value,
     ],
     async () => {
+      const current = ++sequence;
       if (!text.value.trim()) {
         dataUrl.value = '';
         error.value = false;
         return;
       }
       try {
-        dataUrl.value = await QRCode.toDataURL(text.value.trim(), {
+        const url = await QRCode.toDataURL(text.value.trim(), {
           color: {
             dark: options?.foreground?.value || '#000000',
             light: options?.background?.value || '#ffffff',
@@ -28,8 +32,11 @@ export function useQrCode(text: Ref<string>, options?: { foreground?: Ref<string
           errorCorrectionLevel: (options?.errorCorrectionLevel?.value || 'M') as 'L' | 'M' | 'Q' | 'H',
           width: 512,
         });
+        if (current !== sequence) return;
+        dataUrl.value = url;
         error.value = false;
       } catch {
+        if (current !== sequence) return;
         dataUrl.value = '';
         error.value = true;
       }
