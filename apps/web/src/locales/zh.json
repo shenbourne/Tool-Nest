@@ -637,6 +637,7 @@
       "name": "随机数生成器",
       "description": "在自定义范围内生成随机数",
       "rangeTooSmall": "范围太小，无法生成不重复的数字",
+      "invalidRange": "最小值必须小于或等于最大值",
       "uniqueOnly": "仅不重复"
     },
     "numberSum": {

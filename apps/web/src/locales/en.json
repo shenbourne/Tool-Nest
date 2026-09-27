@@ -637,6 +637,7 @@
       "name": "Random Number Generator",
       "description": "Generate random numbers with custom range",
       "rangeTooSmall": "Range too small for unique numbers",
+      "invalidRange": "Minimum must be less than or equal to maximum",
       "uniqueOnly": "Unique only"
     },
     "numberSum": {

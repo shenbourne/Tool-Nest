@@ -4,18 +4,13 @@ import { NCard, NSpace, NInputNumber, NButton, NInput, NSwitch } from 'naive-ui'
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+import { generateRandomNumbers } from './random-number-generator.service';
 const { t } = useI18n();
 const min = ref(1); const max = ref(100); const count = ref(1);
 const unique = ref(false); const result = ref('');
 function gen() {
-  const nums = new Set<number>();
-  const range = max.value - min.value + 1;
-  if (unique.value && count.value > range) { result.value = t('tools.randomNumberGenerator.rangeTooSmall'); return; }
-  while (nums.size < count.value) {
-    nums.add(Math.floor(Math.random() * range) + min.value);
-    if (nums.size > 10000) break;
-  }
-  result.value = [...nums].join(', ');
+  const res = generateRandomNumbers(min.value, max.value, count.value, unique.value);
+  result.value = res.ok ? res.values.join(', ') : t(`tools.randomNumberGenerator.${res.error}`);
 }
 </script>
 <template>
