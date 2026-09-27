@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NSpace, NButton, NInputNumber, NColorPicker, NInput } from 'naive-ui';
+import { NCard, NSpace, NButton, NInputNumber, NColorPicker, NInput, NPopconfirm } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
@@ -244,7 +244,12 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
             <NButton :type="activeTool === 'text' ? 'primary' : 'default'" @click="setTool('text')">{{ t('tools.imageEditor.addText') }}</NButton>
             <NButton :type="activeTool === 'line' ? 'primary' : 'default'" @click="setTool('line')">{{ t('tools.imageEditor.drawLine') }}</NButton>
             <NButton @click="setTool('none')">{{ t('common.select') }}</NButton>
-            <NButton type="error" @click="clearAll">{{ t('tools.imageEditor.clearAll') }}</NButton>
+            <NPopconfirm @positive-click="clearAll">
+              <template #trigger>
+                <NButton type="error">{{ t('tools.imageEditor.clearAll') }}</NButton>
+              </template>
+              {{ t('tools.imageEditor.confirmClearAll') }}
+            </NPopconfirm>
           </NSpace>
           <NSpace :size="16">
             <div>
