@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { NCard, NInput, NInputNumber, NSpace, NFormItem } from 'naive-ui';
+import { NCard, NInput, NInputNumber, NSpace, NFormItem, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+
+const { t } = useI18n();
 
 const hex = ref('#4a90d9');
 const r = ref(74); const g = ref(144); const b = ref(217);
@@ -16,7 +19,15 @@ function rgbToHex() {
   hex.value = '#' + [r.value, g.value, b.value].map(c => Math.max(0,Math.min(255,c)).toString(16).padStart(2,'0')).join('');
 }
 
-watch(hex, (v) => { if (/^#[0-9a-fA-F]{6}$/.test(v)) hexToRgb(v); });
+const hexError = computed(() => {
+  const v = hex.value.trim();
+  return v && !/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v) ? t('tools.colorConverter.invalidHex') : '';
+});
+watch(hex, (v) => {
+  const m = v.replace('#','');
+  if (/^[0-9a-fA-F]{3}$/.test(m)) hexToRgb(m.split('').map(c => c + c).join(''));
+  else if (/^[0-9a-fA-F]{6}$/.test(m)) hexToRgb(m);
+});
 watch([r, g, b], () => rgbToHex());
 
 const hsl = computed(() => {
@@ -40,6 +51,7 @@ const hsl = computed(() => {
       <NSpace vertical :size="16">
         <div :style="{ width: '100%', height: '60px', borderRadius: '8px', background: hex }" />
         <NInput v-model:value="hex" placeholder="#000000" />
+        <NAlert v-if="hexError" type="error" :title="hexError" />
         <div style="display: flex; gap: 12px;">
           <NFormItem label="R" label-placement="left" style="flex:1;">
             <NInputNumber v-model:value="r" :min="0" :max="255" />
