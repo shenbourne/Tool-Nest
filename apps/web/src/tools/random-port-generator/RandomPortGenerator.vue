@@ -31,6 +31,9 @@ function refresh() {
   port.value = generatePort();
 }
 
+// Toggling the exclusion must not leave a port on screen that violates it.
+watch(excludeCommon, () => refresh());
+
 function copy() {
   copyToClipboard(String(port.value));
 }
