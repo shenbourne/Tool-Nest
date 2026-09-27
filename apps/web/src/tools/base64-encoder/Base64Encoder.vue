@@ -34,6 +34,10 @@ function copyOutput() {
 
 function swap() {
   const prev = output.value;
+  // Swapping an empty result (e.g. an invalid decode) would wipe the user's
+  // original input, so refuse instead.
+  if (!prev) { error.value = t('tools.base64Encoder.nothingToSwap'); return; }
+  error.value = '';
   mode.value = mode.value === 'encode' ? 'decode' : 'encode';
   input.value = prev;
 }
