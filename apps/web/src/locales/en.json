@@ -632,7 +632,8 @@
       "history": "History:",
       "unexpected": "Unexpected: {char}",
       "endOfInput": "end of input",
-      "errorPrefix": "Error: {message}"
+      "errorPrefix": "Error: {message}",
+      "notFinite": "result is not a finite number"
     },
     "randomNumberGenerator": {
       "name": "Random Number Generator",

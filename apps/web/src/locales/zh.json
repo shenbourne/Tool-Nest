@@ -632,7 +632,8 @@
       "history": "历史记录:",
       "unexpected": "意外字符: {char}",
       "endOfInput": "输入末尾",
-      "errorPrefix": "错误: {message}"
+      "errorPrefix": "错误: {message}",
+      "notFinite": "结果不是有限数"
     },
     "randomNumberGenerator": {
       "name": "随机数生成器",
