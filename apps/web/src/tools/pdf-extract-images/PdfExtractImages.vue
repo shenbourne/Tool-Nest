@@ -17,7 +17,12 @@ const processing = ref(false);
 const error = ref('');
 const images = ref<PageImage[]>([]);
 
+function revokeImages() {
+  for (const img of images.value) URL.revokeObjectURL(img.url);
+}
+
 function onFile(f: File | null) {
+  revokeImages();
   file.value = f;
   images.value = [];
   error.value = '';
@@ -34,6 +39,7 @@ async function extract() {
   if (!file.value) return;
   processing.value = true;
   error.value = '';
+  revokeImages();
   images.value = [];
   try {
     const pdfjsLib = await import('pdfjs-dist');
@@ -59,6 +65,7 @@ async function extract() {
   }
   processing.value = false;
 }
+onUnmounted(() => revokeImages());
 </script>
 <template>
   <ToolLayout :tool="tool">

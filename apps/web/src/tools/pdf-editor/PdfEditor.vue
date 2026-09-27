@@ -25,7 +25,7 @@ const positionOptions = computed(() => [
   { label: t('tools.pdfEditor.position.bottomRight'), value: 'bottom-right' },
 ]);
 
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; error.value = ''; }
+function onFile(f: File | null) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; }
 
 function hexToRgb(hex: string): [number, number, number] {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
@@ -96,12 +96,14 @@ async function apply() {
     }
 
     const bytes = await doc.save();
+    if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
     resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
   } catch (e: any) {
     error.value = e.message || t('tools.pdfEditor.failed');
   }
   processing.value = false;
 }
+onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); });
 </script>
 <template>
   <ToolLayout :tool="tool">
