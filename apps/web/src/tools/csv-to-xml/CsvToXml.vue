@@ -23,9 +23,17 @@ const output = computed(() => {
   const rows = parseCSV(input.value);
   if (rows.length < 2) return '';
   const h = rows[0];
-  const items = rows.slice(1).map(r => '  <row>\n' + h.map((tag,i) => '    <' + tag + '>' + (r[i]||'') + '</' + tag + '>').join('\n') + '\n  </row>');
+  const items = rows.slice(1).map(r => '  <row>\n' + h.map((tag,i) => '    <' + sanitizeTag(tag) + '>' + escapeXml(r[i]||'') + '</' + sanitizeTag(tag) + '>').join('\n') + '\n  </row>');
   return '<data>\n' + items.join('\n') + '\n</data>';
 });
+// Cell values must be escaped or the output is not parseable XML.
+function escapeXml(s: string) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+// Header text becomes element names; only a few characters are legal there.
+function sanitizeTag(s: string) {
+  return s.replace(/[^a-zA-Z0-9_.-]/g, '_') || 'column';
+}
 </script>
 <template>
   <ToolLayout :tool="tool">
