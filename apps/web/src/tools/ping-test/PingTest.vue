@@ -37,7 +37,7 @@ async function run() {
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="target" :placeholder="t('common.enterDomainOrIp')" />
+        <NInput v-model:value="target" :placeholder="t('common.enterDomainOrIp')" @keyup.enter="run" />
         <NButton type="primary" :loading="loading" :disabled="!target" @click="run">{{ t('tools.pingTest.ping') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
         <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>
