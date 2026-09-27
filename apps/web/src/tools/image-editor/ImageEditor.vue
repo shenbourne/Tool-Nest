@@ -38,6 +38,7 @@ function onFileChange(e: Event) {
   const f = input.files?.[0];
   if (f) {
     file.value = f;
+    if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
     imageUrl.value = URL.createObjectURL(f);
   }
 }
@@ -167,6 +168,7 @@ function downloadImage() {
     URL.revokeObjectURL(url);
   }, 'image/png');
 }
+onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
 </script>
 
 <template>
