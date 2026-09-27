@@ -31,6 +31,15 @@ export function parseDockerRun(command: string): ParseResult {
     return { yaml: '', error: null, warnings: [] };
   }
 
+  // Flags that never take a value. Without this set, an unknown flag falls
+  // into the heuristic below and swallows the following token — so
+  // `docker run --rm nginx` discards `nginx` and reports "no image".
+  const BOOLEAN_FLAGS = new Set([
+    '-i', '--interactive', '-t', '--tty', '-it', '-ti',
+    '--rm', '--privileged', '--init', '--read-only', '--oom-kill-disable',
+    '--no-healthcheck', '--sig-proxy', '-d', '--detach',
+  ]);
+
   try {
     const tokens = tokenize(command.trim());
     const service: DockerComposeService = { image: '' };
@@ -99,6 +108,8 @@ export function parseDockerRun(command: string): ParseResult {
         if (i < tokens.length && !tokens[i].startsWith('-')) {
           i++;
         }
+      } else if (BOOLEAN_FLAGS.has(token)) {
+        i++;
       } else if (token.startsWith('-')) {
         warnings.push(i18n.global.t('tools.dockerRunToCompose.warnUnsupportedFlag', { flag: token }));
         i++;
