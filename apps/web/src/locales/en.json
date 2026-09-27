@@ -1123,7 +1123,8 @@
       "statusLine": "Status: {value}",
       "events": "Events:",
       "unknown": "Unknown",
-      "error": "Error: {message}"
+      "error": "Error: {message}",
+      "notFound": "Domain not found: {domain}"
     },
     "romanNumeralConverter": {
       "name": "Roman Numeral Converter",

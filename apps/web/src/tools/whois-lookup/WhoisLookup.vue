@@ -13,6 +13,14 @@ async function lookup() {
   loading.value = true; result.value = '';
   try {
     const r = await fetch('https://rdap.org/domain/' + encodeURIComponent(domain.value));
+    // rdap.org answers unknown domains with a 404 JSON error body; without a
+    // status check that body renders as a plausible-looking "result".
+    if (!r.ok) {
+      result.value = r.status === 404
+        ? t('tools.whoisLookup.notFound', { domain: domain.value })
+        : t('tools.whoisLookup.error', { message: `HTTP ${r.status}` });
+      return;
+    }
     const j = await r.json();
     const events = (j.events || []).map((e: any) => e.eventAction + ': ' + e.eventDate).join('\n');
     const name = (j.ldhName || domain.value);
@@ -21,7 +29,7 @@ async function lookup() {
     const regName = registrar ? (registrar.vcardArray?.[1]?.find((v: any) => v[0] === 'fn')?.[3] || t('tools.whoisLookup.unknown')) : t('tools.whoisLookup.unknown');
     result.value = t('tools.whoisLookup.domainLine', { value: name }) + '\n' + t('tools.whoisLookup.registrarLine', { value: regName }) + '\n' + t('tools.whoisLookup.statusLine', { value: status }) + '\n' + t('tools.whoisLookup.events') + '\n' + events;
   } catch (e: any) { result.value = t('tools.whoisLookup.error', { message: e.message }); }
-  loading.value = false;
+  finally { loading.value = false; }
 }
 </script>
 <template>

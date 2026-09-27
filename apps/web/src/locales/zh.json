@@ -1123,7 +1123,8 @@
       "statusLine": "状态：{value}",
       "events": "事件：",
       "unknown": "未知",
-      "error": "错误：{message}"
+      "error": "错误：{message}",
+      "notFound": "未找到域名：{domain}"
     },
     "romanNumeralConverter": {
       "name": "罗马数字转换器",
