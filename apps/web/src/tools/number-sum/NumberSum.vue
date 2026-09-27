@@ -9,7 +9,9 @@ const { t } = useI18n();
 
 const input = ref('');
 const output = computed(() => {
-  const nums = input.value.split('\n').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+  // Accept both one-per-line and comma-separated lists so pasted rows like
+  // "1, 2, 3" are not silently truncated to their first number.
+  const nums = input.value.split(/[\n,]+/).map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
   if (!nums.length) return '';
   const sorted = [...nums].sort((a,b) => a-b);
   const sum = nums.reduce((a,b) => a+b, 0);
