@@ -193,6 +193,10 @@ export function getNextExecutions(fields: string[], count: number = 5): Date[] {
   const doms = expandField(domF, 1, 31);
   const months = expandField(monthF, 1, 12);
   const dows = expandField(dowF, 0, 6);
+  // Standard cron day semantics: a wildcard field defers to the other field;
+  // when BOTH day-of-month and day-of-week are restricted, either may match.
+  const domAny = domF.trim() === '*';
+  const dowAny = dowF.trim() === '*';
 
   // Limit search to avoid infinite loops
   const maxIterations = 366 * 24 * 60 * 4; // ~4 years of minutes
@@ -209,7 +213,13 @@ export function getNextExecutions(fields: string[], count: number = 5): Date[] {
       continue;
     }
 
-    if (!doms.includes(current.getDate()) || !dows.includes(current.getDay())) {
+    // Standard cron semantics: when both day-of-month and day-of-week are
+    // restricted, a date matches when EITHER field matches (OR); a wildcard
+    // field defers to the other one.
+    const domMatch = doms.includes(current.getDate());
+    const dowMatch = dows.includes(current.getDay());
+    const dayMatches = domAny ? dowMatch : dowAny ? domMatch : domMatch || dowMatch;
+    if (!dayMatches) {
       current.setDate(current.getDate() + 1);
       current.setHours(0);
       current.setMinutes(0);
