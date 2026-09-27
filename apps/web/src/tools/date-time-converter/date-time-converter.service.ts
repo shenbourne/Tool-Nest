@@ -70,13 +70,12 @@ export function convertDate(input: string, inputFormat: InputFormat, customForma
       const trimmed = input.trim();
       const asNumber = Number(trimmed);
       if (!isNaN(asNumber) && trimmed.length >= 9) {
-        // Looks like a timestamp
-        if (asNumber > 1e12) {
+        // Looks like a timestamp. Modern millisecond timestamps have 12+ digits
+        // (e.g. 999999999999 = Nov 2001); shorter numeric strings are seconds.
+        if (trimmed.length >= 12) {
           date = dayjs(asNumber); // milliseconds
-        } else if (asNumber > 1e8) {
-          date = dayjs(asNumber * 1000); // seconds
         } else {
-          date = dayjs(trimmed);
+          date = dayjs(asNumber * 1000); // seconds
         }
       } else {
         date = dayjs(trimmed);
