@@ -268,7 +268,8 @@
       "name": "Base64 编码/解码",
       "description": "编码或解码 Base64 字符串",
       "encodePlaceholder": "输入要编码的文本...",
-      "decodePlaceholder": "输入要解码的 Base64..."
+      "decodePlaceholder": "输入要解码的 Base64...",
+      "nothingToSwap": "没有可交换的内容：输出为空"
     },
     "tokenGenerator": {
       "name": "令牌生成器",
@@ -297,7 +298,8 @@
       "compareStringPlaceholder": "你的字符串...",
       "compareHashPlaceholder": "你的哈希值...",
       "match": "匹配 ✓",
-      "noMatch": "不匹配 ✗"
+      "noMatch": "不匹配 ✗",
+      "invalidHash": "这不是一个 bcrypt 哈希"
     },
     "encryption": {
       "name": "文本加密",
@@ -655,7 +657,10 @@
     },
     "csvToJson": {
       "name": "CSV 转 JSON",
-      "description": "将 CSV 数据转换为 JSON 数组"
+      "description": "将 CSV 数据转换为 JSON 数组",
+      "duplicateHeaders": "检测到重复列头，已重命名以保留全部数据",
+      "extraColumns": "部分行的列数多于表头，多余数据已被丢弃",
+      "duplicateAndExtraColumns": "检测到重复列头与多余列，列头已重命名、多余数据已丢弃"
     },
     "csvToTsv": {
       "name": "CSV 转 TSV",
@@ -1113,6 +1118,8 @@
       "slow": "❌ 慢",
       "httpOnly": "❌ 仅 HTTP",
       "unreachable": "❌ 不可达",
+      "errorStatus": "❌ HTTP 错误 {code}",
+      "statusUnknown": "⚠️ 可达，但无法读取 HTTP 状态（被 CORS 阻止）",
       "checkColumn": "检查",
       "timeColumn": "时间"
     },

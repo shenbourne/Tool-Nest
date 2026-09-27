@@ -268,7 +268,8 @@
       "name": "Base64 Encoder/Decoder",
       "description": "Encode or decode Base64 strings",
       "encodePlaceholder": "Enter text to encode...",
-      "decodePlaceholder": "Enter Base64 to decode..."
+      "decodePlaceholder": "Enter Base64 to decode...",
+      "nothingToSwap": "Nothing to swap: the output is empty"
     },
     "tokenGenerator": {
       "name": "Token Generator",
@@ -297,7 +298,8 @@
       "compareStringPlaceholder": "Your string...",
       "compareHashPlaceholder": "Your hash...",
       "match": "Match ✓",
-      "noMatch": "No match ✗"
+      "noMatch": "No match ✗",
+      "invalidHash": "This does not look like a bcrypt hash"
     },
     "encryption": {
       "name": "Text Encryption",
@@ -655,7 +657,10 @@
     },
     "csvToJson": {
       "name": "CSV to JSON",
-      "description": "Convert CSV data to JSON array format"
+      "description": "Convert CSV data to JSON array format",
+      "duplicateHeaders": "Duplicate column headers detected; renamed to keep all data",
+      "extraColumns": "Some rows have more columns than the header; extra data was dropped",
+      "duplicateAndExtraColumns": "Duplicate headers and extra columns detected; headers renamed, extra data dropped"
     },
     "csvToTsv": {
       "name": "CSV to TSV",
@@ -1113,6 +1118,8 @@
       "slow": "❌ Slow",
       "httpOnly": "❌ HTTP only",
       "unreachable": "❌ Unreachable",
+      "errorStatus": "❌ HTTP error {code}",
+      "statusUnknown": "⚠️ Reachable, but the HTTP status is unreadable (CORS-blocked)",
       "checkColumn": "Check",
       "timeColumn": "Time"
     },
