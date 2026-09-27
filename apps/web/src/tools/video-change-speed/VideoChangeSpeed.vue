@@ -49,18 +49,29 @@ async function process() {
   try {
     const inputBytes = new Uint8Array(await file.value.arrayBuffer());
     const factor = parseFloat(speed.value);
-    const atempo = 1 / factor;
+    // ffmpeg's atempo only accepts [0.5, 100]; slower factors need a chain of
+    // filters (0.25 = atempo=0.5,atempo=0.5).
+    const atempo = atempoChain(1 / factor);
 
     const result = await runFFmpegTask(async ({ ffmpeg, tempFile }) => {
       const inputName = tempFile('.mp4');
       const outputName = tempFile('.mp4');
       await ffmpeg.writeFile(inputName, inputBytes);
-      await ffmpeg.exec([
+      let code = await ffmpeg.exec([
         '-i', inputName,
         '-filter:v', `setpts=${factor}*PTS`,
-        '-filter:a', `atempo=${atempo}`,
+        '-filter:a', atempo,
         outputName,
       ]);
+      if (code !== 0) {
+        // Videos without an audio stream reject -filter:a; retry video-only.
+        code = await ffmpeg.exec([
+          '-i', inputName,
+          '-filter:v', `setpts=${factor}*PTS`,
+          outputName,
+        ]);
+      }
+      if (code !== 0) throw new Error(t('common.processingFailed'));
       return (await ffmpeg.readFile(outputName)) as Uint8Array;
     });
 
@@ -70,6 +81,15 @@ async function process() {
   } finally {
     processing.value = false;
   }
+}
+
+function atempoChain(value: number): string {
+  const parts: string[] = [];
+  let v = value;
+  while (v < 0.5) { parts.push('atempo=0.5'); v /= 0.5; }
+  while (v > 100) { parts.push('atempo=100'); v /= 100; }
+  parts.push(`atempo=${Math.round(v * 100) / 100}`);
+  return parts.join(',');
 }
 </script>
 
