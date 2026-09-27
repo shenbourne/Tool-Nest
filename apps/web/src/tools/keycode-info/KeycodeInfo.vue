@@ -13,7 +13,8 @@ const tool = useCurrentTool();
 const event = ref<KeyboardEvent | null>(null);
 
 function handleKeyDown(e: KeyboardEvent) {
-  e.preventDefault();
+  // Never block default browser shortcuts (F5, Ctrl+R, F12, Tab navigation);
+  // this tool only observes keys, it has no input to protect.
   event.value = e;
 }
 
