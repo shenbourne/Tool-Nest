@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onBeforeUnmount, watch } from 'vue';
-import { NCard, NSpace, NButton, NAlert, NSelect, NDivider } from 'naive-ui';
+import { NCard, NSpace, NButton, NAlert, NSelect, NDivider, NPopconfirm } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
@@ -228,7 +228,12 @@ onBeforeUnmount(() => {
               <span>{{ item.createdAt.toLocaleString() }}</span>
               <NSpace>
                 <NButton size="small" @click="downloadRecording(item)">{{ t('tool.download') }}</NButton>
-                <NButton size="small" @click="removeRecording(index)">{{ t('tool.clear') }}</NButton>
+                <NPopconfirm @positive-click="removeRecording(index)">
+                  <template #trigger>
+                    <NButton size="small">{{ t('tool.clear') }}</NButton>
+                  </template>
+                  {{ t('tools.cameraRecorder.confirmDelete') }}
+                </NPopconfirm>
               </NSpace>
             </div>
           </div>
