@@ -11,8 +11,11 @@ const input = ref('');
 const size = ref(3);
 const output = computed(() => {
   const items = input.value.split('\n').filter(Boolean);
+  // Clearing the input yields null, and `i += null` would loop forever, so
+  // fall back to a positive step whenever the value is missing or invalid.
+  const step = size.value && size.value >= 1 ? size.value : 3;
   const groups: string[] = [];
-  for (let i = 0; i < items.length; i += size.value) groups.push(t('tools.listGroup.groupLabel', { number: groups.length + 1 }) + '\n' + items.slice(i, i+size.value).join('\n'));
+  for (let i = 0; i < items.length; i += step) groups.push(t('tools.listGroup.groupLabel', { number: groups.length + 1 }) + '\n' + items.slice(i, i+step).join('\n'));
   return groups.join('\n');
 });
 </script>
