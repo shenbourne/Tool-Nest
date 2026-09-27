@@ -380,7 +380,8 @@
     },
     "colorConverter": {
       "name": "颜色转换器",
-      "description": "在 HEX、RGB 和 HSL 格式之间转换颜色"
+      "description": "在 HEX、RGB 和 HSL 格式之间转换颜色",
+      "invalidHex": "请输入有效的十六进制颜色（#RGB 或 #RRGGBB）"
     },
     "urlEncoder": {
       "name": "URL 编码/解码",

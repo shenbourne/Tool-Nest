@@ -380,7 +380,8 @@
     },
     "colorConverter": {
       "name": "Color Converter",
-      "description": "Convert colors between HEX, RGB, and HSL formats"
+      "description": "Convert colors between HEX, RGB, and HSL formats",
+      "invalidHex": "Enter a valid hex color (#RGB or #RRGGBB)"
     },
     "urlEncoder": {
       "name": "URL Encoder/Decoder",
