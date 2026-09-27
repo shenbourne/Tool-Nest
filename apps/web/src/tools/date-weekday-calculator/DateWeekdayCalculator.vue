@@ -4,8 +4,9 @@ import { NCard, NInput, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+import { formatLocalDate, parseLocalDate } from './date-weekday-calculator.service';
 const { t } = useI18n();
-const input = ref(new Date().toISOString().slice(0,10));
+const input = ref(formatLocalDate(new Date()));
 const DAYS = computed(() => [
   t('tools.dateWeekdayCalculator.sunday'),
   t('tools.dateWeekdayCalculator.monday'),
@@ -16,8 +17,8 @@ const DAYS = computed(() => [
   t('tools.dateWeekdayCalculator.saturday'),
 ]);
 const output = computed(() => {
-  const d = new Date(input.value);
-  if (isNaN(d.getTime())) return t('common.invalidDate');
+  const d = parseLocalDate(input.value);
+  if (!d) return t('common.invalidDate');
   return DAYS.value[d.getDay()] + ' (' + input.value + ')';
 });
 </script>
