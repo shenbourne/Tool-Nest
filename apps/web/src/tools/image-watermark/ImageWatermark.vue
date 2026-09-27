@@ -11,7 +11,14 @@ const text = ref('Watermark');
 const resultUrl = ref('');
 const processing = ref(false);
 function onFile(f: File | null) { file.value = f; resultUrl.value = ''; }
-function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'watermarked'; a.click(); } }
+function download() {
+  if (!resultUrl.value) return;
+  const a = document.createElement('a');
+  a.href = resultUrl.value;
+  const ext = (file.value?.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+  a.download = `watermarked.${ext}`;
+  a.click();
+}
 async function process() {
   if (!file.value) return;
   processing.value = true;
