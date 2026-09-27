@@ -118,11 +118,18 @@ function onTextDblClick(annotation: Annotation) {
   }
 }
 
-function onTextType(annotation: Annotation, e: KeyboardEvent) {
-  if (annotation.type === 'text' && e.key === 'Enter') {
-    annotation.editing = false;
+// Write the dragged position back into the annotation so the export matches
+// what is on screen.
+function onTextDragEnd(annotation: Annotation, e: { target: { x(): number; y(): number } }) {
+  if (annotation.type === 'text') {
+    annotation.x = e.target.x();
+    annotation.y = e.target.y();
   }
 }
+
+const editingAnnotation = computed(() =>
+  annotations.value.find(a => a.type === 'text' && a.editing),
+);
 
 const displayAnnotations = computed(() => annotations.value);
 const tempLine = computed(() => currentLine.value);
@@ -211,6 +218,7 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
                       draggable: true,
                     }"
                     @dblclick="onTextDblClick(ann)"
+                    @dragend="onTextDragEnd(ann, $event)"
                   />
                   <v-line
                     v-if="ann.type === 'line'"
@@ -234,6 +242,14 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
                 />
               </v-layer>
             </v-stage>
+            <NInput
+              v-if="editingAnnotation && editingAnnotation.type === 'text'"
+              v-model:value="editingAnnotation.text"
+              :placeholder="t('tools.imageEditor.textPlaceholder')"
+              style="max-width: 260px;"
+              @keyup.enter="editingAnnotation.editing = false"
+              @blur="editingAnnotation.editing = false"
+            />
           </div>
         </NSpace>
       </NCard>
