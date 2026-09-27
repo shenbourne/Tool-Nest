@@ -77,7 +77,7 @@ onUnmounted(() => {
   clearInterval(intervalId);
 });
 
-watch(secret, () => {
+watch([secret, issuer, account], () => {
   updateToken();
   updateQr();
   verifyResult.value = null;
@@ -115,7 +115,7 @@ watch(secret, () => {
 
       <NCard :title="t('tools.otpGenerator.verifyToken')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="verifyInput" :placeholder="t('tools.otpGenerator.verifyPlaceholder')" clearable style="max-width: 300px;" />
+          <NInput v-model:value="verifyInput" :placeholder="t('tools.otpGenerator.verifyPlaceholder')" clearable style="max-width: 300px;" @keyup.enter="verify" />
           <NButton @click="verify">{{ t('tools.otpGenerator.verify') }}</NButton>
           <NAlert v-if="verifyResult" :type="verifyResult.valid ? 'success' : 'error'" :title="verifyResult.message" />
         </NSpace>
