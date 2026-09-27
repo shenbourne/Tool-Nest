@@ -523,7 +523,8 @@
     },
     "morseCode": {
       "name": "Morse Code Converter",
-      "description": "Convert text to Morse code and back"
+      "description": "Convert text to Morse code and back",
+      "unmappable": "These characters cannot be encoded: {chars}"
     },
     "textCensor": {
       "name": "Text Censor",
@@ -794,7 +795,8 @@
       "description": "Check if years are leap years",
       "prompt": "Enter years (one per line or space-separated)",
       "isLeap": "✅ Leap year",
-      "notLeap": "❌ Not a leap year"
+      "notLeap": "❌ Not a leap year",
+      "ignored": "Ignored non-numeric entries: {tokens}"
     },
     "daysToHours": {
       "name": "Days to Hours",
@@ -973,7 +975,8 @@
       "description": "Extract specific pages from a PDF",
       "pagesPlaceholder": "Page numbers: 1 3 5",
       "extractPages": "Extract Pages",
-      "noValidPages": "No valid page numbers selected"
+      "noValidPages": "No valid page numbers selected",
+      "invalidPages": "Invalid page numbers: {pages}"
     },
     "pdfProtect": {
       "name": "PDF Protect",
