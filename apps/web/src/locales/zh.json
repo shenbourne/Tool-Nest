@@ -1028,7 +1028,8 @@
       "name": "PDF 提取图片",
       "description": "从 PDF 文件中提取页面图片",
       "extract": "提取图片",
-      "failed": "提取图片失败"
+      "failed": "提取图片失败",
+      "progress": "正在渲染第 {current}/{total} 页"
     },
     "pdfToEpub": {
       "name": "PDF 转文本",
@@ -1451,6 +1452,7 @@
       "iterations": "迭代次数",
       "run": "运行基准测试",
       "noResults": "没有套件产生结果，请检查代码是否存在错误。",
+      "suiteTimedOut": "超时（可能存在无限循环）",
       "failed": "基准测试运行失败",
       "avgMs": "平均 (ms)",
       "minMs": "最小 (ms)",

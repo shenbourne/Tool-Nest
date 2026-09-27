@@ -1028,7 +1028,8 @@
       "name": "PDF Extract Images",
       "description": "Extract page images from a PDF file",
       "extract": "Extract Images",
-      "failed": "Failed to extract images"
+      "failed": "Failed to extract images",
+      "progress": "Rendering page {current} of {total}"
     },
     "pdfToEpub": {
       "name": "PDF to Text",
@@ -1451,6 +1452,7 @@
       "iterations": "Iterations",
       "run": "Run Benchmark",
       "noResults": "No suites produced results. Check your code for errors.",
+      "suiteTimedOut": "Timed out (possible infinite loop)",
       "failed": "Benchmark failed",
       "avgMs": "Avg (ms)",
       "minMs": "Min (ms)",
