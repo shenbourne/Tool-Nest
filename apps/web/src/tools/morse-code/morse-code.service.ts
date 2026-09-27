@@ -39,3 +39,13 @@ export function convertMorse(input: string): string {
   if (!t) return '';
   return looksLikeMorse(t) ? decodeMorse(t) : encodeMorse(t);
 }
+
+/** Characters (uppercased, deduplicated) that cannot be encoded to morse. */
+export function unmappableChars(input: string): string[] {
+  const set = new Set<string>();
+  for (const c of input.toUpperCase()) {
+    if (c === ' ' || MORSE[c]) continue;
+    set.add(c);
+  }
+  return [...set];
+}
