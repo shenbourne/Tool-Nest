@@ -10,7 +10,7 @@ const files = ref<File[]>([]);
 const resultUrl = ref('');
 const processing = ref(false);
 const error = ref('');
-function onFiles(list: any[]) { files.value = list.map(f => f.file).filter(Boolean); }
+function onFiles(list: any[]) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; files.value = list.map(f => f.file).filter(Boolean); }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'merged.pdf'; a.click(); } }
 async function process() {
   if (files.value.length < 2) { error.value = t('tools.pdfMerge.selectAtLeastTwo'); return; }
@@ -25,10 +25,14 @@ async function process() {
       pages.forEach(p => merged.addPage(p));
     }
     const bytes = await merged.save();
+    if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
     resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
   } catch (e: any) { error.value = e.message; }
   processing.value = false;
 }
+onUnmounted(() => {
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
+});
 </script>
 <template>
   <ToolLayout :tool="tool">

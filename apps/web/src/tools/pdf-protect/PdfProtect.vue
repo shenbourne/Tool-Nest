@@ -9,7 +9,7 @@ const { t } = useI18n();
 const file = ref<File | null>(null);
 const resultUrl = ref('');
 const processing = ref(false);
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; }
+function onFile(f: File | null) { file.value = f; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'protected.pdf'; a.click(); } }
 async function process() {
   if (!file.value) return;
@@ -19,9 +19,13 @@ async function process() {
   const doc = await PDFDocument.load(buf);
   doc.setTitle('Protected Document');
   const bytes = await doc.save();
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
   resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
   processing.value = false;
 }
+onUnmounted(() => {
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
+});
 </script>
 <template>
   <ToolLayout :tool="tool">

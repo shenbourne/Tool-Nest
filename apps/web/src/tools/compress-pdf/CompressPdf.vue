@@ -11,7 +11,7 @@ const resultUrl = ref('');
 const origSize = ref(0);
 const newSize = ref(0);
 const processing = ref(false);
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; }
+function onFile(f: File | null) { file.value = f; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'compressed.pdf'; a.click(); } }
 async function process() {
   if (!file.value) return;
@@ -22,9 +22,13 @@ async function process() {
   const doc = await PDFDocument.load(buf);
   const bytes = await doc.save({ useObjectStreams: true });
   newSize.value = bytes.length;
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
   resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
   processing.value = false;
 }
+onUnmounted(() => {
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
+});
 </script>
 <template>
   <ToolLayout :tool="tool">
