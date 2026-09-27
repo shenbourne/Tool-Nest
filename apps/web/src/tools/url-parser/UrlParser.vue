@@ -39,7 +39,7 @@ const parts = computed(() => {
         </div>
       </NSpace></NCard>
       <NCard v-if="params.length" :title="t('tools.urlParser.queryParameters')"><NSpace vertical :size="4">
-        <div v-for="p in params" :key="p.key" style="display:flex;gap:8px;">
+        <div v-for="(p, i) in params" :key="p.key + '-' + i" style="display:flex;gap:8px;">
           <NInput :value="p.key" readonly size="small" style="flex:1;" />
           <NInput :value="p.value" readonly size="small" style="flex:2;" />
         </div>
