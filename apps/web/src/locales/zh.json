@@ -385,7 +385,8 @@
       "encoded": "已编码",
       "decoded": "已解码",
       "copyEncoded": "复制编码结果",
-      "copyDecoded": "复制解码结果"
+      "copyDecoded": "复制解码结果",
+      "invalidEncoding": "无效的百分号编码"
     },
     "caseConverter": {
       "name": "大小写转换",
@@ -1055,7 +1056,8 @@
       "description": "测试下载速度和网络延迟",
       "start": "开始测速",
       "latencyValue": "延迟：{n} ms",
-      "downloadValue": "下载：{n} Mbps"
+      "downloadValue": "下载：{n} Mbps",
+      "testFailed": "测速失败，请重试"
     },
     "securityChecklist": {
       "name": "安全检查清单",
@@ -1081,7 +1083,9 @@
       "description": "解析任意域名的 DNS 记录",
       "resolve": "解析",
       "type": "类型",
-      "data": "数据"
+      "data": "数据",
+      "noRecords": "未找到记录",
+      "resolveFailed": "解析失败"
     },
     "macLookup": {
       "name": "MAC 地址查询",

@@ -385,7 +385,8 @@
       "encoded": "Encoded",
       "decoded": "Decoded",
       "copyEncoded": "Copy Encoded",
-      "copyDecoded": "Copy Decoded"
+      "copyDecoded": "Copy Decoded",
+      "invalidEncoding": "Invalid percent-encoding"
     },
     "caseConverter": {
       "name": "Case Converter",
@@ -1055,7 +1056,8 @@
       "description": "Test download speed and network latency",
       "start": "Start Speed Test",
       "latencyValue": "Latency: {n} ms",
-      "downloadValue": "Download: {n} Mbps"
+      "downloadValue": "Download: {n} Mbps",
+      "testFailed": "Speed test failed, please try again"
     },
     "securityChecklist": {
       "name": "Security Checklist",
@@ -1081,7 +1083,9 @@
       "description": "Resolve DNS records for any domain",
       "resolve": "Resolve",
       "type": "Type",
-      "data": "Data"
+      "data": "Data",
+      "noRecords": "No records found",
+      "resolveFailed": "Resolution failed"
     },
     "macLookup": {
       "name": "MAC Address Lookup",
