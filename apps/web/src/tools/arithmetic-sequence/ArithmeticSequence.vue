@@ -10,9 +10,16 @@ const { t } = useI18n();
 const start = ref(1);
 const diff = ref(3);
 const count = ref(10);
-const seq = computed(() => Array.from({length: count.value}, (_, i) => start.value + i * diff.value));
-const nth = computed(() => start.value + (count.value - 1) * diff.value);
-const sum = computed(() => count.value * (start.value + nth.value) / 2);
+// Cleared NInputNumber fields are null; fall back to sensible defaults so the
+// sequence, nth term, and sum never show stale or NaN values.
+const params = computed(() => ({
+  start: start.value ?? 0,
+  diff: diff.value ?? 0,
+  count: count.value && count.value >= 1 ? Math.floor(count.value) : 1,
+}));
+const seq = computed(() => Array.from({ length: params.value.count }, (_, i) => params.value.start + i * params.value.diff));
+const nth = computed(() => params.value.start + (params.value.count - 1) * params.value.diff);
+const sum = computed(() => params.value.count * (params.value.start + nth.value) / 2);
 </script>
 <template>
   <ToolLayout :tool="tool">
