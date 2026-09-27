@@ -9,7 +9,7 @@ const { t } = useI18n();
 
 const input = ref('');
 const output = computed(() => {
-  const lines = input.value.split('\n').filter(Boolean);
+  const lines = input.value.split('\n');
   return lines.flatMap(l => [l, l]).join('\n');
 });
 </script>

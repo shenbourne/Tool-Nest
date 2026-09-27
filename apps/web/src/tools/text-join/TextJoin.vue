@@ -7,7 +7,7 @@ import { tool } from './index';
 const { t } = useI18n();
 const input = ref('');
 const sep = ref(', ');
-const output = computed(() => input.value.split('\n').filter(Boolean).join(sep.value));
+const output = computed(() => input.value.split('\n').join(sep.value));
 </script>
 <template>
   <ToolLayout :tool="tool">

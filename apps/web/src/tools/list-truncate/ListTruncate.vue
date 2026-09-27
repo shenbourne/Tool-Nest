@@ -9,7 +9,7 @@ const { t } = useI18n();
 
 const input = ref('');
 const count = ref(10);
-const output = computed(() => input.value.split('\n').filter(Boolean).slice(0, count.value).join('\n'));
+const output = computed(() => input.value.split('\n').slice(0, count.value).join('\n'));
 </script>
 <template>
   <ToolLayout :tool="tool">

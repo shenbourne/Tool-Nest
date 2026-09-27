@@ -10,7 +10,7 @@ const { t } = useI18n();
 const input = ref('');
 const prefix = ref('"');
 const suffix = ref('"');
-const output = computed(() => input.value.split('\n').filter(Boolean).map(l => prefix.value + l + suffix.value).join('\n'));
+const output = computed(() => input.value.split('\n').map(l => prefix.value + l + suffix.value).join('\n'));
 </script>
 <template>
   <ToolLayout :tool="tool">
