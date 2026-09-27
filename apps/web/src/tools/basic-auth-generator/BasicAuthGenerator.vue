@@ -14,7 +14,9 @@ const username = ref('');
 const password = ref('');
 
 const header = computed(() => {
-  const encoded = btoa(`${username.value}:${password.value}`);
+  // `btoa` throws on non-Latin-1 input (e.g. Chinese or emoji); percent-encode
+  // first so arbitrary credentials never crash the render.
+  const encoded = btoa(unescape(encodeURIComponent(`${username.value}:${password.value}`)));
   return `Authorization: Basic ${encoded}`;
 });
 
