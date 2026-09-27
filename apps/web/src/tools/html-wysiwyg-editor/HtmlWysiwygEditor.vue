@@ -56,7 +56,7 @@ onMounted(() => {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.htmlWysiwygEditor.editor')">
         <NSpace vertical :size="12">
-          <NSpace>
+          <NSpace @mousedown.prevent>
             <NButton size="small" @click="execCmd('bold')"><strong>B</strong></NButton>
             <NButton size="small" @click="execCmd('italic')"><em>I</em></NButton>
             <NButton size="small" @click="execCmd('underline')"><u>U</u></NButton>
