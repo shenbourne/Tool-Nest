@@ -31,7 +31,7 @@ const cols = computed(() => [{ title: t('common.target'), key: 'name' }, { title
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NButton type="primary" :loading="testing" @click="test">{{ t('tools.connectivityCheck.testConnectivity') }}</NButton>
+      <NButton type="primary" :loading="testing" :disabled="testing" @click="test">{{ t('tools.connectivityCheck.testConnectivity') }}</NButton>
       <NDataTable v-if="results.length" :columns="cols" :data="results" :bordered="false" size="small" />
     </NSpace></NCard>
   </ToolLayout>
