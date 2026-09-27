@@ -28,7 +28,10 @@ const isValidBase64 = computed(() => {
   const raw = base64Input.value.trim();
   if (!raw) return false;
   if (raw.startsWith('data:')) return /^data:[\w/+.-]+;base64,/.test(raw);
-  return /^[A-Za-z0-9+/=]+$/.test(raw);
+  // Charset alone is not enough — the length must be a multiple of 4 with
+  // padding only at the end, otherwise the decode is garbage.
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(raw)) return false;
+  return raw.length % 4 === 0;
 });
 
 function previewImage() {
