@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace } from 'naive-ui';
+import { NCard, NInput, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
@@ -16,9 +16,10 @@ const DAYS = computed(() => [
   t('tools.dateWeekdayCalculator.friday'),
   t('tools.dateWeekdayCalculator.saturday'),
 ]);
+const dateError = computed(() => (input.value.trim() && !parseLocalDate(input.value) ? t('common.invalidDate') : ''));
 const output = computed(() => {
   const d = parseLocalDate(input.value);
-  if (!d) return t('common.invalidDate');
+  if (!d) return '';
   return DAYS.value[d.getDay()] + ' (' + input.value + ')';
 });
 </script>
@@ -26,6 +27,7 @@ const output = computed(() => {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NInput v-model:value="input" placeholder="YYYY-MM-DD" />
+      <NAlert v-if="dateError" type="error" :title="dateError" />
       <NInput :value="output" readonly />
     </NSpace></NCard>
   </ToolLayout>
