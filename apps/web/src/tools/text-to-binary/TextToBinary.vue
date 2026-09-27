@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton } from 'naive-ui';
+import { NCard, NInput, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
@@ -15,7 +15,13 @@ const inputText = ref('');
 const binaryFromText = computed(() => inputText.value ? convertTextToAsciiBinary(inputText.value) : '');
 
 const inputBinary = ref('');
-const binaryError = ref('');
+// Surface a decode failure as a message instead of only tinting the border,
+// so an invalid payload is not mistaken for an empty result.
+const binaryError = computed(() => {
+  if (!inputBinary.value) return '';
+  try { convertAsciiBinaryToText(inputBinary.value); return ''; } catch { return t('tools.textToBinary.invalidBinary'); }
+});
+
 const textFromBinary = computed(() => {
   if (!inputBinary.value) return '';
   try { return convertAsciiBinaryToText(inputBinary.value); } catch { return ''; }
@@ -47,6 +53,7 @@ function copyText() {
       <NCard :title="t('tools.textToBinary.asciiBinaryToText')">
         <NSpace vertical :size="8">
           <NInput v-model:value="inputBinary" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.binaryInputPlaceholder')" :status="inputBinary && !isValidBinary(inputBinary) ? 'error' : undefined" />
+          <NAlert v-if="binaryError" type="error" :title="binaryError" />
           <NInput :value="textFromBinary" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.textOutputPlaceholder')" />
           <NButton :disabled="!textFromBinary" @click="copyText">{{ t('tool.copy') }}</NButton>
         </NSpace>
