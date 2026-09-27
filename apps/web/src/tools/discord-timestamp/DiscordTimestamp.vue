@@ -5,7 +5,15 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 const { t } = useI18n();
-const input = ref(new Date().toISOString().slice(0,16));
+
+// `toISOString` is UTC, but a "YYYY-MM-DDTHH:mm" value without an offset is
+// parsed as local time — seeding the field from UTC shifted every default
+// timestamp by one timezone. Build the local equivalent instead.
+function toLocalDateTimeInput(d: Date): string {
+  const p = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+const input = ref(toLocalDateTimeInput(new Date()));
 const FORMATS = computed(() => [
   ['t', t('tools.discordTimestamp.shortTime')],
   ['T', t('tools.discordTimestamp.longTime')],
