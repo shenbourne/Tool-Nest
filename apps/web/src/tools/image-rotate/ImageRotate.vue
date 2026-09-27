@@ -27,9 +27,12 @@ async function process() {
     ctx.rotate(rad);
     ctx.drawImage(img, -img.width/2, -img.height/2);
     resultUrl.value = canvas.toDataURL(file.value!.type || 'image/png');
+    URL.revokeObjectURL(objectUrl);
     processing.value = false;
   };
-  img.src = URL.createObjectURL(file.value);
+  const objectUrl = URL.createObjectURL(file.value);
+  img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
+  img.src = objectUrl;
 }
 </script>
 <template>

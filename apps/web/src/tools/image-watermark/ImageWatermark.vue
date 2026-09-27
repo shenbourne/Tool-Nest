@@ -28,9 +28,12 @@ async function process() {
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
     ctx.fillText(text.value, canvas.width/2+2, canvas.height/2+2);
     resultUrl.value = canvas.toDataURL(file.value!.type || 'image/png');
+    URL.revokeObjectURL(objectUrl);
     processing.value = false;
   };
-  img.src = URL.createObjectURL(file.value);
+  const objectUrl = URL.createObjectURL(file.value);
+  img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
+  img.src = objectUrl;
 }
 </script>
 <template>

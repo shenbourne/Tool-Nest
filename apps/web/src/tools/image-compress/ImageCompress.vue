@@ -25,10 +25,13 @@ async function process() {
     canvas.getContext('2d')!.drawImage(img, 0, 0);
     canvas.toBlob(blob => {
       if (blob) { newSize.value = blob.size; resultUrl.value = URL.createObjectURL(blob); }
+      URL.revokeObjectURL(objectUrl);
       processing.value = false;
     }, file.value!.type === 'image/png' ? 'image/png' : 'image/jpeg', quality.value);
   };
-  img.src = URL.createObjectURL(file.value);
+  const objectUrl = URL.createObjectURL(file.value);
+  img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
+  img.src = objectUrl;
 }
 </script>
 <template>

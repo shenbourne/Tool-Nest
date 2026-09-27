@@ -22,9 +22,12 @@ async function process() {
     canvas.width = width.value; canvas.height = height.value;
     canvas.getContext('2d')!.drawImage(img, 0, 0, width.value, height.value);
     resultUrl.value = canvas.toDataURL(file.value!.type || 'image/png');
+    URL.revokeObjectURL(objectUrl);
     processing.value = false;
   };
-  img.src = URL.createObjectURL(file.value);
+  const objectUrl = URL.createObjectURL(file.value);
+  img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
+  img.src = objectUrl;
 }
 </script>
 <template>

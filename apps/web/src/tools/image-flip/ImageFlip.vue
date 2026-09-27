@@ -24,9 +24,12 @@ async function process() {
     ctx.scale(horizontal.value ? -1 : 1, vertical.value ? -1 : 1);
     ctx.drawImage(img, horizontal.value ? -img.width : 0, vertical.value ? -img.height : 0);
     resultUrl.value = canvas.toDataURL(file.value!.type || 'image/png');
+    URL.revokeObjectURL(objectUrl);
     processing.value = false;
   };
-  img.src = URL.createObjectURL(file.value);
+  const objectUrl = URL.createObjectURL(file.value);
+  img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
+  img.src = objectUrl;
 }
 </script>
 <template>

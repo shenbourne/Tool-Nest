@@ -23,9 +23,12 @@ async function process() {
     ctx.globalAlpha = opacity.value;
     ctx.drawImage(img, 0, 0);
     resultUrl.value = canvas.toDataURL('image/png');
+    URL.revokeObjectURL(objectUrl);
     processing.value = false;
   };
-  img.src = URL.createObjectURL(file.value);
+  const objectUrl = URL.createObjectURL(file.value);
+  img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
+  img.src = objectUrl;
 }
 </script>
 <template>

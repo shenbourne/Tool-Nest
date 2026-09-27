@@ -20,9 +20,12 @@ async function process() {
     canvas.width = img.width; canvas.height = img.height;
     canvas.getContext('2d')!.drawImage(img, 0, 0);
     resultUrl.value = canvas.toDataURL('image/webp', 0.92);
+    URL.revokeObjectURL(objectUrl);
     processing.value = false;
   };
-  img.src = URL.createObjectURL(file.value);
+  const objectUrl = URL.createObjectURL(file.value);
+  img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
+  img.src = objectUrl;
 }
 </script>
 <template>
