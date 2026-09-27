@@ -222,6 +222,8 @@
     "minutes": "Minutes",
     "seconds": "Seconds",
     "invalidDate": "Invalid date",
+    "invalidNumber": "Please enter a valid number",
+    "invalidTime": "Enter a valid time (HH:MM:SS)",
     "invalidDates": "Invalid dates",
     "enterTimeAsHhMmSs": "Enter time as HH:MM:SS",
     "page": "Page {n}",

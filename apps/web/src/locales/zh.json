@@ -222,6 +222,8 @@
     "minutes": "分钟",
     "seconds": "秒",
     "invalidDate": "日期无效",
+    "invalidNumber": "请输入有效数字",
+    "invalidTime": "请输入有效时间（HH:MM:SS）",
     "invalidDates": "日期无效",
     "enterTimeAsHhMmSs": "请以 HH:MM:SS 格式输入时间",
     "page": "第 {n} 页",
