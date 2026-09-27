@@ -44,14 +44,17 @@ async function process() {
       const inputName = tempFile('.mp4');
       const outputName = tempFile('.mp4');
       await ffmpeg.writeFile(inputName, inputBytes);
-      await ffmpeg.exec([
+      // -stream_loop N replays the whole input N extra times; the loop filter
+      // with size=1 only repeated the first frame and discarded the rest.
+      const code = await ffmpeg.exec([
+        '-stream_loop', String(Math.max(0, loopCount.value - 1)),
         '-i', inputName,
-        '-filter_complex', `loop=loop=${loopCount.value}:size=1:start=0`,
         '-c:v', 'libx264',
         '-crf', '23',
         '-preset', 'fast',
         outputName,
       ]);
+      if (code !== 0) throw new Error(t('common.processingFailed'));
       return (await ffmpeg.readFile(outputName)) as Uint8Array;
     });
 
