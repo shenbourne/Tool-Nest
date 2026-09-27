@@ -16,6 +16,7 @@ const file = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
 const images = ref<PageImage[]>([]);
+const progress = ref('');
 
 function revokeImages() {
   for (const img of images.value) URL.revokeObjectURL(img.url);
@@ -49,6 +50,7 @@ async function extract() {
     const result: PageImage[] = [];
 
     for (let i = 1; i <= pdf.numPages; i++) {
+      progress.value = t('tools.pdfExtractImages.progress', { current: i, total: pdf.numPages });
       const page = await pdf.getPage(i);
       const viewport = page.getViewport({ scale: 2 });
       const canvas = document.createElement('canvas');
@@ -63,6 +65,7 @@ async function extract() {
   } catch (e: any) {
     error.value = e.message || t('tools.pdfExtractImages.failed');
   }
+  progress.value = '';
   processing.value = false;
 }
 onUnmounted(() => revokeImages());
@@ -75,6 +78,7 @@ onUnmounted(() => revokeImages());
         {{ t('tools.pdfExtractImages.extract') }}
       </NButton>
       <NAlert v-if="error" type="error" :title="error" />
+      <NAlert v-if="progress" type="info" :title="progress" />
       <NSpace v-if="images.length" :wrap="true">
         <NCard v-for="img in images" :key="img.page" :title="t('common.page', { n: img.page })" size="small" style="width: 200px;">
           <img :src="img.url" style="width: 100%;" />
