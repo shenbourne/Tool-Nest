@@ -6,6 +6,11 @@ export interface BenchmarkSuite {
   code: string;
 }
 
+export interface BenchmarkFailure {
+  suiteName: string;
+  message: string;
+}
+
 export interface BenchmarkResult {
   suiteName: string;
   iterations: number;
@@ -16,8 +21,12 @@ export interface BenchmarkResult {
   opsPerSec: number;
 }
 
-export function runBenchmark(suites: BenchmarkSuite[], iterations: number): BenchmarkResult[] {
+export function runBenchmark(
+  suites: BenchmarkSuite[],
+  iterations: number,
+): { results: BenchmarkResult[]; failures: BenchmarkFailure[] } {
   const results: BenchmarkResult[] = [];
+  const failures: BenchmarkFailure[] = [];
 
   for (const suite of suites) {
     if (!suite.code.trim()) continue;
@@ -36,7 +45,9 @@ export function runBenchmark(suites: BenchmarkSuite[], iterations: number): Benc
         times.push(end - start);
       }
     } catch (e) {
-      // Skip failed benchmarks
+      // Surface the failing suite instead of silently dropping it, so users
+      // can tell a code bug apart from a genuinely slow benchmark.
+      failures.push({ suiteName: suite.name, message: e instanceof Error ? e.message : String(e) });
       continue;
     }
 
@@ -57,5 +68,5 @@ export function runBenchmark(suites: BenchmarkSuite[], iterations: number): Benc
     });
   }
 
-  return results.sort((a, b) => a.avgMs - b.avgMs);
+  return { results: results.sort((a, b) => a.avgMs - b.avgMs), failures };
 }

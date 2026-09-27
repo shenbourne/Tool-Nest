@@ -41,8 +41,11 @@ function run() {
 
   setTimeout(() => {
     try {
-      results.value = runBenchmark(suites.value, iterations.value);
-      if (results.value.length === 0) {
+      const { results: r, failures } = runBenchmark(suites.value, iterations.value);
+      results.value = r;
+      if (failures.length > 0) {
+        error.value = failures.map(f => `${f.suiteName}: ${f.message}`).join('\n');
+      } else if (results.value.length === 0) {
         error.value = t('tools.benchmarkBuilder.noResults');
       }
     } catch (e) {
