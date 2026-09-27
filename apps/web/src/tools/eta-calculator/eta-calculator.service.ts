@@ -19,7 +19,15 @@ export interface EtaResult {
 export function calculateEta(input: EtaInput): EtaResult | null {
   const { totalTasks, completedTasks, startTime } = input;
 
-  if (totalTasks <= 0 || completedTasks < 0 || completedTasks > totalTasks) {
+  // Cleared NInputNumber fields yield null; without the finite check the
+  // comparisons below let null through and the UI renders NaN everywhere.
+  if (
+    !Number.isFinite(totalTasks) ||
+    !Number.isFinite(completedTasks) ||
+    totalTasks <= 0 ||
+    completedTasks < 0 ||
+    completedTasks > totalTasks
+  ) {
     return null;
   }
 
