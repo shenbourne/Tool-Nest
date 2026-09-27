@@ -20,6 +20,9 @@ function onFileChange(e: Event) {
   const f = input.files?.[0];
   if (f) {
     file.value = f;
+    // Drop the previous image's tiles so they are not mistaken for the new
+    // image's output.
+    tiles.value = [];
     if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
     imageUrl.value = URL.createObjectURL(f);
   }
