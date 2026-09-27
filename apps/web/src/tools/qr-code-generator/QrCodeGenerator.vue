@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NInput, NSpace, NButton, NColorPicker, NSelect } from 'naive-ui';
+import { NCard, NInput, NSpace, NButton, NColorPicker, NSelect, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
@@ -23,7 +23,7 @@ const eclOptions = [
   { label: 'H (30%)', value: 'H' },
 ];
 
-const { dataUrl } = useQrCode(text, {
+const { dataUrl, error: qrError } = useQrCode(text, {
   foreground,
   background,
   errorCorrectionLevel,
@@ -79,7 +79,8 @@ function copyImage() {
       </NCard>
 
       <NCard :title="t('common.qrCode')">
-        <div v-if="dataUrl" style="text-align: center; margin-bottom: 16px;">
+        <NAlert v-if="qrError" type="error" :title="t('tools.qrCodeGenerator.generationFailed')" />
+        <div v-else-if="dataUrl" style="text-align: center; margin-bottom: 16px;">
           <img :src="dataUrl" :alt="t('common.qrCode')" style="max-width: 300px; width: 100%;" />
         </div>
         <div v-else style="text-align: center; color: var(--color-text-3); padding: 40px 0;">

@@ -3,6 +3,8 @@ import QRCode from 'qrcode';
 
 export function useQrCode(text: Ref<string>, options?: { foreground?: Ref<string>; background?: Ref<string>; errorCorrectionLevel?: Ref<string> }) {
   const dataUrl = ref('');
+  // Distinguish a generation failure (e.g. text too long) from an empty input.
+  const error = ref(false);
 
   watch(
     () => [
@@ -14,6 +16,7 @@ export function useQrCode(text: Ref<string>, options?: { foreground?: Ref<string
     async () => {
       if (!text.value.trim()) {
         dataUrl.value = '';
+        error.value = false;
         return;
       }
       try {
@@ -25,14 +28,16 @@ export function useQrCode(text: Ref<string>, options?: { foreground?: Ref<string
           errorCorrectionLevel: (options?.errorCorrectionLevel?.value || 'M') as 'L' | 'M' | 'Q' | 'H',
           width: 512,
         });
+        error.value = false;
       } catch {
         dataUrl.value = '';
+        error.value = true;
       }
     },
     { immediate: true, deep: true },
   );
 
-  return { dataUrl };
+  return { dataUrl, error };
 }
 
 export function downloadDataUrl(dataUrl: string, filename: string) {
