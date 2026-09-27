@@ -961,7 +961,8 @@
       "name": "PDF Split",
       "description": "Extract specific pages from a PDF",
       "pagesPlaceholder": "Page numbers: 1 3 5",
-      "extractPages": "Extract Pages"
+      "extractPages": "Extract Pages",
+      "noValidPages": "No valid page numbers selected"
     },
     "pdfProtect": {
       "name": "PDF Protect",

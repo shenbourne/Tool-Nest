@@ -961,7 +961,8 @@
       "name": "PDF 拆分",
       "description": "从 PDF 中提取指定页面",
       "pagesPlaceholder": "页码: 1 3 5",
-      "extractPages": "提取页面"
+      "extractPages": "提取页面",
+      "noValidPages": "未选择有效的页码"
     },
     "pdfProtect": {
       "name": "PDF 保护",

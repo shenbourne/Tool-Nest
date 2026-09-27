@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NInput } from 'naive-ui';
+import { NCard, NSpace, NButton, NUpload, NInput, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
@@ -10,21 +10,29 @@ const file = ref<File | null>(null);
 const pages = ref('1');
 const resultUrl = ref('');
 const processing = ref(false);
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; }
+const error = ref('');
+function onFile(f: File | null) { file.value = f; resultUrl.value = ''; error.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'split.pdf'; a.click(); } }
 async function process() {
   if (!file.value) return;
   processing.value = true;
-  const { PDFDocument } = await import('pdf-lib');
-  const buf = await file.value.arrayBuffer();
-  const src = await PDFDocument.load(buf);
-  const out = await PDFDocument.create();
-  const indices = pages.value.split(/[,\s]+/).map(s => { const n = parseInt(s) - 1; return n >= 0 && n < src.getPageCount() ? n : -1; }).filter(n => n >= 0);
-  const copied = await out.copyPages(src, indices);
-  copied.forEach(p => out.addPage(p));
-  const bytes = await out.save();
-  resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
-  processing.value = false;
+  error.value = '';
+  try {
+    const { PDFDocument } = await import('pdf-lib');
+    const buf = await file.value.arrayBuffer();
+    const src = await PDFDocument.load(buf);
+    const out = await PDFDocument.create();
+    const indices = pages.value.split(/[,\s]+/).map(s => { const n = parseInt(s) - 1; return n >= 0 && n < src.getPageCount() ? n : -1; }).filter(n => n >= 0);
+    if (indices.length === 0) { error.value = t('tools.pdfSplit.noValidPages'); processing.value = false; return; }
+    const copied = await out.copyPages(src, indices);
+    copied.forEach(p => out.addPage(p));
+    const bytes = await out.save();
+    resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : t('common.processingFailed');
+  } finally {
+    processing.value = false;
+  }
 }
 </script>
 <template>
@@ -33,6 +41,7 @@ async function process() {
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
       <NInput v-model:value="pages" :placeholder="t('tools.pdfSplit.pagesPlaceholder')" style="width:250px" />
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.pdfSplit.extractPages') }}</NButton>
+      <NAlert v-if="error" type="error" :title="error" />
       <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
