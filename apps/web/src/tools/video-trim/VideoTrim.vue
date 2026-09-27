@@ -14,13 +14,11 @@ const endTime = ref(10);
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
-const resultUrl = ref('');
 
 function onFileChange(event: Event) {
   const input = event.target as HTMLInputElement;
   file.value = input.files?.[0] ?? null;
   resultData.value = null;
-  resultUrl.value = '';
   error.value = '';
 }
 
@@ -39,7 +37,6 @@ async function process() {
   processing.value = true;
   error.value = '';
   resultData.value = null;
-  resultUrl.value = '';
 
   try {
     const inputBytes = new Uint8Array(await file.value.arrayBuffer());
@@ -59,8 +56,6 @@ async function process() {
     });
 
     resultData.value = result;
-    const blob = new Blob([result], { type: 'video/mp4' });
-    resultUrl.value = URL.createObjectURL(blob);
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
