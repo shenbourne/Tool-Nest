@@ -23,6 +23,7 @@ function onFileChange(e: Event) {
   const f = input.files?.[0];
   if (f) {
     file.value = f;
+    if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
     imageUrl.value = URL.createObjectURL(f);
   }
 }
@@ -95,6 +96,9 @@ function download() {
   a.download = 'no-background.png';
   a.click();
 }
+onUnmounted(() => {
+  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
+});
 </script>
 
 <template>

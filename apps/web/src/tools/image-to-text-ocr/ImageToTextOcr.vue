@@ -41,6 +41,7 @@ function onFileChange(event: Event) {
   selectedFile.value = file;
   extractedText.value = '';
   error.value = '';
+  if (imagePreview.value) URL.revokeObjectURL(imagePreview.value);
   imagePreview.value = URL.createObjectURL(file);
 }
 
@@ -72,6 +73,9 @@ function copyText() {
     copyToClipboard(extractedText.value);
   }
 }
+onUnmounted(() => {
+  if (imagePreview.value) URL.revokeObjectURL(imagePreview.value);
+});
 </script>
 
 <template>
