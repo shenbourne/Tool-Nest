@@ -11,6 +11,7 @@ const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
 const file = ref<File | null>(null);
 const speed = ref<string>('1');
 const processing = ref(false);
+const taskProgress = ref(0);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 
@@ -43,6 +44,7 @@ function downloadBlob(data: Uint8Array, filename: string, mimeType: string) {
 async function process() {
   if (!file.value || !isLoaded.value) return;
   processing.value = true;
+  taskProgress.value = 0;
   error.value = '';
   resultData.value = null;
 
@@ -61,7 +63,7 @@ async function process() {
         outputName,
       ]);
       return (await ffmpeg.readFile(outputName)) as Uint8Array;
-    });
+    }, (p) => { taskProgress.value = p; });
 
     resultData.value = result;
   } catch (e: unknown) {
@@ -99,7 +101,7 @@ async function process() {
           {{ t('tools.gifChangeSpeed.changeSpeed') }}
         </NButton>
 
-        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
+        <NProgress v-if="processing" type="line" :percentage="Math.round(taskProgress * 100)" indicator-placement="inside" />
         <NAlert v-if="error" type="error" :title="error" />
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'respeed.gif', 'image/gif')">

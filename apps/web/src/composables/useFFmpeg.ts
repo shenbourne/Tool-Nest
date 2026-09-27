@@ -7,6 +7,8 @@ const BASE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`;
 
 let sharedInstance: FFmpeg | null = null;
 let loadingPromise: Promise<FFmpeg> | null = null;
+// Progress listener for the task currently holding the serialized queue.
+let activeTaskProgress: ((progress: number) => void) | null = null;
 
 const isLoadedRef: Ref<boolean> = ref(false);
 const isLoadingRef: Ref<boolean> = ref(false);
@@ -34,6 +36,7 @@ async function loadSharedInstance(): Promise<FFmpeg> {
 
       ffmpeg.on('progress', ({ progress }: { progress: number }) => {
         loadProgressRef.value = Math.min(progress, 1);
+        activeTaskProgress?.(Math.min(progress, 1));
       });
 
       await ffmpeg.load({
@@ -115,6 +118,7 @@ let taskQueue: Promise<unknown> = Promise.resolve();
 
 export async function runFFmpegTask<T>(
   task: (context: FFmpegTaskContext) => Promise<T>,
+  onProgress?: (progress: number) => void,
 ): Promise<T> {
   if (!sharedInstance) throw new Error('FFmpeg not loaded — call load() first');
   const ffmpeg = sharedInstance;
@@ -130,9 +134,13 @@ export async function runFFmpegTask<T>(
         return filename;
       };
 
+      // Tasks are serialized, so a single slot is enough to route progress
+      // events to whichever task is currently running.
+      activeTaskProgress = onProgress ?? null;
       try {
         return await task({ ffmpeg, tempFile });
       } finally {
+        if (activeTaskProgress === (onProgress ?? null)) activeTaskProgress = null;
         await Promise.all(
           [...tempFiles].map((file) => ffmpeg.deleteFile(file).catch(() => {})),
         );
