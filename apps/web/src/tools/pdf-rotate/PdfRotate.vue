@@ -21,7 +21,9 @@ async function process() {
     const { PDFDocument, degrees } = await import('pdf-lib');
     const buf = await file.value.arrayBuffer();
     const doc = await PDFDocument.load(buf);
-    doc.getPages().forEach(p => p.setRotation(degrees(angle.value)));
+    // Accumulate on the page's existing rotation (e.g. scanned documents),
+    // otherwise rotating a 90° scan by 90° is a no-op the user cannot see.
+    doc.getPages().forEach(p => p.setRotation(degrees((p.getRotation().angle + angle.value) % 360)));
     const bytes = await doc.save();
     resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
   } catch (e) {
