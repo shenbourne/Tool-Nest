@@ -34,26 +34,20 @@ function removeSuite(id: string) {
   suites.value = suites.value.filter(s => s.id !== id);
 }
 
-function run() {
+async function run() {
   isRunning.value = true;
   error.value = '';
   results.value = [];
-
-  setTimeout(() => {
-    try {
-      const { results: r, failures } = runBenchmark(suites.value, iterations.value);
-      results.value = r;
-      if (failures.length > 0) {
-        error.value = failures.map(f => `${f.suiteName}: ${f.message}`).join('\n');
-      } else if (results.value.length === 0) {
-        error.value = t('tools.benchmarkBuilder.noResults');
-      }
-    } catch (e) {
-      error.value = e instanceof Error ? e.message : t('tools.benchmarkBuilder.failed');
-    } finally {
-      isRunning.value = false;
-    }
-  }, 50);
+  // Runs in a Web Worker with a per-suite timeout, so a buggy (e.g. infinite
+  // loop) suite no longer freezes the page.
+  const { results: r, failures } = await runBenchmark(suites.value, iterations.value);
+  results.value = r;
+  if (failures.length > 0) {
+    error.value = failures.map(f => `${f.suiteName}: ${f.message}`).join('\n');
+  } else if (results.value.length === 0) {
+    error.value = t('tools.benchmarkBuilder.noResults');
+  }
+  isRunning.value = false;
 }
 
 function reset() {
