@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NButton, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const username = ref('');
@@ -17,7 +19,7 @@ const header = computed(() => {
 });
 
 function copyHeader() {
-  navigator.clipboard.writeText(header.value);
+  copyToClipboard(header.value);
 }
 </script>
 

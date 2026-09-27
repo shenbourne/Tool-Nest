@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NInputNumber, NColorPicker } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { generateSvgPlaceholder, svgToDataUrl, downloadSvg } from './svg-placeholder-generator.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const width = ref(300);
@@ -30,7 +32,7 @@ const svgCode = computed(() =>
 const dataUrl = computed(() => svgToDataUrl(svgCode.value));
 
 function copySvg() {
-  navigator.clipboard.writeText(svgCode.value);
+  copyToClipboard(svgCode.value);
 }
 
 function download() {

@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { convertTextToAsciiBinary, convertAsciiBinaryToText } from './text-to-binary.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const inputText = ref('');
@@ -25,10 +27,10 @@ function isValidBinary(v: string) {
 }
 
 function copyBinary() {
-  if (binaryFromText.value) navigator.clipboard.writeText(binaryFromText.value);
+  if (binaryFromText.value) copyToClipboard(binaryFromText.value);
 }
 function copyText() {
-  if (textFromBinary.value) navigator.clipboard.writeText(textFromBinary.value);
+  if (textFromBinary.value) copyToClipboard(textFromBinary.value);
 }
 </script>
 

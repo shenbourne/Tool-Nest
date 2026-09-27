@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { convertIpv4, isValidIpv4 } from './ipv4-address-converter.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const ipInput = ref('192.168.1.1');
@@ -30,7 +32,7 @@ const sections = computed(() => {
 });
 
 function copyValue(value: string) {
-  navigator.clipboard.writeText(value);
+  copyToClipboard(value);
 }
 </script>
 

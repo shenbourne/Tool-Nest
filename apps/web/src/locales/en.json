@@ -125,6 +125,8 @@
     "unfavorite": "Remove from favorites",
     "copy": "Copy",
     "copied": "Copied!",
+    "copyFailed": "Failed to copy to clipboard",
+    "copyImageFailed": "Failed to copy the image to clipboard",
     "clear": "Clear",
     "download": "Download",
     "upload": "Upload",

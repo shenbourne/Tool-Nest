@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 import { convertDate, type InputFormat } from './date-time-converter.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const inputFormatOptions = computed<{ label: string; value: InputFormat }[]>(() => [
   { label: t('tools.dateTimeConverter.autoDetect'), value: 'auto' },
@@ -32,7 +34,7 @@ const conversionResult = computed(() => {
 });
 
 function copyText(text: string) {
-  navigator.clipboard.writeText(text);
+  copyToClipboard(text);
 }
 </script>
 

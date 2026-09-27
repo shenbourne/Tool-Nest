@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NRadioGroup, NRadioButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { formatXml, minifyXml } from './xml-formatter.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref('<root>\n<child name="test">\n<sub>Hello</sub>\n</child>\n</root>');
@@ -22,7 +24,7 @@ const result = computed(() => {
 
 function copyOutput() {
   if (result.value.formatted) {
-    navigator.clipboard.writeText(result.value.formatted);
+    copyToClipboard(result.value.formatted);
   }
 }
 </script>

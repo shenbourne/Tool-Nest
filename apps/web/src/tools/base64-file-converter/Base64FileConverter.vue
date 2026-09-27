@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 // --- Base64 → File ---
@@ -72,7 +74,7 @@ function handleFileChange(e: Event) {
 }
 
 function copyBase64() {
-  if (fileBase64Output.value) navigator.clipboard.writeText(fileBase64Output.value);
+  if (fileBase64Output.value) copyToClipboard(fileBase64Output.value);
 }
 </script>
 

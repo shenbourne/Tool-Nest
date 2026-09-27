@@ -4,10 +4,12 @@ import { NCard, NInput, NTag, NSpace, NDataTable, NInputGroup, NInputGroupLabel 
 import type { DataTableColumns } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { mimeTypes, type MimeEntry } from './mime-data';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const searchQuery = ref('');
@@ -60,7 +62,7 @@ const columns: DataTableColumns<MimeEntry> = [
 ];
 
 function copyText(text: string) {
-  if (text) navigator.clipboard.writeText(text);
+  if (text) copyToClipboard(text);
 }
 </script>
 

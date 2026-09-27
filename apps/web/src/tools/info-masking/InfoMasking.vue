@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NInputNumber, NSpace, NCheckbox, NCheckboxGroup, NButton, NDivider, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { maskText, detectPatterns, MASK_PATTERNS, type MaskPattern } from './info-masking.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const inputText = ref(`Contact us at support@example.com or call +1-555-123-4567.
@@ -33,7 +35,7 @@ const maskedOutput = computed(() =>
 const detectedPatterns = computed(() => detectPatterns(inputText.value));
 
 function copyOutput() {
-  navigator.clipboard.writeText(maskedOutput.value);
+  copyToClipboard(maskedOutput.value);
 }
 </script>
 

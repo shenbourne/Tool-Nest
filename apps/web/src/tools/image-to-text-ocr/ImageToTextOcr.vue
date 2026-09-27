@@ -3,10 +3,12 @@ import { ref } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import Tesseract from 'tesseract.js';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const selectedFile = ref<File | null>(null);
@@ -67,7 +69,7 @@ async function extractText() {
 
 function copyText() {
   if (extractedText.value) {
-    navigator.clipboard.writeText(extractedText.value);
+    copyToClipboard(extractedText.value);
   }
 }
 </script>

@@ -3,9 +3,11 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { NCard, NInput, NInputGroup, NInputGroupLabel, NSpace, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const event = ref<KeyboardEvent | null>(null);
@@ -43,7 +45,7 @@ const fields = computed(() => {
 });
 
 function copyText(text: string) {
-  if (text) navigator.clipboard.writeText(text);
+  if (text) copyToClipboard(text);
 }
 </script>
 

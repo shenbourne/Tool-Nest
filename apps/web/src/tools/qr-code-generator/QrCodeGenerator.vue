@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useQrCode, downloadDataUrl } from './qr-code-generator.service';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const { copyImageToClipboard } = useCopy();
 
 const text = ref('');
 const foreground = ref('#000000');
@@ -44,7 +46,7 @@ function copyImage() {
     byteArray[i] = byteChars.charCodeAt(i);
   }
   const blob = new Blob([byteArray], { type: 'image/png' });
-  navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+  copyImageToClipboard(blob);
 }
 </script>
 

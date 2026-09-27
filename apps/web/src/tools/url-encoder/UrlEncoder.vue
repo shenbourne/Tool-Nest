@@ -3,13 +3,15 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NButton, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const input = ref('https://example.com/path?q=hello world&lang=en');
 const encoded = computed(() => { try { return encodeURIComponent(input.value); } catch { return ''; } });
 const decoded = computed(() => { try { return decodeURIComponent(input.value); } catch { return ''; } });
-function copyEncoded() { navigator.clipboard.writeText(encoded.value); }
-function copyDecoded() { navigator.clipboard.writeText(decoded.value); }
+function copyEncoded() { copyToClipboard(encoded.value); }
+function copyDecoded() { copyToClipboard(decoded.value); }
 </script>
 <template>
   <ToolLayout :tool="tool">

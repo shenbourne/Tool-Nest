@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { NButton, NCard, NSpace, NSwitch, NText } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const excludeCommon = ref(true);
 
@@ -30,7 +32,7 @@ function refresh() {
 }
 
 function copy() {
-  navigator.clipboard.writeText(String(port.value));
+  copyToClipboard(String(port.value));
 }
 </script>
 

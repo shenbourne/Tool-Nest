@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSelect, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const title = ref('');
@@ -89,7 +91,7 @@ function escapeHtml(str: string): string {
 }
 
 function copyMetaTags() {
-  navigator.clipboard.writeText(metaTags.value);
+  copyToClipboard(metaTags.value);
 }
 </script>
 

@@ -3,17 +3,19 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { minifyJson } from './json-minify.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const inputJson = ref('');
 const minified = computed(() => minifyJson(inputJson.value));
 
 function copyOutput() {
-  if (minified.value.result) navigator.clipboard.writeText(minified.value.result);
+  if (minified.value.result) copyToClipboard(minified.value.result);
 }
 </script>
 

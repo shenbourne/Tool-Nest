@@ -3,11 +3,13 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { formatSql, type SqlFormatOptions } from './sql-prettify.service';
 import type { SqlLanguage } from 'sql-formatter';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 const input = ref('');
 const language = ref<SqlLanguage>('sql');
@@ -43,7 +45,7 @@ const output = computed(() => formatSql(input.value, options.value).result);
 const errorMsg = computed(() => formatSql(input.value, options.value).error);
 
 function copyOutput() {
-  navigator.clipboard.writeText(output.value);
+  copyToClipboard(output.value);
 }
 </script>
 <template>

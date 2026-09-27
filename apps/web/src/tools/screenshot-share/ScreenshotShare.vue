@@ -5,8 +5,10 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import html2canvas from 'html2canvas';
 import { tool } from './index';
 import { useI18n } from 'vue-i18n';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
+const { copyImageToClipboard } = useCopy();
 
 const selector = ref('body');
 const previewUrl = ref('');
@@ -42,12 +44,12 @@ async function downloadPng() {
   a.click();
 }
 
-async function copyToClipboard() {
+async function copyScreenshot() {
   if (!previewUrl.value) return;
   try {
     const res = await fetch(previewUrl.value);
     const blob = await res.blob();
-    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    await copyImageToClipboard(blob);
   }
   catch (e: any) {
     errorMsg.value = e?.message || t('tools.screenshotShare.copyFailed');
@@ -69,7 +71,7 @@ async function copyToClipboard() {
           <img :src="previewUrl" style="max-width:100%;border:1px solid var(--color-hairline);border-radius:4px;" />
           <NSpace>
             <NButton type="primary" @click="downloadPng">{{ t('tools.screenshotShare.downloadPng') }}</NButton>
-            <NButton @click="copyToClipboard">{{ t('tools.screenshotShare.copyToClipboard') }}</NButton>
+            <NButton @click="copyScreenshot">{{ t('tools.screenshotShare.copyToClipboard') }}</NButton>
           </NSpace>
         </NSpace>
       </NCard>

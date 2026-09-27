@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NAlert, NButton, NDivider } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { convertDockerComposeTo1panel } from './docker-compose-to-1panel.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref(`services:
@@ -51,7 +53,7 @@ const result = computed(() => convertDockerComposeTo1panel(input.value));
 
 function copyOutput() {
   if (result.value.success) {
-    navigator.clipboard.writeText(result.value.output);
+    copyToClipboard(result.value.output);
   }
 }
 

@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { NCard, NSwitch, NSlider, NInput, NButton, NFormItem, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { createToken, tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const length = ref(64);
 const withUppercase = ref(true);
@@ -18,7 +20,7 @@ const token = computed(() =>
 );
 
 function refresh() { length.value = length.value; }
-function copy() { navigator.clipboard.writeText(token.value); }
+function copy() { copyToClipboard(token.value); }
 </script>
 
 <template>

@@ -2,10 +2,12 @@
 import { NCard, NInput, NSelect, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { ref, computed, watch } from 'vue';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref('');
@@ -33,7 +35,7 @@ const output = computed(() => {
 watch(input, () => { error.value = ''; });
 
 function copyOutput() {
-  if (output.value) navigator.clipboard.writeText(output.value);
+  if (output.value) copyToClipboard(output.value);
 }
 </script>
 

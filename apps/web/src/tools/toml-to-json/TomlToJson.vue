@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { tomlToJson } from './toml-to-json.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 const input = ref('');
 
@@ -14,7 +16,7 @@ const output = computed(() => tomlToJson(input.value).result);
 const errorMsg = computed(() => tomlToJson(input.value).error);
 
 function copyOutput() {
-  navigator.clipboard.writeText(output.value);
+  copyToClipboard(output.value);
 }
 </script>
 <template>

@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { convertTextToUnicode, convertUnicodeToText } from './text-to-unicode.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const inputText = ref('');
@@ -16,11 +18,11 @@ const inputUnicode = ref('');
 const textOutput = computed(() => inputUnicode.value ? convertUnicodeToText(inputUnicode.value) : '');
 
 function copyUnicode() {
-  if (unicodeOutput.value) navigator.clipboard.writeText(unicodeOutput.value);
+  if (unicodeOutput.value) copyToClipboard(unicodeOutput.value);
 }
 
 function copyText() {
-  if (textOutput.value) navigator.clipboard.writeText(textOutput.value);
+  if (textOutput.value) copyToClipboard(textOutput.value);
 }
 </script>
 

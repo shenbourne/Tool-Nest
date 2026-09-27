@@ -3,8 +3,10 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const search = ref('');
 const EMOJIS: [string, string][] = [
   ['😀','grinning'],['😂','joy'],['😍','heart_eyes'],['🤔','thinking'],['😎','sunglasses'],
@@ -17,7 +19,7 @@ const EMOJIS: [string, string][] = [
   ['🍕','pizza'],['🍔','burger'],['☕','coffee'],['🍺','beer'],['🎂','cake'],
 ];
 const filtered = computed(() => EMOJIS.filter(([,name]) => !search.value || name.includes(search.value.toLowerCase())));
-function copy(e: string) { navigator.clipboard.writeText(e); }
+function copy(e: string) { copyToClipboard(e); }
 </script>
 <template>
   <ToolLayout :tool="tool">

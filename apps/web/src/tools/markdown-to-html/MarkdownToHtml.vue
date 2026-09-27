@@ -4,9 +4,11 @@ import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import markdownit from 'markdown-it';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const md = markdownit({ html: true, linkify: true });
@@ -15,7 +17,7 @@ const inputMarkdown = ref('');
 const outputHtml = computed(() => inputMarkdown.value ? md.render(inputMarkdown.value) : '');
 
 function copyHtml() {
-  if (outputHtml.value) navigator.clipboard.writeText(outputHtml.value);
+  if (outputHtml.value) copyToClipboard(outputHtml.value);
 }
 
 function printHtml() {

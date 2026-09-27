@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NSelect, NSwitch } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { formatYaml } from './yaml-viewer.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 const input = ref('');
 const sortKeys = ref(false);
@@ -27,7 +29,7 @@ const errorMsg = computed(() =>
 );
 
 function copyOutput() {
-  navigator.clipboard.writeText(output.value);
+  copyToClipboard(output.value);
 }
 </script>
 <template>

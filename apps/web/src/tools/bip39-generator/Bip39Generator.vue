@@ -4,9 +4,11 @@ import { NCard, NInput, NSelect, NButton, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import * as bip39 from 'bip39';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const wordCountOptions = computed(() =>
   [12, 15, 18, 21, 24].map(n => ({ label: t('tools.bip39Generator.wordCount', { n }), value: n }))
@@ -23,7 +25,7 @@ const isValid = computed(() => {
   try { return bip39.validateMnemonic(inputMnemonic.value); } catch { return false; }
 });
 
-function copy() { navigator.clipboard.writeText(mnemonic.value); }
+function copy() { copyToClipboard(mnemonic.value); }
 function refresh() { words.value = words.value; }
 </script>
 

@@ -3,9 +3,11 @@ import { ref, onMounted } from 'vue';
 import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const editorRef = ref<HTMLDivElement | null>(null);
@@ -37,7 +39,7 @@ function updateOutput() {
 
 function copyHtml() {
   if (htmlOutput.value) {
-    navigator.clipboard.writeText(htmlOutput.value);
+    copyToClipboard(htmlOutput.value);
   }
 }
 

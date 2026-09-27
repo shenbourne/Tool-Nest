@@ -3,11 +3,13 @@ import { ref, computed } from 'vue';
 import { NButton, NCard, NCheckbox, NSpace, NText } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation } from './chmod-calculator.service';
 import type { Group, Scope } from './chmod-calculator.types';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const scopes: { scope: Scope; title: string }[] = [
   { scope: 'read', title: 'Read (4)' },
@@ -26,7 +28,7 @@ const octal = computed(() => computeChmodOctalRepresentation({ permissions: perm
 const symbolic = computed(() => computeChmodSymbolicRepresentation({ permissions: permissions.value }));
 
 function copyCommand() {
-  navigator.clipboard.writeText(`chmod ${octal.value} path`);
+  copyToClipboard(`chmod ${octal.value} path`);
 }
 </script>
 

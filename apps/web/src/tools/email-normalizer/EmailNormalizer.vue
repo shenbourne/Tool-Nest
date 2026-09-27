@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NDataTable } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { normalizeEmails } from './email-normalizer.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref('John.Doe+newsletter@gmail.com\nJane.Smith@outlook.com');
@@ -19,7 +21,7 @@ const normalizedOutput = computed(() =>
 
 function copyOutput() {
   if (normalizedOutput.value) {
-    navigator.clipboard.writeText(normalizedOutput.value);
+    copyToClipboard(normalizedOutput.value);
   }
 }
 

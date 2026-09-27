@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import { HmacMD5, HmacRIPEMD160, HmacSHA1, HmacSHA224, HmacSHA256, HmacSHA3, HmacSHA384, HmacSHA512, enc } from 'crypto-js';
 import type { lib } from 'crypto-js';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const algos = { MD5: HmacMD5, RIPEMD160: HmacRIPEMD160, SHA1: HmacSHA1, SHA3: HmacSHA3, SHA224: HmacSHA224, SHA256: HmacSHA256, SHA384: HmacSHA384, SHA512: HmacSHA512 } as const;
 type Algo = keyof typeof algos;
@@ -29,7 +31,7 @@ const hmac = computed(() => {
   return result.toString(enc[encoding.value]);
 });
 
-function copy() { navigator.clipboard.writeText(hmac.value); }
+function copy() { copyToClipboard(hmac.value); }
 </script>
 
 <template>

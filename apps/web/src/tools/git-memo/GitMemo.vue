@@ -2,9 +2,11 @@
 import { NCard, NSpace, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 interface GitCommand {
   command: string;
@@ -90,7 +92,7 @@ const sections: { title: string; commands: GitCommand[] }[] = [
 ];
 
 function copyCommand(command: string) {
-  navigator.clipboard.writeText(command);
+  copyToClipboard(command);
 }
 </script>
 

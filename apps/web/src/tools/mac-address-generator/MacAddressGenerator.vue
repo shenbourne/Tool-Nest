@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NInputNumber, NSelect, NSpace, NButton, NAlert, NRadioGroup, NRadio } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { generateMacAddresses, isValidMacPrefix } from './mac-address-generator.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const count = ref(5);
@@ -38,7 +40,7 @@ function refresh() {
 }
 
 function copyAll() {
-  navigator.clipboard.writeText(macAddresses.value.join('\n'));
+  copyToClipboard(macAddresses.value.join('\n'));
 }
 </script>
 

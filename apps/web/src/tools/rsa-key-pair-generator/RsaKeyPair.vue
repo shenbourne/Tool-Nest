@@ -4,9 +4,11 @@ import { NCard, NInputNumber, NInput, NButton, NSpace, NFormItem, NAlert } from 
 import { useI18n } from 'vue-i18n';
 import * as forge from 'node-forge';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const keySize = ref(2048);
 const publicKey = ref('');
@@ -28,8 +30,8 @@ function generate() {
   }
 }
 
-function copyPublic() { navigator.clipboard.writeText(publicKey.value); }
-function copyPrivate() { navigator.clipboard.writeText(privateKey.value); }
+function copyPublic() { copyToClipboard(publicKey.value); }
+function copyPrivate() { copyToClipboard(privateKey.value); }
 </script>
 
 <template>

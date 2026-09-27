@@ -4,9 +4,11 @@ import { NCard, NInput, NSelect, NButton, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { AES, RC4, Rabbit, TripleDES, enc } from 'crypto-js';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const algos = { AES, TripleDES, Rabbit, RC4 };
 type Algo = keyof typeof algos;
 const algoOptions = Object.keys(algos).map(l => ({ label: l, value: l }));
@@ -32,7 +34,7 @@ function doDecrypt() {
   }
 }
 
-function copy() { navigator.clipboard.writeText(encryptOutput.value); }
+function copy() { copyToClipboard(encryptOutput.value); }
 </script>
 
 <template>

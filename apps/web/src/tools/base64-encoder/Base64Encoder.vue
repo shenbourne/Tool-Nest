@@ -2,10 +2,12 @@
 import { NCard, NInput, NSpace, NButton, NRadioGroup, NRadio } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { ref, computed, watch } from 'vue';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const mode = ref<'encode' | 'decode'>('encode');
@@ -27,7 +29,7 @@ watch(input, () => { error.value = ''; });
 watch(mode, () => { error.value = ''; });
 
 function copyOutput() {
-  if (output.value) navigator.clipboard.writeText(output.value);
+  if (output.value) copyToClipboard(output.value);
 }
 
 function swap() {

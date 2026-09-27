@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NSelect, NSwitch, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 import { convertList } from './list-converter.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const inputText = ref('apple, banana, apple, cherry, banana, date');
 
@@ -47,7 +49,7 @@ const output = computed(() => {
 });
 
 function copyOutput() {
-  navigator.clipboard.writeText(output.value);
+  copyToClipboard(output.value);
 }
 </script>
 

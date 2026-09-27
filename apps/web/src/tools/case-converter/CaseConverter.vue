@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const input = ref('hello world example');
 
@@ -33,7 +35,7 @@ const results = [
   { label: 'CONSTANT_CASE', value: constantCase },
 ];
 
-function copyText(text: string) { navigator.clipboard.writeText(text); }
+function copyText(text: string) { copyToClipboard(text); }
 </script>
 
 <template>

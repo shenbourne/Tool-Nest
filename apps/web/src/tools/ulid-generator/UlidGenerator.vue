@@ -4,15 +4,17 @@ import { NCard, NInput, NInputNumber, NButton, NSpace, NFormItem } from 'naive-u
 import { useI18n } from 'vue-i18n';
 import { ulid } from 'ulid';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const count = ref(1);
 const ulids = computed(() =>
   Array.from({ length: count.value }, () => ulid()).join('\n')
 );
 
-function copy() { navigator.clipboard.writeText(ulids.value); }
+function copy() { copyToClipboard(ulids.value); }
 function refresh() { count.value = count.value; }
 </script>
 

@@ -3,10 +3,12 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NInputNumber, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { arabicToRoman, romanToArabic, isValidRomanNumber, MIN_ARABIC_TO_ROMAN, MAX_ARABIC_TO_ROMAN } from './roman-numeral-converter.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const inputArabic = ref(42);
@@ -19,10 +21,10 @@ const romanValid = computed(() => isValidRomanNumber(inputRoman.value));
 const arabicValid = computed(() => inputArabic.value >= MIN_ARABIC_TO_ROMAN && inputArabic.value <= MAX_ARABIC_TO_ROMAN);
 
 function copyRoman() {
-  if (outputRoman.value) navigator.clipboard.writeText(outputRoman.value);
+  if (outputRoman.value) copyToClipboard(outputRoman.value);
 }
 function copyArabic() {
-  if (outputArabic.value !== null) navigator.clipboard.writeText(String(outputArabic.value));
+  if (outputArabic.value !== null) copyToClipboard(String(outputArabic.value));
 }
 </script>
 

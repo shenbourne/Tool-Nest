@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSelect, NButton, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool, hashText, hashAlgorithms, type HashAlgorithm } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const inputText = ref('Lorem ipsum dolor sit amet');
 const algorithm = ref<HashAlgorithm>('SHA256');
@@ -13,7 +15,7 @@ const output = computed(() => hashText(inputText.value, algorithm.value));
 
 const algoOptions = Object.keys(hashAlgorithms).map(label => ({ label, value: label }));
 
-function copy() { navigator.clipboard.writeText(output.value); }
+function copy() { copyToClipboard(output.value); }
 </script>
 
 <template>

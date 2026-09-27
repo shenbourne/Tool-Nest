@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { NButton, NModal, NInput, NSpace, NAlert, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
+import { useCopy } from '@/composables/useCopy';
 
 const props = defineProps<{
   toolName: string;
@@ -9,6 +10,7 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const showModal = ref(false);
 const shareTitle = ref('');
@@ -50,7 +52,7 @@ async function createShare() {
 }
 
 function copyLink() {
-  navigator.clipboard.writeText(shareUrl.value);
+  copyToClipboard(shareUrl.value);
 }
 
 defineExpose({ open });

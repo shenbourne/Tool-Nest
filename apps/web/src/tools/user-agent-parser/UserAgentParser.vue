@@ -3,10 +3,12 @@ import { ref, computed, onMounted } from 'vue';
 import { NCard, NInput, NSpace, NButton, NDescriptions, NDescriptionsItem } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { parseUserAgent } from './user-agent-parser.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const uaString = ref('');
@@ -14,7 +16,7 @@ const parsed = computed(() => parseUserAgent(uaString.value));
 
 function copyUa() {
   if (uaString.value) {
-    navigator.clipboard.writeText(uaString.value);
+    copyToClipboard(uaString.value);
   }
 }
 

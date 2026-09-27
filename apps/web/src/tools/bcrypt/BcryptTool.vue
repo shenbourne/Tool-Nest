@@ -4,9 +4,11 @@ import { NCard, NInput, NInputNumber, NButton, NSpace, NFormItem, NTag } from 'n
 import { useI18n } from 'vue-i18n';
 import { hashSync, compareSync } from 'bcryptjs';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 
 const input = ref('');
 const saltCount = ref(10);
@@ -20,7 +22,7 @@ const compareMatch = computed(() => {
   try { return compareSync(compareString.value, compareHash.value); } catch { return false; }
 });
 
-function copy() { navigator.clipboard.writeText(hashed.value); }
+function copy() { copyToClipboard(hashed.value); }
 </script>
 
 <template>

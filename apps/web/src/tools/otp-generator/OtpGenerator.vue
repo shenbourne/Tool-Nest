@@ -3,11 +3,13 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { NCard, NInput, NSpace, NButton, NProgress, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { generateSecret, generateTOTP, verifyTOTP, buildKeyUri, getTimeRemaining } from './otp-generator.service';
 import QRCode from 'qrcode';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const secret = ref(generateSecret());
@@ -42,11 +44,11 @@ async function updateQr() {
 }
 
 function copySecret() {
-  navigator.clipboard.writeText(secret.value);
+  copyToClipboard(secret.value);
 }
 
 function copyToken() {
-  navigator.clipboard.writeText(token.value);
+  copyToClipboard(token.value);
 }
 
 function verify() {

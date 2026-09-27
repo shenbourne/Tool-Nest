@@ -3,17 +3,19 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { textToNatoAlphabet } from './text-to-nato-alphabet.service';
 
 const { t } = useI18n();
+const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref('');
 const natoOutput = computed(() => textToNatoAlphabet(input.value));
 
 function copyOutput() {
-  if (natoOutput.value) navigator.clipboard.writeText(natoOutput.value);
+  if (natoOutput.value) copyToClipboard(natoOutput.value);
 }
 </script>
 
