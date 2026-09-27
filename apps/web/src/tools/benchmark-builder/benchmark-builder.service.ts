@@ -61,6 +61,20 @@ self.onmessage = (e) => {
 
 const SUITE_TIMEOUT_MS = 10_000;
 
+/**
+ * Vue's reactive arrays/objects are Proxies and cannot be structured-cloned by
+ * `postMessage` (DataCloneError), so suites are copied into plain objects.
+ */
+export function toWorkerPayload(
+  suites: BenchmarkSuite[],
+  iterations: number,
+): { suites: BenchmarkSuite[]; iterations: number } {
+  return {
+    suites: suites.map(s => ({ id: s.id, name: s.name, code: s.code })),
+    iterations,
+  };
+}
+
 export function runBenchmark(
   suites: BenchmarkSuite[],
   iterations: number,
@@ -69,7 +83,17 @@ export function runBenchmark(
     const results: BenchmarkResult[] = [];
     const failures: BenchmarkFailure[] = [];
     const url = URL.createObjectURL(new Blob([WORKER_SOURCE], { type: 'application/javascript' }));
-    const worker = new Worker(url);
+
+    let worker: Worker;
+    try {
+      worker = new Worker(url);
+    } catch (err) {
+      // Never leave the caller hanging if workers are unavailable.
+      URL.revokeObjectURL(url);
+      resolve({ results, failures: [{ suiteName: '-', message: String(err) }] });
+      return;
+    }
+
     let currentSuite: string | null = null;
     let finished = false;
     let suiteTimer: ReturnType<typeof setTimeout> | undefined;
@@ -106,9 +130,17 @@ export function runBenchmark(
         finish();
       }
     };
-    worker.onerror = () => finish();
+    worker.onerror = (e: ErrorEvent) => {
+      failures.push({ suiteName: currentSuite ?? '-', message: e.message || i18n.global.t('tools.benchmarkBuilder.failed') });
+      finish();
+    };
 
     armSuiteTimer();
-    worker.postMessage({ suites, iterations });
+    try {
+      worker.postMessage(toWorkerPayload(suites, iterations));
+    } catch (err) {
+      failures.push({ suiteName: '-', message: String(err) });
+      finish();
+    }
   });
 }

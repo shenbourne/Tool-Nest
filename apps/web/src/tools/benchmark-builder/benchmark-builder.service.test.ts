@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { summarizeSuite } from './benchmark-builder.service';
+import { summarizeSuite, toWorkerPayload } from './benchmark-builder.service';
 
 describe('summarizeSuite', () => {
   it('computes aggregate stats', () => {
@@ -15,5 +15,15 @@ describe('summarizeSuite', () => {
 
   it('handles a zero average without dividing by zero', () => {
     expect(summarizeSuite('s', [0, 0], 2).opsPerSec).toBe(0);
+  });
+});
+
+describe('toWorkerPayload', () => {
+  it('copies suites into plain cloneable objects', () => {
+    const suite = { id: '1', name: 'a', code: '1+1', extra: 'ignored' } as never;
+    const payload = toWorkerPayload([suite], 5);
+    expect(payload.iterations).toBe(5);
+    expect(payload.suites[0]).toEqual({ id: '1', name: 'a', code: '1+1' });
+    expect(payload.suites[0]).not.toBe(suite);
   });
 });
