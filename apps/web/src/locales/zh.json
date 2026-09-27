@@ -1149,7 +1149,8 @@
       "inputPlaceholder": "如 'Hello world'",
       "binaryOutputPlaceholder": "二进制输出...",
       "binaryInputPlaceholder": "如 '01001000 01100101 01101100 01101100 01101111'",
-      "textOutputPlaceholder": "文本输出..."
+      "textOutputPlaceholder": "文本输出...",
+      "invalidBinary": "无效的二进制输入"
     },
     "numeronymGenerator": {
       "name": "数字缩略词生成器",
@@ -1620,7 +1621,8 @@
       "description": "从文本或 URL 生成二维码",
       "inputPlaceholder": "输入文本或 URL...",
       "errorCorrection": "纠错级别",
-      "emptyHint": "在上方输入内容以生成二维码"
+      "emptyHint": "在上方输入内容以生成二维码",
+      "generationFailed": "二维码生成失败，输入内容可能过长"
     },
     "wifiQrCodeGenerator": {
       "name": "WiFi 二维码生成器",

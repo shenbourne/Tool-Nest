@@ -1149,7 +1149,8 @@
       "inputPlaceholder": "e.g. 'Hello world'",
       "binaryOutputPlaceholder": "Binary output...",
       "binaryInputPlaceholder": "e.g. '01001000 01100101 01101100 01101100 01101111'",
-      "textOutputPlaceholder": "Text output..."
+      "textOutputPlaceholder": "Text output...",
+      "invalidBinary": "Invalid binary input"
     },
     "numeronymGenerator": {
       "name": "Numeronym Generator",
@@ -1620,7 +1621,8 @@
       "description": "Generate QR codes from text or URLs",
       "inputPlaceholder": "Enter text or URL...",
       "errorCorrection": "Error Correction",
-      "emptyHint": "Enter text above to generate QR code"
+      "emptyHint": "Enter text above to generate QR code",
+      "generationFailed": "QR code generation failed, the input may be too long"
     },
     "wifiQrCodeGenerator": {
       "name": "WiFi QR Code Generator",
