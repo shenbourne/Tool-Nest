@@ -3,15 +3,11 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { censorText } from './text-censor.service';
 import { tool } from './index';
 const { t } = useI18n();
 const input = ref('');
-const BAD = ['bad','evil','hack','damn','hell'];
-const output = computed(() => {
-  let r = input.value;
-  BAD.forEach(w => { r = r.replace(new RegExp(w,'gi'), m => m[0]+'*'.repeat(m.length-1)); });
-  return r;
-});
+const output = computed(() => censorText(input.value));
 </script>
 <template>
   <ToolLayout :tool="tool">
