@@ -45,13 +45,17 @@ function diff(a: any, b: any, path = ''): DiffEntry[] {
 
 const diffResult = computed<DiffEntry[]>(() => {
   errorMsg.value = '';
-  if (!leftJson.value && !rightJson.value) return [];
+  if (!leftJson.value.trim() && !rightJson.value.trim()) return [];
   try {
-    const a = leftJson.value ? JSON.parse(leftJson.value) : null;
-    const b = rightJson.value ? JSON.parse(rightJson.value) : null;
-    if (a === null && b === null) return [];
-    if (a === null) return [{ path: '(root)', type: 'added', newValue: b }];
-    if (b === null) return [{ path: '(root)', type: 'removed', oldValue: a }];
+    // Empty sides use undefined (not null) so a literal JSON `null` on one
+    // side is never mistaken for an untouched textbox on the other.
+    const a = leftJson.value.trim() === '' ? undefined : JSON.parse(leftJson.value);
+    const b = rightJson.value.trim() === '' ? undefined : JSON.parse(rightJson.value);
+    if (a === undefined || b === undefined) {
+      return a === undefined
+        ? [{ path: '(root)', type: 'added', newValue: b }]
+        : [{ path: '(root)', type: 'removed', oldValue: a }];
+    }
     return diff(a, b);
   }
   catch (e: any) {
