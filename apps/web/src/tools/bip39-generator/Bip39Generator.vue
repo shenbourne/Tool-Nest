@@ -15,7 +15,11 @@ const wordCountOptions = computed(() =>
 );
 
 const words = ref(12);
+// nonce lets the retry button force a fresh mnemonic instead of the old
+// no-op `words.value = words.value`.
+const nonce = ref(0);
 const mnemonic = computed(() => {
+  void nonce.value;
   try { return bip39.generateMnemonic(words.value === 12 ? 128 : words.value === 15 ? 160 : words.value === 18 ? 192 : words.value === 21 ? 224 : 256); } catch { return ''; }
 });
 
@@ -26,7 +30,7 @@ const isValid = computed(() => {
 });
 
 function copy() { copyToClipboard(mnemonic.value); }
-function refresh() { words.value = words.value; }
+function refresh() { nonce.value++; }
 </script>
 
 <template>

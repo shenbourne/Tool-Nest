@@ -15,11 +15,13 @@ const withLowercase = ref(true);
 const withNumbers = ref(true);
 const withSymbols = ref(false);
 
-const token = computed(() =>
-  createToken({ length: length.value, withUppercase: withUppercase.value, withLowercase: withLowercase.value, withNumbers: withNumbers.value, withSymbols: withSymbols.value })
-);
+const nonce = ref(0);
+const token = computed(() => {
+  void nonce.value;
+  return createToken({ length: length.value, withUppercase: withUppercase.value, withLowercase: withLowercase.value, withNumbers: withNumbers.value, withSymbols: withSymbols.value });
+});
 
-function refresh() { length.value = length.value; }
+function refresh() { nonce.value++; }
 function copy() { copyToClipboard(token.value); }
 </script>
 

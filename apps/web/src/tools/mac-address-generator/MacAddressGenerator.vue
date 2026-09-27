@@ -25,7 +25,11 @@ const separatorOptions = computed(() => [
 
 const prefixValid = computed(() => isValidMacPrefix(prefix.value));
 
+// nonce lets the refresh button force regeneration instead of the old no-op
+// `count.value = count.value`.
+const nonce = ref(0);
 const macAddresses = computed(() => {
+  void nonce.value;
   if (!prefixValid.value) return [];
   return generateMacAddresses(count.value, {
     prefix: prefix.value,
@@ -35,8 +39,7 @@ const macAddresses = computed(() => {
 });
 
 function refresh() {
-  // Force re-computation by bumping a dependency
-  count.value = count.value;
+  nonce.value++;
 }
 
 function copyAll() {

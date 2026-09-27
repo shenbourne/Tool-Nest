@@ -10,12 +10,16 @@ import { tool } from './index';
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 const count = ref(1);
-const ulids = computed(() =>
-  Array.from({ length: count.value }, () => ulid()).join('\n')
-);
+// Bumping nonce forces the computed below to re-run so refresh() actually
+// regenerates instead of assigning count.value = count.value (a no-op).
+const nonce = ref(0);
+const ulids = computed(() => {
+  void nonce.value;
+  return Array.from({ length: count.value }, () => ulid()).join('\n');
+});
 
 function copy() { copyToClipboard(ulids.value); }
-function refresh() { count.value = count.value; }
+function refresh() { nonce.value++; }
 </script>
 
 <template>
