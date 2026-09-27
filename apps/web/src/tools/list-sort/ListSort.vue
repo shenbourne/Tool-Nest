@@ -4,11 +4,12 @@ import { NCard, NInput, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
+import { sortLines } from './list-sort.service';
 
 const { t } = useI18n();
 
 const input = ref('');
-const output = computed(() => input.value.split('\n').filter(Boolean).sort((a,b) => a.localeCompare(b)).join('\n'));
+const output = computed(() => sortLines(input.value));
 </script>
 <template>
   <ToolLayout :tool="tool">
