@@ -8,6 +8,7 @@ import { tool } from './index';
 const { t } = useI18n();
 const ips = ref<string[]>([]);
 const testing = ref(false);
+const error = ref('');
 let activePc: RTCPeerConnection | null = null;
 
 function closePc(pc: RTCPeerConnection) {
@@ -16,7 +17,7 @@ function closePc(pc: RTCPeerConnection) {
 }
 
 async function detect() {
-  testing.value = true; ips.value = [];
+  testing.value = true; ips.value = []; error.value = '';
   try {
     activePc?.close();
     const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
@@ -29,7 +30,7 @@ async function detect() {
     };
     pc.onicegatheringstatechange = () => { if (pc.iceGatheringState === 'complete') { testing.value = false; closePc(pc); } };
     setTimeout(() => { testing.value = false; closePc(pc); }, 5000);
-  } catch (e: any) { ips.value = [t('tools.webrtcDetection.error', { message: e.message })]; testing.value = false; }
+  } catch (e: any) { error.value = t('tools.webrtcDetection.error', { message: e.message }); testing.value = false; }
 }
 onUnmounted(() => { activePc?.close(); activePc = null; });
 </script>
@@ -38,6 +39,7 @@ onUnmounted(() => { activePc?.close(); activePc = null; });
     <NCard><NSpace vertical :size="12">
       <NAlert type="warning" :title="t('tools.webrtcDetection.warning')" />
       <NButton type="primary" :loading="testing" @click="detect">{{ t('tools.webrtcDetection.detect') }}</NButton>
+      <NAlert v-if="error" type="error" :title="error" />
       <div v-if="ips.length">
         <strong>{{ t('tools.webrtcDetection.detected') }}</strong>
         <div v-for="ip in ips" style="font-family:monospace;padding:4px;">{{ ip }}</div>
