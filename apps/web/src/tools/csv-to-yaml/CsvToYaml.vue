@@ -3,27 +3,24 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { parseCSV } from '@/utils/csv';
+import yaml from 'js-yaml';
 import { tool } from './index';
 
 const { t } = useI18n();
 
 const input = ref('');
-function parseCSV(text: string, sep = ','): string[][] {
-  return text.trim().split('\n').map(line => {
-    const row: string[] = []; let cur = ''; let inQ = false;
-    for (const ch of line) {
-      if (ch === '"') inQ = !inQ;
-      else if (ch === sep && !inQ) { row.push(cur.trim()); cur = ''; }
-      else cur += ch;
-    }
-    row.push(cur.trim()); return row;
-  }).filter(r => r.some(c => c));
-}
 const output = computed(() => {
   const rows = parseCSV(input.value);
   if (rows.length < 2) return '';
-  const h = rows[0];
-  return rows.slice(1).map(r => '- ' + h.map((k,i) => k + ': ' + (r[i]||'')).join('\n  ')).join('\n');
+  const headers = rows[0];
+  // Values come from js-yaml, so special characters stay valid YAML; columns
+  // beyond the headers keep their data under generated names instead of being
+  // silently dropped.
+  const items = rows.slice(1).map(r =>
+    Object.fromEntries(r.map((v, i) => [headers[i] ?? `col_${i + 1}`, v])),
+  );
+  return yaml.dump(items);
 });
 </script>
 <template>
