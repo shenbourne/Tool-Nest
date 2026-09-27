@@ -96,6 +96,9 @@ function startRecording() {
   mediaRecorder.value.onstop = () => {
     const blob = new Blob(recordedChunks.value, { type: 'video/webm' });
     const url = URL.createObjectURL(blob);
+    // When unmounting, stopRecording() fires this handler after teardown has
+    // begun — that recording would leak, so release it immediately.
+    if (unmounted) { URL.revokeObjectURL(url); return; }
     recordings.value.unshift({ url, type: 'video', createdAt: new Date() });
     recordedChunks.value = [];
   };
@@ -138,11 +141,16 @@ function removeRecording(index: number) {
   recordings.value.splice(index, 1);
 }
 
+let unmounted = false;
+
 onBeforeUnmount(() => {
+  unmounted = true;
   if (stream.value) {
     stream.value.getTracks().forEach(t => t.stop());
   }
   stopRecording();
+  for (const item of recordings.value) URL.revokeObjectURL(item.url);
+  recordings.value = [];
 });
 </script>
 
