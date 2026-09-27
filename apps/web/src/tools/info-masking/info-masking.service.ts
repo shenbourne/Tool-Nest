@@ -57,8 +57,10 @@ function maskValue(value: string, maskChar: string, preserveFirst: number, prese
     return maskChar.repeat(value.length);
   }
 
-  const first = value.slice(0, preserveFirst);
-  const last = value.slice(-preserveLast);
+  const first = preserveFirst > 0 ? value.slice(0, preserveFirst) : '';
+  // `slice(-0)` returns the whole string, so a 0 preserve must not negate the
+  // mask — otherwise the output leaks the entire original value.
+  const last = preserveLast > 0 ? value.slice(-preserveLast) : '';
   const masked = maskChar.repeat(value.length - preserveFirst - preserveLast);
 
   return first + masked + last;
