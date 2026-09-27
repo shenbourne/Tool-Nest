@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { parseCSV, serializeCSV } from '@/utils/csv';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -15,18 +16,7 @@ const sepOptions = computed(() => [
   { label: t('tools.csvChangeSeparator.tab'), value: '\t' },
   { label: t('tools.csvChangeSeparator.comma'), value: ',' },
 ]);
-function parseCSV(text: string, sep = ','): string[][] {
-  return text.trim().split('\n').map(line => {
-    const row: string[] = []; let cur = ''; let inQ = false;
-    for (const ch of line) {
-      if (ch === '"') inQ = !inQ;
-      else if (ch === sep && !inQ) { row.push(cur.trim()); cur = ''; }
-      else cur += ch;
-    }
-    row.push(cur.trim()); return row;
-  }).filter(r => r.some(c => c));
-}
-const output = computed(() => parseCSV(input.value).map(r => r.map(c => c.includes(newSep.value) ? '"' + c + '"' : c).join(newSep.value)).join('\n'));
+const output = computed(() => serializeCSV(parseCSV(input.value), newSep.value));
 </script>
 <template>
   <ToolLayout :tool="tool">
