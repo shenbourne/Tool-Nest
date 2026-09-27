@@ -10,9 +10,10 @@ const { t } = useI18n();
 const a = ref(10); const b = ref(200); // What is a% of b?
 const c = ref(50); const d = ref(100); // c is what % of d?
 const e = ref(80); const f = ref(100); // % change from e to f
-const result1 = computed(() => (a.value / 100 * b.value).toFixed(4));
-const result2 = computed(() => d.value ? (c.value / d.value * 100).toFixed(4) : '0');
-const result3 = computed(() => e.value ? ((f.value - e.value) / e.value * 100).toFixed(4) : '0');
+// Cleared inputs are null; show nothing rather than a fake "0.0000".
+const result1 = computed(() => (a.value == null || b.value == null) ? '' : (a.value / 100 * b.value).toFixed(4));
+const result2 = computed(() => (c.value == null || d.value == null) ? '' : d.value ? (c.value / d.value * 100).toFixed(4) : '0');
+const result3 = computed(() => (e.value == null || f.value == null) ? '' : e.value ? ((f.value - e.value) / e.value * 100).toFixed(4) : '0');
 </script>
 <template>
   <ToolLayout :tool="tool">
