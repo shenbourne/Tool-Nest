@@ -13,8 +13,12 @@ const frameDuration = ref(0.5);
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+// Bumped whenever the file list changes so a render still in flight for the
+// old list cannot overwrite the new selection's result.
+let generation = 0;
 
 function onFileChange(event: Event) {
+  generation++;
   const input = event.target as HTMLInputElement;
   files.value = Array.from(input.files ?? []);
   resultData.value = null;
@@ -33,6 +37,7 @@ function downloadBlob(data: Uint8Array, filename: string, mimeType: string) {
 
 async function process() {
   if (!files.value.length || !isLoaded.value) return;
+  const current = generation;
   processing.value = true;
   error.value = '';
   resultData.value = null;
@@ -69,9 +74,9 @@ async function process() {
       return (await ffmpeg.readFile(outputName)) as Uint8Array;
     });
 
-    resultData.value = result;
+    resultData.value = current === generation ? result : resultData.value;
   } catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : t('common.processingFailed');
+    if (current === generation) error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
     processing.value = false;
   }
