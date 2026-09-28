@@ -1798,12 +1798,12 @@
       "description": "改变 GIF 动画速度",
       "selectSpeed": "选择速度",
       "changeSpeed": "调整速度",
-      "speedVeryFast": "0.25x（极快）",
-      "speedFaster": "0.5x（较快）",
+      "speedVerySlow": "0.25x（极慢）",
+      "speedSlow": "0.5x（慢）",
       "speedNormal": "1x（正常）",
-      "speedSlower": "1.5x（较慢）",
-      "speedSlow": "2x（慢）",
-      "speedVerySlow": "4x（极慢）"
+      "speedFast": "1.5x（快）",
+      "speedFaster": "2x（较快）",
+      "speedVeryFast": "4x（极快）"
     },
     "imagesToGif": {
       "name": "图片转 GIF",

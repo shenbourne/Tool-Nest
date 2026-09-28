@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { audioAtempoFilter, videoSetptsFilter } from './ffmpeg-speed';
+import { audioAtempoFilter, gifSpeedFilter, videoSetptsFilter } from './ffmpeg-speed';
 
 // The speed tools label their options with a playback-speed multiplier (2x is
 // twice as fast), so PTS — a duration — must scale by the reciprocal.
@@ -56,5 +56,21 @@ describe('audioAtempoFilter', () => {
         expect(value).toBeLessThanOrEqual(100);
       }
     }
+  });
+});
+
+describe('gifSpeedFilter', () => {
+  it('scales the timestamps by the reciprocal of the selected speed', () => {
+    expect(gifSpeedFilter(4)).toBe('[0:v]setpts=PTS/4,fps=10[v]');
+    expect(gifSpeedFilter(0.25)).toBe('[0:v]setpts=PTS/0.25,fps=10[v]');
+    expect(gifSpeedFilter(1)).toBe('[0:v]setpts=PTS/1,fps=10[v]');
+  });
+
+  it('keeps the frame rate the GIF encoder needs', () => {
+    expect(gifSpeedFilter(2)).toContain('fps=10');
+  });
+
+  it('resamples timestamps in the same direction as the video filter', () => {
+    expect(gifSpeedFilter(2)).toContain(videoSetptsFilter(2));
   });
 });
