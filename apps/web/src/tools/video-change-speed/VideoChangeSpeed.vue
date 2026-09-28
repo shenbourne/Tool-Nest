@@ -3,6 +3,7 @@ import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
+import { audioAtempoFilter, videoSetptsFilter } from '@/utils/ffmpeg-speed';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -49,9 +50,6 @@ async function process() {
   try {
     const inputBytes = new Uint8Array(await file.value.arrayBuffer());
     const factor = parseFloat(speed.value);
-    // ffmpeg's atempo only accepts [0.5, 100]; slower factors need a chain of
-    // filters (0.25 = atempo=0.5,atempo=0.5).
-    const atempo = atempoChain(1 / factor);
 
     const result = await runFFmpegTask(async ({ ffmpeg, tempFile }) => {
       const inputName = tempFile('.mp4');
@@ -59,15 +57,15 @@ async function process() {
       await ffmpeg.writeFile(inputName, inputBytes);
       let code = await ffmpeg.exec([
         '-i', inputName,
-        '-filter:v', `setpts=${factor}*PTS`,
-        '-filter:a', atempo,
+        '-filter:v', videoSetptsFilter(factor),
+        '-filter:a', audioAtempoFilter(factor),
         outputName,
       ]);
       if (code !== 0) {
         // Videos without an audio stream reject -filter:a; retry video-only.
         code = await ffmpeg.exec([
           '-i', inputName,
-          '-filter:v', `setpts=${factor}*PTS`,
+          '-filter:v', videoSetptsFilter(factor),
           outputName,
         ]);
       }
@@ -81,15 +79,6 @@ async function process() {
   } finally {
     processing.value = false;
   }
-}
-
-function atempoChain(value: number): string {
-  const parts: string[] = [];
-  let v = value;
-  while (v < 0.5) { parts.push('atempo=0.5'); v /= 0.5; }
-  while (v > 100) { parts.push('atempo=100'); v /= 100; }
-  parts.push(`atempo=${Math.round(v * 100) / 100}`);
-  return parts.join(',');
 }
 </script>
 
