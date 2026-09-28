@@ -25,7 +25,6 @@ function calc() {
   catch (e: any) { result.value = t('tools.genericCalculator.errorPrefix', { message: e.message }); }
 }
 </script>
-</script>
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
