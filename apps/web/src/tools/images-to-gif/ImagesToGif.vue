@@ -67,7 +67,7 @@ async function process() {
         '-f', 'concat',
         '-safe', '0',
         '-i', listName,
-        '-vf', `fps=${Math.round(1 / frameDuration.value)},scale=480:-1:flags=lanczos`,
+        '-vf', `fps=${1 / frameDuration.value},scale=480:-1:flags=lanczos`,
         '-loop', '0',
         outputName,
       ]);
