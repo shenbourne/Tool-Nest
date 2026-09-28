@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NInput, NInputNumber, NSelect, NColorPicker, NAlert } from 'naive-ui';
+import { NCard, NSpace, NButton, NInput, NInputNumber, NSelect, NColorPicker, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -25,7 +26,7 @@ const positionOptions = computed(() => [
   { label: t('tools.pdfEditor.position.bottomRight'), value: 'bottom-right' },
 ]);
 
-function onFile(f: File | null) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; }
+function onFile(files: File[]) { const f = files[0] ?? null; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; }
 
 // Any edit invalidates a previously generated PDF; keep the download in sync
 // with the current inputs.
@@ -115,7 +116,7 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept=".pdf" @change="onFile" />
       <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')"  :input-props="{ id: 'pdfEditorField0' }"/>
       <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
       <NSpace>
