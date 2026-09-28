@@ -82,7 +82,7 @@ function copyOutput() {
             :rows="10"
             placeholder="SELECT id, name FROM users WHERE active = 1 ORDER BY name"
             style="font-family: monospace;"
-          />
+           :input-props="{ id: 'sqlPrettifyField0' }"/>
         </NSpace>
       </NCard>
       <NCard :title="t('tools.sqlPrettify.outputTitle')">
@@ -94,7 +94,7 @@ function copyOutput() {
             readonly
             :placeholder="t('tools.sqlPrettify.outputPlaceholder')"
             style="font-family: monospace;"
-          />
+           :input-props="{ id: 'sqlPrettifyField1' }"/>
           <NButton :disabled="!output" @click="copyOutput">
             {{ t('tool.copy') }}
           </NButton>

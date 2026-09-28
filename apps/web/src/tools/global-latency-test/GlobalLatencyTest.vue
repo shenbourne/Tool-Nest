@@ -37,7 +37,7 @@ async function run() {
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="target" :placeholder="t('common.enterDomain')" @keyup.enter="run" />
+        <NInput v-model:value="target" :placeholder="t('common.enterDomain')" @keyup.enter="run"  :input-props="{ id: 'globalLatencyTestField0' }"/>
         <NButton type="primary" :loading="loading" :disabled="!target" @click="run">{{ t('tools.globalLatencyTest.testLatency') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
         <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>

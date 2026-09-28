@@ -45,16 +45,16 @@ function copyText() {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.textToBinary.textToAsciiBinary')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputText" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.inputPlaceholder')" />
-          <NInput :value="binaryFromText" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.binaryOutputPlaceholder')" />
+          <NInput v-model:value="inputText" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.inputPlaceholder')"  :input-props="{ id: 'textToBinaryField0' }"/>
+          <NInput :value="binaryFromText" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.binaryOutputPlaceholder')"  :input-props="{ id: 'textToBinaryField1' }"/>
           <NButton :disabled="!binaryFromText" @click="copyBinary">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>
       <NCard :title="t('tools.textToBinary.asciiBinaryToText')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputBinary" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.binaryInputPlaceholder')" :status="inputBinary && !isValidBinary(inputBinary) ? 'error' : undefined" />
+          <NInput v-model:value="inputBinary" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.binaryInputPlaceholder')" :status="inputBinary && !isValidBinary(inputBinary) ? 'error' : undefined"  :input-props="{ id: 'textToBinaryField2' }"/>
           <NAlert v-if="binaryError" type="error" :title="binaryError" />
-          <NInput :value="textFromBinary" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.textOutputPlaceholder')" />
+          <NInput :value="textFromBinary" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.textOutputPlaceholder')"  :input-props="{ id: 'textToBinaryField3' }"/>
           <NButton :disabled="!textFromBinary" @click="copyText">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

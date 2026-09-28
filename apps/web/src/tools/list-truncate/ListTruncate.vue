@@ -14,9 +14,9 @@ const output = computed(() => input.value.split('\n').slice(0, count.value).join
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')" />
-      <NInputNumber v-model:value="count" :min="1" style="width:130px" />
-      <NInput :value="output" type="textarea" :rows="6" readonly />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')"  :input-props="{ id: 'listTruncateField0' }"/>
+      <NInputNumber v-model:value="count" :min="1" style="width:130px"  :input-props="{ id: 'listTruncateField1' }"/>
+      <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'listTruncateField2' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

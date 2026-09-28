@@ -52,7 +52,7 @@ function copy() { copyToClipboard(token.value); }
           <NSlider v-model:value="length" :step="1" :min="1" :max="512" />
         </NFormItem>
 
-        <NInput :value="token" type="textarea" readonly :rows="3" style="text-align: center; font-family: monospace;" />
+        <NInput :value="token" type="textarea" readonly :rows="3" style="text-align: center; font-family: monospace;"  :input-props="{ id: 'tokenGeneratorField0' }"/>
 
         <div style="display: flex; justify-content: center; gap: 12px;">
           <NButton @click="copy" :disabled="!token">{{ t('tool.copy') }}</NButton>

@@ -28,13 +28,13 @@ function copyOutput() {
 
       <NCard :title="t('common.inputJson')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputJson" type="textarea" :rows="8" :placeholder="t('tools.jsonMinify.inputPlaceholder')" />
+          <NInput v-model:value="inputJson" type="textarea" :rows="8" :placeholder="t('tools.jsonMinify.inputPlaceholder')"  :input-props="{ id: 'jsonMinifyField0' }"/>
         </NSpace>
       </NCard>
 
       <NCard :title="t('tools.jsonMinify.outputTitle')">
         <NSpace vertical :size="8">
-          <NInput :value="minified.result" type="textarea" :rows="8" readonly :placeholder="t('tools.jsonMinify.outputPlaceholder')" />
+          <NInput :value="minified.result" type="textarea" :rows="8" readonly :placeholder="t('tools.jsonMinify.outputPlaceholder')"  :input-props="{ id: 'jsonMinifyField1' }"/>
           <NButton :disabled="!minified.result" @click="copyOutput">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

@@ -48,7 +48,7 @@ async function run() {
           type="textarea"
           :placeholder="t('tools.censorshipCheck.inputPlaceholder')"
           :rows="4"
-        />
+         :input-props="{ id: 'censorshipCheckField0' }"/>
         <NButton type="primary" :loading="loading" :disabled="!urls.trim()" @click="run">{{ t('tools.censorshipCheck.check') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
         <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>

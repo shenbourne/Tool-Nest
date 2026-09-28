@@ -103,12 +103,12 @@ onUnmounted(() => {
       <NCard :title="t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <div>
-            <label>{{ t('tools.imageCreateTransparent.targetColor') }}</label>
+            <span>{{ t('tools.imageCreateTransparent.targetColor') }}</span>
             <NColorPicker v-model:value="targetColor" style="width:200px;" />
           </div>
           <div>
-            <label>{{ t('tools.imageCreateTransparent.toleranceRange') }}</label>
-            <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" />
+            <label :for="'imageCreateTransparentField0'">{{ t('tools.imageCreateTransparent.toleranceRange') }}</label>
+            <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1"  :input-props="{ id: 'imageCreateTransparentField0' }"/>
           </div>
           <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
           <NButton type="success" :disabled="!hasResult" @click="download">{{ t('tool.download') }}</NButton>

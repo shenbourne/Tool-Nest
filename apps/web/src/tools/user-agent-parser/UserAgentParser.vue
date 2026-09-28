@@ -35,7 +35,7 @@ onMounted(() => {
             type="textarea"
             :autosize="{ minRows: 3, maxRows: 6 }"
             :placeholder="t('tools.userAgentParser.inputPlaceholder')"
-          />
+           :input-props="{ id: 'userAgentParserField0' }"/>
           <NButton @click="copyUa">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

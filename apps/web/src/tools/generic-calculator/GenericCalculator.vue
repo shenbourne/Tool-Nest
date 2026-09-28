@@ -29,9 +29,9 @@ function calc() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="expr" :placeholder="t('tools.genericCalculator.expressionPlaceholder', { example: '2+3*4' })" @keyup.enter="calc" />
+      <NInput v-model:value="expr" :placeholder="t('tools.genericCalculator.expressionPlaceholder', { example: '2+3*4' })" @keyup.enter="calc"  :input-props="{ id: 'genericCalculatorField0' }"/>
       <NButton type="primary" @click="calc">{{ t('common.calculate') }}</NButton>
-      <NInput :value="result" readonly :placeholder="t('tools.genericCalculator.resultPlaceholder')" />
+      <NInput :value="result" readonly :placeholder="t('tools.genericCalculator.resultPlaceholder')"  :input-props="{ id: 'genericCalculatorField1' }"/>
       <div v-if="history.length" style="opacity:0.7;font-size:13px;">{{ t('tools.genericCalculator.history') }}<br/><span v-for="h in history">{{ h }}<br/></span></div>
     </NSpace></NCard>
   </ToolLayout>

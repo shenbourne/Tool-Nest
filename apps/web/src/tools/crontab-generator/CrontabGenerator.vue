@@ -60,7 +60,7 @@ const syntaxHelpers = computed(() => [
               :placeholder="`${CRON_FIELDS[i].min}-${CRON_FIELDS[i].max}`"
               style="flex: 1; font-family: monospace;"
               :status="fieldValid[i] ? undefined : 'error'"
-            />
+             :input-props="{ id: 'crontabGeneratorField0' }"/>
             <span style="min-width: 80px; color: var(--color-text-3); font-size: 12px;">
               {{ CRON_FIELDS[i].min }} - {{ CRON_FIELDS[i].max }}
             </span>

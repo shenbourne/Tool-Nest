@@ -106,7 +106,7 @@ async function process() {
             :step="0.1"
             :placeholder="t('tools.imagesToGif.frameDuration')"
             style="width: 200px"
-          />
+           :input-props="{ id: 'imagesToGifField0' }"/>
         </NSpace>
 
         <NButton

@@ -103,17 +103,17 @@ function copyMetaTags() {
           <NInput
             v-model:value="title"
             :placeholder="t('tools.metaTagGenerator.titlePlaceholder')"
-          />
+           :input-props="{ id: 'metaTagGeneratorField0' }"/>
           <NInput
             v-model:value="description"
             type="textarea"
             :placeholder="t('tools.metaTagGenerator.descriptionPlaceholder')"
             :rows="2"
-          />
+           :input-props="{ id: 'metaTagGeneratorField1' }"/>
           <NInput
             v-model:value="keywords"
             :placeholder="t('tools.metaTagGenerator.keywordsPlaceholder')"
-          />
+           :input-props="{ id: 'metaTagGeneratorField2' }"/>
         </NSpace>
       </NCard>
 
@@ -122,21 +122,21 @@ function copyMetaTags() {
           <NInput
             v-model:value="ogTitle"
             :placeholder="t('tools.metaTagGenerator.ogTitlePlaceholder')"
-          />
+           :input-props="{ id: 'metaTagGeneratorField3' }"/>
           <NInput
             v-model:value="ogDescription"
             type="textarea"
             :placeholder="t('tools.metaTagGenerator.ogDescriptionPlaceholder')"
             :rows="2"
-          />
+           :input-props="{ id: 'metaTagGeneratorField4' }"/>
           <NInput
             v-model:value="ogImage"
             :placeholder="t('tools.metaTagGenerator.ogImagePlaceholder')"
-          />
+           :input-props="{ id: 'metaTagGeneratorField5' }"/>
           <NInput
             v-model:value="ogUrl"
             :placeholder="t('tools.metaTagGenerator.ogUrlPlaceholder')"
-          />
+           :input-props="{ id: 'metaTagGeneratorField6' }"/>
         </NSpace>
       </NCard>
 
@@ -150,11 +150,11 @@ function copyMetaTags() {
           <NInput
             v-model:value="twitterSite"
             :placeholder="t('tools.metaTagGenerator.twitterSitePlaceholder')"
-          />
+           :input-props="{ id: 'metaTagGeneratorField7' }"/>
           <NInput
             v-model:value="twitterCreator"
             :placeholder="t('tools.metaTagGenerator.twitterCreatorPlaceholder')"
-          />
+           :input-props="{ id: 'metaTagGeneratorField8' }"/>
         </NSpace>
       </NCard>
 
@@ -165,7 +165,7 @@ function copyMetaTags() {
           readonly
           :rows="10"
           style="font-family: monospace;"
-        />
+         :input-props="{ id: 'metaTagGeneratorField9' }"/>
         <NButton
           style="margin-top: 12px;"
           :disabled="!metaTags"

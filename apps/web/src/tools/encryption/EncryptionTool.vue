@@ -49,21 +49,21 @@ function copy() { copyToClipboard(encryptOutput.value); }
     <NSpace vertical :size="16">
       <NCard :title="t('common.encrypt')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="encryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.encryptPlaceholder')" />
-          <NInput v-model:value="encryptSecret" :placeholder="t('common.secretKeyPlaceholder')" />
+          <NInput v-model:value="encryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.encryptPlaceholder')"  :input-props="{ id: 'encryptionField0' }"/>
+          <NInput v-model:value="encryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField1' }"/>
           <NSelect v-model:value="encryptAlgo" :options="algoOptions" />
-          <NInput :value="encryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;" />
+          <NInput :value="encryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'encryptionField2' }"/>
           <NButton @click="copy">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>
 
       <NCard :title="t('common.decrypt')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="decryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.decryptPlaceholder')" />
-          <NInput v-model:value="decryptSecret" :placeholder="t('common.secretKeyPlaceholder')" />
+          <NInput v-model:value="decryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.decryptPlaceholder')"  :input-props="{ id: 'encryptionField3' }"/>
+          <NInput v-model:value="decryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField4' }"/>
           <NSelect v-model:value="decryptAlgo" :options="algoOptions" />
           <NAlert v-if="decryptError" type="error">{{ decryptError }}</NAlert>
-          <NInput v-else-if="decryptOutput" :value="decryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;" />
+          <NInput v-else-if="decryptOutput" :value="decryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'encryptionField5' }"/>
           <NButton @click="doDecrypt">{{ t('common.decrypt') }}</NButton>
         </NSpace>
       </NCard>

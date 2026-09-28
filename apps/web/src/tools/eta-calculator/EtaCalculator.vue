@@ -29,16 +29,16 @@ const result = computed(() =>
         <NSpace vertical :size="12">
           <div style="display: flex; gap: 16px; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 200px;">
-              <label style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.totalTasks') }}</label>
-              <NInputNumber v-model:value="totalTasks" :min="1" style="width: 100%;" />
+              <label style="display: block; margin-bottom: 4px; font-weight: 500;" :for="'etaCalculatorField0'">{{ t('tools.etaCalculator.totalTasks') }}</label>
+              <NInputNumber v-model:value="totalTasks" :min="1" style="width: 100%;"  :input-props="{ id: 'etaCalculatorField0' }"/>
             </div>
             <div style="flex: 1; min-width: 200px;">
-              <label style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.completedTasks') }}</label>
-              <NInputNumber v-model:value="completedTasks" :min="0" :max="totalTasks" style="width: 100%;" />
+              <label style="display: block; margin-bottom: 4px; font-weight: 500;" :for="'etaCalculatorField1'">{{ t('tools.etaCalculator.completedTasks') }}</label>
+              <NInputNumber v-model:value="completedTasks" :min="0" :max="totalTasks" style="width: 100%;"  :input-props="{ id: 'etaCalculatorField1' }"/>
             </div>
           </div>
           <div>
-            <label style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.startTime') }}</label>
+            <span style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.startTime') }}</span>
             <NDatePicker v-model:value="startTime" type="datetime" style="width: 100%;" />
           </div>
         </NSpace>

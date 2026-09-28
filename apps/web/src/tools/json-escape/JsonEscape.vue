@@ -25,9 +25,9 @@ const output = computed(() => {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NSwitch :value="mode === 'escape'" @update:value="mode = $event ? 'escape' : 'unescape'">{{ t('tools.jsonEscape.toggle') }}</NSwitch>
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'escape' ? t('tools.jsonEscape.escapePlaceholder') : t('tools.jsonEscape.unescapePlaceholder')" />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'escape' ? t('tools.jsonEscape.escapePlaceholder') : t('tools.jsonEscape.unescapePlaceholder')"  :input-props="{ id: 'jsonEscapeField0' }"/>
       <NAlert v-if="error" type="error" :title="error" />
-      <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')" />
+      <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'jsonEscapeField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

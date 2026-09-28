@@ -34,14 +34,14 @@ function copyHeader() {
             v-model:value="username"
             :placeholder="t('tools.basicAuthGenerator.usernamePlaceholder')"
             clearable
-          />
+           :input-props="{ id: 'basicAuthGeneratorField0' }"/>
           <NInput
             v-model:value="password"
             type="password"
             show-password-on="click"
             :placeholder="t('tools.basicAuthGenerator.passwordPlaceholder')"
             clearable
-          />
+           :input-props="{ id: 'basicAuthGeneratorField1' }"/>
         </NSpace>
       </NCard>
 

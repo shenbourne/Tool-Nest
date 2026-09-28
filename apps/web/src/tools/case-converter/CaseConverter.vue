@@ -42,10 +42,10 @@ function copyText(text: string) { copyToClipboard(text); }
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="input" :placeholder="t('tools.caseConverter.inputPlaceholder')" />
+        <NInput v-model:value="input" :placeholder="t('tools.caseConverter.inputPlaceholder')"  :input-props="{ id: 'caseConverterField0' }"/>
         <div v-for="r in results" :key="r.label" style="display: flex; align-items: center; gap: 12px;">
           <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ r.label }}</span>
-          <NInput :value="r.value.value" readonly style="flex: 1;" @click="copyText(r.value.value)" />
+          <NInput :value="r.value.value" readonly style="flex: 1;" @click="copyText(r.value.value)"  :input-props="{ id: 'caseConverterField1' }"/>
         </div>
       </NSpace>
     </NCard>

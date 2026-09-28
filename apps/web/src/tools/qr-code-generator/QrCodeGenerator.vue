@@ -60,7 +60,7 @@ function copyImage() {
             type="textarea"
             :placeholder="t('tools.qrCodeGenerator.inputPlaceholder')"
             :autosize="{ minRows: 2, maxRows: 6 }"
-          />
+           :input-props="{ id: 'qrCodeGeneratorField0' }"/>
           <NSpace :size="12">
             <div>
               <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.foreground') }}</div>

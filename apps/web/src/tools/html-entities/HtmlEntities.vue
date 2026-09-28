@@ -14,9 +14,9 @@ const unescaped = computed(() => unescapeHtml(input.value));
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard :title="t('common.input')"><NInput v-model:value="input" type="textarea" :rows="4" /></NCard>
-      <NCard :title="t('tools.htmlEntities.escaped')"><NInput :value="escaped" readonly type="textarea" :rows="4" /></NCard>
-      <NCard :title="t('tools.htmlEntities.unescaped')"><NInput :value="unescaped" readonly type="textarea" :rows="4" /></NCard>
+      <NCard :title="t('common.input')"><NInput v-model:value="input" type="textarea" :rows="4"  :input-props="{ id: 'htmlEntitiesField0' }"/></NCard>
+      <NCard :title="t('tools.htmlEntities.escaped')"><NInput :value="escaped" readonly type="textarea" :rows="4"  :input-props="{ id: 'htmlEntitiesField1' }"/></NCard>
+      <NCard :title="t('tools.htmlEntities.unescaped')"><NInput :value="unescaped" readonly type="textarea" :rows="4"  :input-props="{ id: 'htmlEntitiesField2' }"/></NCard>
     </NSpace>
   </ToolLayout>
 </template>

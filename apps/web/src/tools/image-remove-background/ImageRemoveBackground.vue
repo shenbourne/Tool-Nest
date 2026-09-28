@@ -143,12 +143,12 @@ onUnmounted(() => {
       <NCard :title="t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <div>
-            <label>{{ t('tools.imageRemoveBackground.backgroundColor') }}</label>
+            <span>{{ t('tools.imageRemoveBackground.backgroundColor') }}</span>
             <NColorPicker v-model:value="targetColor" style="width:200px;" />
           </div>
           <div>
-            <label>{{ t('tools.imageRemoveBackground.toleranceRange') }}</label>
-            <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" style="width:200px;" />
+            <label :for="'imageRemoveBackgroundField0'">{{ t('tools.imageRemoveBackground.toleranceRange') }}</label>
+            <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" style="width:200px;"  :input-props="{ id: 'imageRemoveBackgroundField0' }"/>
           </div>
           <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
           <NButton type="success" :disabled="!processedImageUrl" @click="download">{{ t('tool.download') }}</NButton>

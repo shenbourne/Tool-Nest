@@ -93,12 +93,12 @@ onUnmounted(() => {
       <NCard :title="t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <div>
-            <label>{{ t('tools.imageSplit.rows') }}</label>
-            <NInputNumber v-model:value="rows" :min="1" :max="10" :step="1" />
+            <label :for="'imageSplitField0'">{{ t('tools.imageSplit.rows') }}</label>
+            <NInputNumber v-model:value="rows" :min="1" :max="10" :step="1"  :input-props="{ id: 'imageSplitField0' }"/>
           </div>
           <div>
-            <label>{{ t('tools.imageSplit.columns') }}</label>
-            <NInputNumber v-model:value="cols" :min="1" :max="10" :step="1" />
+            <label :for="'imageSplitField1'">{{ t('tools.imageSplit.columns') }}</label>
+            <NInputNumber v-model:value="cols" :min="1" :max="10" :step="1"  :input-props="{ id: 'imageSplitField1' }"/>
           </div>
           <NButton type="primary" :disabled="!file" @click="splitImage">{{ t('tools.imageSplit.split') }}</NButton>
           <NAlert v-if="error" type="error" :title="error" />

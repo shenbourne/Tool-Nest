@@ -24,9 +24,9 @@ const sum = computed(() => params.value.count * (params.value.start + nth.value)
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NSpace><NInputNumber v-model:value="start" :placeholder="t('tools.arithmeticSequence.firstTerm')" style="width:130px" /><NInputNumber v-model:value="diff" :placeholder="t('tools.arithmeticSequence.difference')" style="width:130px" /><NInputNumber v-model:value="count" :min="1" :max="100" :placeholder="t('common.count')" style="width:130px" /></NSpace>
-      <NInput :value="t('tools.arithmeticSequence.sequence', { value: seq.join(', ') })" readonly />
-      <NInput :value="t('tools.arithmeticSequence.nthTerm', { value: nth }) + ' | ' + t('common.sum', { value: sum })" readonly />
+      <NSpace><NInputNumber v-model:value="start" :placeholder="t('tools.arithmeticSequence.firstTerm')" style="width:130px"  :input-props="{ id: 'arithmeticSequenceField0' }"/><NInputNumber v-model:value="diff" :placeholder="t('tools.arithmeticSequence.difference')" style="width:130px"  :input-props="{ id: 'arithmeticSequenceField1' }"/><NInputNumber v-model:value="count" :min="1" :max="100" :placeholder="t('common.count')" style="width:130px"  :input-props="{ id: 'arithmeticSequenceField2' }"/></NSpace>
+      <NInput :value="t('tools.arithmeticSequence.sequence', { value: seq.join(', ') })" readonly  :input-props="{ id: 'arithmeticSequenceField3' }"/>
+      <NInput :value="t('tools.arithmeticSequence.nthTerm', { value: nth }) + ' | ' + t('common.sum', { value: sum })" readonly  :input-props="{ id: 'arithmeticSequenceField4' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

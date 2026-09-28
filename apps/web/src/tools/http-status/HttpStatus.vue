@@ -24,7 +24,7 @@ const data = computed(() => filtered.value.map(([code, [desc, type]]) => ({ code
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="search" :placeholder="t('tools.httpStatus.searchPlaceholder')" clearable />
+      <NInput v-model:value="search" :placeholder="t('tools.httpStatus.searchPlaceholder')" clearable  :input-props="{ id: 'httpStatusField0' }"/>
       <NDataTable :columns="columns" :data="data" :bordered="false" :row-class-name="(row:any)=>row.type" size="small" />
     </NSpace></NCard>
   </ToolLayout>

@@ -48,15 +48,15 @@ function download() {
           <NSpace :size="12">
             <div>
               <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.width') }}</div>
-              <NInputNumber v-model:value="width" :min="1" :max="4000" style="width: 120px;" />
+              <NInputNumber v-model:value="width" :min="1" :max="4000" style="width: 120px;"  :input-props="{ id: 'svgPlaceholderGeneratorField0' }"/>
             </div>
             <div>
               <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.height') }}</div>
-              <NInputNumber v-model:value="height" :min="1" :max="4000" style="width: 120px;" />
+              <NInputNumber v-model:value="height" :min="1" :max="4000" style="width: 120px;"  :input-props="{ id: 'svgPlaceholderGeneratorField1' }"/>
             </div>
             <div>
               <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.svgPlaceholderGenerator.fontSize') }}</div>
-              <NInputNumber v-model:value="fontSize" :min="1" :max="200" :placeholder="t('tools.svgPlaceholderGenerator.auto')" style="width: 120px;" />
+              <NInputNumber v-model:value="fontSize" :min="1" :max="200" :placeholder="t('tools.svgPlaceholderGenerator.auto')" style="width: 120px;"  :input-props="{ id: 'svgPlaceholderGeneratorField2' }"/>
             </div>
           </NSpace>
           <NSpace :size="12">
@@ -71,7 +71,7 @@ function download() {
           </NSpace>
           <div>
             <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.svgPlaceholderGenerator.customText') }}</div>
-            <NInput v-model:value="customText" :placeholder="t('tools.svgPlaceholderGenerator.customTextPlaceholder')" clearable />
+            <NInput v-model:value="customText" :placeholder="t('tools.svgPlaceholderGenerator.customTextPlaceholder')" clearable  :input-props="{ id: 'svgPlaceholderGeneratorField3' }"/>
           </div>
         </NSpace>
       </NCard>
@@ -92,7 +92,7 @@ function download() {
           readonly
           :autosize="{ minRows: 4, maxRows: 10 }"
           style="font-family: monospace;"
-        />
+         :input-props="{ id: 'svgPlaceholderGeneratorField4' }"/>
         <NButton @click="copySvg" style="margin-top: 8px;">
           {{ t('tool.copy') }}
         </NButton>

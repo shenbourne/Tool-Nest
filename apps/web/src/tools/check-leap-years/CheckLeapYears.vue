@@ -18,9 +18,9 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')" />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')"  :input-props="{ id: 'checkLeapYearsField0' }"/>
       <NAlert v-if="skipped.length" type="warning" :title="t('tools.checkLeapYears.ignored', { tokens: skipped.join(', ') })" />
-      <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')" />
+      <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'checkLeapYearsField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

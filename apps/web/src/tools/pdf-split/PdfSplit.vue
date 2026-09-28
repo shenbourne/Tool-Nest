@@ -47,7 +47,7 @@ async function process() {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
-      <NInput v-model:value="pages" :placeholder="t('tools.pdfSplit.pagesPlaceholder')" style="width:250px" />
+      <NInput v-model:value="pages" :placeholder="t('tools.pdfSplit.pagesPlaceholder')" style="width:250px"  :input-props="{ id: 'pdfSplitField0' }"/>
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.pdfSplit.extractPages') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>

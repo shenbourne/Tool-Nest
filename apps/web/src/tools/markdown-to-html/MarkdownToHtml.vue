@@ -35,13 +35,13 @@ function printHtml() {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.markdownToHtml.markdownInput')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="inputMarkdown" type="textarea" :rows="10" :placeholder="t('tools.markdownToHtml.inputPlaceholder')" />
+          <NInput v-model:value="inputMarkdown" type="textarea" :rows="10" :placeholder="t('tools.markdownToHtml.inputPlaceholder')"  :input-props="{ id: 'markdownToHtmlField0' }"/>
         </NSpace>
       </NCard>
 
       <NCard :title="t('tools.markdownToHtml.htmlOutput')">
         <NSpace vertical :size="8">
-          <NInput :value="outputHtml" type="textarea" :rows="10" readonly :placeholder="t('tools.markdownToHtml.outputPlaceholder')" />
+          <NInput :value="outputHtml" type="textarea" :rows="10" readonly :placeholder="t('tools.markdownToHtml.outputPlaceholder')"  :input-props="{ id: 'markdownToHtmlField1' }"/>
           <NSpace>
             <NButton :disabled="!outputHtml" @click="copyHtml">{{ t('tools.markdownToHtml.copyHtml') }}</NButton>
             <NButton :disabled="!outputHtml" @click="printHtml">{{ t('tools.markdownToHtml.print') }}</NButton>

@@ -50,7 +50,7 @@ const cols = computed(() => [{ title: t('tools.serviceStatus.checkColumn'), key:
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="url" :placeholder="t('tools.serviceStatus.inputPlaceholder')" style="width:300px" />
+      <NInput v-model:value="url" :placeholder="t('tools.serviceStatus.inputPlaceholder')" style="width:300px"  :input-props="{ id: 'serviceStatusField0' }"/>
       <NButton type="primary" :loading="loading" @click="check">{{ t('tools.serviceStatus.checkStatus') }}</NButton>
       <NDataTable v-if="results.length" :columns="cols" :data="results" :bordered="false" size="small" />
     </NSpace></NCard>

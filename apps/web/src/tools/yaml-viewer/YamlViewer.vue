@@ -45,7 +45,7 @@ function copyOutput() {
             type="textarea"
             :rows="10"
             placeholder="name: example&#10;version: 1.0"
-          />
+           :input-props="{ id: 'yamlViewerField0' }"/>
         </NSpace>
       </NCard>
       <NCard :title="t('common.options')">
@@ -68,7 +68,7 @@ function copyOutput() {
             :rows="10"
             readonly
             placeholder="name: example"
-          />
+           :input-props="{ id: 'yamlViewerField1' }"/>
           <NButton :disabled="!output" @click="copyOutput">
             {{ t('tool.copy') }}
           </NButton>

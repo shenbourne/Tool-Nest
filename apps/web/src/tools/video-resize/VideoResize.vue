@@ -87,14 +87,14 @@ async function process() {
             :min="1"
             :placeholder="t('common.width')"
             style="width: 140px"
-          />
+           :input-props="{ id: 'videoResizeField0' }"/>
           <NInputNumber
             v-model:value="height"
             :min="1"
             :disabled="keepAspectRatio"
             :placeholder="t('common.height')"
             style="width: 140px"
-          />
+           :input-props="{ id: 'videoResizeField1' }"/>
           <NSwitch v-model:value="keepAspectRatio" />
           <span>{{ t('tools.videoResize.keepAspectRatio') }}</span>
         </NSpace>

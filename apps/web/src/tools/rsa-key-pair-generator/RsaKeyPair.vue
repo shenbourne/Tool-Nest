@@ -42,7 +42,7 @@ function copyPrivate() { copyToClipboard(privateKey.value); }
       <NCard>
         <NSpace vertical :size="12">
           <NFormItem :label="t('tools.rsaKeyPair.keySize')" label-placement="left">
-            <NInputNumber v-model:value="keySize" :min="512" :max="4096" :step="512" style="width: 200px;" />
+            <NInputNumber v-model:value="keySize" :min="512" :max="4096" :step="512" style="width: 200px;"  :input-props="{ id: 'rsaKeyPairGeneratorField0' }"/>
           </NFormItem>
           <NButton type="primary" @click="generate" :loading="generating">{{ t('tools.rsaKeyPair.generateKeyPair') }}</NButton>
         </NSpace>
@@ -51,12 +51,12 @@ function copyPrivate() { copyToClipboard(privateKey.value); }
       <NAlert v-if="error" type="error">{{ error }}</NAlert>
 
       <NCard v-if="publicKey" :title="t('tools.rsaKeyPair.publicKey')">
-        <NInput :value="publicKey" readonly type="textarea" :rows="6" style="font-family: monospace; font-size: 12px;" />
+        <NInput :value="publicKey" readonly type="textarea" :rows="6" style="font-family: monospace; font-size: 12px;"  :input-props="{ id: 'rsaKeyPairGeneratorField1' }"/>
         <NButton size="small" style="margin-top: 8px;" @click="copyPublic">{{ t('tool.copy') }}</NButton>
       </NCard>
 
       <NCard v-if="privateKey" :title="t('tools.rsaKeyPair.privateKey')">
-        <NInput :value="privateKey" readonly type="textarea" :rows="10" style="font-family: monospace; font-size: 12px;" />
+        <NInput :value="privateKey" readonly type="textarea" :rows="10" style="font-family: monospace; font-size: 12px;"  :input-props="{ id: 'rsaKeyPairGeneratorField2' }"/>
         <NButton size="small" style="margin-top: 8px;" @click="copyPrivate">{{ t('tool.copy') }}</NButton>
       </NCard>
     </NSpace>

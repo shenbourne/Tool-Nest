@@ -21,7 +21,7 @@ const result = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="expr" :placeholder="t('tools.mathEvaluator.expressionPlaceholder')" size="large" />
+      <NInput v-model:value="expr" :placeholder="t('tools.mathEvaluator.expressionPlaceholder')" size="large"  :input-props="{ id: 'mathEvaluatorField0' }"/>
       <NAlert v-if="exprError" type="error" :title="exprError" />
       <div style="font-size: 24px; font-weight: 700; text-align: center; padding: 16px;">{{ result }}</div>
       <NAlert type="info" :title="t('tools.mathEvaluator.supportedOperators')">{{ t('tools.mathEvaluator.operatorsList') }}</NAlert>

@@ -25,11 +25,11 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textReplacer.inputPlaceholder')" />
-      <NSpace><NInput v-model:value="find" :placeholder="t('tools.textReplacer.findPlaceholder')" style="width:200px" /><NInput v-model:value="replace" :placeholder="t('tools.textReplacer.replacePlaceholder')" style="width:200px" /></NSpace>
+      <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textReplacer.inputPlaceholder')"  :input-props="{ id: 'textReplacerField0' }"/>
+      <NSpace><NInput v-model:value="find" :placeholder="t('tools.textReplacer.findPlaceholder')" style="width:200px"  :input-props="{ id: 'textReplacerField1' }"/><NInput v-model:value="replace" :placeholder="t('tools.textReplacer.replacePlaceholder')" style="width:200px"  :input-props="{ id: 'textReplacerField2' }"/></NSpace>
       <NSwitch v-model:value="useRegex">{{ t('common.regex') }}</NSwitch>
       <NAlert v-if="regexError" type="error" :title="regexError" />
-      <NInput :value="output" type="textarea" :rows="4" readonly />
+      <NInput :value="output" type="textarea" :rows="4" readonly  :input-props="{ id: 'textReplacerField3' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

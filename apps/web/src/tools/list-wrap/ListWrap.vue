@@ -15,9 +15,9 @@ const output = computed(() => input.value.split('\n').map(l => prefix.value + l 
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')" />
-      <NSpace><NInput v-model:value="prefix" :placeholder="t('common.prefix')" style="width:120px" /><NInput v-model:value="suffix" :placeholder="t('common.suffix')" style="width:120px" /></NSpace>
-      <NInput :value="output" type="textarea" :rows="6" readonly />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')"  :input-props="{ id: 'listWrapField0' }"/>
+      <NSpace><NInput v-model:value="prefix" :placeholder="t('common.prefix')" style="width:120px"  :input-props="{ id: 'listWrapField1' }"/><NInput v-model:value="suffix" :placeholder="t('common.suffix')" style="width:120px"  :input-props="{ id: 'listWrapField2' }"/></NSpace>
+      <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'listWrapField3' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

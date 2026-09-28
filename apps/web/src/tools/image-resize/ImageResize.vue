@@ -34,7 +34,7 @@ async function process() {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
-      <NSpace><NInputNumber v-model:value="width" :min="1" :placeholder="t('common.width')" style="width:120px" /><NInputNumber v-model:value="height" :min="1" :placeholder="t('common.height')" style="width:120px" /></NSpace>
+      <NSpace><NInputNumber v-model:value="width" :min="1" :placeholder="t('common.width')" style="width:120px"  :input-props="{ id: 'imageResizeField0' }"/><NInputNumber v-model:value="height" :min="1" :placeholder="t('common.height')" style="width:120px"  :input-props="{ id: 'imageResizeField1' }"/></NSpace>
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageResize.resize') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
       <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>

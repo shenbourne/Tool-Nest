@@ -12,9 +12,9 @@ const output = computed(() => input.value.repeat(Math.min(count.value, 1000)));
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" :placeholder="t('tools.textRepeat.inputPlaceholder')" />
-      <NInputNumber v-model:value="count" :min="1" :max="1000" :placeholder="t('common.count')" style="width:150px" />
-      <NInput :value="output" type="textarea" :rows="6" readonly />
+      <NInput v-model:value="input" :placeholder="t('tools.textRepeat.inputPlaceholder')"  :input-props="{ id: 'textRepeatField0' }"/>
+      <NInputNumber v-model:value="count" :min="1" :max="1000" :placeholder="t('common.count')" style="width:150px"  :input-props="{ id: 'textRepeatField1' }"/>
+      <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'textRepeatField2' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

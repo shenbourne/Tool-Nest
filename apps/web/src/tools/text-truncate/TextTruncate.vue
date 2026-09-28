@@ -22,12 +22,12 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="5" :placeholder="t('tools.textTruncate.inputPlaceholder')" />
+      <NInput v-model:value="input" type="textarea" :rows="5" :placeholder="t('tools.textTruncate.inputPlaceholder')"  :input-props="{ id: 'textTruncateField0' }"/>
       <NSpace>
         <NSelect v-model:value="mode" :options="modeOptions" style="width:140px" />
-        <NInputNumber v-model:value="limit" :min="1" style="width:120px" />
+        <NInputNumber v-model:value="limit" :min="1" style="width:120px"  :input-props="{ id: 'textTruncateField1' }"/>
       </NSpace>
-      <NInput :value="output" type="textarea" :rows="5" readonly />
+      <NInput :value="output" type="textarea" :rows="5" readonly  :input-props="{ id: 'textTruncateField2' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

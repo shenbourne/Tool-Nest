@@ -22,14 +22,14 @@ function copyDecoded() { copyToClipboard(decoded.value); }
     <NSpace vertical :size="16">
       <NCard :title="t('common.encode')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="input" type="textarea" :rows="3" :placeholder="t('tools.urlEncoder.inputPlaceholder')" />
-          <NInput :value="encoded" readonly :label="t('tools.urlEncoder.encoded')" />
+          <NInput v-model:value="input" type="textarea" :rows="3" :placeholder="t('tools.urlEncoder.inputPlaceholder')"  :input-props="{ id: 'urlEncoderField0' }"/>
+          <NInput :value="encoded" readonly :label="t('tools.urlEncoder.encoded')"  :input-props="{ id: 'urlEncoderField1' }"/>
           <NButton size="small" @click="copyEncoded">{{ t('tools.urlEncoder.copyEncoded') }}</NButton>
         </NSpace>
       </NCard>
       <NCard :title="t('common.decode')">
         <NSpace vertical :size="8">
-          <NInput :value="decoded" readonly :label="t('tools.urlEncoder.decoded')" />
+          <NInput :value="decoded" readonly :label="t('tools.urlEncoder.decoded')"  :input-props="{ id: 'urlEncoderField2' }"/>
           <NAlert v-if="decodeError" type="error" :title="decodeError" />
           <NButton size="small" @click="copyDecoded">{{ t('tools.urlEncoder.copyDecoded') }}</NButton>
         </NSpace>

@@ -38,13 +38,13 @@ function copy() { copyToClipboard(hmac.value); }
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="plainText" type="textarea" :rows="3" :placeholder="t('tools.hmacGenerator.inputPlaceholder')" />
-        <NInput v-model:value="secret" :placeholder="t('common.secretKeyPlaceholder')" />
+        <NInput v-model:value="plainText" type="textarea" :rows="3" :placeholder="t('tools.hmacGenerator.inputPlaceholder')"  :input-props="{ id: 'hmacGeneratorField0' }"/>
+        <NInput v-model:value="secret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'hmacGeneratorField1' }"/>
         <div style="display: flex; gap: 12px;">
           <NSelect v-model:value="hashFunction" :options="Object.keys(algos).map(l => ({ label: l, value: l }))" :label="t('tools.hmacGenerator.hashFunction')" style="flex: 1;" />
           <NSelect v-model:value="encoding" :options="encodingOptions" :label="t('tools.hmacGenerator.encoding')" style="flex: 1;" />
         </div>
-        <NInput :value="hmac" readonly type="textarea" :rows="2" style="font-family: monospace;" />
+        <NInput :value="hmac" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'hmacGeneratorField2' }"/>
         <NButton @click="copy">{{ t('tool.copy') }}</NButton>
       </NSpace>
     </NCard>

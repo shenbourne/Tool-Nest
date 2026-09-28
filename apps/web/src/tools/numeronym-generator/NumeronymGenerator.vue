@@ -22,7 +22,7 @@ function copyOutput() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16" align="center">
-      <NInput v-model:value="word" :placeholder="t('tools.numeronymGenerator.inputPlaceholder')" size="large" clearable style="max-width: 500px;" />
+      <NInput v-model:value="word" :placeholder="t('tools.numeronymGenerator.inputPlaceholder')" size="large" clearable style="max-width: 500px;"  :input-props="{ id: 'numeronymGeneratorField0' }"/>
       <div style="font-size: 24px;">↓</div>
       <NCard style="max-width: 500px; width: 100%; text-align: center;">
         <span style="font-size: 28px; font-weight: bold;">{{ numeronym }}</span>

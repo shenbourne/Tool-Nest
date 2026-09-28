@@ -86,12 +86,12 @@ function copyBase64() {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.base64FileConverter.base64ToFile')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="base64Input" type="textarea" :rows="6" :placeholder="t('tools.base64FileConverter.inputPlaceholder')" />
+          <NInput v-model:value="base64Input" type="textarea" :rows="6" :placeholder="t('tools.base64FileConverter.inputPlaceholder')"  :input-props="{ id: 'base64FileConverterField0' }"/>
           <NSpace :size="8" align="center">
             <span>{{ t('tools.base64FileConverter.filenameLabel') }}</span>
-            <NInput v-model:value="fileName" style="width: 140px;" />
+            <NInput v-model:value="fileName" style="width: 140px;"  :input-props="{ id: 'base64FileConverterField1' }"/>
             <span>.{{ fileExt }}</span>
-            <NInput v-model:value="fileExt" style="width: 80px;" placeholder="ext" />
+            <NInput v-model:value="fileExt" style="width: 80px;" placeholder="ext"  :input-props="{ id: 'base64FileConverterField2' }"/>
           </NSpace>
           <NSpace>
             <NButton :disabled="!isValidBase64" @click="previewImage">{{ t('common.preview') }}</NButton>
@@ -107,7 +107,7 @@ function copyBase64() {
       <NCard :title="t('tools.base64FileConverter.fileToBase64')">
         <NSpace vertical :size="8">
           <input type="file" @change="handleFileChange" />
-          <NInput :value="fileBase64Output" type="textarea" :rows="6" readonly :placeholder="t('tools.base64FileConverter.outputPlaceholder')" />
+          <NInput :value="fileBase64Output" type="textarea" :rows="6" readonly :placeholder="t('tools.base64FileConverter.outputPlaceholder')"  :input-props="{ id: 'base64FileConverterField3' }"/>
           <NButton :disabled="!fileBase64Output" @click="copyBase64">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

@@ -11,8 +11,8 @@ const slug = computed(() => input.value.normalize('NFD').replace(/[\u0300-\u036f
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" :placeholder="t('tools.slugify.inputPlaceholder')" />
-      <NInput :value="slug" readonly :placeholder="t('tools.slugify.outputPlaceholder')" />
+      <NInput v-model:value="input" :placeholder="t('tools.slugify.inputPlaceholder')"  :input-props="{ id: 'slugifyField0' }"/>
+      <NInput :value="slug" readonly :placeholder="t('tools.slugify.outputPlaceholder')"  :input-props="{ id: 'slugifyField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

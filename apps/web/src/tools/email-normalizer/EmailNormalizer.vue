@@ -49,7 +49,7 @@ const tableData = computed(() =>
           type="textarea"
           :placeholder="t('tools.emailNormalizer.inputPlaceholder')"
           :autosize="{ minRows: 3, maxRows: 10 }"
-        />
+         :input-props="{ id: 'emailNormalizerField0' }"/>
       </NCard>
 
       <NCard :title="t('common.results')">
@@ -68,7 +68,7 @@ const tableData = computed(() =>
           type="textarea"
           :autosize="{ minRows: 3, maxRows: 10 }"
           readonly
-        />
+         :input-props="{ id: 'emailNormalizerField1' }"/>
         <NButton :disabled="!normalizedOutput" @click="copyOutput" style="margin-top: 8px;">
           {{ t('tool.copy') }}
         </NButton>

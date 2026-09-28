@@ -28,7 +28,7 @@ async function lookup() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="mac" :placeholder="t('tools.macLookup.inputPlaceholder')" style="width:300px" @keyup.enter="lookup" />
+      <NInput v-model:value="mac" :placeholder="t('tools.macLookup.inputPlaceholder')" style="width:300px" @keyup.enter="lookup"  :input-props="{ id: 'macLookupField0' }"/>
       <NButton type="primary" :loading="loading" @click="lookup">{{ t('tools.macLookup.lookup') }}</NButton>
       <NAlert v-if="vendor" type="success" :title="t('tools.macLookup.vendorResult', { vendor })" />
       <NAlert v-if="error" type="error" :title="error" />

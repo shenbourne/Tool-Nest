@@ -25,9 +25,9 @@ function copy() { copyToClipboard(output.value); }
     <NCard><NSpace vertical :size="12">
       <div style="display:flex;gap:12px;">
         <NSelect v-model:value="type" :options="[{label:'Paragraphs',value:'paragraphs'},{label:'Sentences',value:'sentences'},{label:'Words',value:'words'}]" style="flex:1;" />
-        <NInputNumber v-model:value="count" :min="1" :max="100" style="flex:1;" />
+        <NInputNumber v-model:value="count" :min="1" :max="100" style="flex:1;"  :input-props="{ id: 'loremIpsumField0' }"/>
       </div>
-      <NInput :value="output" type="textarea" readonly :rows="10" />
+      <NInput :value="output" type="textarea" readonly :rows="10"  :input-props="{ id: 'loremIpsumField1' }"/>
       <NButton @click="copy">{{ t('tool.copy') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>

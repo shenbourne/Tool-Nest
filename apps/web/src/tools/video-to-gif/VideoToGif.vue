@@ -82,9 +82,9 @@ async function process() {
         <input type="file" accept="video/*" @change="onFileChange" />
 
         <NSpace>
-          <NInputNumber v-model:value="fps" :min="1" :max="30" placeholder="FPS" style="width: 120px" />
-          <NInputNumber v-model:value="width" :min="64" :max="1920" :placeholder="t('common.width')" style="width: 120px" />
-          <NInputNumber v-model:value="duration" :min="0" :max="999" :placeholder="t('tools.videoToGif.duration')" style="width: 160px" />
+          <NInputNumber v-model:value="fps" :min="1" :max="30" placeholder="FPS" style="width: 120px"  :input-props="{ id: 'videoToGifField0' }"/>
+          <NInputNumber v-model:value="width" :min="64" :max="1920" :placeholder="t('common.width')" style="width: 120px"  :input-props="{ id: 'videoToGifField1' }"/>
+          <NInputNumber v-model:value="duration" :min="0" :max="999" :placeholder="t('tools.videoToGif.duration')" style="width: 160px"  :input-props="{ id: 'videoToGifField2' }"/>
         </NSpace>
 
         <NButton

@@ -33,7 +33,7 @@ function copyArabic() {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.romanNumeralConverter.arabicToRoman')">
         <NSpace align="center" :size="16" justify="space-between">
-          <NInputNumber v-model:value="inputArabic" :min="MIN_ARABIC_TO_ROMAN" :max="MAX_ARABIC_TO_ROMAN" style="width: 200px" :show-button="false" />
+          <NInputNumber v-model:value="inputArabic" :min="MIN_ARABIC_TO_ROMAN" :max="MAX_ARABIC_TO_ROMAN" style="width: 200px" :show-button="false"  :input-props="{ id: 'romanNumeralConverterField0' }"/>
           <span style="font-size: 22px;">{{ outputRoman }}</span>
           <NButton :disabled="!arabicValid" @click="copyRoman">{{ t('tool.copy') }}</NButton>
         </NSpace>
@@ -44,7 +44,7 @@ function copyArabic() {
 
       <NCard :title="t('tools.romanNumeralConverter.romanToArabic')">
         <NSpace align="center" :size="16" justify="space-between">
-          <NInput v-model:value="inputRoman" style="width: 200px" :placeholder="t('tools.romanNumeralConverter.romanPlaceholder')" />
+          <NInput v-model:value="inputRoman" style="width: 200px" :placeholder="t('tools.romanNumeralConverter.romanPlaceholder')"  :input-props="{ id: 'romanNumeralConverterField1' }"/>
           <span style="font-size: 22px;">{{ outputArabic }}</span>
           <NButton :disabled="!romanValid" @click="copyArabic">{{ t('tool.copy') }}</NButton>
         </NSpace>

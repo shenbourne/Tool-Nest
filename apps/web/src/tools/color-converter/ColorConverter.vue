@@ -50,21 +50,21 @@ const hsl = computed(() => {
     <NCard>
       <NSpace vertical :size="16">
         <div :style="{ width: '100%', height: '60px', borderRadius: '8px', background: hex }" />
-        <NInput v-model:value="hex" placeholder="#000000" />
+        <NInput v-model:value="hex" placeholder="#000000"  :input-props="{ id: 'colorConverterField0' }"/>
         <NAlert v-if="hexError" type="error" :title="hexError" />
         <div style="display: flex; gap: 12px;">
           <NFormItem label="R" label-placement="left" style="flex:1;">
-            <NInputNumber v-model:value="r" :min="0" :max="255" />
+            <NInputNumber v-model:value="r" :min="0" :max="255"  :input-props="{ id: 'colorConverterField1' }"/>
           </NFormItem>
           <NFormItem label="G" label-placement="left" style="flex:1;">
-            <NInputNumber v-model:value="g" :min="0" :max="255" />
+            <NInputNumber v-model:value="g" :min="0" :max="255"  :input-props="{ id: 'colorConverterField2' }"/>
           </NFormItem>
           <NFormItem label="B" label-placement="left" style="flex:1;">
-            <NInputNumber v-model:value="b" :min="0" :max="255" />
+            <NInputNumber v-model:value="b" :min="0" :max="255"  :input-props="{ id: 'colorConverterField3' }"/>
           </NFormItem>
         </div>
-        <NInput :value="hsl" readonly />
-        <NInput :value="`rgb(${r}, ${g}, ${b})`" readonly />
+        <NInput :value="hsl" readonly  :input-props="{ id: 'colorConverterField4' }"/>
+        <NInput :value="`rgb(${r}, ${g}, ${b})`" readonly  :input-props="{ id: 'colorConverterField5' }"/>
       </NSpace>
     </NCard>
   </ToolLayout>

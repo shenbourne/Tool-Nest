@@ -66,11 +66,11 @@ function copyImage() {
           </div>
           <div>
             <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.wifiQrCodeGenerator.ssid') }}</div>
-            <NInput v-model:value="ssid" :placeholder="t('tools.wifiQrCodeGenerator.ssidPlaceholder')" clearable />
+            <NInput v-model:value="ssid" :placeholder="t('tools.wifiQrCodeGenerator.ssidPlaceholder')" clearable  :input-props="{ id: 'wifiQrCodeGeneratorField0' }"/>
           </div>
           <div v-if="encryption !== 'nopass'">
             <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.password') }}</div>
-            <NInput v-model:value="password" type="password" show-password-on="click" :placeholder="t('tools.wifiQrCodeGenerator.passwordPlaceholder')" clearable />
+            <NInput v-model:value="password" type="password" show-password-on="click" :placeholder="t('tools.wifiQrCodeGenerator.passwordPlaceholder')" clearable  :input-props="{ id: 'wifiQrCodeGeneratorField1' }"/>
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 13px;">{{ t('tools.wifiQrCodeGenerator.hiddenNetwork') }}</span>

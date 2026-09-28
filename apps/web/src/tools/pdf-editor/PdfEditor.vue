@@ -116,10 +116,10 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
-      <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')" />
+      <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')"  :input-props="{ id: 'pdfEditorField0' }"/>
       <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
       <NSpace>
-        <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" style="width: 150px;" />
+        <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" style="width: 150px;"  :input-props="{ id: 'pdfEditorField1' }"/>
         <NColorPicker v-model:value="color" style="width: 100px;" />
       </NSpace>
       <NButton type="primary" :loading="processing" @click="apply" :disabled="!file || !text">

@@ -37,7 +37,7 @@ async function run() {
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="target" :placeholder="t('common.enterDomainOrIp')" :disabled="loading" />
+        <NInput v-model:value="target" :placeholder="t('common.enterDomainOrIp')" :disabled="loading"  :input-props="{ id: 'mtrTestField0' }"/>
         <NButton type="primary" :loading="loading" :disabled="!target" @click="run">{{ t('tools.mtrTest.trace') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
         <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>

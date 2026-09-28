@@ -35,9 +35,9 @@ async function lookup() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NSpace><NInput v-model:value="domain" :placeholder="t('common.domainNamePlaceholder')" style="width:220px" @keyup.enter="lookup" /></NSpace>
+      <NSpace><NInput v-model:value="domain" :placeholder="t('common.domainNamePlaceholder')" style="width:220px" @keyup.enter="lookup"  :input-props="{ id: 'whoisLookupField0' }"/></NSpace>
       <NButton type="primary" :loading="loading" @click="lookup">{{ t('tools.whoisLookup.lookup') }}</NButton>
-      <NInput v-if="result" :value="result" type="textarea" :rows="10" readonly />
+      <NInput v-if="result" :value="result" type="textarea" :rows="10" readonly  :input-props="{ id: 'whoisLookupField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

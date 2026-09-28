@@ -17,7 +17,7 @@ const readingTime = computed(() => t('tools.textStats.readingTimeValue', { count
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard><NInput v-model:value="text" type="textarea" :rows="8" :placeholder="t('tools.textStats.inputPlaceholder')" /></NCard>
+      <NCard><NInput v-model:value="text" type="textarea" :rows="8" :placeholder="t('tools.textStats.inputPlaceholder')"  :input-props="{ id: 'textStatisticsField0' }"/></NCard>
       <NCard><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px;">
         <NStatistic :label="t('tools.textStats.characters')" :value="chars" />
         <NStatistic :label="t('tools.textStats.charactersNoSpaces')" :value="charsNoSpace" />

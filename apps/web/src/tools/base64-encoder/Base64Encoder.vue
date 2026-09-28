@@ -48,8 +48,8 @@ function swap() {
     <NSpace vertical :size="16">
       <NSpace align="center">
         <NRadioGroup v-model:value="mode">
-          <NRadio value="encode">{{ t('common.encode') }}</NRadio>
-          <NRadio value="decode">{{ t('common.decode') }}</NRadio>
+          <NRadio name="base64EncoderMode" value="encode">{{ t('common.encode') }}</NRadio>
+          <NRadio name="base64EncoderMode" value="decode">{{ t('common.decode') }}</NRadio>
         </NRadioGroup>
         <NButton @click="swap">⇄ {{ t('common.swap') }}</NButton>
         <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
@@ -59,10 +59,10 @@ function swap() {
         <span style="color: var(--color-error);">{{ error }}</span>
       </NCard>
       <NCard :title="t('common.input')">
-        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'encode' ? t('tools.base64Encoder.encodePlaceholder') : t('tools.base64Encoder.decodePlaceholder')" />
+        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'encode' ? t('tools.base64Encoder.encodePlaceholder') : t('tools.base64Encoder.decodePlaceholder')"  :input-props="{ id: 'base64EncoderField0' }"/>
       </NCard>
       <NCard :title="t('common.output')">
-        <NInput :value="output" type="textarea" :rows="6" readonly />
+        <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'base64EncoderField1' }"/>
       </NCard>
     </NSpace>
   </ToolLayout>

@@ -43,7 +43,7 @@ function copyValue(value: string) {
         <NInput
           v-model:value="ipInput"
           placeholder="e.g. 192.168.1.1"
-        />
+         :input-props="{ id: 'ipv4AddressConverterField0' }"/>
         <NAlert v-if="ipInput && !isValid" type="error" style="margin-top: 8px">
           Invalid IPv4 address
         </NAlert>

@@ -81,7 +81,7 @@ function copyText(text: string) {
             readonly
             @click="copyText(field.value)"
             style="cursor: pointer;"
-          />
+           :input-props="{ id: 'keycodeInfoField0' }"/>
         </NInputGroup>
       </div>
 

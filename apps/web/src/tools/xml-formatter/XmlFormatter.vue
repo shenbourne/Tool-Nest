@@ -39,7 +39,7 @@ function copyOutput() {
           :placeholder="t('tools.xmlFormatter.inputPlaceholder')"
           :autosize="{ minRows: 6, maxRows: 20 }"
           monospace
-        />
+         :input-props="{ id: 'xmlFormatterField0' }"/>
         <NSpace align="center" :size="12" style="margin-top: 8px;">
           <NRadioGroup v-model:value="mode">
             <NRadioButton value="format">{{ t('common.format') }}</NRadioButton>
@@ -66,7 +66,7 @@ function copyOutput() {
           :autosize="{ minRows: 6, maxRows: 20 }"
           readonly
           monospace
-        />
+         :input-props="{ id: 'xmlFormatterField1' }"/>
         <NButton :disabled="!result.formatted" @click="copyOutput" style="margin-top: 8px;">
           {{ t('tool.copy') }}
         </NButton>

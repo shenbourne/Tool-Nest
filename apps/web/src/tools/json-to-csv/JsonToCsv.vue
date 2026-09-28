@@ -32,7 +32,7 @@ function copyOutput() {
             type="textarea"
             :rows="10"
             placeholder='[{"name":"John","age":30}]'
-          />
+           :input-props="{ id: 'jsonToCsvField0' }"/>
         </NSpace>
       </NCard>
       <NCard :title="t('tools.jsonToCsv.outputTitle')">
@@ -43,7 +43,7 @@ function copyOutput() {
             :rows="10"
             readonly
             placeholder="name,age&#10;John,30"
-          />
+           :input-props="{ id: 'jsonToCsvField1' }"/>
           <NButton :disabled="!output" @click="copyOutput">
             {{ t('tool.copy') }}
           </NButton>

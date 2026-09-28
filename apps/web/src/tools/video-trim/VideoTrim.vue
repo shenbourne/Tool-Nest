@@ -81,13 +81,13 @@ async function process() {
             :min="0"
             :placeholder="t('tools.videoTrim.startTime')"
             style="width: 140px"
-          />
+           :input-props="{ id: 'videoTrimField0' }"/>
           <NInputNumber
             v-model:value="endTime"
             :min="0"
             :placeholder="t('tools.videoTrim.endTime')"
             style="width: 140px"
-          />
+           :input-props="{ id: 'videoTrimField1' }"/>
         </NSpace>
 
         <NButton

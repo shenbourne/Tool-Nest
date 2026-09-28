@@ -30,18 +30,18 @@ const parts = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard><NInput v-model:value="input" :placeholder="t('tools.urlParser.inputPlaceholder')" /></NCard>
+      <NCard><NInput v-model:value="input" :placeholder="t('tools.urlParser.inputPlaceholder')"  :input-props="{ id: 'urlParserField0' }"/></NCard>
       <NAlert v-if="!parsed" type="error">{{ t('tools.urlParser.invalidUrl') }}</NAlert>
       <NCard v-if="parsed" :title="t('tools.urlParser.urlParts')"><NSpace vertical :size="8">
         <div v-for="part in parts" :key="part.label" style="display:flex;gap:12px;">
           <span style="width:100px;opacity:0.6;font-size:13px;">{{ part.label }}</span>
-          <NInput :value="part.value" readonly size="small" />
+          <NInput :value="part.value" readonly size="small"  :input-props="{ id: 'urlParserField1' }"/>
         </div>
       </NSpace></NCard>
       <NCard v-if="params.length" :title="t('tools.urlParser.queryParameters')"><NSpace vertical :size="4">
         <div v-for="(p, i) in params" :key="p.key + '-' + i" style="display:flex;gap:8px;">
-          <NInput :value="p.key" readonly size="small" style="flex:1;" />
-          <NInput :value="p.value" readonly size="small" style="flex:2;" />
+          <NInput :value="p.key" readonly size="small" style="flex:1;"  :input-props="{ id: 'urlParserField2' }"/>
+          <NInput :value="p.value" readonly size="small" style="flex:2;"  :input-props="{ id: 'urlParserField3' }"/>
         </div>
       </NSpace></NCard>
     </NSpace>

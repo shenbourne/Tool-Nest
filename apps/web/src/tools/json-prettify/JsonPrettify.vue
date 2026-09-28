@@ -49,10 +49,10 @@ function copyOutput() {
       </NSpace>
       <NAlert v-if="error" type="error" :title="error" />
       <NCard :title="t('tools.jsonPrettify.input')">
-        <NInput v-model:value="input" type="textarea" :rows="8" placeholder='{"key":"value"}' />
+        <NInput v-model:value="input" type="textarea" :rows="8" placeholder='{"key":"value"}'  :input-props="{ id: 'jsonPrettifyField0' }"/>
       </NCard>
       <NCard :title="t('tools.jsonPrettify.output')">
-        <NInput :value="output" type="textarea" :rows="8" readonly />
+        <NInput :value="output" type="textarea" :rows="8" readonly  :input-props="{ id: 'jsonPrettifyField1' }"/>
       </NCard>
     </NSpace>
   </ToolLayout>

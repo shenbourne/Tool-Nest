@@ -81,25 +81,25 @@ async function process() {
             :min="1"
             :placeholder="t('common.width')"
             style="width: 120px"
-          />
+           :input-props="{ id: 'videoCropField0' }"/>
           <NInputNumber
             v-model:value="height"
             :min="1"
             :placeholder="t('common.height')"
             style="width: 120px"
-          />
+           :input-props="{ id: 'videoCropField1' }"/>
           <NInputNumber
             v-model:value="x"
             :min="0"
             placeholder="X"
             style="width: 120px"
-          />
+           :input-props="{ id: 'videoCropField2' }"/>
           <NInputNumber
             v-model:value="y"
             :min="0"
             placeholder="Y"
             style="width: 120px"
-          />
+           :input-props="{ id: 'videoCropField3' }"/>
         </NSpace>
 
         <NButton

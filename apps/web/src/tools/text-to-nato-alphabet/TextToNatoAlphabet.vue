@@ -23,10 +23,10 @@ function copyOutput() {
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
       <NCard :title="t('common.input')">
-        <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textToNatoAlphabet.inputPlaceholder')" />
+        <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textToNatoAlphabet.inputPlaceholder')"  :input-props="{ id: 'textToNatoAlphabetField0' }"/>
       </NCard>
       <NCard :title="t('tools.textToNatoAlphabet.natoAlphabet')">
-        <NInput :value="natoOutput" type="textarea" :rows="4" readonly :placeholder="t('tools.textToNatoAlphabet.outputPlaceholder')" />
+        <NInput :value="natoOutput" type="textarea" :rows="4" readonly :placeholder="t('tools.textToNatoAlphabet.outputPlaceholder')"  :input-props="{ id: 'textToNatoAlphabetField1' }"/>
       </NCard>
       <NButton type="primary" :disabled="!natoOutput" @click="copyOutput">{{ t('tool.copy') }}</NButton>
     </NSpace>

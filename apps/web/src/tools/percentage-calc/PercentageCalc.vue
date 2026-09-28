@@ -19,21 +19,21 @@ const result3 = computed(() => (e.value == null || f.value == null) ? '' : e.val
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
       <NCard :title="t('tools.percentageCalc.whatIsPercentOf')"><NSpace align="center">
-        <NInputNumber v-model:value="a" :show-button="false" style="width:100px;" />
+        <NInputNumber v-model:value="a" :show-button="false" style="width:100px;"  :input-props="{ id: 'percentageCalcField0' }"/>
         <span>{{ t('tools.percentageCalc.percentOf') }}</span>
-        <NInputNumber v-model:value="b" :show-button="false" style="width:120px;" />
+        <NInputNumber v-model:value="b" :show-button="false" style="width:120px;"  :input-props="{ id: 'percentageCalcField1' }"/>
         <span>= <strong>{{ result1 }}</strong></span>
       </NSpace></NCard>
       <NCard :title="t('tools.percentageCalc.isWhatPercentOf')"><NSpace align="center">
-        <NInputNumber v-model:value="c" :show-button="false" style="width:100px;" />
+        <NInputNumber v-model:value="c" :show-button="false" style="width:100px;"  :input-props="{ id: 'percentageCalcField2' }"/>
         <span>{{ t('tools.percentageCalc.is') }}</span>
-        <NInputNumber v-model:value="d" :show-button="false" style="width:120px;" />
+        <NInputNumber v-model:value="d" :show-button="false" style="width:120px;"  :input-props="{ id: 'percentageCalcField3' }"/>
         <span>= <strong>{{ result2 }}%</strong></span>
       </NSpace></NCard>
       <NCard :title="t('tools.percentageCalc.percentChangeFromTo')"><NSpace align="center">
-        <NInputNumber v-model:value="e" :show-button="false" style="width:100px;" />
+        <NInputNumber v-model:value="e" :show-button="false" style="width:100px;"  :input-props="{ id: 'percentageCalcField4' }"/>
         <span>→</span>
-        <NInputNumber v-model:value="f" :show-button="false" style="width:120px;" />
+        <NInputNumber v-model:value="f" :show-button="false" style="width:120px;"  :input-props="{ id: 'percentageCalcField5' }"/>
         <span>= <strong>{{ result3 }}%</strong></span>
       </NSpace></NCard>
     </NSpace>

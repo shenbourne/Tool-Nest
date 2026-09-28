@@ -85,7 +85,7 @@ onMounted(() => {
             :value="htmlOutput"
             readonly
             :autosize="{ minRows: 6, maxRows: 20 }"
-          />
+           :input-props="{ id: 'htmlWysiwygEditorField0' }"/>
           <NButton @click="copyHtml">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

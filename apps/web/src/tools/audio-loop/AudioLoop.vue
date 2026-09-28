@@ -81,7 +81,7 @@ async function process() {
           :min="1"
           :placeholder="t('tools.audioLoop.loopCount')"
           style="width: 180px"
-        />
+         :input-props="{ id: 'audioLoopField0' }"/>
 
         <NButton
           type="primary"

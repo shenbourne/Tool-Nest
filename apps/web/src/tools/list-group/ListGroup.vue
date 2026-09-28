@@ -22,9 +22,9 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('tools.listGroup.inputPlaceholder')" />
-      <NInputNumber v-model:value="size" :min="1" :placeholder="t('tools.listGroup.groupSize')" style="width:130px" />
-      <NInput :value="output" type="textarea" :rows="8" readonly />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('tools.listGroup.inputPlaceholder')"  :input-props="{ id: 'listGroupField0' }"/>
+      <NInputNumber v-model:value="size" :min="1" :placeholder="t('tools.listGroup.groupSize')" style="width:130px"  :input-props="{ id: 'listGroupField1' }"/>
+      <NInput :value="output" type="textarea" :rows="8" readonly  :input-props="{ id: 'listGroupField2' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

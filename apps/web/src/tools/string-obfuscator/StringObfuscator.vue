@@ -28,12 +28,12 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" :placeholder="t('tools.stringObfuscator.inputPlaceholder')" />
+      <NInput v-model:value="input" :placeholder="t('tools.stringObfuscator.inputPlaceholder')"  :input-props="{ id: 'stringObfuscatorField0' }"/>
       <NSelect v-model:value="method" :options="methodOptions" />
       <NFormItem v-if="method==='partial'" :label="t('tools.stringObfuscator.keepCharacters')" label-placement="left">
         <NSlider v-model:value="keepChars" :min="1" :max="10" style="flex:1;" />
       </NFormItem>
-      <NInput :value="output" readonly />
+      <NInput :value="output" readonly  :input-props="{ id: 'stringObfuscatorField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

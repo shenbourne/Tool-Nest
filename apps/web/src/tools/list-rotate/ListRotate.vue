@@ -18,9 +18,9 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')" />
-      <NInputNumber v-model:value="pos" :placeholder="t('common.positions')" style="width:130px" />
-      <NInput :value="output" type="textarea" :rows="6" readonly />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')"  :input-props="{ id: 'listRotateField0' }"/>
+      <NInputNumber v-model:value="pos" :placeholder="t('common.positions')" style="width:130px"  :input-props="{ id: 'listRotateField1' }"/>
+      <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'listRotateField2' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

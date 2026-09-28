@@ -30,7 +30,7 @@ const cols = computed(() => [{ title: t('common.name'), key: 'name' }, { title: 
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NSpace><NInput v-model:value="domain" :placeholder="t('common.domainNamePlaceholder')" style="width:220px" /><NSelect v-model:value="type" :options="['A','AAAA','CNAME','MX','NS','TXT','SOA','SRV'].map(opt=>({label:opt,value:opt}))" style="width:100px" /></NSpace>
+      <NSpace><NInput v-model:value="domain" :placeholder="t('common.domainNamePlaceholder')" style="width:220px"  :input-props="{ id: 'dnsResolverField0' }"/><NSelect v-model:value="type" :options="['A','AAAA','CNAME','MX','NS','TXT','SOA','SRV'].map(opt=>({label:opt,value:opt}))" style="width:100px" /></NSpace>
       <NButton type="primary" :loading="loading" @click="resolve">{{ t('tools.dnsResolver.resolve') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NDataTable v-if="results.length" :columns="cols" :data="results" :bordered="false" size="small" />

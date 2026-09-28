@@ -89,7 +89,7 @@ watch([secret, issuer, account], () => {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.otpGenerator.secretKey')">
         <NSpace vertical :size="12">
-          <NInput :value="secret" readonly :placeholder="t('tools.otpGenerator.secretKey')" style="font-family: monospace;">
+          <NInput :value="secret" readonly :placeholder="t('tools.otpGenerator.secretKey')" style="font-family: monospace;" :input-props="{ id: 'otpGeneratorField0' }">
             <template #suffix>
               <NButton text @click="copySecret">{{ t('tool.copy') }}</NButton>
             </template>
@@ -115,7 +115,7 @@ watch([secret, issuer, account], () => {
 
       <NCard :title="t('tools.otpGenerator.verifyToken')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="verifyInput" :placeholder="t('tools.otpGenerator.verifyPlaceholder')" clearable style="max-width: 300px;" @keyup.enter="verify" />
+          <NInput v-model:value="verifyInput" :placeholder="t('tools.otpGenerator.verifyPlaceholder')" clearable style="max-width: 300px;" @keyup.enter="verify"  :input-props="{ id: 'otpGeneratorField1' }"/>
           <NButton @click="verify">{{ t('tools.otpGenerator.verify') }}</NButton>
           <NAlert v-if="verifyResult" :type="verifyResult.valid ? 'success' : 'error'" :title="verifyResult.message" />
         </NSpace>
@@ -127,11 +127,11 @@ watch([secret, issuer, account], () => {
             <NSpace :size="12">
               <div>
                 <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.otpGenerator.issuer') }}</div>
-                <NInput v-model:value="issuer" :placeholder="t('tools.otpGenerator.issuer')" size="small" style="width: 150px;" />
+                <NInput v-model:value="issuer" :placeholder="t('tools.otpGenerator.issuer')" size="small" style="width: 150px;"  :input-props="{ id: 'otpGeneratorField2' }"/>
               </div>
               <div>
                 <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.otpGenerator.account') }}</div>
-                <NInput v-model:value="account" :placeholder="t('tools.otpGenerator.account')" size="small" style="width: 150px;" />
+                <NInput v-model:value="account" :placeholder="t('tools.otpGenerator.account')" size="small" style="width: 150px;"  :input-props="{ id: 'otpGeneratorField3' }"/>
               </div>
             </NSpace>
           </div>

@@ -34,9 +34,9 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" placeholder="YYYY-MM-DDTHH:mm" />
+      <NInput v-model:value="input" placeholder="YYYY-MM-DDTHH:mm"  :input-props="{ id: 'discordTimestampField0' }"/>
       <NAlert v-if="dateError" type="error" :title="dateError" />
-      <NInput :value="output" type="textarea" :rows="8" readonly />
+      <NInput :value="output" type="textarea" :rows="8" readonly  :input-props="{ id: 'discordTimestampField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

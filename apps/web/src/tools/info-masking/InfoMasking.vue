@@ -48,7 +48,7 @@ function copyOutput() {
           type="textarea"
           :placeholder="t('tools.infoMasking.pasteSensitivePlaceholder')"
           :autosize="{ minRows: 5, maxRows: 20 }"
-        />
+         :input-props="{ id: 'infoMaskingField0' }"/>
         <div v-if="detectedPatterns.length > 0" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
           <span style="opacity: 0.6; font-size: 12px;">{{ t('tools.infoMasking.detected') }}</span>
           <NTag v-for="d in detectedPatterns" :key="d.pattern.key" size="small" type="warning">
@@ -61,20 +61,20 @@ function copyOutput() {
         <NSpace vertical :size="12">
           <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <label>{{ t('tools.infoMasking.maskCharacter') }}</label>
-              <NInput v-model:value="maskChar" style="width: 60px;" maxlength="1" />
+              <label :for="'infoMaskingField1'">{{ t('tools.infoMasking.maskCharacter') }}</label>
+              <NInput v-model:value="maskChar" style="width: 60px;" maxlength="1"  :input-props="{ id: 'infoMaskingField1' }"/>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <label>{{ t('tools.infoMasking.preserveFirst') }}</label>
-              <NInputNumber v-model:value="preserveFirst" :min="0" :max="20" style="width: 80px;" />
+              <label :for="'infoMaskingField2'">{{ t('tools.infoMasking.preserveFirst') }}</label>
+              <NInputNumber v-model:value="preserveFirst" :min="0" :max="20" style="width: 80px;"  :input-props="{ id: 'infoMaskingField2' }"/>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <label>{{ t('tools.infoMasking.preserveLast') }}</label>
-              <NInputNumber v-model:value="preserveLast" :min="0" :max="20" style="width: 80px;" />
+              <label :for="'infoMaskingField3'">{{ t('tools.infoMasking.preserveLast') }}</label>
+              <NInputNumber v-model:value="preserveLast" :min="0" :max="20" style="width: 80px;"  :input-props="{ id: 'infoMaskingField3' }"/>
             </div>
           </div>
           <div>
-            <label style="display: block; margin-bottom: 8px; font-weight: 500;">{{ t('tools.infoMasking.patternsToMask') }}</label>
+            <span style="display: block; margin-bottom: 8px; font-weight: 500;">{{ t('tools.infoMasking.patternsToMask') }}</span>
             <NCheckboxGroup v-model:value="enabledPatterns">
               <NSpace>
                 <NCheckbox v-for="p in MASK_PATTERNS" :key="p.key" :value="p.key" :label="t(p.labelKey)" />
@@ -94,7 +94,7 @@ function copyOutput() {
           readonly
           :autosize="{ minRows: 5, maxRows: 20 }"
           style="font-family: monospace;"
-        />
+         :input-props="{ id: 'infoMaskingField4' }"/>
       </NCard>
 
       <NDivider />

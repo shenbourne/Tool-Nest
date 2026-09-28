@@ -40,19 +40,19 @@ function copy() { copyToClipboard(hashed.value); }
     <NSpace vertical :size="16">
       <NCard :title="t('tools.bcrypt.hash')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="input" :placeholder="t('tools.bcrypt.inputPlaceholder')" />
+          <NInput v-model:value="input" :placeholder="t('tools.bcrypt.inputPlaceholder')"  :input-props="{ id: 'bcryptField0' }"/>
           <NFormItem :label="t('tools.bcrypt.saltRounds')" label-placement="left">
-            <NInputNumber v-model:value="saltCount" :min="4" :max="20" style="width: 200px;" />
+            <NInputNumber v-model:value="saltCount" :min="4" :max="20" style="width: 200px;"  :input-props="{ id: 'bcryptField1' }"/>
           </NFormItem>
-          <NInput :value="hashed" readonly style="font-family: monospace;" />
+          <NInput :value="hashed" readonly style="font-family: monospace;"  :input-props="{ id: 'bcryptField2' }"/>
           <NButton @click="copy">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>
 
       <NCard :title="t('tools.bcrypt.compareTitle')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="compareString" :placeholder="t('tools.bcrypt.compareStringPlaceholder')" />
-          <NInput v-model:value="compareHash" :placeholder="t('tools.bcrypt.compareHashPlaceholder')" />
+          <NInput v-model:value="compareString" :placeholder="t('tools.bcrypt.compareStringPlaceholder')"  :input-props="{ id: 'bcryptField3' }"/>
+          <NInput v-model:value="compareHash" :placeholder="t('tools.bcrypt.compareHashPlaceholder')"  :input-props="{ id: 'bcryptField4' }"/>
           <NAlert v-if="compareError" type="error" :title="compareError" />
           <div v-else-if="compareMatch !== null">
             <NTag :type="compareMatch ? 'success' : 'error'" size="large">

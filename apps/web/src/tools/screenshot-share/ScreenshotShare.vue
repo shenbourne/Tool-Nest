@@ -61,7 +61,7 @@ async function copyScreenshot() {
     <NSpace vertical :size="12">
       <NCard :title="t('tools.screenshotShare.cssSelector')">
         <NSpace vertical :size="8">
-          <NInput v-model:value="selector" :placeholder="t('tools.screenshotShare.selectorPlaceholder')" />
+          <NInput v-model:value="selector" :placeholder="t('tools.screenshotShare.selectorPlaceholder')"  :input-props="{ id: 'screenshotShareField0' }"/>
           <NButton type="primary" :loading="capturing" @click="capture">{{ t('tools.screenshotShare.capture') }}</NButton>
         </NSpace>
       </NCard>

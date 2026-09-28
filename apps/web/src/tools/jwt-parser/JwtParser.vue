@@ -19,11 +19,11 @@ const parsed = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard><NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.jwtParser.inputPlaceholder')" /></NCard>
+      <NCard><NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.jwtParser.inputPlaceholder')"  :input-props="{ id: 'jwtParserField0' }"/></NCard>
       <NAlert v-if="input && !parsed" type="error">{{ t('tools.jwtParser.invalidFormat') }}</NAlert>
       <template v-if="parsed">
-        <NCard :title="t('tools.jwtParser.header')"><NInput :value="JSON.stringify(parsed.header, null, 2)" readonly type="textarea" :rows="4" style="font-family:monospace;" /></NCard>
-        <NCard :title="t('tools.jwtParser.payload')"><NInput :value="JSON.stringify(parsed.payload, null, 2)" readonly type="textarea" :rows="8" style="font-family:monospace;" /></NCard>
+        <NCard :title="t('tools.jwtParser.header')"><NInput :value="JSON.stringify(parsed.header, null, 2)" readonly type="textarea" :rows="4" style="font-family:monospace;"  :input-props="{ id: 'jwtParserField1' }"/></NCard>
+        <NCard :title="t('tools.jwtParser.payload')"><NInput :value="JSON.stringify(parsed.payload, null, 2)" readonly type="textarea" :rows="8" style="font-family:monospace;"  :input-props="{ id: 'jwtParserField2' }"/></NCard>
       </template>
     </NSpace>
   </ToolLayout>

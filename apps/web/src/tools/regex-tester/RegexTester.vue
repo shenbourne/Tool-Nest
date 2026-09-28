@@ -89,7 +89,7 @@ const matchTableData = computed(() =>
           :placeholder="t('tools.regexTester.patternPlaceholder')"
           monospace
           style="margin-bottom: 8px;"
-        />
+         :input-props="{ id: 'regexTesterField0' }"/>
         <NSpace :size="12">
           <NCheckbox v-model:checked="globalFlag">{{ t('tools.regexTester.global') }} (g)</NCheckbox>
           <NCheckbox v-model:checked="ignoreCase">{{ t('tools.regexTester.ignoreCase') }} (i)</NCheckbox>
@@ -105,7 +105,7 @@ const matchTableData = computed(() =>
           type="textarea"
           :placeholder="t('tools.regexTester.textPlaceholder')"
           :autosize="{ minRows: 3, maxRows: 10 }"
-        />
+         :input-props="{ id: 'regexTesterField1' }"/>
       </NCard>
 
       <NCard :title="t('tools.regexTester.resultsTitle')">

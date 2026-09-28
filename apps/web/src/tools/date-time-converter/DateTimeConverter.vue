@@ -44,12 +44,12 @@ function copyText(text: string) {
       <NCard :title="t('common.input')">
         <NSpace vertical :size="12">
           <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <NInput v-model:value="input" :placeholder="t('tools.dateTimeConverter.inputPlaceholder')" clearable style="flex: 1; min-width: 200px;" />
+            <NInput v-model:value="input" :placeholder="t('tools.dateTimeConverter.inputPlaceholder')" clearable style="flex: 1; min-width: 200px;"  :input-props="{ id: 'dateTimeConverterField0' }"/>
             <NSelect v-model:value="inputFormat" :options="inputFormatOptions" style="width: 200px;" />
             <NButton @click="setNow" size="medium">{{ t('tools.dateTimeConverter.now') }}</NButton>
           </div>
           <div v-if="inputFormat === 'custom'" style="display: flex; gap: 12px; align-items: center;">
-            <NInput v-model:value="customFormat" :placeholder="t('tools.dateTimeConverter.customFormatPlaceholder')" clearable style="flex: 1;" />
+            <NInput v-model:value="customFormat" :placeholder="t('tools.dateTimeConverter.customFormatPlaceholder')" clearable style="flex: 1;"  :input-props="{ id: 'dateTimeConverterField1' }"/>
           </div>
         </NSpace>
       </NCard>
@@ -60,7 +60,7 @@ function copyText(text: string) {
         <NSpace vertical :size="8">
           <div v-for="r in conversionResult.results" :key="r.label" style="display: flex; align-items: center; gap: 12px;">
             <span style="width: 160px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ r.label }}</span>
-            <NInput :value="r.value" readonly style="flex: 1;" @click="copyText(r.value)" />
+            <NInput :value="r.value" readonly style="flex: 1;" @click="copyText(r.value)"  :input-props="{ id: 'dateTimeConverterField2' }"/>
             <NButton size="small" @click="copyText(r.value)">{{ t('tool.copy') }}</NButton>
           </div>
         </NSpace>

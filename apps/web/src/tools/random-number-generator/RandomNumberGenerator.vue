@@ -16,10 +16,10 @@ function gen() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NSpace><NInputNumber v-model:value="min" :placeholder="t('common.min')" style="width:120px" /><NInputNumber v-model:value="max" :placeholder="t('common.max')" style="width:120px" /><NInputNumber v-model:value="count" :min="1" :max="10000" :placeholder="t('common.count')" style="width:120px" /></NSpace>
+      <NSpace><NInputNumber v-model:value="min" :placeholder="t('common.min')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField0' }"/><NInputNumber v-model:value="max" :placeholder="t('common.max')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField1' }"/><NInputNumber v-model:value="count" :min="1" :max="10000" :placeholder="t('common.count')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField2' }"/></NSpace>
       <NSwitch v-model:value="unique">{{ t('tools.randomNumberGenerator.uniqueOnly') }}</NSwitch>
       <NButton type="primary" @click="gen">{{ t('common.generate') }}</NButton>
-      <NInput :value="result" type="textarea" :rows="4" readonly />
+      <NInput :value="result" type="textarea" :rows="4" readonly  :input-props="{ id: 'randomNumberGeneratorField3' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

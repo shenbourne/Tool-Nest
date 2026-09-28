@@ -32,7 +32,7 @@ function copyOutput() {
             type="textarea"
             :rows="10"
             placeholder="name: example&#10;version: 1.0"
-          />
+           :input-props="{ id: 'yamlToTomlField0' }"/>
         </NSpace>
       </NCard>
       <NCard :title="t('tools.yamlToToml.output')">
@@ -43,7 +43,7 @@ function copyOutput() {
             :rows="10"
             readonly
             placeholder='name = "example"'
-          />
+           :input-props="{ id: 'yamlToTomlField1' }"/>
           <NButton :disabled="!output" @click="copyOutput">
             {{ t('tool.copy') }}
           </NButton>

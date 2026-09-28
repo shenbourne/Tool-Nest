@@ -52,7 +52,7 @@ function copyDecoded() {
             v-model:value="inputUrl"
             :placeholder="t('tools.safelinkDecoder.inputPlaceholder')"
             clearable
-          />
+           :input-props="{ id: 'safelinkDecoderField0' }"/>
         </NSpace>
       </NCard>
 

@@ -32,7 +32,7 @@ function copyOutput() {
           :placeholder="t('tools.dockerRunToCompose.inputPlaceholder')"
           :autosize="{ minRows: 3, maxRows: 10 }"
           monospace
-        />
+         :input-props="{ id: 'dockerRunToComposeField0' }"/>
       </NCard>
 
       <NCard :title="t('tools.dockerRunToCompose.outputTitle')">
@@ -46,7 +46,7 @@ function copyOutput() {
           :autosize="{ minRows: 6, maxRows: 20 }"
           readonly
           monospace
-        />
+         :input-props="{ id: 'dockerRunToComposeField1' }"/>
         <NButton :disabled="!result.yaml" @click="copyOutput" style="margin-top: 8px;">
           {{ t('tool.copy') }}
         </NButton>

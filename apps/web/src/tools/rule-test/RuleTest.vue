@@ -40,8 +40,8 @@ async function run() {
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="12">
-        <NInput v-model:value="domain" :placeholder="t('common.enterDomain')" @keyup.enter="run" />
-        <NInput v-model:value="dnsServer" :placeholder="t('tools.ruleTest.dnsServerPlaceholder')" />
+        <NInput v-model:value="domain" :placeholder="t('common.enterDomain')" @keyup.enter="run"  :input-props="{ id: 'ruleTestField0' }"/>
+        <NInput v-model:value="dnsServer" :placeholder="t('tools.ruleTest.dnsServerPlaceholder')"  :input-props="{ id: 'ruleTestField1' }"/>
         <NButton type="primary" :loading="loading" :disabled="!domain" @click="run">{{ t('tools.ruleTest.test') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
         <pre v-if="result">{{ JSON.stringify(result, null, 2) }}</pre>

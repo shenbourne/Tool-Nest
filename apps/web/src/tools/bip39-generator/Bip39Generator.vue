@@ -39,7 +39,7 @@ function refresh() { nonce.value++; }
       <NCard :title="t('tools.bip39Generator.generateMnemonic')">
         <NSpace vertical :size="12">
           <NSelect v-model:value="words" :options="wordCountOptions" />
-          <NInput :value="mnemonic" type="textarea" readonly :rows="4" style="font-family: monospace;" />
+          <NInput :value="mnemonic" type="textarea" readonly :rows="4" style="font-family: monospace;"  :input-props="{ id: 'bip39GeneratorField0' }"/>
           <div style="display: flex; gap: 12px;">
             <NButton @click="copy">{{ t('tool.copy') }}</NButton>
             <NButton @click="refresh">{{ t('common.retry') }}</NButton>
@@ -49,7 +49,7 @@ function refresh() { nonce.value++; }
 
       <NCard :title="t('tools.bip39Generator.validateMnemonic')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="inputMnemonic" type="textarea" :rows="3" :placeholder="t('tools.bip39Generator.validatePlaceholder')" />
+          <NInput v-model:value="inputMnemonic" type="textarea" :rows="3" :placeholder="t('tools.bip39Generator.validatePlaceholder')"  :input-props="{ id: 'bip39GeneratorField1' }"/>
           <div v-if="isValid !== null" :style="{ color: isValid ? 'var(--color-success)' : 'var(--color-error)', fontWeight: 600 }">
             {{ isValid ? t('tools.bip39Generator.validMnemonic') : t('tools.bip39Generator.invalidMnemonic') }}
           </div>

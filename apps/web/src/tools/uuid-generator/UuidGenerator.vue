@@ -27,9 +27,9 @@ function refresh() { nonce.value++; }
     <NCard>
       <NSpace vertical :size="16">
         <NFormItem :label="t('common.quantity')" label-placement="left">
-          <NInputNumber v-model:value="count" :min="1" :max="50" style="width: 200px;" />
+          <NInputNumber v-model:value="count" :min="1" :max="50" style="width: 200px;"  :input-props="{ id: 'uuidGeneratorField0' }"/>
         </NFormItem>
-        <NInput :value="uuids" type="textarea" readonly :rows="Math.min(count + 1, 10)" style="font-family: monospace; text-align: center;" />
+        <NInput :value="uuids" type="textarea" readonly :rows="Math.min(count + 1, 10)" style="font-family: monospace; text-align: center;"  :input-props="{ id: 'uuidGeneratorField1' }"/>
         <div style="display: flex; justify-content: center; gap: 12px;">
           <NButton @click="copy">{{ t('tool.copy') }}</NButton>
           <NButton @click="refresh">{{ t('common.retry') }}</NButton>

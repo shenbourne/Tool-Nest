@@ -104,7 +104,7 @@ onUnmounted(() => {
             :value="extractedText"
             readonly
             :autosize="{ minRows: 6, maxRows: 20 }"
-          />
+           :input-props="{ id: 'imageToTextOcrField0' }"/>
           <NButton @click="copyText">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

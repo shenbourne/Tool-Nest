@@ -88,12 +88,12 @@ async function process() {
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
 
         <div>
-          <label>{{ t('tools.videoAddAudio.videoFile') }}: </label>
+          <span>{{ t('tools.videoAddAudio.videoFile') }}: </span>
           <input type="file" accept="video/*" @change="onVideoChange" />
         </div>
 
         <div>
-          <label>{{ t('tools.videoAddAudio.audioFile') }}: </label>
+          <span>{{ t('tools.videoAddAudio.audioFile') }}: </span>
           <input type="file" accept="audio/*" @change="onAudioChange" />
         </div>
 

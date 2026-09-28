@@ -199,20 +199,20 @@ onUnmounted(() => {
         <NSpace vertical :size="12">
           <NSpace :size="16">
             <div>
-              <label>X: </label>
-              <NInputNumber v-model:value="cropX" :min="0" :step="1" style="width:120px;" />
+              <label :for="'imageCropField0'">X: </label>
+              <NInputNumber v-model:value="cropX" :min="0" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField0' }"/>
             </div>
             <div>
-              <label>Y: </label>
-              <NInputNumber v-model:value="cropY" :min="0" :step="1" style="width:120px;" />
+              <label :for="'imageCropField1'">Y: </label>
+              <NInputNumber v-model:value="cropY" :min="0" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField1' }"/>
             </div>
             <div>
-              <label>{{ t('common.width') }}: </label>
-              <NInputNumber v-model:value="cropWidth" :min="1" :step="1" style="width:120px;" />
+              <label :for="'imageCropField2'">{{ t('common.width') }}: </label>
+              <NInputNumber v-model:value="cropWidth" :min="1" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField2' }"/>
             </div>
             <div>
-              <label>{{ t('common.height') }}: </label>
-              <NInputNumber v-model:value="cropHeight" :min="1" :step="1" style="width:120px;" />
+              <label :for="'imageCropField3'">{{ t('common.height') }}: </label>
+              <NInputNumber v-model:value="cropHeight" :min="1" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField3' }"/>
             </div>
           </NSpace>
           <NButton type="primary" :disabled="!file" @click="downloadCrop">{{ t('tools.imageCrop.cropAndDownload') }}</NButton>

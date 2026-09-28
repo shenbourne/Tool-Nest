@@ -89,7 +89,7 @@ const resultColumns = computed<DataTableColumn<BenchmarkResult>[]>(() => [
                 :placeholder="t('tools.benchmarkBuilder.suiteNamePlaceholder')"
                 size="small"
                 style="flex: 1;"
-              />
+               :input-props="{ id: 'benchmarkBuilderField0' }"/>
               <NButton
                 v-if="suites.length > 1"
                 size="small"
@@ -105,15 +105,15 @@ const resultColumns = computed<DataTableColumn<BenchmarkResult>[]>(() => [
               :placeholder="t('tools.benchmarkBuilder.codePlaceholder')"
               :autosize="{ minRows: 5, maxRows: 15 }"
               style="font-family: monospace;"
-            />
+             :input-props="{ id: 'benchmarkBuilderField1' }"/>
           </div>
         </div>
 
         <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
           <NButton @click="addSuite">{{ t('tools.benchmarkBuilder.addSuite') }}</NButton>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <label>{{ t('tools.benchmarkBuilder.iterations') }}:</label>
-            <NInputNumber v-model:value="iterations" :min="1" :max="100000" style="width: 120px;" />
+            <label :for="'benchmarkBuilderField2'">{{ t('tools.benchmarkBuilder.iterations') }}:</label>
+            <NInputNumber v-model:value="iterations" :min="1" :max="100000" style="width: 120px;"  :input-props="{ id: 'benchmarkBuilderField2' }"/>
           </div>
           <NButton type="primary" @click="run" :loading="isRunning">{{ t('tools.benchmarkBuilder.run') }}</NButton>
           <NButton @click="reset">{{ t('common.reset') }}</NButton>

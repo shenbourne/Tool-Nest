@@ -53,25 +53,25 @@ function copyAll() {
       <NCard :title="t('common.settings')">
         <NSpace vertical :size="12">
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">{{ t('common.quantity') }}:</label>
-            <NInputNumber v-model:value="count" :min="1" :max="100" style="flex: 1" />
+            <label style="min-width: 120px; text-align: right;" :for="'macAddressGeneratorField0'">{{ t('common.quantity') }}:</label>
+            <NInputNumber v-model:value="count" :min="1" :max="100" style="flex: 1"  :input-props="{ id: 'macAddressGeneratorField0' }"/>
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">{{ t('tools.macAddressGenerator.prefixOui') }}:</label>
-            <NInput v-model:value="prefix" :placeholder="t('tools.macAddressGenerator.prefixPlaceholder')" clearable style="flex: 1" />
+            <label style="min-width: 120px; text-align: right;" :for="'macAddressGeneratorField1'">{{ t('tools.macAddressGenerator.prefixOui') }}:</label>
+            <NInput v-model:value="prefix" :placeholder="t('tools.macAddressGenerator.prefixPlaceholder')" clearable style="flex: 1"  :input-props="{ id: 'macAddressGeneratorField1' }"/>
           </div>
           <NAlert v-if="prefix && !prefixValid" type="error">
             {{ t('tools.macAddressGenerator.invalidMacPrefix') }}
           </NAlert>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">{{ t('common.separator') }}:</label>
+            <span style="min-width: 120px; text-align: right;">{{ t('common.separator') }}:</span>
             <NSelect v-model:value="separator" :options="separatorOptions" style="flex: 1" />
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <label style="min-width: 120px; text-align: right;">{{ t('tools.macAddressGenerator.caseLabel') }}:</label>
+            <span style="min-width: 120px; text-align: right;">{{ t('tools.macAddressGenerator.caseLabel') }}:</span>
             <NRadioGroup v-model:value="uppercase">
-              <NRadio :value="true">{{ t('common.uppercase') }}</NRadio>
-              <NRadio :value="false">{{ t('common.lowercase') }}</NRadio>
+              <NRadio name="macAddressCase" :value="true">{{ t('common.uppercase') }}</NRadio>
+              <NRadio name="macAddressCase" :value="false">{{ t('common.lowercase') }}</NRadio>
             </NRadioGroup>
           </div>
         </NSpace>

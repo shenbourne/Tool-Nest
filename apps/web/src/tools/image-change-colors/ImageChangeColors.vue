@@ -75,20 +75,20 @@ onUnmounted(() => {
       <NCard :title="t('tools.imageChangeColors.name') + ' ' + t('common.settings', 'Settings')">
         <NSpace vertical :size="12">
           <div>
-            <label>{{ t('tools.imageChangeColors.hueRotate') }}</label>
-            <NInputNumber v-model:value="hueRotate" :min="0" :max="360" :step="1" />
+            <label :for="'imageChangeColorsField0'">{{ t('tools.imageChangeColors.hueRotate') }}</label>
+            <NInputNumber v-model:value="hueRotate" :min="0" :max="360" :step="1"  :input-props="{ id: 'imageChangeColorsField0' }"/>
           </div>
           <div>
-            <label>{{ t('tools.imageChangeColors.saturate') }}</label>
-            <NInputNumber v-model:value="saturate" :min="0" :max="200" :step="1" />
+            <label :for="'imageChangeColorsField1'">{{ t('tools.imageChangeColors.saturate') }}</label>
+            <NInputNumber v-model:value="saturate" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField1' }"/>
           </div>
           <div>
-            <label>{{ t('tools.imageChangeColors.brightness') }}</label>
-            <NInputNumber v-model:value="brightness" :min="0" :max="200" :step="1" />
+            <label :for="'imageChangeColorsField2'">{{ t('tools.imageChangeColors.brightness') }}</label>
+            <NInputNumber v-model:value="brightness" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField2' }"/>
           </div>
           <div>
-            <label>{{ t('tools.imageChangeColors.contrast') }}</label>
-            <NInputNumber v-model:value="contrast" :min="0" :max="200" :step="1" />
+            <label :for="'imageChangeColorsField3'">{{ t('tools.imageChangeColors.contrast') }}</label>
+            <NInputNumber v-model:value="contrast" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField3' }"/>
           </div>
           <NButton type="primary" :disabled="!file" @click="download">{{ t('tool.download') }}</NButton>
         </NSpace>

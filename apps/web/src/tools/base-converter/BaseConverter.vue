@@ -29,8 +29,8 @@ const output = computed(() => convertBase(inputValue.value, inputBase.value, out
           <NSelect v-model:value="inputBase" :options="bases" :label="t('tools.baseConverter.inputBase')" style="flex:1;" />
           <NSelect v-model:value="outputBase" :options="bases" :label="t('tools.baseConverter.outputBase')" style="flex:1;" />
         </div>
-        <NInput v-model:value="inputValue" :placeholder="t('tools.baseConverter.inputPlaceholder')" />
-        <NInput :value="output" readonly :placeholder="t('tools.baseConverter.resultPlaceholder')" />
+        <NInput v-model:value="inputValue" :placeholder="t('tools.baseConverter.inputPlaceholder')"  :input-props="{ id: 'baseConverterField0' }"/>
+        <NInput :value="output" readonly :placeholder="t('tools.baseConverter.resultPlaceholder')"  :input-props="{ id: 'baseConverterField1' }"/>
       </NSpace>
     </NCard>
   </ToolLayout>

@@ -62,7 +62,7 @@ function copyOutput() {
           type="textarea"
           :placeholder="t('tools.listConverter.inputPlaceholder')"
           :autosize="{ minRows: 4, maxRows: 10 }"
-        />
+         :input-props="{ id: 'listConverterField0' }"/>
       </NCard>
 
       <NCard :title="t('common.options')">
@@ -93,11 +93,11 @@ function copyOutput() {
           </div>
           <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
             <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.itemPrefix') }}</span>
-            <NInput v-model:value="itemPrefix" :placeholder="t('common.prefix')" clearable style="width: 200px;" />
+            <NInput v-model:value="itemPrefix" :placeholder="t('common.prefix')" clearable style="width: 200px;"  :input-props="{ id: 'listConverterField1' }"/>
           </div>
           <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
             <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.itemSuffix') }}</span>
-            <NInput v-model:value="itemSuffix" :placeholder="t('common.suffix')" clearable style="width: 200px;" />
+            <NInput v-model:value="itemSuffix" :placeholder="t('common.suffix')" clearable style="width: 200px;"  :input-props="{ id: 'listConverterField2' }"/>
           </div>
         </NSpace>
       </NCard>
@@ -109,7 +109,7 @@ function copyOutput() {
             type="textarea"
             readonly
             :autosize="{ minRows: 4, maxRows: 10 }"
-          />
+           :input-props="{ id: 'listConverterField3' }"/>
           <NButton @click="copyOutput" size="small">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

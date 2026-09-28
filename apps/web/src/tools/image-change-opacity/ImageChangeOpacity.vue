@@ -35,7 +35,7 @@ async function process() {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
-      <NInputNumber v-model:value="opacity" :min="0" :max="1" :step="0.1" style="width:140px" />
+      <NInputNumber v-model:value="opacity" :min="0" :max="1" :step="0.1" style="width:140px"  :input-props="{ id: 'imageChangeOpacityField0' }"/>
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('common.apply') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
       <NButton v-if="resultUrl" @click="download">{{ t('tools.imageChangeOpacity.downloadPng') }}</NButton>

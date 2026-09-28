@@ -48,7 +48,7 @@ const columns = computed(() => [
         <NInput
           v-model:value="cidrInput"
           :placeholder="t('tools.ipv4SubnetCalculator.cidrPlaceholder')"
-        />
+         :input-props="{ id: 'ipv4SubnetCalculatorField0' }"/>
         <NAlert v-if="cidrInput && !isValid" type="error" style="margin-top: 8px">
           {{ t('tools.ipv4SubnetCalculator.invalidCidr') }}
         </NAlert>

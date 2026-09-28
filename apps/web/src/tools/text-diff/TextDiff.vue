@@ -32,8 +32,8 @@ const stats = computed(() => {
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
       <div style="display:flex;gap:12px;">
-        <NCard :title="t('tools.textDiff.original')" style="flex:1;"><NInput v-model:value="text1" type="textarea" :rows="8" /></NCard>
-        <NCard :title="t('tools.textDiff.modified')" style="flex:1;"><NInput v-model:value="text2" type="textarea" :rows="8" /></NCard>
+        <NCard :title="t('tools.textDiff.original')" style="flex:1;"><NInput v-model:value="text1" type="textarea" :rows="8"  :input-props="{ id: 'textDiffField0' }"/></NCard>
+        <NCard :title="t('tools.textDiff.modified')" style="flex:1;"><NInput v-model:value="text2" type="textarea" :rows="8"  :input-props="{ id: 'textDiffField1' }"/></NCard>
       </div>
       <NSpace><NTag type="success">{{ t('tools.textDiff.same', { count: stats.same }) }}</NTag><NTag type="warning">{{ t('tools.textDiff.changed', { count: stats.changed }) }}</NTag><NTag type="error">{{ t('tools.textDiff.removed', { count: stats.removed }) }}</NTag><NTag type="info">{{ t('tools.textDiff.added', { count: stats.added }) }}</NTag></NSpace>
       <NCard v-if="text1 || text2" :title="t('tools.textDiff.diff')"><div style="font-family:monospace;font-size:13px;">

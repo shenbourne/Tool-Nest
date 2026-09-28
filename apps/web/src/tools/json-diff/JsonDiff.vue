@@ -79,8 +79,8 @@ function formatVal(v: any): string {
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
       <div style="display:flex;gap:12px;">
-        <NCard :title="t('tools.jsonDiff.leftJson')" style="flex:1;"><NInput v-model:value="leftJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.leftPlaceholder')" /></NCard>
-        <NCard :title="t('tools.jsonDiff.rightJson')" style="flex:1;"><NInput v-model:value="rightJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.rightPlaceholder')" /></NCard>
+        <NCard :title="t('tools.jsonDiff.leftJson')" style="flex:1;"><NInput v-model:value="leftJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.leftPlaceholder')"  :input-props="{ id: 'jsonDiffField0' }"/></NCard>
+        <NCard :title="t('tools.jsonDiff.rightJson')" style="flex:1;"><NInput v-model:value="rightJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.rightPlaceholder')"  :input-props="{ id: 'jsonDiffField1' }"/></NCard>
       </div>
       <NAlert v-if="errorMsg" type="error" :title="errorMsg" />
       <NSpace v-if="diffResult.length">

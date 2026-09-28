@@ -26,9 +26,9 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" placeholder="YYYY-MM-DD" />
+      <NInput v-model:value="input" placeholder="YYYY-MM-DD"  :input-props="{ id: 'dateWeekdayCalculatorField0' }"/>
       <NAlert v-if="dateError" type="error" :title="dateError" />
-      <NInput :value="output" readonly />
+      <NInput :value="output" readonly  :input-props="{ id: 'dateWeekdayCalculatorField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

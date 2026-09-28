@@ -83,7 +83,7 @@ async function process() {
           :min="1"
           :placeholder="t('tools.videoLoop.loopCount')"
           style="width: 160px"
-        />
+         :input-props="{ id: 'videoLoopField0' }"/>
 
         <NButton
           type="primary"

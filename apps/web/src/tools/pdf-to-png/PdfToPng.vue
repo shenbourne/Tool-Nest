@@ -67,7 +67,7 @@ async function convert() {
       <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
       <NSpace align="center">
         <span>{{ t('tools.pdfToPng.scale') }}</span>
-        <NInputNumber v-model:value="scale" :min="1" :max="5" :step="0.5" style="width: 120px;" />
+        <NInputNumber v-model:value="scale" :min="1" :max="5" :step="0.5" style="width: 120px;"  :input-props="{ id: 'pdfToPngField0' }"/>
       </NSpace>
       <NButton type="primary" :loading="processing" @click="convert" :disabled="!file">
         {{ t('tools.pdfToPng.convert') }}

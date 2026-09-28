@@ -56,13 +56,13 @@ function swapAddresses() {
       <NCard :title="t('tools.ipv4RangeExpander.ipRange')">
         <NSpace :size="12">
           <div style="flex: 1">
-            <NInput v-model:value="startIp" :placeholder="t('tools.ipv4RangeExpander.startIpPlaceholder')" />
+            <NInput v-model:value="startIp" :placeholder="t('tools.ipv4RangeExpander.startIpPlaceholder')"  :input-props="{ id: 'ipv4RangeExpanderField0' }"/>
             <NAlert v-if="startIp && !startValid" type="error" style="margin-top: 4px">
               {{ t('tools.ipv4RangeExpander.invalidIpv4') }}
             </NAlert>
           </div>
           <div style="flex: 1">
-            <NInput v-model:value="endIp" :placeholder="t('tools.ipv4RangeExpander.endIpPlaceholder')" />
+            <NInput v-model:value="endIp" :placeholder="t('tools.ipv4RangeExpander.endIpPlaceholder')"  :input-props="{ id: 'ipv4RangeExpanderField1' }"/>
             <NAlert v-if="endIp && !endValid" type="error" style="margin-top: 4px">
               {{ t('tools.ipv4RangeExpander.invalidIpv4') }}
             </NAlert>

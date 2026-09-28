@@ -14,9 +14,9 @@ const kelvin = computed(() => celsius.value + 273.15);
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="16">
-      <NFormItem :label="t('tools.temperature.celsius')" label-placement="left"><NInputNumber v-model:value="celsius" /></NFormItem>
-      <NFormItem :label="t('tools.temperature.fahrenheit')" label-placement="left"><NInput :value="String(fahrenheit.toFixed(2))" readonly /></NFormItem>
-      <NFormItem :label="t('tools.temperature.kelvin')" label-placement="left"><NInput :value="String(kelvin.toFixed(2))" readonly /></NFormItem>
+      <NFormItem :label="t('tools.temperature.celsius')" label-placement="left"><NInputNumber v-model:value="celsius"  :input-props="{ id: 'temperatureField0' }"/></NFormItem>
+      <NFormItem :label="t('tools.temperature.fahrenheit')" label-placement="left"><NInput :value="String(fahrenheit.toFixed(2))" readonly  :input-props="{ id: 'temperatureField1' }"/></NFormItem>
+      <NFormItem :label="t('tools.temperature.kelvin')" label-placement="left"><NInput :value="String(kelvin.toFixed(2))" readonly  :input-props="{ id: 'temperatureField2' }"/></NFormItem>
     </NSpace></NCard>
   </ToolLayout>
 </template>

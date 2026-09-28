@@ -75,7 +75,7 @@ const sampleInput = `services:
           :placeholder="t('tools.dockerComposeTo1panel.inputPlaceholder')"
           :autosize="{ minRows: 10, maxRows: 30 }"
           style="font-family: monospace;"
-        />
+         :input-props="{ id: 'dockerComposeTo1panelField0' }"/>
       </NCard>
 
       <NAlert v-if="!result.success && result.error" type="error">
@@ -92,7 +92,7 @@ const sampleInput = `services:
           readonly
           :autosize="{ minRows: 10, maxRows: 30 }"
           style="font-family: monospace;"
-        />
+         :input-props="{ id: 'dockerComposeTo1panelField1' }"/>
       </NCard>
 
       <NDivider />

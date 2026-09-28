@@ -23,9 +23,9 @@ function copy() { copyToClipboard(output.value); }
     <NSpace vertical :size="16">
       <NCard :title="t('tools.hashText.name')">
         <NSpace vertical :size="12">
-          <NInput v-model:value="inputText" type="textarea" :rows="3" :placeholder="t('tools.hashText.inputPlaceholder')" />
+          <NInput v-model:value="inputText" type="textarea" :rows="3" :placeholder="t('tools.hashText.inputPlaceholder')"  :input-props="{ id: 'hashTextField0' }"/>
           <NSelect v-model:value="algorithm" :options="algoOptions" />
-          <NInput :value="output" readonly type="textarea" :rows="2" style="font-family: monospace;" />
+          <NInput :value="output" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'hashTextField1' }"/>
           <NButton @click="copy">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

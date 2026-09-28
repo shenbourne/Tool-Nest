@@ -20,7 +20,7 @@ const progressStatus = computed(() => {
   <ToolLayout :tool="tool">
     <NCard>
       <NSpace vertical :size="16">
-        <NInput v-model:value="password" type="password" show-password-on="click" :placeholder="t('tools.passwordStrength.inputPlaceholder')" size="large" />
+        <NInput v-model:value="password" type="password" show-password-on="click" :placeholder="t('tools.passwordStrength.inputPlaceholder')" size="large"  :input-props="{ id: 'passwordStrengthAnalyserField0' }"/>
 
         <div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">

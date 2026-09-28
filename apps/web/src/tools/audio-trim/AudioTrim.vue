@@ -83,13 +83,13 @@ async function process() {
             :min="0"
             :placeholder="t('tools.audioTrim.startSeconds')"
             style="width: 180px"
-          />
+           :input-props="{ id: 'audioTrimField0' }"/>
           <NInputNumber
             v-model:value="endTime"
             :min="0"
             :placeholder="t('tools.audioTrim.endSeconds')"
             style="width: 180px"
-          />
+           :input-props="{ id: 'audioTrimField1' }"/>
         </NSpace>
 
         <NButton

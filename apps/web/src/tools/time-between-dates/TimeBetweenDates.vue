@@ -21,8 +21,8 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NSpace><NInput v-model:value="date1" :placeholder="t('tools.timeBetweenDates.startPlaceholder')" style="width:220px" /><NInput v-model:value="date2" :placeholder="t('tools.timeBetweenDates.endPlaceholder')" style="width:220px" /></NSpace>
-      <NInput :value="output" type="textarea" :rows="3" readonly />
+      <NSpace><NInput v-model:value="date1" :placeholder="t('tools.timeBetweenDates.startPlaceholder')" style="width:220px"  :input-props="{ id: 'timeBetweenDatesField0' }"/><NInput v-model:value="date2" :placeholder="t('tools.timeBetweenDates.endPlaceholder')" style="width:220px"  :input-props="{ id: 'timeBetweenDatesField1' }"/></NSpace>
+      <NInput :value="output" type="textarea" :rows="3" readonly  :input-props="{ id: 'timeBetweenDatesField2' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

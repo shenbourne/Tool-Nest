@@ -33,10 +33,10 @@ function copyOutput() {
           :placeholder="t('tools.jsonViewer.inputPlaceholder')"
           :autosize="{ minRows: 6, maxRows: 20 }"
           monospace
-        />
+         :input-props="{ id: 'jsonViewerField0' }"/>
         <NSpace align="center" :size="12" style="margin-top: 8px;">
           <span>{{ t('common.indent') }}:</span>
-          <NInputNumber v-model:value="indentSize" :min="1" :max="8" :show-button="false" style="width: 80px" />
+          <NInputNumber v-model:value="indentSize" :min="1" :max="8" :show-button="false" style="width: 80px"  :input-props="{ id: 'jsonViewerField1' }"/>
         </NSpace>
       </NCard>
 
@@ -51,7 +51,7 @@ function copyOutput() {
           :autosize="{ minRows: 6, maxRows: 20 }"
           readonly
           monospace
-        />
+         :input-props="{ id: 'jsonViewerField2' }"/>
         <NButton :disabled="!result.formatted" @click="copyOutput" style="margin-top: 8px;">
           {{ t('tool.copy') }}
         </NButton>

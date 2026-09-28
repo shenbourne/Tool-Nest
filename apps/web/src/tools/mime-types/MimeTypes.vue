@@ -79,7 +79,7 @@ function copyText(text: string) {
             v-model:value="lookupByExtension"
             :placeholder="t('tools.mimeTypes.extensionPlaceholder')"
             clearable
-          />
+           :input-props="{ id: 'mimeTypesField0' }"/>
         </NInputGroup>
         <div v-if="extensionLookupResult" style="margin-top: 8px;">
           <NTag type="primary" round :bordered="false" @click="copyText(extensionLookupResult)" style="cursor: pointer;">
@@ -98,7 +98,7 @@ function copyText(text: string) {
             v-model:value="lookupByMimeType"
             :placeholder="t('tools.mimeTypes.mimeTypePlaceholder')"
             clearable
-          />
+           :input-props="{ id: 'mimeTypesField1' }"/>
         </NInputGroup>
         <div v-if="mimeLookupResult" style="margin-top: 8px;">
           <NTag
@@ -120,7 +120,7 @@ function copyText(text: string) {
           :placeholder="t('tools.mimeTypes.searchPlaceholder')"
           clearable
           style="margin-bottom: 12px;"
-        />
+         :input-props="{ id: 'mimeTypesField2' }"/>
         <NDataTable
           :columns="columns"
           :data="filteredMimeTypes"

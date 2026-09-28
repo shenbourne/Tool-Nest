@@ -21,9 +21,9 @@ const output = computed(() => serializeCSV(parseCSV(input.value), newSep.value))
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.csvInputPlaceholder')" />
+      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.csvInputPlaceholder')"  :input-props="{ id: 'csvChangeSeparatorField0' }"/>
       <NSelect v-model:value="newSep" :options="sepOptions" style="width:180px" />
-      <NInput :value="output" type="textarea" :rows="6" readonly />
+      <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'csvChangeSeparatorField1' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>

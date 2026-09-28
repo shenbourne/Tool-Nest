@@ -13,9 +13,9 @@ const output = computed(() => input.value.slice(start.value, end.value));
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.extractSubstring.inputPlaceholder')" />
-      <NSpace><NInputNumber v-model:value="start" :min="0" :placeholder="t('common.start')" style="width:120px" /><NInputNumber v-model:value="end" :min="0" :placeholder="t('common.end')" style="width:120px" /></NSpace>
-      <NInput :value="output" type="textarea" :rows="3" readonly />
+      <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.extractSubstring.inputPlaceholder')"  :input-props="{ id: 'extractSubstringField0' }"/>
+      <NSpace><NInputNumber v-model:value="start" :min="0" :placeholder="t('common.start')" style="width:120px"  :input-props="{ id: 'extractSubstringField1' }"/><NInputNumber v-model:value="end" :min="0" :placeholder="t('common.end')" style="width:120px"  :input-props="{ id: 'extractSubstringField2' }"/></NSpace>
+      <NInput :value="output" type="textarea" :rows="3" readonly  :input-props="{ id: 'extractSubstringField3' }"/>
     </NSpace></NCard>
   </ToolLayout>
 </template>
