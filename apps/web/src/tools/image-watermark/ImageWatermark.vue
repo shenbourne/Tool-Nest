@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NInput, NUpload } from 'naive-ui';
+import { NCard, NSpace, NButton, NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -10,7 +11,7 @@ const file = ref<File | null>(null);
 const text = ref('Watermark');
 const resultUrl = ref('');
 const processing = ref(false);
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
 function download() {
   if (!resultUrl.value) return;
   const a = document.createElement('a');
@@ -46,7 +47,7 @@ async function process() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept="image/*" @change="onFile" />
       <NInput v-model:value="text" :placeholder="t('tools.imageWatermark.watermarkPlaceholder')" style="width:250px"  :input-props="{ id: 'imageWatermarkField0' }"/>
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageWatermark.addWatermark') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
