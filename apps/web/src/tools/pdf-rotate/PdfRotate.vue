@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NInputNumber, NSelect, NAlert } from 'naive-ui';
+import { NCard, NSpace, NButton, NInputNumber, NSelect, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -11,7 +12,7 @@ const angle = ref(90);
 const resultUrl = ref('');
 const processing = ref(false);
 const error = ref('');
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; error.value = ''; }
+function onFile(files: File[]) { const f = files[0] ?? null; file.value = f; resultUrl.value = ''; error.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'rotated.pdf'; a.click(); } }
 async function process() {
   if (!file.value) return;
@@ -36,7 +37,7 @@ async function process() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept=".pdf" @change="onFile" />
       <NSelect v-model:value="angle" :options="[{label:'90°',value:90},{label:'180°',value:180},{label:'270°',value:270}]" style="width:120px" />
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.pdfRotate.rotate') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />

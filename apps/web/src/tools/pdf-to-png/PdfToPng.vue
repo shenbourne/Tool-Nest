@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NInputNumber, NAlert } from 'naive-ui';
+import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -18,7 +19,8 @@ const processing = ref(false);
 const error = ref('');
 const images = ref<PageImage[]>([]);
 
-function onFile(f: File | null) {
+function onFile(files: File[]) {
+  const f = files[0] ?? null;
   file.value = f;
   images.value = [];
   error.value = '';
@@ -64,7 +66,7 @@ async function convert() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept=".pdf" @change="onFile" />
       <NSpace align="center">
         <span>{{ t('tools.pdfToPng.scale') }}</span>
         <NInputNumber v-model:value="scale" :min="1" :max="5" :step="0.5" style="width: 120px;"  :input-props="{ id: 'pdfToPngField0' }"/>

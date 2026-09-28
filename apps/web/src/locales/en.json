@@ -133,7 +133,12 @@
     "processing": "Processing...",
     "loadFfmpeg": "Load FFmpeg",
     "downloadGif": "Download GIF",
-    "downloadPng": "Download PNG"
+    "downloadPng": "Download PNG",
+    "fileUpload": {
+      "choose": "Click or drop a file here",
+      "replace": "Click or drop to replace",
+      "accepted": "Accepted: {types}"
+    }
   },
   "common": {
     "loading": "Loading...",

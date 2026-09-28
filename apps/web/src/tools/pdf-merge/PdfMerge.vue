@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NAlert } from 'naive-ui';
+import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -10,7 +11,7 @@ const files = ref<File[]>([]);
 const resultUrl = ref('');
 const processing = ref(false);
 const error = ref('');
-function onFiles(list: any[]) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; files.value = list.map(f => f.file).filter(Boolean); }
+function onFiles(list: File[]) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; files.value = list; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'merged.pdf'; a.click(); } }
 async function process() {
   if (files.value.length < 2) { error.value = t('tools.pdfMerge.selectAtLeastTwo'); return; }
@@ -37,7 +38,7 @@ onUnmounted(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :multiple="true" accept=".pdf" @update:file-list="onFiles" />
+      <ToolFileUpload accept=".pdf" multiple @change="onFiles" />
       <NAlert v-if="files.length" type="info" :title="t('tools.pdfMerge.filesSelected', { count: files.length })" />
       <NButton type="primary" :loading="processing" @click="process" :disabled="files.length < 2">{{ t('tools.pdfMerge.merge') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />

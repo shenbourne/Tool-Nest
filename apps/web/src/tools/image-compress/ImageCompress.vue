@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NInputNumber, NUpload, NAlert } from 'naive-ui';
+import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -12,7 +13,7 @@ const resultUrl = ref('');
 const origSize = ref(0);
 const newSize = ref(0);
 const processing = ref(false);
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'compressed'; a.click(); } }
 async function process() {
   if (!file.value) return;
@@ -37,7 +38,7 @@ async function process() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept="image/*" @change="onFile" />
       <NInputNumber v-model:value="quality" :min="0.1" :max="1" :step="0.1" :placeholder="t('tools.imageCompress.quality')" style="width:140px"  :input-props="{ id: 'imageCompressField0' }"/>
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageCompress.compress') }}</NButton>
       <NAlert v-if="origSize" type="info" :title="t('tools.imageCompress.sizeInfo', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />

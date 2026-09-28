@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     CommandPalette: typeof import('./components/CommandPalette.vue')['default']
     LocaleSwitcher: typeof import('./components/LocaleSwitcher.vue')['default']
-    NButton: typeof import('naive-ui')['NButton']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBar: typeof import('./components/SearchBar.vue')['default']
@@ -17,5 +16,6 @@ declare module 'vue' {
     TagFilter: typeof import('./components/TagFilter.vue')['default']
     ThemeSwitcher: typeof import('./components/ThemeSwitcher.vue')['default']
     ToolCard: typeof import('./components/ToolCard.vue')['default']
+    ToolFileUpload: typeof import('./components/ToolFileUpload.vue')['default']
   }
 }

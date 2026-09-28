@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NAlert, NTag } from 'naive-ui';
+import { NCard, NSpace, NButton, NAlert, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -14,7 +15,8 @@ const signatureCount = ref(0);
 const fieldNames = ref<string[]>([]);
 const checked = ref(false);
 
-function onFile(f: File | null) {
+function onFile(files: File[]) {
+  const f = files[0] ?? null;
   file.value = f;
   checked.value = false;
   error.value = '';
@@ -48,7 +50,7 @@ async function checkSignatures() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept=".pdf" @change="onFile" />
       <NButton type="primary" :loading="processing" @click="checkSignatures" :disabled="!file">
         {{ t('tools.pdfSignatureChecker.check') }}
       </NButton>
