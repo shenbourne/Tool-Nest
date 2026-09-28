@@ -1,3 +1,7 @@
+# Agent Development Protocol
+
+This file is the entry point for coding agents working in this repository. Follow the user's current instructions over repository guidance. Apply the lightest workflow that still records scope and evidence; when a required step does not apply, record why.
+
 ## Agent skills
 
 ### Issue tracker
@@ -11,6 +15,30 @@ Use the default canonical triage labels. See `docs/agents/triage-labels.md`.
 ### Domain docs
 
 Use the single-context domain documentation layout. See `docs/agents/domain.md`.
+
+## Responsibilities
+
+- Project layer (`.workflow/`): project objectives, requirements, roadmap, phase acceptance, and resumable state.
+- Engineering layer (`.agent-workflows/`): focused procedures for planning, implementation, debugging, review, and verification.
+- Domain layer (`CONTEXT.md` and `docs/adr/`): project vocabulary and architectural decisions. This remains the single source of truth for ADRs.
+- Harness layer (`.harness/`): evidence-backed proposals for improving the agent workflow. Run it after repeated failures, not for every task.
+
+## Session start
+
+Read `.workflow/STATE.md`, the project and requirements summaries, and the active phase's `CONTEXT.md` and `ACCEPTANCE.md` when a phase is active. Then inspect the Git branch, status, and recent commits, preserving unrelated edits. Load `.agent-workflows/session-start.md` and only the other workflow modules relevant to the task.
+
+## Routing
+
+- New project direction or changed scope: update `.workflow/PROJECT.md`, `REQUIREMENTS.md`, and `ROADMAP.md` as needed.
+- Ambiguous behavior or acceptance: `.agent-workflows/clarify.md`.
+- Consequential technical decision: `.agent-workflows/architecture.md` and a numbered ADR under `docs/adr/`.
+- Non-trivial implementation: `.agent-workflows/planning.md`, then `.agent-workflows/tdd.md` where practical.
+- Bug diagnosis or repair: `.agent-workflows/debugging.md`.
+- Completion: `.agent-workflows/review.md`, `.agent-workflows/verification.md`, and `.agent-workflows/session-end.md`.
+
+## Completion gate
+
+Keep the active phase plan current. Review the diff against its scope, run applicable checks through `scripts/verify` or equivalent commands, record actual results in `VERIFICATION.md`, and verify each acceptance criterion with observable evidence in `ACCEPTANCE.md`. Update `.workflow/STATE.md` so another agent can resume without chat history. A phase is complete only after engineering and acceptance checks pass.
 
 ## AI Git 工作流规范
 
