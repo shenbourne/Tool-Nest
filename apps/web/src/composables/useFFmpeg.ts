@@ -1,9 +1,12 @@
 import { ref, type Ref } from 'vue';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { toBlobURL } from '@ffmpeg/util';
 
 const CORE_VERSION = '0.12.6';
-const BASE_URL = `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`;
+// jsdelivr is reachable where unpkg is not (verified in-browser), so it leads.
+const CORE_BASE_URLS = [
+  `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
+  `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
+];
 
 let sharedInstance: FFmpeg | null = null;
 let loadingPromise: Promise<FFmpeg> | null = null;
@@ -13,16 +16,41 @@ let activeTaskProgress: ((progress: number) => void) | null = null;
 const isLoadedRef: Ref<boolean> = ref(false);
 const isLoadingRef: Ref<boolean> = ref(false);
 const loadProgressRef: Ref<number> = ref(0);
+const loadErrorRef: Ref<string> = ref('');
 
 export interface UseFFmpegReturn {
   isLoaded: Ref<boolean>;
   isLoading: Ref<boolean>;
   loadProgress: Ref<number>;
-  load(): Promise<FFmpeg>;
+  loadError: Ref<string>;
+  load(): Promise<FFmpeg | undefined>;
   exec(cmd: string[]): Promise<{ exitCode: number }>;
   readFile(path: string): Promise<Uint8Array>;
   writeFile(path: string, data: Uint8Array): Promise<void>;
   dispose(): void;
+}
+
+async function downloadAsset(
+  url: string,
+  mimeType: string,
+  onBytes: (loaded: number, total: number) => void,
+): Promise<string> {
+  const response = await fetch(url);
+  if (!response.ok || !response.body) {
+    throw new Error(`Failed to download ${url} (HTTP ${response.status})`);
+  }
+  const total = Number(response.headers.get('content-length')) || 0;
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let loaded = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    loaded += value.byteLength;
+    onBytes(loaded, total);
+  }
+  return URL.createObjectURL(new Blob(chunks, { type: mimeType }));
 }
 
 async function loadSharedInstance(): Promise<FFmpeg> {
@@ -32,21 +60,61 @@ async function loadSharedInstance(): Promise<FFmpeg> {
 
   if (!loadingPromise) {
     loadingPromise = (async () => {
-      const ffmpeg = new FFmpeg();
+      const failures: string[] = [];
 
-      ffmpeg.on('progress', ({ progress }: { progress: number }) => {
-        loadProgressRef.value = Math.min(progress, 1);
-        activeTaskProgress?.(Math.min(progress, 1));
-      });
+      for (const baseUrl of CORE_BASE_URLS) {
+        const ffmpeg = new FFmpeg();
 
-      await ffmpeg.load({
-        coreURL: await toBlobURL(`${BASE_URL}/ffmpeg-core.js`, 'text/javascript'),
-        wasmURL: await toBlobURL(`${BASE_URL}/ffmpeg-core.wasm`, 'application/wasm'),
-      });
+        ffmpeg.on('progress', ({ progress }: { progress: number }) => {
+          loadProgressRef.value = Math.min(progress, 1);
+          activeTaskProgress?.(Math.min(progress, 1));
+        });
 
-      sharedInstance = ffmpeg;
-      loadProgressRef.value = 1;
-      return ffmpeg;
+        // ffmpeg.load() emits no progress events of its own — track real
+        // download progress across both core assets ourselves.
+        const assets = [
+          { url: `${baseUrl}/ffmpeg-core.js`, mimeType: 'text/javascript' },
+          { url: `${baseUrl}/ffmpeg-core.wasm`, mimeType: 'application/wasm' },
+        ];
+        const loadedBytes = assets.map(() => 0);
+        const totalBytes = assets.map(() => 0);
+        const updateProgress = () => {
+          const total = totalBytes.reduce((a, b) => a + b, 0);
+          if (total > 0) {
+            const loaded = loadedBytes.reduce((a, b) => a + b, 0);
+            loadProgressRef.value = Math.min(loaded / total, 1);
+          }
+        };
+
+        let blobURLs: string[] = [];
+        try {
+          blobURLs = await Promise.all(
+            assets.map((asset, i) =>
+              downloadAsset(asset.url, asset.mimeType, (loaded, total) => {
+                loadedBytes[i] = loaded;
+                totalBytes[i] = total;
+                updateProgress();
+              }),
+            ),
+          );
+
+          await ffmpeg.load({
+            coreURL: blobURLs[0],
+            wasmURL: blobURLs[1],
+          });
+
+          sharedInstance = ffmpeg;
+          loadProgressRef.value = 1;
+          return ffmpeg;
+        } catch (e: unknown) {
+          failures.push(`${baseUrl}: ${e instanceof Error ? e.message : String(e)}`);
+          loadProgressRef.value = 0;
+        } finally {
+          blobURLs.forEach((url) => URL.revokeObjectURL(url));
+        }
+      }
+
+      throw new Error(`FFmpeg core download failed — ${failures.join('; ')}`);
     })();
   }
 
@@ -58,12 +126,18 @@ async function loadSharedInstance(): Promise<FFmpeg> {
 }
 
 export function useFFmpeg(): UseFFmpegReturn {
-  async function load(): Promise<FFmpeg> {
+  async function load(): Promise<FFmpeg | undefined> {
     isLoadingRef.value = true;
+    loadErrorRef.value = '';
+    loadProgressRef.value = 0;
     try {
       const instance = await loadSharedInstance();
       isLoadedRef.value = true;
       return instance;
+    } catch (e: unknown) {
+      loadErrorRef.value =
+        e instanceof Error ? e.message : 'FFmpeg failed to load';
+      return undefined;
     } finally {
       isLoadingRef.value = false;
     }
@@ -95,12 +169,14 @@ export function useFFmpeg(): UseFFmpegReturn {
     isLoadedRef.value = false;
     isLoadingRef.value = false;
     loadProgressRef.value = 0;
+    loadErrorRef.value = '';
   }
 
   return {
     isLoaded: isLoadedRef,
     isLoading: isLoadingRef,
     loadProgress: loadProgressRef,
+    loadError: loadErrorRef,
     load,
     exec,
     readFile,
