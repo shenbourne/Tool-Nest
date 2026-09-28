@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NAlert } from 'naive-ui';
+import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -22,7 +23,8 @@ function revokeImages() {
   for (const img of images.value) URL.revokeObjectURL(img.url);
 }
 
-function onFile(f: File | null) {
+function onFile(files: File[]) {
+  const f = files[0] ?? null;
   revokeImages();
   file.value = f;
   images.value = [];
@@ -73,7 +75,7 @@ onUnmounted(() => revokeImages());
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept=".pdf" @change="onFile" />
       <NButton type="primary" :loading="processing" @click="extract" :disabled="!file">
         {{ t('tools.pdfExtractImages.extract') }}
       </NButton>
