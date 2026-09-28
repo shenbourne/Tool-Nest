@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NSwitch, NUpload } from 'naive-ui';
+import { NCard, NSpace, NButton, NSwitch } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -11,7 +12,7 @@ const horizontal = ref(true);
 const vertical = ref(false);
 const resultUrl = ref('');
 const processing = ref(false);
-function onFile(f: File | null) { file.value = f; resultUrl.value = ''; }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'flipped'; a.click(); } }
 async function process() {
   if (!file.value) return;
@@ -35,7 +36,7 @@ async function process() {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept="image/*" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept="image/*" @change="onFile" />
       <NSpace><NSwitch v-model:value="horizontal">{{ t('tools.imageFlip.horizontal') }}</NSwitch><NSwitch v-model:value="vertical">{{ t('tools.imageFlip.vertical') }}</NSwitch></NSpace>
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageFlip.flip') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
