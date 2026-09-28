@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NUpload, NAlert } from 'naive-ui';
+import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -12,7 +13,7 @@ const origSize = ref(0);
 const newSize = ref(0);
 const processing = ref(false);
 const error = ref('');
-function onFile(f: File | null) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; origSize.value = 0; newSize.value = 0; }
+function onFile(files: File[]) { const f = files[0] ?? null; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; origSize.value = 0; newSize.value = 0; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'compressed.pdf'; a.click(); } }
 async function process() {
   if (!file.value) return;
@@ -41,7 +42,7 @@ onUnmounted(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NUpload :max="1" accept=".pdf" @update:file-list="onFile($event[0]?.file)" />
+      <ToolFileUpload accept=".pdf" @change="onFile" />
       <NButton type="primary" :loading="processing" :disabled="!file || processing" @click="process">{{ t('tools.compressPdf.compress') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NAlert v-if="origSize" type="info" :title="t('tools.compressPdf.sizeResult', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />
