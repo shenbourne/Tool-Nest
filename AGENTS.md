@@ -34,6 +34,7 @@ Read `.workflow/STATE.md`, the project and requirements summaries, and the activ
 - Consequential technical decision: `.agent-workflows/architecture.md` and a numbered ADR under `docs/adr/`.
 - Non-trivial implementation: `.agent-workflows/planning.md`, then `.agent-workflows/tdd.md` where practical.
 - Bug diagnosis or repair: `.agent-workflows/debugging.md`.
+- Cross-module changes, shared abstractions, dependency-direction changes, or recurring structural problems: `.agent-workflows/codebase-health.md` after the ordinary review. Record the trigger; it is not a gate for every task.
 - Completion: `.agent-workflows/review.md`, `.agent-workflows/verification.md`, and `.agent-workflows/session-end.md`.
 
 ## Completion gate

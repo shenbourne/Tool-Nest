@@ -3,6 +3,7 @@
 - Commit/branch: [SHA and branch]
 - Date: [YYYY-MM-DD]
 - Review: [findings, fixes, residual issues]
+- Codebase health: [not triggered / trigger, files inspected, findings and disposition]
 
 | Check | Command | Result | Evidence / limitation |
 | --- | --- | --- | --- |

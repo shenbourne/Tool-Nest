@@ -6,6 +6,7 @@ This repository uses a lightweight, file-based protocol for coding agents. `AGEN
 
 - `.workflow/`: project summary, durable requirements, roadmap, resumable state, and phase artifacts.
 - `.agent-workflows/`: focused procedures loaded only when their task branch applies.
+- `.agent-workflows/codebase-health.md`: focused structural review for cross-module changes, shared abstractions, dependency changes, or recurring problems.
 - `CONTEXT.md` and `docs/adr/`: domain vocabulary and architectural decisions.
 - `.harness/`: evidence and policy for bounded improvements to the agent workflow.
 - `scripts/verify`: the project verification runner.
