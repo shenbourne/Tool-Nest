@@ -1,6 +1,6 @@
 # 工具文件导入控件缺失
 
-Status: in-progress
+Status: acceptance-pass
 
 ## 问题陈述
 

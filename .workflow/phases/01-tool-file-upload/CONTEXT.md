@@ -10,7 +10,7 @@
 
 ## Root cause (evidence)
 
-`NUpload` in naive-ui does **not** ship a built-in visible trigger. Its trigger element only gets `display: inline-block; box-sizing: border-box` — naive-ui's own upload stylesheet defines no `.n-upload-trigger` box rule at all (`grep upload-trigger node_modules/naive-ui/es/upload/styles/index.mjs` → no matches). The trigger content must be supplied through the default slot; naive-ui's own docs always pass an `n-button` or `n-upload-dragger`.
+`NUpload` in naive-ui does **not** ship a built-in visible trigger. Its `.n-upload-trigger` element gets only `display: inline-block; box-sizing: border-box; opacity: 1; transition` — no box model at all (`node_modules/naive-ui/es/upload/src/styles/index.cssr.mjs`, the `cB("upload-trigger", ...)` block). The trigger content must be supplied through the default slot; naive-ui's own docs always pass an `n-button` or `n-upload-dragger`. `.n-upload-dragger` *is* fully styled (padding, dashed border, radius, hover, `--drag-over` highlight), and `Upload.mjs:602-604` only sets `draggerInsideRef` — which gates drag-and-drop acceptance — when the first default-slot child is the dragger. So the dragger is the only correct trigger.
 
 All 19 affected tool components use `<NUpload ... />` self-closing with no slot, so the picker renders as a 0×0 empty `div.n-upload-trigger`.
 

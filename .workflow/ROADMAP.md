@@ -4,4 +4,5 @@ The detailed delivery sequence remains authoritative in `DEVELOPMENT_PLAN.md`. R
 
 | Phase | Outcome | Requirements | Status | Dependencies |
 | --- | --- | --- | --- | --- |
+| 01 — Tool file import controls | All 19 local-file tools expose a working file-import control via a shared `ToolFileUpload` component | R-002 | Acceptance PASS; build/lint gate blocked by pre-existing baseline | None |
 | Unassigned | Existing ToolNest delivery work, to be split into the next numbered phase before new non-trivial implementation | R-001–R-005 | In progress | See `DEVELOPMENT_PLAN.md` |
