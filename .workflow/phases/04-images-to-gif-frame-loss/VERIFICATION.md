@@ -74,6 +74,16 @@ A general-purpose reviewer agent was given the diff (`apps/web/src/utils/image-s
 
 Verdict from the review: safe to merge as delivered, with the `null` `frameDuration` case carried as a pre-existing follow-up rather than folded into this fix.
 
+## Merge and push
+
+Authorized by the user on 2026-09-29 (「合并并推送」, after being asked which branch — the answer was phase 04).
+
+- Merged `fix/images-to-gif-frame-loss` `5ba2205` into `master` with `--no-ff`, matching the phase-02/03 convention: merge commit `803ecc2` `chore(merge): integrate phase 04 images-to-gif frame loss fix`.
+- The merge was performed in a temporary in-repo worktree (`.worktrees/p04-master`, ignored via `.git/info/exclude`) so the main working tree — which holds an unrelated, uncommitted line of work on `feature/phase-05-file-upload-paste` — was never checked out, stashed or otherwise touched.
+- Pre-merge comparison: `master` `fcbc617` = `origin/master`, and the phase branch was 3 ahead / 0 behind, so no reconciliation was needed.
+- Hard gates, both passed in the worktree: `git merge-base --is-ancestor fix/images-to-gif-frame-loss HEAD` and `git merge-base --is-ancestor fcbc617 HEAD`, plus `git diff fix/images-to-gif-frame-loss HEAD -- apps packages` **empty** — the merged business code is byte-identical to the verified branch tip. The gates above were therefore not re-executed on the merged tree: the worktree has no installed dependencies, and byte-identity makes a re-run a re-run of the same bytes.
+- **The push failed and `master` is not on the remote yet.** `git push origin HEAD:refs/heads/master` returned `remote: Failed to authenticate user` / `fatal: Authentication failed for 'https://git.shenb.net/shenbourne/tool-nest.git/'`. The repo sets `credential.helper = manager` (Git Credential Manager), which needs an interactive prompt this agent shell cannot provide (the push was run with `GIT_TERMINAL_PROMPT=0` so it failed fast instead of hanging). `origin/master` remains `fcbc617`. The user must run `git push origin master` from an interactive shell.
+
 ## Known limitations and residual issues
 
 1. **A one-frame GIF stores the encoder's default hold, not `d`.** Not fixable through any command shape on FFmpeg 5.1.4 (tested: bare still input, `-framerate 1/d`, and concat with `-t`, `-frames:v` or neither — all store 0.1 s), and 5.1.4's `gif` encoder exposes no `delay` option. Invisible in practice (a one-frame GIF never advances). Recorded in `ACCEPTANCE.md`.
