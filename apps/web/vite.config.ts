@@ -7,6 +7,11 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
 
 export default defineConfig({
+  // Pre-bundling rewrites @ffmpeg/ffmpeg's `new Worker(new URL('./worker.js', import.meta.url))`
+  // to a non-existent node_modules/.vite/deps/worker.js, which makes ffmpeg.load() hang forever.
+  optimizeDeps: {
+    exclude: ['@ffmpeg/ffmpeg'],
+  },
   plugins: [
     vue(),
     UnoCSS(),

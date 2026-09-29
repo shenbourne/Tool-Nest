@@ -6,7 +6,7 @@ import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
 const { t } = useI18n();
-const { isLoaded, isLoading, load, loadProgress } = useFFmpeg();
+const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
 
 const videoFile = ref<File | null>(null);
 const audioFile = ref<File | null>(null);
@@ -86,6 +86,7 @@ async function process() {
           {{ t('tool.loadFfmpeg') }}
         </NButton>
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+        <NAlert v-if="loadError" type="error" :title="loadError" />
 
         <div>
           <span>{{ t('tools.videoAddAudio.videoFile') }}: </span>

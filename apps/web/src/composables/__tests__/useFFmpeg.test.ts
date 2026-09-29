@@ -17,13 +17,55 @@ vi.mock('@ffmpeg/ffmpeg', () => {
   return { FFmpeg: vi.fn(() => mockFfmpeg) };
 });
 
-vi.mock('@ffmpeg/util', () => ({
-  toBlobURL: vi.fn((url: string) => Promise.resolve(url)),
-}));
+const CHUNK = 64;
+const ASSET_SIZES: Record<string, number> = {
+  'ffmpeg-core.js': 3 * CHUNK,
+  'ffmpeg-core.wasm': 5 * CHUNK,
+};
+
+function fakeReader(chunks: Uint8Array[]) {
+  return {
+    read: vi.fn().mockImplementation(() => {
+      const value = chunks.shift();
+      return Promise.resolve(
+        value === undefined
+          ? { done: true, value: undefined }
+          : { done: false, value },
+      );
+    }),
+  };
+}
+
+function mockFetch(overrides: { failUrls?: string[]; failHosts?: string[] } = {}) {
+  const fetchMock = vi.fn((url: string | URL) => {
+    const urlString = String(url);
+    const name = urlString.split('/').pop() ?? '';
+    if (overrides.failUrls?.includes(name)) {
+      return Promise.reject(new TypeError('Failed to fetch'));
+    }
+    if (overrides.failHosts?.some((host) => urlString.includes(host))) {
+      return Promise.reject(new TypeError('Failed to fetch'));
+    }
+    const size = ASSET_SIZES[name] ?? CHUNK;
+    const chunks: Uint8Array[] = [];
+    for (let i = 0; i < size; i += CHUNK) {
+      chunks.push(new Uint8Array(Math.min(CHUNK, size - i)));
+    }
+    return Promise.resolve({
+      ok: true,
+      headers: new Map([['content-length', String(size)]]),
+      body: { getReader: () => fakeReader(chunks) },
+    } as unknown as Response);
+  });
+  vi.stubGlobal('fetch', fetchMock);
+  return fetchMock;
+}
 
 describe('useFFmpeg composable', () => {
   beforeEach(() => {
     vi.resetModules();
+    vi.unstubAllGlobals();
+    mockFetch();
   });
 
   it('starts in unloaded state', async () => {
@@ -31,6 +73,69 @@ describe('useFFmpeg composable', () => {
     const ffmpeg = useFFmpeg();
     expect(ffmpeg.isLoaded.value).toBe(false);
     expect(ffmpeg.isLoading.value).toBe(false);
+    expect(ffmpeg.loadProgress.value).toBe(0);
+    expect(ffmpeg.loadError.value).toBe('');
+  });
+
+  it('reports download progress before load resolves', async () => {
+    const { useFFmpeg } = await import('../useFFmpeg');
+    const ffmpeg = useFFmpeg();
+
+    const progressSamples: number[] = [];
+    const unsubscribe = (await import('vue')).watch(
+      ffmpeg.loadProgress,
+      (v) => progressSamples.push(v),
+    );
+
+    await ffmpeg.load();
+    unsubscribe();
+
+    const total = Object.values(ASSET_SIZES).reduce((a, b) => a + b, 0);
+    // progress must advance through intermediate values, not jump 0 -> 1
+    expect(progressSamples.length).toBeGreaterThan(1);
+    expect(Math.max(...progressSamples.slice(0, -1))).toBeGreaterThan(0);
+    expect(Math.max(...progressSamples.slice(0, -1))).toBeLessThan(1);
+    expect(ffmpeg.loadProgress.value).toBe(1);
+    expect(total).toBe(8 * CHUNK);
+  });
+
+  it('downloads the core from jsdelivr first', async () => {
+    const fetchMock = mockFetch();
+    const { useFFmpeg } = await import('../useFFmpeg');
+    const ffmpeg = useFFmpeg();
+
+    await ffmpeg.load();
+
+    const urls = fetchMock.mock.calls.map((call) => String(call[0]));
+    expect(urls.length).toBeGreaterThan(0);
+    expect(urls[0]).toContain('cdn.jsdelivr.net');
+    expect(ffmpeg.isLoaded.value).toBe(true);
+  });
+
+  it('falls back to unpkg when jsdelivr fails', async () => {
+    const fetchMock = mockFetch({ failHosts: ['cdn.jsdelivr.net'] });
+    const { useFFmpeg } = await import('../useFFmpeg');
+    const ffmpeg = useFFmpeg();
+
+    await ffmpeg.load();
+
+    const urls = fetchMock.mock.calls.map((call) => String(call[0]));
+    expect(urls.some((url) => url.includes('unpkg.com'))).toBe(true);
+    expect(ffmpeg.isLoaded.value).toBe(true);
+    expect(ffmpeg.loadError.value).toBe('');
+    expect(ffmpeg.loadProgress.value).toBe(1);
+  });
+
+  it('reports the failure when every core source is unreachable', async () => {
+    mockFetch({ failUrls: ['ffmpeg-core.js', 'ffmpeg-core.wasm'] });
+    const { useFFmpeg } = await import('../useFFmpeg');
+    const ffmpeg = useFFmpeg();
+
+    await ffmpeg.load();
+
+    expect(ffmpeg.isLoaded.value).toBe(false);
+    expect(ffmpeg.loadError.value).toContain('cdn.jsdelivr.net');
+    expect(ffmpeg.loadError.value).toContain('unpkg.com');
     expect(ffmpeg.loadProgress.value).toBe(0);
   });
 
@@ -42,7 +147,26 @@ describe('useFFmpeg composable', () => {
     await loadPromise;
     expect(ffmpeg.isLoaded.value).toBe(true);
     expect(ffmpeg.isLoading.value).toBe(false);
-    expect(ffmpeg.loadProgress.value).toBe(1);
+    expect(ffmpeg.loadError.value).toBe('');
+  });
+
+  it('surfaces download failures in loadError and allows retry', async () => {
+    vi.unstubAllGlobals();
+    mockFetch({ failUrls: ['ffmpeg-core.wasm'] });
+
+    const { useFFmpeg } = await import('../useFFmpeg');
+    const ffmpeg = useFFmpeg();
+
+    await ffmpeg.load();
+    expect(ffmpeg.isLoaded.value).toBe(false);
+    expect(ffmpeg.isLoading.value).toBe(false);
+    expect(ffmpeg.loadError.value).not.toBe('');
+
+    vi.unstubAllGlobals();
+    mockFetch();
+    await ffmpeg.load();
+    expect(ffmpeg.isLoaded.value).toBe(true);
+    expect(ffmpeg.loadError.value).toBe('');
   });
 
   it('returns the same instance on repeated calls (singleton)', async () => {
@@ -51,7 +175,6 @@ describe('useFFmpeg composable', () => {
     const b = useFFmpeg();
     await a.load();
     await b.load();
-    // Both composables share the same underlying instance
     expect(a.isLoaded.value).toBe(true);
     expect(b.isLoaded.value).toBe(true);
   });
@@ -64,12 +187,15 @@ describe('useFFmpeg composable', () => {
     ffmpeg.dispose();
     expect(ffmpeg.isLoaded.value).toBe(false);
     expect(ffmpeg.loadProgress.value).toBe(0);
+    expect(ffmpeg.loadError.value).toBe('');
   });
 });
 
 describe('runFFmpegTask', () => {
   beforeEach(() => {
     vi.resetModules();
+    vi.unstubAllGlobals();
+    mockFetch();
   });
 
   it('provides ffmpeg instance and tempFile helper', async () => {
@@ -127,7 +253,6 @@ describe('runFFmpegTask', () => {
       return null;
     });
 
-    // deleteFile should have been called for the temp files
     const deleteCalls = mockInstance?.deleteFile.mock.calls ?? [];
     expect(deleteCalls.length).toBe(2);
   });
