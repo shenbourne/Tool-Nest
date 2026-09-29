@@ -7,15 +7,15 @@
 
 ## Remote synchronization
 
-`git fetch origin` **fails on this machine** — `fatal: unable to access 'https://git.shenb.net/shenbourne/tool-nest.git/': TLS connect error: error:0A000126:SSL routines::unexpected eof while reading` — and fails identically with `git -c http.sslVerify=false`, so the connection is being cut rather than rejected on certificate grounds. The base could therefore not be re-confirmed against the real remote; the comparison below uses the local remote-tracking ref only. No push was attempted, and none is claimed. This is a recorded blocker, not a synchronization.
+`git fetch origin` failed twice at the start of the phase with `fatal: unable to access 'https://git.shenb.net/shenbourne/tool-nest.git/': TLS connect error: error:0A000126:SSL routines::unexpected eof while reading`, identically with `git -c http.sslVerify=false`, so the connection was being cut rather than the certificate rejected. **The post-development fetch succeeded**, and the base was then confirmed for real — the initial failures were transient interception on this network, not an inaccessible remote. Nothing was pushed and no push is claimed.
 
 | Item | Value |
 | --- | --- |
 | Remote / base | `origin` (`https://git.shenb.net/shenbourne/tool-nest.git`) / `master` |
-| Local base | `master` = `origin/master` = `fcbc617` (stale: last successful fetch predates this session) |
+| Base, verified after development | local `master` `fcbc617` = `git ls-remote origin refs/heads/master` `fcbc617fb025b28fa8c06de4472584d3459c4862`; `git diff master origin/master` empty |
 | Ahead / behind (`git rev-list --left-right --count master...origin/master`) | `0 0` |
-| Branch upstream | none (new branch) |
-| Divergence | unknown — fetch unreachable |
+| Branch upstream | none — the feature branch has never been pushed |
+| Divergence | none: the fix branch is `master` + 2 local commits, base unmoved during the phase |
 
 ## Defect mechanism
 
@@ -78,5 +78,4 @@ Verdict from the review: safe to merge as delivered, with the `null` `frameDurat
 
 1. **A one-frame GIF stores the encoder's default hold, not `d`.** Not fixable through any command shape on FFmpeg 5.1.4 (tested: bare still input, `-framerate 1/d`, and concat with `-t`, `-frames:v` or neither — all store 0.1 s), and 5.1.4's `gif` encoder exposes no `delay` option. Invisible in practice (a one-frame GIF never advances). Recorded in `ACCEPTANCE.md`.
 2. **`frameDuration` can be `null` when the user clears the number field** (`NInputNumber`), which would emit `duration null` and `fps=Infinity`. Pre-existing, unrelated to this defect, and not made worse by this change — out of scope for this phase and left as a follow-up.
-3. **The remote could not be fetched** (see above), so the branch is local-only and the base could not be re-confirmed.
-4. `.scratch/frame-loss-evidence/` is untracked scratch evidence (fixtures, the real core artifact, the harness scripts and raw logs), deliberately not committed, following the `.scratch/speed-evidence/` precedent from phase 03.
+3. `.scratch/frame-loss-evidence/` is untracked scratch evidence (fixtures, the real core artifact, the harness scripts and raw logs), deliberately not committed, following the `.scratch/speed-evidence/` precedent from phase 03.
