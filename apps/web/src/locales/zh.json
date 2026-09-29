@@ -135,9 +135,10 @@
     "downloadGif": "下载 GIF",
     "downloadPng": "下载 PNG",
     "fileUpload": {
-      "choose": "点击或拖拽文件到此处",
-      "replace": "点击或拖拽以更换文件",
-      "accepted": "支持格式：{types}"
+      "choose": "点击、拖拽或粘贴文件到此处",
+      "replace": "点击、拖拽或粘贴以更换文件",
+      "accepted": "支持格式：{types}",
+      "rejected": "粘贴的内容不是支持的文件格式"
     }
   },
   "common": {
