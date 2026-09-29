@@ -25,7 +25,7 @@ Read `.workflow/STATE.md`, project and requirements summaries, the active phase'
 
 ## Git policy
 
-For non-trivial work, one phase uses one isolated `feature/phase-<number>-<slug>` branch or worktree. Do not implement on `main`/`master`. Make each completed task a reviewable atomic commit when possible; never commit secrets or unrelated user changes. Do not force-push, discard edits, or merge to main without the user's authorization. A pending merge is a valid resumable state.
+For non-trivial work, one phase uses one isolated `feature/phase-<number>-<slug>` branch or worktree. Do not implement on `main`/`master`. Make each completed task a reviewable atomic commit when possible; never commit secrets or unrelated user changes. Only force-push, discard edits, merge to main, or push to origin after the user's authorization. A pending merge is a valid resumable state.
 
 ## Completion gate
 
