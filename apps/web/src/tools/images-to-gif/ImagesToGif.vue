@@ -3,6 +3,7 @@ import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-u
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
+import { buildImagesToGifCommand } from '@/utils/image-slideshow';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -56,21 +57,17 @@ async function process() {
         inputNames.push(inputName);
       }
 
-      const concatContent = inputNames
-        .map(name => `file '${name}'\nduration ${frameDuration.value}`)
-        .join('\n');
       const listName = tempFile('.txt');
-      await ffmpeg.writeFile(listName, concatContent);
-
       const outputName = tempFile('.gif');
-      await ffmpeg.exec([
-        '-f', 'concat',
-        '-safe', '0',
-        '-i', listName,
-        '-vf', `fps=${1 / frameDuration.value},scale=480:-1:flags=lanczos`,
-        '-loop', '0',
+      const { listContent, args } = buildImagesToGifCommand({
+        inputNames,
+        listName,
         outputName,
-      ]);
+        frameDuration: frameDuration.value,
+      });
+      await ffmpeg.writeFile(listName, listContent);
+
+      await ffmpeg.exec(args);
       return (await ffmpeg.readFile(outputName)) as Uint8Array;
     });
 
