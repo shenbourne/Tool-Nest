@@ -1798,12 +1798,12 @@
       "description": "Change GIF animation speed",
       "selectSpeed": "Select speed",
       "changeSpeed": "Change Speed",
-      "speedVeryFast": "0.25x (very fast)",
-      "speedFaster": "0.5x (faster)",
+      "speedVerySlow": "0.25x (very slow)",
+      "speedSlow": "0.5x (slow)",
       "speedNormal": "1x (normal)",
-      "speedSlower": "1.5x (slower)",
-      "speedSlow": "2x (slow)",
-      "speedVerySlow": "4x (very slow)"
+      "speedFast": "1.5x (fast)",
+      "speedFaster": "2x (faster)",
+      "speedVeryFast": "4x (very fast)"
     },
     "imagesToGif": {
       "name": "Images to GIF",

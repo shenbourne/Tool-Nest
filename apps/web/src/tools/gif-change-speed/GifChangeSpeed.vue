@@ -3,6 +3,7 @@ import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
+import { gifSpeedFilter } from '@/utils/ffmpeg-speed';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -16,12 +17,12 @@ const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 
 const speedOptions = computed(() => [
-  { label: t('tools.gifChangeSpeed.speedVeryFast'), value: '0.25' },
-  { label: t('tools.gifChangeSpeed.speedFaster'), value: '0.5' },
+  { label: t('tools.gifChangeSpeed.speedVerySlow'), value: '0.25' },
+  { label: t('tools.gifChangeSpeed.speedSlow'), value: '0.5' },
   { label: t('tools.gifChangeSpeed.speedNormal'), value: '1' },
-  { label: t('tools.gifChangeSpeed.speedSlower'), value: '1.5' },
-  { label: t('tools.gifChangeSpeed.speedSlow'), value: '2' },
-  { label: t('tools.gifChangeSpeed.speedVerySlow'), value: '4' },
+  { label: t('tools.gifChangeSpeed.speedFast'), value: '1.5' },
+  { label: t('tools.gifChangeSpeed.speedFaster'), value: '2' },
+  { label: t('tools.gifChangeSpeed.speedVeryFast'), value: '4' },
 ]);
 
 function onFileChange(event: Event) {
@@ -58,7 +59,7 @@ async function process() {
       await ffmpeg.writeFile(inputName, inputBytes);
       await ffmpeg.exec([
         '-i', inputName,
-        '-filter_complex', `[0:v]setpts=${factor}*PTS,fps=10[v]`,
+        '-filter_complex', gifSpeedFilter(factor),
         '-map', '[v]',
         outputName,
       ]);
