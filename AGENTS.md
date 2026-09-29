@@ -11,7 +11,7 @@ This file is the entry point for any coding agent working in this repository. Fo
 
 ## Session start
 
-Read `.workflow/STATE.md`, project and requirements summaries, the active phase's `CONTEXT.md` and `ACCEPTANCE.md`, and relevant ADRs. Inspect `git status --short --branch`, current branch, and recent commits. Respect existing uncommitted changes. Load `.agent-workflows/session-start.md` and only the other modules needed for the task.
+Read `.workflow/STATE.md`, project and requirements summaries, the active phase's `CONTEXT.md` and `ACCEPTANCE.md`, and relevant ADRs. Inspect `git status --short --branch`, current branch, and recent commits. Before development, use `.agent-workflows/remote-sync.md` to fetch and compare the configured remote branch and base branch. Start from an up-to-date base; reconcile divergence without discarding existing work. Respect uncommitted changes. Load `.agent-workflows/session-start.md` and only the other modules needed for the task.
 
 ## Routing
 
@@ -20,12 +20,13 @@ Read `.workflow/STATE.md`, project and requirements summaries, the active phase'
 - Important technical decision: `.agent-workflows/architecture.md` and an ADR.
 - Implementation: `.agent-workflows/planning.md`, then `.agent-workflows/tdd.md` when practical.
 - Bug: `.agent-workflows/debugging.md`.
+- Before coding and before pushing completed work: `.agent-workflows/remote-sync.md`.
 - Cross-module changes, new abstractions, dependency changes, or recurring structural problems: `.agent-workflows/codebase-health.md` after the ordinary review. Record why it was invoked; it is not a gate for every task.
 - Completion: `.agent-workflows/review.md`, `.agent-workflows/verification.md`, `.agent-workflows/session-end.md`.
 
 ## Git policy
 
-For non-trivial work, one phase uses one isolated `feature/phase-<number>-<slug>` branch or worktree. Do not implement on `main`/`master`. Make each completed task a reviewable atomic commit when possible; never commit secrets or unrelated user changes. Only force-push, discard edits, merge to main, or push to origin after the user's authorization. A pending merge is a valid resumable state.
+For non-trivial work, one phase uses one isolated `feature/phase-<number>-<slug>` branch or worktree, created from the current remote base. Do not implement on `main`/`master`. Make each completed task a reviewable atomic commit when possible; never commit secrets or unrelated user changes. At the end of development, fetch and compare again, integrate remote updates safely, rerun affected checks, and push the feature branch to its configured remote. Verify the push and record the remote branch. Never force-push, discard edits, or merge to main without the user's authorization. Pushing the feature branch does not authorize merging it. A pending merge is a valid resumable state. If no remote or credentials are available, record the blocker rather than claiming synchronization.
 
 ## Completion gate
 
