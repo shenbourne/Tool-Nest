@@ -960,7 +960,6 @@
     "jpgToPng": {
       "name": "JPG to PNG",
       "description": "Convert JPG images to PNG format",
-      "uploadImage": "Upload a JPG image",
       "downloadAsPng": "Download as PNG"
     },
     "pdfMerge": {
