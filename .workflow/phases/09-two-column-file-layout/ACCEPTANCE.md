@@ -16,11 +16,11 @@
 - [x] All tests pass
 - [x] No regression in existing functionality
 
-## Manual Testing (Pending)
+## Manual Testing
 
-- [ ] Verify button positions in browser
-- [ ] Test import button triggers file dialog
-- [ ] Test paste button reads clipboard
-- [ ] Test copy button disabled state
-- [ ] Test export button disabled state
-- [ ] Verify compact upload trigger layout
+- [x] Verify button positions in browser (LEFT=[导入文件][粘贴文件], RIGHT=[复制文件][导出文件])
+- [x] Test import button triggers file dialog
+- [x] Test paste button reads clipboard
+- [x] Test copy button disabled state
+- [x] Test export button disabled state
+- [x] Verify compact upload trigger layout (in grid alongside imported files)
