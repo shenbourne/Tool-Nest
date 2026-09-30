@@ -2,6 +2,7 @@
 import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
@@ -14,9 +15,8 @@ const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 
-function onFileChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  file.value = input.files?.[0] ?? null;
+function onFileChange(files: File[]) {
+  file.value = files[0] ?? null;
   resultData.value = null;
   error.value = '';
 }
@@ -77,7 +77,7 @@ async function process() {
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
         <NAlert v-if="loadError" type="error" :title="loadError" />
 
-        <input type="file" accept="video/*" @change="onFileChange" />
+        <ToolFileUpload accept="video/*" @change="onFileChange" />
 
         <NInputNumber
           v-model:value="loopCount"
