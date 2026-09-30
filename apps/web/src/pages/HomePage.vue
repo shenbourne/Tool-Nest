@@ -7,6 +7,7 @@ import ToolCard from '@/components/ToolCard.vue';
 import TagFilter from '@/components/TagFilter.vue';
 import { useToolStore } from '@/stores/tool.store';
 import { useSearchStore } from '@/stores/search.store';
+import { CATEGORY_ANCHOR_OFFSET, categoryAnchorId } from '@/utils/category-anchor';
 import { TOOL_CATEGORIES } from '@toolnest/shared';
 
 const { t } = useI18n();
@@ -77,8 +78,8 @@ const sortedCategories = computed(() =>
         <template v-for="cat in sortedCategories" :key="cat.name">
           <div
             v-if="toolStore.toolsByCategory.get(cat.name)?.length"
-            :id="`category-${cat.name}`"
-            style="margin-bottom: 24px; scroll-margin-top: 24px;"
+            :id="categoryAnchorId(cat.name)"
+            :style="{ marginBottom: '24px', scrollMarginTop: `${CATEGORY_ANCHOR_OFFSET}px` }"
           >
             <h3 style="margin: 0 0 12px; font-size: 16px;">
               {{ t(cat.label) }}
