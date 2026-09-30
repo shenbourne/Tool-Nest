@@ -135,9 +135,10 @@
     "downloadGif": "Download GIF",
     "downloadPng": "Download PNG",
     "fileUpload": {
-      "choose": "Click or drop a file here",
-      "replace": "Click or drop to replace",
-      "accepted": "Accepted: {types}"
+      "choose": "Click, drop, or paste a file here",
+      "replace": "Click, drop, or paste to replace",
+      "accepted": "Accepted: {types}",
+      "rejected": "The pasted content is not a supported file type"
     }
   },
   "common": {

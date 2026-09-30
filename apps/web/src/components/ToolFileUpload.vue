@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { NUpload, NUploadDragger, NIcon } from 'naive-ui';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { NUpload, NUploadDragger, NIcon, useMessage } from 'naive-ui';
 import type { UploadFileInfo } from 'naive-ui';
 import { CloudUpload } from '@vicons/tabler';
 import { useI18n } from 'vue-i18n';
+import { collectClipboardFiles, splitByAccept } from '@/utils/clipboard-files';
 
 const props = withDefaults(defineProps<{
   accept?: string;
@@ -16,6 +17,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{ change: [files: File[]] }>();
 
 const { t } = useI18n();
+const message = useMessage();
 const fileList = ref<UploadFileInfo[]>([]);
 
 const files = computed(() =>
@@ -36,6 +38,42 @@ function remove(index: number) {
   fileList.value = fileList.value.filter((_, i) => i !== index);
   emitFiles();
 }
+
+let pasteSequence = 0;
+
+function toFileInfo(file: File): UploadFileInfo {
+  return {
+    id: `pasted-${Date.now()}-${pasteSequence++}`,
+    name: file.name,
+    status: 'pending',
+    file,
+    type: file.type,
+  };
+}
+
+// The paste event is the only channel that carries a copied file (or a copied
+// screenshot) without a clipboard permission prompt. It has to live on the
+// document: a paste with no focused editor is dispatched there, not at the
+// control. Clipboards without files are left alone so the tools' own text
+// inputs keep receiving ordinary text pastes.
+function onPaste(event: ClipboardEvent) {
+  const pasted = collectClipboardFiles(event.clipboardData);
+  if (!pasted.length) return;
+
+  const { accepted } = splitByAccept(pasted, props.accept);
+  if (!accepted.length) {
+    message.warning(t('tool.fileUpload.rejected'));
+    return;
+  }
+
+  event.preventDefault();
+  const entries = (props.multiple ? accepted : accepted.slice(0, 1)).map(toFileInfo);
+  fileList.value = props.multiple ? [...fileList.value, ...entries] : entries;
+  emitFiles();
+}
+
+onMounted(() => document.addEventListener('paste', onPaste));
+onUnmounted(() => document.removeEventListener('paste', onPaste));
 </script>
 
 <template>
