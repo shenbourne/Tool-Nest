@@ -4,9 +4,11 @@ import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const resultUrl = ref('');
 const origSize = ref(0);
@@ -15,6 +17,12 @@ const processing = ref(false);
 const error = ref('');
 function onFile(files: File[]) { const f = files[0] ?? null; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; error.value = ''; origSize.value = 0; newSize.value = 0; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'compressed.pdf'; a.click(); } }
+async function copy() {
+  if (!resultUrl.value) return;
+  const res = await fetch(resultUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
+}
 async function process() {
   if (!file.value) return;
   processing.value = true;
@@ -47,6 +55,7 @@ onUnmounted(() => {
       <NAlert v-if="error" type="error" :title="error" />
       <NAlert v-if="origSize" type="info" :title="t('tools.compressPdf.sizeResult', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />
       <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
+      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

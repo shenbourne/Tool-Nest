@@ -4,14 +4,22 @@ import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const resultUrl = ref('');
 const processing = ref(false);
 function onFile(files: File[]) { const f = files[0] ?? null; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); file.value = f; resultUrl.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'output.pdf'; a.click(); } }
+async function copy() {
+  if (!resultUrl.value) return;
+  const res = await fetch(resultUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
+}
 function imageFormat(type: string) { return type === 'image/png' ? 'PNG' : type === 'image/webp' ? 'WEBP' : 'JPEG'; }
 async function process() {
   const f = file.value;
@@ -44,6 +52,7 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
       <NAlert type="info" :title="t('tools.convertToPdf.info')" />
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.convertToPdf.convert') }}</NButton>
       <NButton v-if="resultUrl" @click="download">{{ t('tools.convertToPdf.downloadPdf') }}</NButton>
+      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

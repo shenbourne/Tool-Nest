@@ -1,6 +1,6 @@
 import { useMessage } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import { writeClipboardImage, writeClipboardText } from '@/utils/clipboard';
+import { writeClipboardFile, writeClipboardImage, writeClipboardText } from '@/utils/clipboard';
 
 /**
  * Clipboard feedback shared by every tool. Tools previously called
@@ -25,5 +25,12 @@ export function useCopy() {
     return ok;
   }
 
-  return { copyToClipboard, copyImageToClipboard };
+  async function copyFileToClipboard(blob: Blob, successMessage?: string): Promise<boolean> {
+    const ok = await writeClipboardFile(blob);
+    if (ok) message.success(successMessage ?? t('tool.copied'));
+    else message.error(t('tool.copyFileFailed'));
+    return ok;
+  }
+
+  return { copyToClipboard, copyImageToClipboard, copyFileToClipboard };
 }

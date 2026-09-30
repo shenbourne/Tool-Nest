@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const { copyFileToClipboard } = useCopy();
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
@@ -66,6 +68,12 @@ function downloadTile(dataUrl: string, idx: number) {
   a.click();
 }
 
+async function copyTile(dataUrl: string) {
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
+}
+
 function downloadAll() {
   tiles.value.forEach((tile, idx) => downloadTile(tile, idx));
 }
@@ -104,7 +112,7 @@ onUnmounted(() => {
           <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:8px;">
             <div v-for="(tile, idx) in tiles" :key="idx">
               <img :src="tile" style="width:100%;border:1px solid var(--color-hairline);" />
-              <NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">{{ t('tool.download') }}</NButton>
+              <NSpace><NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">{{ t('tool.download') }}</NButton><NButton size="small" @click="copyTile(tile)" style="margin-top:4px;">{{ t('tool.copyFile') }}</NButton></NSpace>
             </div>
           </div>
           <NButton type="success" @click="downloadAll">{{ t('tools.imageSplit.downloadAll') }}</NButton>

@@ -5,8 +5,10 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
+const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const text = ref('Watermark');
 const resultUrl = ref('');
@@ -19,6 +21,12 @@ function download() {
   const ext = (file.value?.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
   a.download = `watermarked.${ext}`;
   a.click();
+}
+async function copy() {
+  if (!resultUrl.value) return;
+  const res = await fetch(resultUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
 }
 async function process() {
   if (!file.value) return;
@@ -51,7 +59,7 @@ async function process() {
       <NInput v-model:value="text" :placeholder="t('tools.imageWatermark.watermarkPlaceholder')" style="width:250px"  :input-props="{ id: 'imageWatermarkField0' }"/>
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageWatermark.addWatermark') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
-      <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
+      <NSpace><NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton><NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
     </NSpace></NCard>
   </ToolLayout>
 </template>

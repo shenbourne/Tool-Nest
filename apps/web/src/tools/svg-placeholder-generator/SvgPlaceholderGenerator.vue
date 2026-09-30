@@ -8,7 +8,7 @@ import { useCurrentTool } from '@/composables/useCurrentTool';
 import { generateSvgPlaceholder, svgToDataUrl, downloadSvg } from './svg-placeholder-generator.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
+const { copyToClipboard, copyFileToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const width = ref(300);
@@ -37,6 +37,12 @@ function copySvg() {
 
 function download() {
   downloadSvg(svgCode.value, `placeholder-${width.value}x${height.value}.svg`);
+}
+
+async function copySvgFile() {
+  const res = await fetch(dataUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
 }
 </script>
 
@@ -82,6 +88,7 @@ function download() {
         </div>
         <NSpace>
           <NButton @click="download">{{ t('tools.svgPlaceholderGenerator.downloadSvg') }}</NButton>
+          <NButton @click="copySvgFile">{{ t('tool.copyFile') }}</NButton>
         </NSpace>
       </NCard>
 

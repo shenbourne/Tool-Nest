@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const { copyFileToClipboard } = useCopy();
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
@@ -66,8 +68,14 @@ watch([targetColor, tolerance], () => {
   if (file.value) processImage();
 });
 
-function download() {
+function createCanvas() {
   const canvas = canvasRef.value;
+  if (!canvas) return null;
+  return canvas;
+}
+
+function download() {
+  const canvas = createCanvas();
   if (!canvas) return;
   canvas.toBlob((blob) => {
     if (!blob) return;
@@ -77,6 +85,15 @@ function download() {
     a.download = 'transparent.png';
     a.click();
     URL.revokeObjectURL(url);
+  }, 'image/png');
+}
+
+async function copy() {
+  const canvas = createCanvas();
+  if (!canvas) return;
+  canvas.toBlob(async (blob) => {
+    if (!blob) return;
+    await copyFileToClipboard(blob);
   }, 'image/png');
 }
 onUnmounted(() => {
@@ -106,7 +123,7 @@ onUnmounted(() => {
             <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1"  :input-props="{ id: 'imageCreateTransparentField0' }"/>
           </div>
           <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
-          <NButton type="success" :disabled="!hasResult" @click="download">{{ t('tool.download') }}</NButton>
+          <NSpace><NButton type="success" :disabled="!hasResult" @click="download">{{ t('tool.download') }}</NButton><NButton :disabled="!hasResult" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
         </NSpace>
       </NCard>
     </NSpace>

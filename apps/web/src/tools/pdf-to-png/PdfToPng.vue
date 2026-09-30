@@ -4,9 +4,11 @@ import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyFileToClipboard } = useCopy();
 
 interface PageImage {
   url: string;
@@ -31,6 +33,12 @@ function downloadImage(img: PageImage) {
   a.href = img.url;
   a.download = `page-${img.page}.png`;
   a.click();
+}
+
+async function copyImage(img: PageImage) {
+  const res = await fetch(img.url);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
 }
 
 async function convert() {
@@ -80,6 +88,9 @@ async function convert() {
           <img :src="img.url" style="width: 100%;" />
           <NButton size="small" @click="downloadImage(img)" style="margin-top: 8px;">
             {{ t('tool.downloadPng') }}
+          </NButton>
+          <NButton size="small" @click="copyImage(img)" style="margin-top: 8px;">
+            {{ t('tool.copyFile') }}
           </NButton>
         </NCard>
       </NSpace>

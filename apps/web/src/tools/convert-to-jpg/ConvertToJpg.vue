@@ -5,13 +5,21 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
+const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const resultUrl = ref('');
 const processing = ref(false);
 function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'output.jpg'; a.click(); } }
+async function copy() {
+  if (!resultUrl.value) return;
+  const res = await fetch(resultUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
+}
 async function process() {
   if (!file.value) return;
   processing.value = true;
@@ -37,7 +45,7 @@ async function process() {
       <ToolFileUpload accept="image/*" @change="onFile" />
       <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.convertToJpg.convert') }}</NButton>
       <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
-      <NButton v-if="resultUrl" @click="download">{{ t('tools.convertToJpg.downloadJpg') }}</NButton>
+      <NSpace><NButton v-if="resultUrl" @click="download">{{ t('tools.convertToJpg.downloadJpg') }}</NButton><NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
     </NSpace></NCard>
   </ToolLayout>
 </template>
