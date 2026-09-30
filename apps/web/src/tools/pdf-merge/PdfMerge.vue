@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
+import { NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -13,9 +14,10 @@ const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
 const files = ref<File[]>([]);
 const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
-function onFiles(list: File[]) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; files.value = list; }
+function onFiles(list: File[]) { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; resultFile.value = null; files.value = list; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'merged.pdf'; a.click(); } }
 async function copy() {
   if (!resultUrl.value) return;
@@ -37,7 +39,9 @@ async function process() {
     }
     const bytes = await merged.save();
     if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
-    resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    resultUrl.value = URL.createObjectURL(blob);
+    resultFile.value = new File([blob], 'merged.pdf', { type: 'application/pdf' });
   } catch (e: any) { error.value = e.message; }
   processing.value = false;
 }
@@ -54,11 +58,7 @@ onUnmounted(() => {
           <NAlert v-if="files.length" type="info" :title="t('tools.pdfMerge.filesSelected', { count: files.length })" style="margin-top: 8px;" />
         </template>
         <template #output-files>
-          <div v-if="resultUrl" class="tool-file-panel__output-preview">
-            <NCard size="small" :title="t('tools.pdfMerge.downloadMerged')">
-              <p style="font-size: 13px; color: var(--color-text-2);">merged.pdf</p>
-            </NCard>
-          </div>
+          <FileCard v-if="resultFile" name="merged.pdf" :file="resultFile" file-type="application/pdf" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
@@ -78,9 +78,4 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.tool-file-panel__output-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
 </style>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
+import { NSpace, NButton, NInput, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -13,9 +14,10 @@ const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
-function onFile(files: File[]) { const f = files[0] ?? null; file.value = f; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; error.value = ''; }
+function onFile(files: File[]) { const f = files[0] ?? null; file.value = f; if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); resultUrl.value = ''; resultFile.value = null; error.value = ''; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'document-resaved.pdf'; a.click(); } }
 async function copy() {
   if (!resultUrl.value) return;
@@ -34,7 +36,9 @@ async function process() {
     doc.setTitle('Protected Document');
     const bytes = await doc.save();
     if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
-    resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    resultUrl.value = URL.createObjectURL(blob);
+    resultFile.value = new File([blob], 'document-resaved.pdf', { type: 'application/pdf' });
   } catch (e) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -53,11 +57,7 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
         </template>
         <template #output-files>
-          <div v-if="resultUrl" class="tool-file-panel__output-preview">
-            <NCard size="small" :title="t('tool.download')">
-              <p style="font-size: 13px; color: var(--color-text-2);">document-resaved.pdf</p>
-            </NCard>
-          </div>
+          <FileCard v-if="resultFile" name="document-resaved.pdf" :file="resultFile" file-type="application/pdf" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
@@ -78,9 +78,4 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.tool-file-panel__output-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
 </style>

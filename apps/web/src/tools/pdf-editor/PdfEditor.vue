@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { NCard, NSpace, NButton, NInput, NInputNumber, NSelect, NColorPicker, NAlert } from 'naive-ui';
+import { NSpace, NButton, NInput, NInputNumber, NSelect, NColorPicker, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -17,6 +18,7 @@ const position = ref<string>('center');
 const fontSize = ref(24);
 const color = ref('#000000');
 const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
 
@@ -37,6 +39,7 @@ function onFile(files: File[]) { const f = files[0] ?? null; if (resultUrl.value
 watch([text, position, fontSize, color], () => {
   if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
   resultUrl.value = '';
+  resultFile.value = null;
 });
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -116,7 +119,9 @@ async function apply() {
 
     const bytes = await doc.save();
     if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
-    resultUrl.value = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    resultUrl.value = URL.createObjectURL(blob);
+    resultFile.value = new File([blob], 'edited.pdf', { type: 'application/pdf' });
   } catch (e: any) {
     error.value = e.message || t('tools.pdfEditor.failed');
   }
@@ -132,11 +137,7 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
           <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
         </template>
         <template #output-files>
-          <div v-if="resultUrl" class="tool-file-panel__output-preview">
-            <NCard size="small" :title="t('tools.pdfEditor.downloadEditedPdf')">
-              <p style="font-size: 13px; color: var(--color-text-2);">edited.pdf</p>
-            </NCard>
-          </div>
+          <FileCard v-if="resultFile" name="edited.pdf" :file="resultFile" file-type="application/pdf" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
@@ -162,9 +163,4 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
 </template>
 
 <style scoped>
-.tool-file-panel__output-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
 </style>
