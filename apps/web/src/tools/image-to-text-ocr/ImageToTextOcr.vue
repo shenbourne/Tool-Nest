@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import Tesseract from 'tesseract.js';
@@ -34,15 +35,13 @@ const languageOptions = [
 ];
 const selectedLang = ref('eng');
 
-function onFileChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
-  selectedFile.value = file;
+function onFileChange(files: File[]) {
+  const selected = files[0] ?? null;
+  selectedFile.value = selected;
   extractedText.value = '';
   error.value = '';
   if (imagePreview.value) URL.revokeObjectURL(imagePreview.value);
-  imagePreview.value = URL.createObjectURL(file);
+  imagePreview.value = selected ? URL.createObjectURL(selected) : '';
 }
 
 async function extractText() {
@@ -83,7 +82,7 @@ onUnmounted(() => {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.imageToTextOcr.imageUpload')">
         <NSpace vertical :size="12">
-          <input type="file" accept="image/*" @change="onFileChange" />
+          <ToolFileUpload accept="image/*" @change="onFileChange" />
           <NSelect v-model:value="selectedLang" :options="languageOptions" style="width: 200px" />
           <img v-if="imagePreview" :src="imagePreview" style="max-width: 100%; max-height: 300px;" />
           <NButton type="primary" :loading="loading" :disabled="!selectedFile" @click="extractText">

@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NColorPicker, NInput, NPopconfirm } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
@@ -33,14 +34,11 @@ let nextId = 1;
 const isDrawing = ref(false);
 const currentLine = ref<number[]>([]);
 
-function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement;
-  const f = input.files?.[0];
-  if (f) {
-    file.value = f;
-    if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
-    imageUrl.value = URL.createObjectURL(f);
-  }
+function onFileChange(files: File[]) {
+  const f = files[0] ?? null;
+  file.value = f;
+  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
+  imageUrl.value = f ? URL.createObjectURL(f) : '';
 }
 
 function onImageLoad(e: Event) {
@@ -183,10 +181,7 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
     <NSpace vertical :size="16">
       <NCard :title="t('tools.imageEditor.name')">
         <NSpace vertical :size="12">
-          <div>
-            <label for="editor-file-upload">{{ t('common.uploadFile', 'Upload an image') }}</label>
-            <input id="editor-file-upload" type="file" accept="image/*" @change="onFileChange" style="display:block;margin-top:8px;" />
-          </div>
+          <ToolFileUpload accept="image/*" @change="onFileChange" />
           <div v-if="imageUrl">
             <v-stage
               :config="{ width: stageWidth, height: stageHeight }"

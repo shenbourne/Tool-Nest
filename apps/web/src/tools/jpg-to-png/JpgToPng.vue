@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
@@ -12,13 +13,10 @@ const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
 const error = ref('');
 
-function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement;
-  const f = input.files?.[0];
-  if (f) {
-    file.value = f;
-    imageUrl.value = URL.createObjectURL(f);
-  }
+function onFileChange(files: File[]) {
+  const f = files[0] ?? null;
+  file.value = f;
+  imageUrl.value = f ? URL.createObjectURL(f) : '';
 }
 
 function download() {
@@ -53,10 +51,7 @@ function download() {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.jpgToPng.name')">
         <NSpace vertical :size="12">
-          <div>
-            <label for="file-upload">{{ t('tools.jpgToPng.uploadImage') }}</label>
-            <input id="file-upload" type="file" accept="image/jpeg" @change="onFileChange" style="display:block;margin-top:8px;" />
-          </div>
+          <ToolFileUpload accept="image/jpeg" @change="onFileChange" />
           <div v-if="imageUrl">
             <img :src="imageUrl" style="max-width:100%;" />
           </div>
