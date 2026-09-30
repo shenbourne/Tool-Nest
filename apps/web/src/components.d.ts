@@ -17,6 +17,7 @@ declare module 'vue' {
     TagFilter: typeof import('./components/TagFilter.vue')['default']
     ThemeSwitcher: typeof import('./components/ThemeSwitcher.vue')['default']
     ToolCard: typeof import('./components/ToolCard.vue')['default']
+    ToolFilePanel: typeof import('./components/ToolFilePanel.vue')['default']
     ToolFileUpload: typeof import('./components/ToolFileUpload.vue')['default']
   }
 }

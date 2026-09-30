@@ -286,12 +286,7 @@ function onPreviewBackdropClick(event: MouseEvent) {
       :show-file-list="false"
       @update:file-list="onUpdate"
     >
-      <template v-if="compact">
-        <div class="tool-file-upload__compact-trigger">
-          <NIcon :size="20" :component="CloudUpload" class="tool-file-upload__compact-icon" />
-        </div>
-      </template>
-      <NUploadDragger v-else>
+      <NUploadDragger v-if="!compact">
         <div class="tool-file-upload__body">
           <NIcon :size="26" :component="CloudUpload" class="tool-file-upload__icon" />
           <p class="tool-file-upload__label">
@@ -304,7 +299,7 @@ function onPreviewBackdropClick(event: MouseEvent) {
       </NUploadDragger>
     </NUpload>
 
-    <ul v-if="fileList.length" class="tool-file-upload__files">
+    <ul v-if="fileList.length || compact" class="tool-file-upload__files">
       <li
         v-for="(item, index) in fileList"
         :key="item.id"
@@ -329,6 +324,11 @@ function onPreviewBackdropClick(event: MouseEvent) {
           <NIcon v-else :size="48" :component="fallbackIcon(item.file)" class="tool-file-upload__thumb-icon" />
         </span>
         <span class="tool-file-upload__name" :title="item.name">{{ item.name }}</span>
+      </li>
+      <li v-if="compact" class="tool-file-upload__file tool-file-upload__compact-slot" @click="triggerSelect()">
+        <div class="tool-file-upload__compact-trigger">
+          <NIcon :size="20" :component="CloudUpload" class="tool-file-upload__compact-icon" />
+        </div>
       </li>
     </ul>
 
@@ -391,6 +391,11 @@ function onPreviewBackdropClick(event: MouseEvent) {
 </template>
 
 <style scoped>
+/* Hide the NUpload wrapper when compact mode is used - the trigger is rendered in the grid */
+.tool-file-upload :deep(.n-upload) {
+  display: contents;
+}
+
 .tool-file-upload__body {
   display: flex;
   flex-direction: column;
@@ -512,7 +517,7 @@ function onPreviewBackdropClick(event: MouseEvent) {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 128px;
+  width: 100%;
   height: 128px;
   border: 2px dashed var(--color-hairline-strong);
   border-radius: var(--radius-md);
@@ -522,6 +527,15 @@ function onPreviewBackdropClick(event: MouseEvent) {
 }
 
 .tool-file-upload__compact-trigger:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.tool-file-upload__compact-slot {
+  cursor: pointer;
+}
+
+.tool-file-upload__compact-slot:hover .tool-file-upload__compact-trigger {
   border-color: var(--color-primary);
   background: var(--color-primary-soft);
 }
