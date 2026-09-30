@@ -3,6 +3,7 @@ import { ref, watch, computed } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NColorPicker } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
@@ -18,14 +19,11 @@ const stageHeight = ref(600);
 const targetColor = ref('#ffffff');
 const tolerance = ref(40);
 
-function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement;
-  const f = input.files?.[0];
-  if (f) {
-    file.value = f;
-    if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
-    imageUrl.value = URL.createObjectURL(f);
-  }
+function onFileChange(files: File[]) {
+  const f = files[0] ?? null;
+  file.value = f;
+  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
+  imageUrl.value = f ? URL.createObjectURL(f) : '';
 }
 
 function onImageLoad(e: Event) {
@@ -106,10 +104,7 @@ onUnmounted(() => {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.imageRemoveBackground.name')">
         <NSpace vertical :size="12">
-          <div>
-            <label for="rmbg-file-upload">{{ t('common.uploadFile', 'Upload an image') }}</label>
-            <input id="rmbg-file-upload" type="file" accept="image/*" @change="onFileChange" style="display:block;margin-top:8px;" />
-          </div>
+          <ToolFileUpload accept="image/*" @change="onFileChange" />
           <div v-if="processedImageUrl" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 20px 20px;">
             <v-stage :config="{ width: stageWidth, height: stageHeight }">
               <v-layer>

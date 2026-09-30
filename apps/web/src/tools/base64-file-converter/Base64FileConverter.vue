@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { NCard, NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
@@ -62,9 +63,8 @@ function downloadFile() {
 // --- File → Base64 ---
 const fileBase64Output = ref('');
 
-function handleFileChange(e: Event) {
-  const input = e.target as HTMLInputElement;
-  const file = input.files?.[0];
+function handleFileChange(files: File[]) {
+  const file = files[0];
   if (!file) {
     fileBase64Output.value = '';
     return;
@@ -106,7 +106,7 @@ function copyBase64() {
 
       <NCard :title="t('tools.base64FileConverter.fileToBase64')">
         <NSpace vertical :size="8">
-          <input type="file" @change="handleFileChange" />
+          <ToolFileUpload @change="handleFileChange" />
           <NInput :value="fileBase64Output" type="textarea" :rows="6" readonly :placeholder="t('tools.base64FileConverter.outputPlaceholder')"  :input-props="{ id: 'base64FileConverterField3' }"/>
           <NButton :disabled="!fileBase64Output" @click="copyBase64">{{ t('tool.copy') }}</NButton>
         </NSpace>

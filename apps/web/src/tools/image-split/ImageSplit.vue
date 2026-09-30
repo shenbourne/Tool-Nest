@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
@@ -15,17 +16,14 @@ const cols = ref(2);
 const tiles = ref<string[]>([]);
 const error = ref('');
 
-function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement;
-  const f = input.files?.[0];
-  if (f) {
-    file.value = f;
-    // Drop the previous image's tiles so they are not mistaken for the new
-    // image's output.
-    tiles.value = [];
-    if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
-    imageUrl.value = URL.createObjectURL(f);
-  }
+function onFileChange(files: File[]) {
+  const f = files[0] ?? null;
+  file.value = f;
+  // Drop the previous image's tiles so they are not mistaken for the new
+  // image's output.
+  tiles.value = [];
+  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
+  imageUrl.value = f ? URL.createObjectURL(f) : '';
 }
 
 function splitImage() {
@@ -81,10 +79,7 @@ onUnmounted(() => {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.imageSplit.name')">
         <NSpace vertical :size="12">
-          <div>
-            <label for="file-upload">{{ t('common.uploadFile', 'Upload an image') }}</label>
-            <input id="file-upload" type="file" accept="image/*" @change="onFileChange" style="display:block;margin-top:8px;" />
-          </div>
+          <ToolFileUpload accept="image/*" @change="onFileChange" />
           <div v-if="imageUrl" style="position:relative;display:inline-block;">
             <img :src="imageUrl" style="max-width:100%;" />
           </div>

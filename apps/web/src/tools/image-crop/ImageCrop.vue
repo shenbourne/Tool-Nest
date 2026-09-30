@@ -4,6 +4,7 @@ import { NCard, NSpace, NButton, NInputNumber } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import Konva from 'konva';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { usePreferencesStore } from '@/stores/preferences.store';
 import { resolveCssColorToken } from '@/utils/css-tokens';
@@ -46,14 +47,11 @@ const transformerRef = ref<any>(null);
 const rectNodeRef = ref<any>(null);
 const imageNodeRef = ref<any>(null);
 
-function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement;
-  const f = input.files?.[0];
-  if (f) {
-    file.value = f;
-    if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
-    imageUrl.value = URL.createObjectURL(f);
-  }
+function onFileChange(files: File[]) {
+  const f = files[0] ?? null;
+  file.value = f;
+  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
+  imageUrl.value = f ? URL.createObjectURL(f) : '';
 }
 
 function onImageLoad(e: Event) {
@@ -155,10 +153,7 @@ onUnmounted(() => {
     <NSpace vertical :size="16">
       <NCard :title="t('tools.imageCrop.name')">
         <NSpace vertical :size="12">
-          <div>
-            <label for="crop-file-upload">{{ t('common.uploadFile', 'Upload an image') }}</label>
-            <input id="crop-file-upload" type="file" accept="image/*" @change="onFileChange" style="display:block;margin-top:8px;" />
-          </div>
+          <ToolFileUpload accept="image/*" @change="onFileChange" />
           <div v-if="imageUrl">
             <v-stage :config="{ width: stageWidth, height: stageHeight }">
               <v-layer>

@@ -216,7 +216,6 @@
     "symbols": "Symbols",
     "qrCode": "QR Code",
     "password": "Password",
-    "uploadFile": "Upload an image",
     "end": "End",
     "regex": "Regex",
     "csvInputPlaceholder": "CSV input...",
@@ -961,7 +960,6 @@
     "jpgToPng": {
       "name": "JPG to PNG",
       "description": "Convert JPG images to PNG format",
-      "uploadImage": "Upload a JPG image",
       "downloadAsPng": "Download as PNG"
     },
     "pdfMerge": {

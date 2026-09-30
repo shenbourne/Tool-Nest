@@ -2,6 +2,7 @@
 import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { buildImagesToGifCommand } from '@/utils/image-slideshow';
 import { tool } from './index';
@@ -18,10 +19,9 @@ const resultData = ref<Uint8Array | null>(null);
 // old list cannot overwrite the new selection's result.
 let generation = 0;
 
-function onFileChange(event: Event) {
+function onFileChange(selected: File[]) {
   generation++;
-  const input = event.target as HTMLInputElement;
-  files.value = Array.from(input.files ?? []);
+  files.value = selected;
   resultData.value = null;
   error.value = '';
 }
@@ -90,7 +90,7 @@ async function process() {
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
         <NAlert v-if="loadError" type="error" :title="loadError" />
 
-        <input type="file" accept="image/*" multiple @change="onFileChange" />
+        <ToolFileUpload accept="image/*" multiple @change="onFileChange" />
 
         <div v-if="files.length" style="font-size: 13px; color: var(--color-text-3)">
           {{ t('tools.imagesToGif.filesSelected', { count: files.length }) }}

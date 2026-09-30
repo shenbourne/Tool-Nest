@@ -2,6 +2,7 @@
 import { NCard, NSpace, NButton, NAlert, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
@@ -15,16 +16,14 @@ const taskProgress = ref(0);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 
-function onVideoChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  videoFile.value = input.files?.[0] ?? null;
+function onVideoChange(files: File[]) {
+  videoFile.value = files[0] ?? null;
   resultData.value = null;
   error.value = '';
 }
 
-function onAudioChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  audioFile.value = input.files?.[0] ?? null;
+function onAudioChange(files: File[]) {
+  audioFile.value = files[0] ?? null;
   resultData.value = null;
   error.value = '';
 }
@@ -89,13 +88,13 @@ async function process() {
         <NAlert v-if="loadError" type="error" :title="loadError" />
 
         <div>
-          <span>{{ t('tools.videoAddAudio.videoFile') }}: </span>
-          <input type="file" accept="video/*" @change="onVideoChange" />
+          <span>{{ t('tools.videoAddAudio.videoFile') }}</span>
+          <ToolFileUpload accept="video/*" @change="onVideoChange" />
         </div>
 
         <div>
-          <span>{{ t('tools.videoAddAudio.audioFile') }}: </span>
-          <input type="file" accept="audio/*" @change="onAudioChange" />
+          <span>{{ t('tools.videoAddAudio.audioFile') }}</span>
+          <ToolFileUpload accept="audio/*" @change="onAudioChange" />
         </div>
 
         <NButton

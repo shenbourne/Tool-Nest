@@ -216,7 +216,6 @@
     "symbols": "符号",
     "qrCode": "二维码",
     "password": "密码",
-    "uploadFile": "上传图片",
     "end": "结束",
     "regex": "正则",
     "csvInputPlaceholder": "输入 CSV...",
@@ -961,7 +960,6 @@
     "jpgToPng": {
       "name": "JPG 转 PNG",
       "description": "将 JPG 图片转换为 PNG 格式",
-      "uploadImage": "上传 JPG 图片",
       "downloadAsPng": "下载为 PNG"
     },
     "pdfMerge": {

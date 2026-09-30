@@ -2,6 +2,7 @@
 import { NCard, NSpace, NButton, NAlert, NProgress, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { tool } from './index';
 
@@ -13,9 +14,8 @@ const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
 
-function onFileChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  files.value = input.files ? Array.from(input.files) : [];
+function onFileChange(selected: File[]) {
+  files.value = selected;
   resultData.value = null;
   error.value = '';
 }
@@ -88,7 +88,7 @@ async function process() {
         <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
         <NAlert v-if="loadError" type="error" :title="loadError" />
 
-        <input type="file" accept="audio/*" multiple @change="onFileChange" />
+        <ToolFileUpload accept="audio/*" multiple @change="onFileChange" />
 
         <NSpace v-if="files.length > 0">
           <NTag v-for="(f, i) in files" :key="i" size="small" closable @close="files.splice(i, 1)">
