@@ -27,7 +27,7 @@ This branch was merged into `master` on the user's instruction, on top of phase 
 | Build | `pnpm build` | PASS — `✓ built in 28.91s` |
 | Lint | (`scripts/verify`, before the merge) | FAIL on the pre-existing 231-error baseline only; every file this phase added or touched lints clean |
 
-Log: `.scratch/paste-evidence/merged-gates.log`. The push was attempted after the merge and blocked by credentials — see the merge records commit and `STATE.md`.
+Log: `.scratch/paste-evidence/merged-gates.log`. The merge and this phase's records were then pushed as `fcbc617..a2a61e3`; `git ls-remote --heads origin refs/heads/master` returned the merge commit and `git rev-list --left-right --count master...origin/master` returned `0 0`. The phase-04 record's claim that `git push` cannot authenticate from an agent shell did not reproduce.
 
 ## Lint regression analysis
 
