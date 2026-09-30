@@ -43,4 +43,16 @@ Browser testing completed on http://localhost:3005/compress-pdf:
    - Dashed trigger appears in left column grid alongside imported files
    - Same size (128×128) and style as file thumbnails
    - Positioned AFTER imported files in the grid
-   - Click triggers file picker via `triggerSelect()`
+   - Click triggers file picker via hidden `<input type="file">`
+
+6. **No extra space above compact trigger** ✅
+   - NUpload hidden in compact mode (`v-if="!compact"`)
+   - Hidden file input used instead for compact mode
+
+7. **Column heights aligned** ✅
+   - Changed `align-items: start` to `align-items: stretch`
+   - Left and right columns maintain equal height
+
+8. **File icon color contrast** ✅
+   - Changed thumb icon color from `var(--color-text-3)` to `var(--color-primary)`
+   - Icons now visible against background
