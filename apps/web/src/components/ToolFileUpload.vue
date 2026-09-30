@@ -23,9 +23,11 @@ import { renderThumbnailDataUrl } from '@/utils/thumbnail-render';
 const props = withDefaults(defineProps<{
   accept?: string;
   multiple?: boolean;
+  compact?: boolean;
 }>(), {
   accept: '',
   multiple: false,
+  compact: false,
 });
 
 const emit = defineEmits<{ change: [files: File[]] }>();
@@ -138,6 +140,43 @@ function onPaste(event: ClipboardEvent) {
   emitFiles();
 }
 
+async function triggerPaste() {
+  try {
+    const items = await navigator.clipboard.read();
+    const pasted: File[] = [];
+    for (const item of items) {
+      for (const type of item.types) {
+        const blob = await item.getType(type);
+        const ext = type.split('/').pop() ?? 'bin';
+        pasted.push(new File([blob], `pasted.${ext}`, { type }));
+      }
+    }
+    if (!pasted.length) {
+      message.warning(t('tool.fileUpload.rejected'));
+      return;
+    }
+    const { accepted } = splitByAccept(pasted, props.accept);
+    if (!accepted.length) {
+      message.warning(t('tool.fileUpload.rejected'));
+      return;
+    }
+    const entries = (props.multiple ? accepted : accepted.slice(0, 1)).map(toFileInfo);
+    fileList.value = props.multiple ? [...fileList.value, ...entries] : entries;
+    emitFiles();
+  } catch {
+    message.warning(t('tool.fileUpload.rejected'));
+  }
+}
+
+const uploadRef = ref<InstanceType<typeof NUpload> | null>(null);
+
+function triggerSelect() {
+  const input = uploadRef.value?.$el?.querySelector('input[type="file"]');
+  if (input) input.click();
+}
+
+defineExpose({ triggerPaste, triggerSelect });
+
 onMounted(() => document.addEventListener('paste', onPaste));
 onUnmounted(() => document.removeEventListener('paste', onPaste));
 
@@ -239,6 +278,7 @@ function onPreviewBackdropClick(event: MouseEvent) {
 <template>
   <div class="tool-file-upload">
     <NUpload
+      ref="uploadRef"
       :file-list="fileList"
       :accept="accept"
       :multiple="multiple"
@@ -246,7 +286,12 @@ function onPreviewBackdropClick(event: MouseEvent) {
       :show-file-list="false"
       @update:file-list="onUpdate"
     >
-      <NUploadDragger>
+      <template v-if="compact">
+        <div class="tool-file-upload__compact-trigger">
+          <NIcon :size="20" :component="CloudUpload" class="tool-file-upload__compact-icon" />
+        </div>
+      </template>
+      <NUploadDragger v-else>
         <div class="tool-file-upload__body">
           <NIcon :size="26" :component="CloudUpload" class="tool-file-upload__icon" />
           <p class="tool-file-upload__label">
@@ -460,6 +505,29 @@ function onPreviewBackdropClick(event: MouseEvent) {
   white-space: nowrap;
   font-size: var(--font-size-caption);
   color: var(--color-ink);
+}
+
+.tool-file-upload__compact-trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 128px;
+  height: 128px;
+  border: 2px dashed var(--color-hairline-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.tool-file-upload__compact-trigger:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.tool-file-upload__compact-icon {
+  color: var(--color-text-3);
 }
 </style>
 

@@ -2,10 +2,12 @@
 import { NCard, NSpace, NButton, NAlert, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
@@ -103,43 +105,49 @@ async function copy() {
 <template>
   <ToolLayout :tool="tool">
     <NCard>
-      <NSpace vertical :size="12">
-        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          {{ t('tool.loadFfmpeg') }}
-        </NButton>
-        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
-        <NAlert v-if="loadError" type="error" :title="loadError" />
-
-        <ToolFileUpload accept="video/*" multiple @change="onFileChange" />
-
-        <div v-if="files.length > 0">
-          <div v-for="(f, i) in files" :key="i" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-            <span>{{ f.name }}</span>
-            <NButton size="tiny" @click="moveUp(i)" :disabled="i === 0">{{ t('common.moveUp') }}</NButton>
-            <NButton size="tiny" @click="moveDown(i)" :disabled="i === files.length - 1">{{ t('common.moveDown') }}</NButton>
-            <NButton size="tiny" type="error" @click="removeFile(i)">{{ t('common.remove') }}</NButton>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <NButton v-if="!isLoaded" :loading="isLoading" @click="load" size="small">
+            {{ t('tool.loadFfmpeg') }}
+          </NButton>
+          <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" style="width: 100%" />
+          <NAlert v-if="loadError" type="error" :title="loadError" />
+          <ToolFileUpload ref="fileUpload" accept="video/*" multiple compact @change="onFileChange" />
+          <div v-if="files.length > 0" style="margin-top: 12px; width: 100%">
+            <div v-for="(f, i) in files" :key="i" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ f.name }}</span>
+              <NButton size="tiny" @click="moveUp(i)" :disabled="i === 0">{{ t('common.moveUp') }}</NButton>
+              <NButton size="tiny" @click="moveDown(i)" :disabled="i === files.length - 1">{{ t('common.moveDown') }}</NButton>
+              <NButton size="tiny" type="error" @click="removeFile(i)">{{ t('common.remove') }}</NButton>
+            </div>
           </div>
-        </div>
-
-        <NButton
-          type="primary"
-          :loading="processing"
-          :disabled="files.length < 2 || !isLoaded"
-          @click="process"
-        >
-          {{ t('common.merge') }}
-        </NButton>
-
-        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
-        <NAlert v-if="error" type="error" :title="error" />
-
-        <NButton v-if="resultData" @click="downloadBlob(resultData, 'merged.mp4', 'video/mp4')">
-          {{ t('tool.download') }}
-        </NButton>
-        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
-          {{ t('tool.copyFile') }}
-        </NButton>
-      </NSpace>
+        </template>
+        
+        
+        <template #actions-right>
+          <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'merged.mp4', 'video/mp4')">
+            {{ t('tool.download') }}
+          </NButton>
+          <NButton :disabled="!resultData" @click="copy">
+            {{ t('tool.copyFile') }}
+          </NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NButton
+              type="primary"
+              :loading="processing"
+              :disabled="files.length < 2 || !isLoaded"
+              @click="process"
+              block
+            >
+              {{ t('common.merge') }}
+            </NButton>
+            <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
     </NCard>
   </ToolLayout>
 </template>

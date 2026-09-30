@@ -4,8 +4,10 @@ import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -54,13 +56,40 @@ async function process() {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept=".pdf" @change="onFile" />
-      <NInput v-model:value="pages" :placeholder="t('tools.pdfSplit.pagesPlaceholder')" style="width:250px"  :input-props="{ id: 'pdfSplitField0' }"/>
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.pdfSplit.extractPages') }}</NButton>
-      <NAlert v-if="error" type="error" :title="error" />
-      <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
-      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
+        </template>
+        <template #output-files>
+          <div v-if="resultUrl" class="tool-file-panel__output-preview">
+            <NCard size="small" :title="t('tool.download')">
+              <p style="font-size: 13px; color: var(--color-text-2);">split.pdf</p>
+            </NCard>
+          </div>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NInput v-model:value="pages" :placeholder="t('tools.pdfSplit.pagesPlaceholder')" style="width:250px" :input-props="{ id: 'pdfSplitField0' }" />
+            <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
+              {{ t('tools.pdfSplit.extractPages') }}
+            </NButton>
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>

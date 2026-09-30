@@ -3,9 +3,11 @@ import { ref } from 'vue';
 import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -71,17 +73,26 @@ async function copy() {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.jpgToPng.name')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/jpeg" @change="onFileChange" />
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/jpeg" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
           <div v-if="imageUrl">
             <img :src="imageUrl" style="max-width:100%;" />
           </div>
-          <NSpace><NButton type="primary" :disabled="!file" @click="download">{{ t('tools.jpgToPng.downloadAsPng') }}</NButton><NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-          <NAlert v-if="error" type="error" :title="error" />
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton type="primary" :disabled="!file" @click="download">{{ t('tools.jpgToPng.downloadAsPng') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>

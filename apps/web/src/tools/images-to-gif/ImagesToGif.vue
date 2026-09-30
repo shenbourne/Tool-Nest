@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { ref, watch, onUnmounted } from 'vue';
 import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { buildImagesToGifCommand } from '@/utils/image-slideshow';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
@@ -86,54 +89,71 @@ async function copy() {
   const blob = new Blob([resultData.value], { type: 'image/gif' });
   await copyFileToClipboard(blob);
 }
+
+const resultUrl = ref('');
+
+watch(resultData, (data) => {
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
+  if (data) {
+    const blob = new Blob([data], { type: 'image/gif' });
+    resultUrl.value = URL.createObjectURL(blob);
+  } else {
+    resultUrl.value = '';
+  }
+});
+
+onUnmounted(() => {
+  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
+});
 </script>
 
 <template>
   <ToolLayout :tool="tool">
     <NCard>
-      <NSpace vertical :size="12">
-        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          {{ t('tool.loadFfmpeg') }}
-        </NButton>
-        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
-        <NAlert v-if="loadError" type="error" :title="loadError" />
-
-        <ToolFileUpload accept="image/*" multiple @change="onFileChange" />
-
-        <div v-if="files.length" style="font-size: 13px; color: var(--color-text-3)">
-          {{ t('tools.imagesToGif.filesSelected', { count: files.length }) }}
-        </div>
-
-        <NSpace>
-          <NInputNumber
-            v-model:value="frameDuration"
-            :min="0.1"
-            :max="10"
-            :step="0.1"
-            :placeholder="t('tools.imagesToGif.frameDuration')"
-            style="width: 200px"
-           :input-props="{ id: 'imagesToGifField0' }"/>
-        </NSpace>
-
-        <NButton
-          type="primary"
-          :loading="processing"
-          :disabled="!files.length || !isLoaded"
-          @click="process"
-        >
-          {{ t('tools.imagesToGif.createGif') }}
-        </NButton>
-
-        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
-        <NAlert v-if="error" type="error" :title="error" />
-
-        <NButton v-if="resultData" @click="downloadBlob(resultData, 'animation.gif', 'image/gif')">
-          {{ t('tool.downloadGif') }}
-        </NButton>
-        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
-          {{ t('tool.copyFile') }}
-        </NButton>
-      </NSpace>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <NButton v-if="!isLoaded" :loading="isLoading" @click="load" size="small">
+            {{ t('tool.loadFfmpeg') }}
+          </NButton>
+          <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+          <NAlert v-if="loadError" type="error" :title="loadError" />
+          <ToolFileUpload ref="fileUpload" accept="image/*" multiple compact @change="onFileChange" />
+          <div v-if="files.length" style="font-size: 13px; color: var(--color-text-3)">
+            {{ t('tools.imagesToGif.filesSelected', { count: files.length }) }}
+          </div>
+        </template>
+        <template #output-files>
+          <img v-if="resultUrl" :src="resultUrl" style="max-width: 100%; max-height: 300px;" />
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultData" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'animation.gif', 'image/gif')">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NInputNumber
+              v-model:value="frameDuration"
+              :min="0.1"
+              :max="10"
+              :step="0.1"
+              :placeholder="t('tools.imagesToGif.frameDuration')"
+              style="width: 200px"
+              :input-props="{ id: 'imagesToGifField0' }"
+            />
+            <NButton
+              type="primary"
+              :loading="processing"
+              :disabled="!files.length || !isLoaded"
+              @click="process"
+              block
+            >
+              {{ t('tools.imagesToGif.createGif') }}
+            </NButton>
+            <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
     </NCard>
   </ToolLayout>
 </template>

@@ -3,9 +3,11 @@ import { NCard, NSpace, NButton, NAlert, NInputNumber, NSwitch, NProgress } from
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
@@ -81,52 +83,60 @@ async function copy() {
 <template>
   <ToolLayout :tool="tool">
     <NCard>
-      <NSpace vertical :size="12">
-        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          {{ t('tool.loadFfmpeg') }}
-        </NButton>
-        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
-        <NAlert v-if="loadError" type="error" :title="loadError" />
-
-        <ToolFileUpload accept="video/*" @change="onFileChange" />
-
-        <NSpace align="center">
-          <NInputNumber
-            v-model:value="width"
-            :min="1"
-            :placeholder="t('common.width')"
-            style="width: 140px"
-           :input-props="{ id: 'videoResizeField0' }"/>
-          <NInputNumber
-            v-model:value="height"
-            :min="1"
-            :disabled="keepAspectRatio"
-            :placeholder="t('common.height')"
-            style="width: 140px"
-           :input-props="{ id: 'videoResizeField1' }"/>
-          <NSwitch v-model:value="keepAspectRatio" />
-          <span>{{ t('tools.videoResize.keepAspectRatio') }}</span>
-        </NSpace>
-
-        <NButton
-          type="primary"
-          :loading="processing"
-          :disabled="!file || !isLoaded"
-          @click="process"
-        >
-          {{ t('common.resize') }}
-        </NButton>
-
-        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
-        <NAlert v-if="error" type="error" :title="error" />
-
-        <NButton v-if="resultData" @click="downloadBlob(resultData, 'resized.mp4', 'video/mp4')">
-          {{ t('tool.download') }}
-        </NButton>
-        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
-          {{ t('tool.copyFile') }}
-        </NButton>
-      </NSpace>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
+            {{ t('tool.loadFfmpeg') }}
+          </NButton>
+          <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+          <NAlert v-if="loadError" type="error" :title="loadError" />
+          <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onFileChange" />
+        </template>
+        
+        
+        <template #actions-right>
+          <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'resized.mp4', 'video/mp4')">
+            {{ t('tool.download') }}
+          </NButton>
+          <NButton :disabled="!resultData" @click="copy">
+            {{ t('tool.copyFile') }}
+          </NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NSpace align="center">
+              <NInputNumber
+                v-model:value="width"
+                :min="1"
+                :placeholder="t('common.width')"
+                style="width: 140px"
+                :input-props="{ id: 'videoResizeField0' }"
+              />
+              <NInputNumber
+                v-model:value="height"
+                :min="1"
+                :disabled="keepAspectRatio"
+                :placeholder="t('common.height')"
+                style="width: 140px"
+                :input-props="{ id: 'videoResizeField1' }"
+              />
+              <NSwitch v-model:value="keepAspectRatio" />
+              <span>{{ t('tools.videoResize.keepAspectRatio') }}</span>
+            </NSpace>
+            <NButton
+              type="primary"
+              :loading="processing"
+              :disabled="!file || !isLoaded"
+              @click="process"
+              block
+            >
+              {{ t('common.resize') }}
+            </NButton>
+            <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
     </NCard>
   </ToolLayout>
 </template>

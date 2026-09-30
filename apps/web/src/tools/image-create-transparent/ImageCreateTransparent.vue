@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NColorPicker } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -16,8 +18,6 @@ const imageUrl = ref<string>('');
 const targetColor = ref('#ffffff');
 const tolerance = ref(30);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-// Only true once a processed result exists; prevents downloading a blank
-// canvas before the user has applied anything.
 const hasResult = ref(false);
 
 function onFileChange(files: File[]) {
@@ -68,14 +68,8 @@ watch([targetColor, tolerance], () => {
   if (file.value) processImage();
 });
 
-function createCanvas() {
-  const canvas = canvasRef.value;
-  if (!canvas) return null;
-  return canvas;
-}
-
 function download() {
-  const canvas = createCanvas();
+  const canvas = canvasRef.value;
   if (!canvas) return;
   canvas.toBlob((blob) => {
     if (!blob) return;
@@ -89,7 +83,7 @@ function download() {
 }
 
 async function copy() {
-  const canvas = createCanvas();
+  const canvas = canvasRef.value;
   if (!canvas) return;
   canvas.toBlob(async (blob) => {
     if (!blob) return;
@@ -103,29 +97,36 @@ onUnmounted(() => {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.imageCreateTransparent.name')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/*" @change="onFileChange" />
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
           <div v-if="file" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 20px 20px;">
             <canvas ref="canvasRef" style="max-width:100%;" />
           </div>
-        </NSpace>
-      </NCard>
-      <NCard :title="t('common.settings', 'Settings')">
-        <NSpace vertical :size="12">
-          <div>
-            <span>{{ t('tools.imageCreateTransparent.targetColor') }}</span>
-            <NColorPicker v-model:value="targetColor" style="width:200px;" />
-          </div>
-          <div>
-            <label :for="'imageCreateTransparentField0'">{{ t('tools.imageCreateTransparent.toleranceRange') }}</label>
-            <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1"  :input-props="{ id: 'imageCreateTransparentField0' }"/>
-          </div>
-          <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
-          <NSpace><NButton type="success" :disabled="!hasResult" @click="download">{{ t('tool.download') }}</NButton><NButton :disabled="!hasResult" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!hasResult" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton type="success" :disabled="!hasResult" @click="download">{{ t('tool.download') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <div>
+              <span>{{ t('tools.imageCreateTransparent.targetColor') }}</span>
+              <NColorPicker v-model:value="targetColor" style="width:200px;" />
+            </div>
+            <div>
+              <label :for="'imageCreateTransparentField0'">{{ t('tools.imageCreateTransparent.toleranceRange') }}</label>
+              <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1"  :input-props="{ id: 'imageCreateTransparentField0' }"/>
+            </div>
+            <NButton type="primary" :disabled="!file" @click="processImage" block>
+              {{ t('common.apply') }}
+            </NButton>
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>

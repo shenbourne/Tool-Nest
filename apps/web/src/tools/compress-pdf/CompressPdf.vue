@@ -4,8 +4,10 @@ import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -49,13 +51,40 @@ onUnmounted(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept=".pdf" @change="onFile" />
-      <NButton type="primary" :loading="processing" :disabled="!file || processing" @click="process">{{ t('tools.compressPdf.compress') }}</NButton>
-      <NAlert v-if="error" type="error" :title="error" />
-      <NAlert v-if="origSize" type="info" :title="t('tools.compressPdf.sizeResult', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />
-      <NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton>
-      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
+        </template>
+        <template #output-files>
+          <div v-if="resultUrl" class="tool-file-panel__output-preview">
+            <NCard size="small" :title="t('tool.download')">
+              <p style="font-size: 13px; color: var(--color-text-2);">compressed.pdf</p>
+            </NCard>
+          </div>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NButton type="primary" :loading="processing" :disabled="!file || processing" @click="process" block>
+              {{ t('tools.compressPdf.compress') }}
+            </NButton>
+            <NAlert v-if="error" type="error" :title="error" />
+            <NAlert v-if="origSize" type="info" :title="t('tools.compressPdf.sizeResult', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>

@@ -3,9 +3,11 @@ import { ref, watch } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -21,8 +23,6 @@ const error = ref('');
 function onFileChange(files: File[]) {
   const f = files[0] ?? null;
   file.value = f;
-  // Drop the previous image's tiles so they are not mistaken for the new
-  // image's output.
   tiles.value = [];
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
   imageUrl.value = f ? URL.createObjectURL(f) : '';
@@ -84,40 +84,42 @@ onUnmounted(() => {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.imageSplit.name')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/*" @change="onFileChange" />
-          <div v-if="imageUrl" style="position:relative;display:inline-block;">
-            <img :src="imageUrl" style="max-width:100%;" />
-          </div>
-        </NSpace>
-      </NCard>
-      <NCard :title="t('common.settings', 'Settings')">
-        <NSpace vertical :size="12">
-          <div>
-            <label :for="'imageSplitField0'">{{ t('tools.imageSplit.rows') }}</label>
-            <NInputNumber v-model:value="rows" :min="1" :max="10" :step="1"  :input-props="{ id: 'imageSplitField0' }"/>
-          </div>
-          <div>
-            <label :for="'imageSplitField1'">{{ t('tools.imageSplit.columns') }}</label>
-            <NInputNumber v-model:value="cols" :min="1" :max="10" :step="1"  :input-props="{ id: 'imageSplitField1' }"/>
-          </div>
-          <NButton type="primary" :disabled="!file" @click="splitImage">{{ t('tools.imageSplit.split') }}</NButton>
-          <NAlert v-if="error" type="error" :title="error" />
-        </NSpace>
-      </NCard>
-      <NCard v-if="tiles.length" :title="t('tools.imageSplit.tiles')">
-        <NSpace vertical :size="12">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:8px;">
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
+          <div v-if="tiles.length" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:8px;width:100%;">
             <div v-for="(tile, idx) in tiles" :key="idx">
               <img :src="tile" style="width:100%;border:1px solid var(--color-hairline);" />
-              <NSpace><NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">{{ t('tool.download') }}</NButton><NButton size="small" @click="copyTile(tile)" style="margin-top:4px;">{{ t('tool.copyFile') }}</NButton></NSpace>
+              <NSpace>
+                <NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">{{ t('tool.download') }}</NButton>
+                <NButton size="small" @click="copyTile(tile)" style="margin-top:4px;">{{ t('tool.copyFile') }}</NButton>
+              </NSpace>
             </div>
           </div>
-          <NButton type="success" @click="downloadAll">{{ t('tools.imageSplit.downloadAll') }}</NButton>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+        <template #actions-right>
+          <NButton v-if="tiles.length" @click="downloadAll">{{ t('tools.imageSplit.downloadAll') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <div>
+              <label :for="'imageSplitField0'">{{ t('tools.imageSplit.rows') }}</label>
+              <NInputNumber v-model:value="rows" :min="1" :max="10" :step="1"  :input-props="{ id: 'imageSplitField0' }"/>
+            </div>
+            <div>
+              <label :for="'imageSplitField1'">{{ t('tools.imageSplit.columns') }}</label>
+              <NInputNumber v-model:value="cols" :min="1" :max="10" :step="1"  :input-props="{ id: 'imageSplitField1' }"/>
+            </div>
+            <NButton type="primary" :disabled="!file" @click="splitImage" block>
+              {{ t('tools.imageSplit.split') }}
+            </NButton>
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>

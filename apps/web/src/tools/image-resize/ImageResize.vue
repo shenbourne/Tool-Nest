@@ -4,8 +4,10 @@ import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
-import { tool } from './index';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCopy } from '@/composables/useCopy';
+import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -41,12 +43,39 @@ async function process() {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept="image/*" @change="onFile" />
-      <NSpace><NInputNumber v-model:value="width" :min="1" :placeholder="t('common.width')" style="width:120px"  :input-props="{ id: 'imageResizeField0' }"/><NInputNumber v-model:value="height" :min="1" :placeholder="t('common.height')" style="width:120px"  :input-props="{ id: 'imageResizeField1' }"/></NSpace>
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageResize.resize') }}</NButton>
-      <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
-      <NSpace><NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton><NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
+        </template>
+        <template #output-files>
+          <img v-if="resultUrl" :src="resultUrl" class="tool-file-panel__output-image" />
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NSpace>
+              <NInputNumber v-model:value="width" :min="1" :placeholder="t('common.width')" style="width:120px" :input-props="{ id: 'imageResizeField0' }"/>
+              <NInputNumber v-model:value="height" :min="1" :placeholder="t('common.height')" style="width:120px" :input-props="{ id: 'imageResizeField1' }"/>
+            </NSpace>
+            <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
+              {{ t('tools.imageResize.resize') }}
+            </NButton>
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-image {
+  max-width: 100%;
+  max-height: 300px;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+}
+</style>

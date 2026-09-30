@@ -114,7 +114,7 @@ async function copy() {
         <NProgress v-if="processing" type="line" :percentage="Math.round(taskProgress * 100)" indicator-placement="inside" />
         <NAlert v-if="error" type="error" :title="error" />
 
-        <NButton v-if="resultData" @click="downloadBlob(resultData, 'respeed.gif', 'image/gif')">
+        <NButton v-if="resultData" @click="resultData && downloadBlob(resultData, 'respeed.gif', 'image/gif')">
           {{ t('tool.downloadGif') }}
         </NButton>
         <NButton v-if="resultData" :disabled="!resultData" @click="copy">

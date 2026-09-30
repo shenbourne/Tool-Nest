@@ -3,9 +3,11 @@ import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
@@ -84,39 +86,47 @@ async function copy() {
 <template>
   <ToolLayout :tool="tool">
     <NCard>
-      <NSpace vertical :size="12">
-        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          {{ t('tool.loadFfmpeg') }}
-        </NButton>
-        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
-        <NAlert v-if="loadError" type="error" :title="loadError" />
-
-        <ToolFileUpload accept="audio/*" @change="onFileChange" />
-
-        <NSelect
-          v-model:value="speed"
-          :options="speedOptions"
-          style="width: 240px"
-          :placeholder="t('tools.audioChangeSpeed.selectSpeed')"
-        />
-
-        <NButton
-          type="primary"
-          :loading="processing"
-          :disabled="!file || !isLoaded"
-          @click="process"
-        >
-          {{ t('tools.audioChangeSpeed.changeSpeed') }}
-        </NButton>
-
-        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
-        <NAlert v-if="error" type="error" :title="error" />
-
-        <NAlert v-if="resultData" type="success" :title="t('tools.audioChangeSpeed.speedChanged')" />
-        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
-          {{ t('tool.copyFile') }}
-        </NButton>
-      </NSpace>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
+            {{ t('tool.loadFfmpeg') }}
+          </NButton>
+          <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+          <NAlert v-if="loadError" type="error" :title="loadError" />
+          <ToolFileUpload ref="fileUpload" accept="audio/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
+          <NAlert v-if="resultData" type="success" :title="t('tools.audioChangeSpeed.speedChanged')" />
+        </template>
+        
+        
+        <template #actions-right>
+          <NButton :disabled="!resultData" @click="copy">
+            {{ t('tool.copyFile') }}
+          </NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NSelect
+              v-model:value="speed"
+              :options="speedOptions"
+              style="width: 240px"
+              :placeholder="t('tools.audioChangeSpeed.selectSpeed')"
+            />
+            <NButton
+              type="primary"
+              :loading="processing"
+              :disabled="!file || !isLoaded"
+              @click="process"
+              block
+            >
+              {{ t('tools.audioChangeSpeed.changeSpeed') }}
+            </NButton>
+            <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
     </NCard>
   </ToolLayout>
 </template>

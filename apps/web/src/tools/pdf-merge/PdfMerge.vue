@@ -4,8 +4,10 @@ import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -45,13 +47,40 @@ onUnmounted(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept=".pdf" multiple @change="onFiles" />
-      <NAlert v-if="files.length" type="info" :title="t('tools.pdfMerge.filesSelected', { count: files.length })" />
-      <NButton type="primary" :loading="processing" @click="process" :disabled="files.length < 2">{{ t('tools.pdfMerge.merge') }}</NButton>
-      <NAlert v-if="error" type="error" :title="error" />
-      <NButton v-if="resultUrl" @click="download">{{ t('tools.pdfMerge.downloadMerged') }}</NButton>
-      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept=".pdf" multiple compact @change="onFiles" />
+          <NAlert v-if="files.length" type="info" :title="t('tools.pdfMerge.filesSelected', { count: files.length })" style="margin-top: 8px;" />
+        </template>
+        <template #output-files>
+          <div v-if="resultUrl" class="tool-file-panel__output-preview">
+            <NCard size="small" :title="t('tools.pdfMerge.downloadMerged')">
+              <p style="font-size: 13px; color: var(--color-text-2);">merged.pdf</p>
+            </NCard>
+          </div>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NButton type="primary" :loading="processing" @click="process" :disabled="files.length < 2" block>
+              {{ t('tools.pdfMerge.merge') }}
+            </NButton>
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>

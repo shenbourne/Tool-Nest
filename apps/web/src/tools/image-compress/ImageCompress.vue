@@ -3,9 +3,11 @@ import { ref } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { tool } from './index';
 import { useCopy } from '@/composables/useCopy';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -45,13 +47,37 @@ async function process() {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept="image/*" @change="onFile" />
-      <NInputNumber v-model:value="quality" :min="0.1" :max="1" :step="0.1" :placeholder="t('tools.imageCompress.quality')" style="width:140px"  :input-props="{ id: 'imageCompressField0' }"/>
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.imageCompress.compress') }}</NButton>
-      <NAlert v-if="origSize" type="info" :title="t('tools.imageCompress.sizeInfo', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />
-      <img v-if="resultUrl" :src="resultUrl" style="max-width:100%;max-height:300px;" />
-      <NSpace><NButton v-if="resultUrl" @click="download">{{ t('tool.download') }}</NButton><NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
+        </template>
+        <template #output-files>
+          <img v-if="resultUrl" :src="resultUrl" class="tool-file-panel__output-image" />
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.download') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NInputNumber v-model:value="quality" :min="0.1" :max="1" :step="0.1" :placeholder="t('tools.imageCompress.quality')" style="width:140px"  :input-props="{ id: 'imageCompressField0' }"/>
+            <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
+              {{ t('tools.imageCompress.compress') }}
+            </NButton>
+            <NAlert v-if="origSize" type="info" :title="t('tools.imageCompress.sizeInfo', { orig: (origSize/1024).toFixed(1), next: (newSize/1024).toFixed(1) })" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-image {
+  max-width: 100%;
+  max-height: 300px;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+}
+</style>

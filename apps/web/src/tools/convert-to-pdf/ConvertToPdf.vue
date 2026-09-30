@@ -4,8 +4,10 @@ import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -47,12 +49,39 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept="image/*" @change="onFile" />
-      <NAlert type="info" :title="t('tools.convertToPdf.info')" />
-      <NButton type="primary" :loading="processing" @click="process" :disabled="!file">{{ t('tools.convertToPdf.convert') }}</NButton>
-      <NButton v-if="resultUrl" @click="download">{{ t('tools.convertToPdf.downloadPdf') }}</NButton>
-      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
+        </template>
+        <template #output-files>
+          <div v-if="resultUrl" class="tool-file-panel__output-preview">
+            <NCard size="small" :title="t('tools.convertToPdf.downloadPdf')">
+              <p style="font-size: 13px; color: var(--color-text-2);">output.pdf</p>
+            </NCard>
+          </div>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NAlert type="info" :title="t('tools.convertToPdf.info')" />
+            <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
+              {{ t('tools.convertToPdf.convert') }}
+            </NButton>
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>

@@ -3,9 +3,11 @@ import { NCard, NSpace, NButton, NAlert, NProgress, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
@@ -89,38 +91,46 @@ async function copy() {
 <template>
   <ToolLayout :tool="tool">
     <NCard>
-      <NSpace vertical :size="12">
-        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          {{ t('tool.loadFfmpeg') }}
-        </NButton>
-        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
-        <NAlert v-if="loadError" type="error" :title="loadError" />
-
-        <ToolFileUpload accept="audio/*" multiple @change="onFileChange" />
-
-        <NSpace v-if="files.length > 0">
-          <NTag v-for="(f, i) in files" :key="i" size="small" closable @close="files.splice(i, 1)">
-            {{ f.name }}
-          </NTag>
-        </NSpace>
-
-        <NButton
-          type="primary"
-          :loading="processing"
-          :disabled="files.length < 2 || !isLoaded"
-          @click="process"
-        >
-          {{ t('tools.audioMerge.mergeAudio') }}
-        </NButton>
-
-        <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
-        <NAlert v-if="error" type="error" :title="error" />
-
-        <NAlert v-if="resultData" type="success" :title="t('tools.audioMerge.audioMerged')" />
-        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
-          {{ t('tool.copyFile') }}
-        </NButton>
-      </NSpace>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
+            {{ t('tool.loadFfmpeg') }}
+          </NButton>
+          <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+          <NAlert v-if="loadError" type="error" :title="loadError" />
+          <ToolFileUpload ref="fileUpload" accept="audio/*" multiple compact @change="onFileChange" />
+          <NSpace v-if="files.length > 0" style="margin-top: 8px;">
+            <NTag v-for="(f, i) in files" :key="i" size="small" closable @close="files.splice(i, 1)">
+              {{ f.name }}
+            </NTag>
+          </NSpace>
+        </template>
+        <template #output-files>
+          <NAlert v-if="resultData" type="success" :title="t('tools.audioMerge.audioMerged')" />
+        </template>
+        
+        
+        <template #actions-right>
+          <NButton :disabled="!resultData" @click="copy">
+            {{ t('tool.copyFile') }}
+          </NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NButton
+              type="primary"
+              :loading="processing"
+              :disabled="files.length < 2 || !isLoaded"
+              @click="process"
+              block
+            >
+              {{ t('tools.audioMerge.mergeAudio') }}
+            </NButton>
+            <NAlert v-if="processing" type="info" :title="t('tool.processing')" />
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
     </NCard>
   </ToolLayout>
 </template>

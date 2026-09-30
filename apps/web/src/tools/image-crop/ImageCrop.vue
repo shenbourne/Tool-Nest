@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from 'vue';
+import { ref, watch, nextTick, onUnmounted } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import Konva from 'konva';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
 import { usePreferencesStore } from '@/stores/preferences.store';
 import { resolveCssColorToken } from '@/utils/css-tokens';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -167,10 +169,12 @@ onUnmounted(() => {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.imageCrop.name')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/*" @change="onFileChange" />
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
           <div v-if="imageUrl">
             <v-stage :config="{ width: stageWidth, height: stageHeight }">
               <v-layer>
@@ -204,32 +208,34 @@ onUnmounted(() => {
               </v-layer>
             </v-stage>
           </div>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('common.settings', 'Settings')">
-        <NSpace vertical :size="12">
-          <NSpace :size="16">
-            <div>
-              <label :for="'imageCropField0'">X: </label>
-              <NInputNumber v-model:value="cropX" :min="0" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField0' }"/>
-            </div>
-            <div>
-              <label :for="'imageCropField1'">Y: </label>
-              <NInputNumber v-model:value="cropY" :min="0" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField1' }"/>
-            </div>
-            <div>
-              <label :for="'imageCropField2'">{{ t('common.width') }}: </label>
-              <NInputNumber v-model:value="cropWidth" :min="1" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField2' }"/>
-            </div>
-            <div>
-              <label :for="'imageCropField3'">{{ t('common.height') }}: </label>
-              <NInputNumber v-model:value="cropHeight" :min="1" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField3' }"/>
-            </div>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!file" @click="downloadCrop">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NSpace :size="16">
+              <div>
+                <label :for="'imageCropField0'">X: </label>
+                <NInputNumber v-model:value="cropX" :min="0" :step="1" style="width:120px;" :input-props="{ id: 'imageCropField0' }" />
+              </div>
+              <div>
+                <label :for="'imageCropField1'">Y: </label>
+                <NInputNumber v-model:value="cropY" :min="0" :step="1" style="width:120px;" :input-props="{ id: 'imageCropField1' }" />
+              </div>
+              <div>
+                <label :for="'imageCropField2'">{{ t('common.width') }}: </label>
+                <NInputNumber v-model:value="cropWidth" :min="1" :step="1" style="width:120px;" :input-props="{ id: 'imageCropField2' }" />
+              </div>
+              <div>
+                <label :for="'imageCropField3'">{{ t('common.height') }}: </label>
+                <NInputNumber v-model:value="cropHeight" :min="1" :step="1" style="width:120px;" :input-props="{ id: 'imageCropField3' }" />
+              </div>
+            </NSpace>
           </NSpace>
-          <NSpace><NButton type="primary" :disabled="!file" @click="downloadCrop">{{ t('tools.imageCrop.cropAndDownload') }}</NButton><NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>

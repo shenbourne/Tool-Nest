@@ -4,7 +4,9 @@ import { NCard, NSpace, NButton, NAlert, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const file = ref<File | null>(null);
@@ -49,21 +51,31 @@ async function checkSignatures() {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept=".pdf" @change="onFile" />
-      <NButton type="primary" :loading="processing" @click="checkSignatures" :disabled="!file">
-        {{ t('tools.pdfSignatureChecker.check') }}
-      </NButton>
-      <NAlert v-if="error" type="error" :title="error" />
-      <NAlert v-if="checked && !error" :type="hasSignatures ? 'success' : 'warning'">
-        <template #header>
-          {{ hasSignatures ? t('tools.pdfSignatureChecker.signaturesFound') : t('tools.pdfSignatureChecker.noSignatures') }}
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
         </template>
-        <p>{{ t('tools.pdfSignatureChecker.signatureFields', { count: signatureCount }) }}</p>
-        <NSpace v-if="fieldNames.length">
-          <NTag v-for="name in fieldNames" :key="name" type="info">{{ name }}</NTag>
-        </NSpace>
-      </NAlert>
-    </NSpace></NCard>
+        <template #output-files>
+          <NAlert v-if="checked && !error" :type="hasSignatures ? 'success' : 'warning'">
+            <template #header>
+              {{ hasSignatures ? t('tools.pdfSignatureChecker.signaturesFound') : t('tools.pdfSignatureChecker.noSignatures') }}
+            </template>
+            <p>{{ t('tools.pdfSignatureChecker.signatureFields', { count: signatureCount }) }}</p>
+            <NSpace v-if="fieldNames.length">
+              <NTag v-for="name in fieldNames" :key="name" type="info">{{ name }}</NTag>
+            </NSpace>
+          </NAlert>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NButton type="primary" :loading="processing" @click="checkSignatures" :disabled="!file" block>
+              {{ t('tools.pdfSignatureChecker.check') }}
+            </NButton>
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>

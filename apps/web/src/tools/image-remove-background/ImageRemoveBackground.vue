@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onUnmounted } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NColorPicker } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -109,10 +111,12 @@ onUnmounted(() => {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.imageRemoveBackground.name')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/*" @change="onFileChange" />
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
           <div v-if="processedImageUrl" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 20px 20px;">
             <v-stage :config="{ width: stageWidth, height: stageHeight }">
               <v-layer>
@@ -140,23 +144,25 @@ onUnmounted(() => {
               </v-layer>
             </v-stage>
           </div>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('common.settings', 'Settings')">
-        <NSpace vertical :size="12">
-          <div>
-            <span>{{ t('tools.imageRemoveBackground.backgroundColor') }}</span>
-            <NColorPicker v-model:value="targetColor" style="width:200px;" />
-          </div>
-          <div>
-            <label :for="'imageRemoveBackgroundField0'">{{ t('tools.imageRemoveBackground.toleranceRange') }}</label>
-            <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" style="width:200px;"  :input-props="{ id: 'imageRemoveBackgroundField0' }"/>
-          </div>
-          <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
-          <NSpace><NButton type="success" :disabled="!processedImageUrl" @click="download">{{ t('tool.download') }}</NButton><NButton :disabled="!processedImageUrl" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!processedImageUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!processedImageUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <div>
+              <span>{{ t('tools.imageRemoveBackground.backgroundColor') }}</span>
+              <NColorPicker v-model:value="targetColor" style="width:200px;" />
+            </div>
+            <div>
+              <label :for="'imageRemoveBackgroundField0'">{{ t('tools.imageRemoveBackground.toleranceRange') }}</label>
+              <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" style="width:200px;" :input-props="{ id: 'imageRemoveBackgroundField0' }" />
+            </div>
+            <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>

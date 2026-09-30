@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { NCard, NSpace, NButton, NInputNumber, NAlert, NImage } from 'naive-ui';
+import { ref, computed, onUnmounted } from 'vue';
+import { NCard, NSpace, NButton, NInputNumber } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -81,36 +83,41 @@ onUnmounted(() => {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.imageChangeColors.name')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/*" @change="onFileChange" />
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
           <div v-if="imageUrl">
             <img :src="imageUrl" :style="{ filter: filterStyle, maxWidth: '100%' }" />
           </div>
-        </NSpace>
-      </NCard>
-      <NCard :title="t('tools.imageChangeColors.name') + ' ' + t('common.settings', 'Settings')">
-        <NSpace vertical :size="12">
-          <div>
-            <label :for="'imageChangeColorsField0'">{{ t('tools.imageChangeColors.hueRotate') }}</label>
-            <NInputNumber v-model:value="hueRotate" :min="0" :max="360" :step="1"  :input-props="{ id: 'imageChangeColorsField0' }"/>
-          </div>
-          <div>
-            <label :for="'imageChangeColorsField1'">{{ t('tools.imageChangeColors.saturate') }}</label>
-            <NInputNumber v-model:value="saturate" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField1' }"/>
-          </div>
-          <div>
-            <label :for="'imageChangeColorsField2'">{{ t('tools.imageChangeColors.brightness') }}</label>
-            <NInputNumber v-model:value="brightness" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField2' }"/>
-          </div>
-          <div>
-            <label :for="'imageChangeColorsField3'">{{ t('tools.imageChangeColors.contrast') }}</label>
-            <NInputNumber v-model:value="contrast" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField3' }"/>
-          </div>
-          <NSpace><NButton type="primary" :disabled="!file" @click="download">{{ t('tool.download') }}</NButton><NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!file" @click="download">{{ t('tool.download') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <div>
+              <label :for="'imageChangeColorsField0'">{{ t('tools.imageChangeColors.hueRotate') }}</label>
+              <NInputNumber v-model:value="hueRotate" :min="0" :max="360" :step="1"  :input-props="{ id: 'imageChangeColorsField0' }"/>
+            </div>
+            <div>
+              <label :for="'imageChangeColorsField1'">{{ t('tools.imageChangeColors.saturate') }}</label>
+              <NInputNumber v-model:value="saturate" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField1' }"/>
+            </div>
+            <div>
+              <label :for="'imageChangeColorsField2'">{{ t('tools.imageChangeColors.brightness') }}</label>
+              <NInputNumber v-model:value="brightness" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField2' }"/>
+            </div>
+            <div>
+              <label :for="'imageChangeColorsField3'">{{ t('tools.imageChangeColors.contrast') }}</label>
+              <NInputNumber v-model:value="contrast" :min="0" :max="200" :step="1"  :input-props="{ id: 'imageChangeColorsField3' }"/>
+            </div>
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>

@@ -4,8 +4,10 @@ import { NCard, NSpace, NButton, NInput, NInputNumber, NSelect, NColorPicker, NA
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -124,20 +126,45 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept=".pdf" @change="onFile" />
-      <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')"  :input-props="{ id: 'pdfEditorField0' }"/>
-      <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
-      <NSpace>
-        <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" style="width: 150px;"  :input-props="{ id: 'pdfEditorField1' }"/>
-        <NColorPicker v-model:value="color" style="width: 100px;" />
-      </NSpace>
-      <NButton type="primary" :loading="processing" @click="apply" :disabled="!file || !text">
-        {{ t('common.apply') }}
-      </NButton>
-      <NAlert v-if="error" type="error" :title="error" />
-      <NButton v-if="resultUrl" @click="download">{{ t('tools.pdfEditor.downloadEditedPdf') }}</NButton>
-      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
+        </template>
+        <template #output-files>
+          <div v-if="resultUrl" class="tool-file-panel__output-preview">
+            <NCard size="small" :title="t('tools.pdfEditor.downloadEditedPdf')">
+              <p style="font-size: 13px; color: var(--color-text-2);">edited.pdf</p>
+            </NCard>
+          </div>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')" :input-props="{ id: 'pdfEditorField0' }" />
+            <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
+            <NSpace>
+              <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" style="width: 150px;" :input-props="{ id: 'pdfEditorField1' }" />
+              <NColorPicker v-model:value="color" style="width: 100px;" />
+            </NSpace>
+            <NButton type="primary" :loading="processing" @click="apply" :disabled="!file || !text" block>
+              {{ t('common.apply') }}
+            </NButton>
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>

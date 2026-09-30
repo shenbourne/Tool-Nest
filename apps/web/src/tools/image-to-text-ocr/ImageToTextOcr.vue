@@ -3,10 +3,12 @@ import { ref } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import Tesseract from 'tesseract.js';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
@@ -79,34 +81,36 @@ onUnmounted(() => {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.imageToTextOcr.imageUpload')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/*" @change="onFileChange" />
-          <NSelect v-model:value="selectedLang" :options="languageOptions" style="width: 200px" />
-          <img v-if="imagePreview" :src="imagePreview" style="max-width: 100%; max-height: 300px;" />
-          <NButton type="primary" :loading="loading" :disabled="!selectedFile" @click="extractText">
-            {{ t('tools.imageToTextOcr.extractText') }}
-          </NButton>
-          <NProgress v-if="loading" type="line" :percentage="progress" />
-        </NSpace>
-      </NCard>
-
-      <NAlert v-if="error" type="error" :title="t('common.error')">
-        {{ error }}
-      </NAlert>
-
-      <NCard v-if="extractedText" :title="t('tools.imageToTextOcr.extractedText')">
-        <NSpace vertical :size="12">
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
           <NInput
+            v-if="extractedText"
             type="textarea"
             :value="extractedText"
             readonly
             :autosize="{ minRows: 6, maxRows: 20 }"
            :input-props="{ id: 'imageToTextOcrField0' }"/>
-          <NButton @click="copyText">{{ t('tool.copy') }}</NButton>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+        <template #actions-right>
+          <NButton v-if="extractedText" @click="copyText">{{ t('tool.copy') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NSelect v-model:value="selectedLang" :options="languageOptions" style="width: 200px" />
+            <NButton type="primary" :loading="loading" :disabled="!selectedFile" @click="extractText" block>
+              {{ t('tools.imageToTextOcr.extractText') }}
+            </NButton>
+            <NProgress v-if="loading" type="line" :percentage="progress" />
+            <NAlert v-if="error" type="error" :title="t('common.error')">
+              {{ error }}
+            </NAlert>
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
