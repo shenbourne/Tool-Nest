@@ -58,7 +58,7 @@ const { t } = useI18n();
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-md);
-  align-items: start;
+  align-items: stretch;
 }
 
 .tool-file-panel__column {
