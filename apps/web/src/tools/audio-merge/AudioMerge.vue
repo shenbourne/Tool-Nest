@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { NCard, NSpace, NButton, NAlert, NProgress, NTag } from 'naive-ui';
+import { ref } from 'vue';
+import { NSpace, NButton, NAlert, NProgress, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
@@ -17,6 +19,7 @@ const files = ref<File[]>([]);
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
 
 function onFileChange(selected: File[]) {
   files.value = selected;
@@ -73,6 +76,8 @@ async function process() {
     });
 
     resultData.value = result;
+    const blob = new Blob([result], { type: 'audio/mpeg' });
+    resultFile.value = new File([blob], 'merged_audio.mp3', { type: 'audio/mpeg' });
     downloadBlob(result, 'merged_audio.mp3', 'audio/mpeg');
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
@@ -106,7 +111,7 @@ async function copy() {
           </NSpace>
         </template>
         <template #output-files>
-          <NAlert v-if="resultData" type="success" :title="t('tools.audioMerge.audioMerged')" />
+          <FileCard v-if="resultFile" name="merged_audio.mp3" :file="resultFile" file-type="audio/mpeg" />
         </template>
         
         
@@ -134,3 +139,6 @@ async function copy() {
     </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+</style>
