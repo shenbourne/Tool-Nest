@@ -4,10 +4,12 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
+const { copyFileToClipboard } = useCopy();
 
 const file = ref<File | null>(null);
 const outputFormat = ref<string>('mp3');
@@ -83,6 +85,13 @@ async function process() {
     processing.value = false;
   }
 }
+
+async function copy() {
+  if (!resultData.value) return;
+  const mime = mimeMap[outputFormat.value] ?? 'audio/mpeg';
+  const blob = new Blob([resultData.value], { type: mime });
+  await copyFileToClipboard(blob);
+}
 </script>
 
 <template>
@@ -117,6 +126,9 @@ async function process() {
         <NAlert v-if="error" type="error" :title="error" />
 
         <NAlert v-if="resultData" type="success" :title="t('tools.audioExtract.audioExtracted')" />
+        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
+          {{ t('tool.copyFile') }}
+        </NButton>
       </NSpace>
     </NCard>
   </ToolLayout>

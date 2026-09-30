@@ -4,9 +4,11 @@ import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
@@ -28,6 +30,13 @@ function download() {
     a.download = 'extracted.txt';
     a.click();
   }
+}
+
+async function copy() {
+  if (!resultUrl.value) return;
+  const res = await fetch(resultUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
 }
 
 async function convert() {
@@ -73,6 +82,7 @@ async function convert() {
         <pre style="max-height: 400px; overflow: auto; white-space: pre-wrap; font-size: 12px;">{{ extractedText }}</pre>
       </NCard>
       <NButton v-if="resultUrl" @click="download">{{ t('tools.pdfToEpub.downloadText') }}</NButton>
+      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

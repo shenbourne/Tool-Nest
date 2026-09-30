@@ -4,9 +4,11 @@ import { NCard, NSpace, NButton, NInput, NInputNumber, NSelect, NColorPicker, NA
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
 const { t } = useI18n();
+const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const text = ref('');
 const position = ref<string>('center');
@@ -49,6 +51,13 @@ function download() {
     a.download = 'edited.pdf';
     a.click();
   }
+}
+
+async function copy() {
+  if (!resultUrl.value) return;
+  const res = await fetch(resultUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
 }
 
 async function apply() {
@@ -128,6 +137,7 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
       </NButton>
       <NAlert v-if="error" type="error" :title="error" />
       <NButton v-if="resultUrl" @click="download">{{ t('tools.pdfEditor.downloadEditedPdf') }}</NButton>
+      <NButton v-if="resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
     </NSpace></NCard>
   </ToolLayout>
 </template>

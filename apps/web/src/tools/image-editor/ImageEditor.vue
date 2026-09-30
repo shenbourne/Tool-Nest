@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const { copyFileToClipboard } = useCopy();
 
 type Annotation =
   | { id: number; type: 'text'; x: number; y: number; text: string; fontSize: number; color: string; editing: boolean }
@@ -132,22 +134,21 @@ const editingAnnotation = computed(() =>
 const displayAnnotations = computed(() => annotations.value);
 const tempLine = computed(() => currentLine.value);
 
-function downloadImage() {
-  if (!imageEl.value) return;
+function createCanvas() {
+  if (!imageEl.value) return null;
   const canvas = document.createElement('canvas');
   const imgW = imageEl.value.naturalWidth;
   const imgH = imageEl.value.naturalHeight;
   canvas.width = imgW;
   canvas.height = imgH;
   const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+  if (!ctx) return null;
 
   const scaleX = imgW / stageWidth.value;
   const scaleY = imgH / stageHeight.value;
 
   ctx.drawImage(imageEl.value, 0, 0);
 
-  // Render annotations at original image scale
   for (const ann of annotations.value) {
     if (ann.type === 'text') {
       ctx.font = `${ann.fontSize * scaleY}px sans-serif`;
@@ -162,7 +163,12 @@ function downloadImage() {
       ctx.stroke();
     }
   }
+  return canvas;
+}
 
+function downloadImage() {
+  const canvas = createCanvas();
+  if (!canvas) return;
   canvas.toBlob((blob) => {
     if (!blob) return;
     const url = URL.createObjectURL(blob);
@@ -171,6 +177,15 @@ function downloadImage() {
     a.download = 'edited.png';
     a.click();
     URL.revokeObjectURL(url);
+  }, 'image/png');
+}
+
+async function copy() {
+  const canvas = createCanvas();
+  if (!canvas) return;
+  canvas.toBlob(async (blob) => {
+    if (!blob) return;
+    await copyFileToClipboard(blob);
   }, 'image/png');
 }
 onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
@@ -280,7 +295,7 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
             <label :for="'imageEditorField3'">{{ t('tools.imageEditor.text') }}</label>
             <NInput v-model:value="textContent" :placeholder="t('tools.imageEditor.textPlaceholder')" style="width:250px;"  :input-props="{ id: 'imageEditorField3' }"/>
           </div>
-          <NButton type="success" :disabled="!file" @click="downloadImage">{{ t('tool.download') }}</NButton>
+          <NSpace><NButton type="success" :disabled="!file" @click="downloadImage">{{ t('tool.download') }}</NButton><NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
         </NSpace>
       </NCard>
     </NSpace>

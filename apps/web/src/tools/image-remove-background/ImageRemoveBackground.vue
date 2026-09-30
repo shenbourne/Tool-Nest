@@ -5,9 +5,11 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const { copyFileToClipboard } = useCopy();
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
@@ -94,6 +96,12 @@ function download() {
   a.download = 'no-background.png';
   a.click();
 }
+async function copy() {
+  if (!processedImageUrl.value) return;
+  const res = await fetch(processedImageUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
+}
 onUnmounted(() => {
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
 });
@@ -146,7 +154,7 @@ onUnmounted(() => {
             <NInputNumber v-model:value="tolerance" :min="0" :max="100" :step="1" style="width:200px;"  :input-props="{ id: 'imageRemoveBackgroundField0' }"/>
           </div>
           <NButton type="primary" :disabled="!file" @click="processImage">{{ t('common.apply') }}</NButton>
-          <NButton type="success" :disabled="!processedImageUrl" @click="download">{{ t('tool.download') }}</NButton>
+          <NSpace><NButton type="success" :disabled="!processedImageUrl" @click="download">{{ t('tool.download') }}</NButton><NButton :disabled="!processedImageUrl" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
         </NSpace>
       </NCard>
     </NSpace>

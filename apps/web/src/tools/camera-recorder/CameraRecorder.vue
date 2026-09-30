@@ -4,9 +4,11 @@ import { NCard, NSpace, NButton, NAlert, NSelect, NDivider, NPopconfirm } from '
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { useCopy } from '@/composables/useCopy';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const { copyFileToClipboard } = useCopy();
 
 const isSupported = computed(() => !!(navigator.mediaDevices?.getUserMedia) && !!window.MediaRecorder);
 
@@ -135,6 +137,12 @@ function downloadRecording(item: { url: string; type: string; createdAt: Date })
   a.click();
 }
 
+async function copyRecording(item: { url: string; type: string; createdAt: Date }) {
+  const res = await fetch(item.url);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
+}
+
 function removeRecording(index: number) {
   const item = recordings.value[index];
   URL.revokeObjectURL(item.url);
@@ -228,6 +236,7 @@ onBeforeUnmount(() => {
               <span>{{ item.createdAt.toLocaleString() }}</span>
               <NSpace>
                 <NButton size="small" @click="downloadRecording(item)">{{ t('tool.download') }}</NButton>
+                <NButton size="small" @click="copyRecording(item)">{{ t('tool.copyFile') }}</NButton>
                 <NPopconfirm @positive-click="removeRecording(index)">
                   <template #trigger>
                     <NButton size="small">{{ t('tool.clear') }}</NButton>

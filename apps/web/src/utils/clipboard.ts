@@ -62,3 +62,19 @@ export async function writeClipboardImage(blob: Blob): Promise<boolean> {
     return false;
   }
 }
+
+export async function writeClipboardFile(blob: Blob): Promise<boolean> {
+  try {
+    if (
+      typeof ClipboardItem === 'undefined' ||
+      typeof navigator === 'undefined' ||
+      !navigator.clipboard?.write
+    ) {
+      return false;
+    }
+    await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+    return true;
+  } catch {
+    return false;
+  }
+}

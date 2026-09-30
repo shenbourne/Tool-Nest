@@ -8,7 +8,7 @@ import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
+const { copyToClipboard, copyFileToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 // --- Base64 → File ---
@@ -60,6 +60,13 @@ function downloadFile() {
   document.body.removeChild(a);
 }
 
+async function copyFile() {
+  if (!isValidBase64.value) return;
+  const res = await fetch(dataUrl.value);
+  const blob = await res.blob();
+  await copyFileToClipboard(blob);
+}
+
 // --- File → Base64 ---
 const fileBase64Output = ref('');
 
@@ -96,6 +103,7 @@ function copyBase64() {
           <NSpace>
             <NButton :disabled="!isValidBase64" @click="previewImage">{{ t('common.preview') }}</NButton>
             <NButton :disabled="!isValidBase64" @click="downloadFile">{{ t('tool.download') }}</NButton>
+            <NButton :disabled="!isValidBase64" @click="copyFile">{{ t('tool.copyFile') }}</NButton>
           </NSpace>
           <div v-if="downloadError" style="color: var(--color-error);">{{ downloadError }}</div>
           <div v-if="previewUrl" style="margin-top: 8px;">

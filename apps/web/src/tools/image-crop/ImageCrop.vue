@@ -6,12 +6,14 @@ import Konva from 'konva';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { useCopy } from '@/composables/useCopy';
 import { usePreferencesStore } from '@/stores/preferences.store';
 import { resolveCssColorToken } from '@/utils/css-tokens';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
 const preferences = usePreferencesStore();
+const { copyFileToClipboard } = useCopy();
 
 // Konva/Canvas cannot resolve CSS `var()` expressions, so the primary tokens have
 // to be passed as concrete colors. Token values are declared on `:root` and
@@ -121,18 +123,24 @@ watch([cropX, cropY, cropWidth, cropHeight], () => {
   }
 });
 
-function downloadCrop() {
-  if (!imageEl.value) return;
+function createCanvas() {
+  if (!imageEl.value) return null;
   const canvas = document.createElement('canvas');
   canvas.width = cropWidth.value;
   canvas.height = cropHeight.value;
   const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+  if (!ctx) return null;
   ctx.drawImage(
     imageEl.value,
     cropX.value, cropY.value, cropWidth.value, cropHeight.value,
     0, 0, cropWidth.value, cropHeight.value
   );
+  return canvas;
+}
+
+function downloadCrop() {
+  const canvas = createCanvas();
+  if (!canvas) return;
   canvas.toBlob((blob) => {
     if (!blob) return;
     const url = URL.createObjectURL(blob);
@@ -141,6 +149,15 @@ function downloadCrop() {
     a.download = 'cropped.png';
     a.click();
     URL.revokeObjectURL(url);
+  }, 'image/png');
+}
+
+async function copy() {
+  const canvas = createCanvas();
+  if (!canvas) return;
+  canvas.toBlob(async (blob) => {
+    if (!blob) return;
+    await copyFileToClipboard(blob);
   }, 'image/png');
 }
 onUnmounted(() => {
@@ -210,7 +227,7 @@ onUnmounted(() => {
               <NInputNumber v-model:value="cropHeight" :min="1" :step="1" style="width:120px;"  :input-props="{ id: 'imageCropField3' }"/>
             </div>
           </NSpace>
-          <NButton type="primary" :disabled="!file" @click="downloadCrop">{{ t('tools.imageCrop.cropAndDownload') }}</NButton>
+          <NSpace><NButton type="primary" :disabled="!file" @click="downloadCrop">{{ t('tools.imageCrop.cropAndDownload') }}</NButton><NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
         </NSpace>
       </NCard>
     </NSpace>

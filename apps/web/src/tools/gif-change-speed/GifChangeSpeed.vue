@@ -4,11 +4,13 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
+import { useCopy } from '@/composables/useCopy';
 import { gifSpeedFilter } from '@/utils/ffmpeg-speed';
 import { tool } from './index';
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
+const { copyFileToClipboard } = useCopy();
 
 const file = ref<File | null>(null);
 const speed = ref<string>('1');
@@ -73,6 +75,12 @@ async function process() {
     processing.value = false;
   }
 }
+
+async function copy() {
+  if (!resultData.value) return;
+  const blob = new Blob([resultData.value], { type: 'image/gif' });
+  await copyFileToClipboard(blob);
+}
 </script>
 
 <template>
@@ -108,6 +116,9 @@ async function process() {
 
         <NButton v-if="resultData" @click="downloadBlob(resultData, 'respeed.gif', 'image/gif')">
           {{ t('tool.downloadGif') }}
+        </NButton>
+        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
+          {{ t('tool.copyFile') }}
         </NButton>
       </NSpace>
     </NCard>

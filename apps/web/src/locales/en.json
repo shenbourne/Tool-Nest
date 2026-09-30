@@ -127,6 +127,8 @@
     "copied": "Copied!",
     "copyFailed": "Failed to copy to clipboard",
     "copyImageFailed": "Failed to copy the image to clipboard",
+    "copyFileFailed": "Failed to copy the file to clipboard",
+    "copyFile": "Copy to clipboard",
     "clear": "Clear",
     "download": "Download",
     "upload": "Upload",
