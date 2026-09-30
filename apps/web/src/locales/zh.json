@@ -216,7 +216,6 @@
     "symbols": "符号",
     "qrCode": "二维码",
     "password": "密码",
-    "uploadFile": "上传图片",
     "end": "结束",
     "regex": "正则",
     "csvInputPlaceholder": "输入 CSV...",
