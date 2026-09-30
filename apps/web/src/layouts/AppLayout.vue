@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { TOOL_CATEGORIES } from '@toolnest/shared';
 import { usePreferencesStore } from '@/stores/preferences.store';
+import { categoryAnchorHref, categoryAnchorId } from '@/utils/category-anchor';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 
@@ -55,9 +56,9 @@ function handleCategoryClick(categoryName: string) {
   } else {
     // Anchor mode: go to home and scroll
     if (route.path !== '/') {
-      router.push(`/#${categoryName}`);
+      router.push(categoryAnchorHref(categoryName));
     } else {
-      const el = document.getElementById(`category-${categoryName}`);
+      const el = document.getElementById(categoryAnchorId(categoryName));
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }

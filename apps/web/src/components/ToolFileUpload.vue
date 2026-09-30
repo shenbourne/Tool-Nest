@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { NUpload, NUploadDragger, NIcon, useMessage } from 'naive-ui';
 import type { UploadFileInfo } from 'naive-ui';
-import { CloudUpload } from '@vicons/tabler';
+import { CloudUpload, File as FileIcon, FileMusic } from '@vicons/tabler';
 import { useI18n } from 'vue-i18n';
 import { collectClipboardFiles, splitByAccept } from '@/utils/clipboard-files';
+import { thumbnailKind } from '@/utils/file-thumbnail';
+import { renderThumbnailDataUrl } from '@/utils/thumbnail-render';
 
 const props = withDefaults(defineProps<{
   accept?: string;
@@ -23,6 +25,44 @@ const fileList = ref<UploadFileInfo[]>([]);
 const files = computed(() =>
   fileList.value.map((item) => item.file).filter((f): f is File => f !== null),
 );
+
+// Thumbnails are keyed by list-entry id and cached for the entry's lifetime;
+// they are data URLs, so nothing here needs revoking on removal.
+const thumbnails = ref<Record<string, string>>({});
+const rendering = new Set<string>();
+
+function fallbackIcon(file: File | null | undefined) {
+  return file?.type.startsWith('audio/') ? FileMusic : FileIcon;
+}
+
+async function ensureThumbnail(item: UploadFileInfo) {
+  const file = item.file;
+  if (!file || thumbnails.value[item.id] || rendering.has(item.id)) return;
+  if (thumbnailKind(file) === 'none') return;
+
+  rendering.add(item.id);
+  const dataUrl = await renderThumbnailDataUrl(file);
+  rendering.delete(item.id);
+
+  // The entry can be removed while its thumbnail renders; a late result must
+  // not resurrect the row or land on a different file's id.
+  if (dataUrl && fileList.value.some((entry) => entry.id === item.id)) {
+    thumbnails.value = { ...thumbnails.value, [item.id]: dataUrl };
+  }
+}
+
+function syncThumbnails() {
+  const live = new Set(fileList.value.map((item) => item.id));
+  const kept: Record<string, string> = {};
+  for (const [id, dataUrl] of Object.entries(thumbnails.value)) {
+    if (live.has(id)) kept[id] = dataUrl;
+  }
+  thumbnails.value = kept;
+
+  for (const item of fileList.value) void ensureThumbnail(item);
+}
+
+watch(fileList, syncThumbnails, { immediate: true });
 
 function emitFiles() {
   emit('change', files.value);
@@ -101,6 +141,15 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
 
     <ul v-if="fileList.length" class="tool-file-upload__files">
       <li v-for="(item, index) in fileList" :key="item.id" class="tool-file-upload__file">
+        <span class="tool-file-upload__thumb">
+          <img
+            v-if="thumbnails[item.id]"
+            class="tool-file-upload__thumb-image"
+            :src="thumbnails[item.id]"
+            alt=""
+          />
+          <NIcon v-else :size="20" :component="fallbackIcon(item.file)" class="tool-file-upload__thumb-icon" />
+        </span>
         <span class="tool-file-upload__name" :title="item.name">{{ item.name }}</span>
         <button type="button" class="tool-file-upload__remove" @click="remove(index)">
           {{ t('common.remove') }}
@@ -145,14 +194,43 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
 }
 
 .tool-file-upload__file {
+  /* The app has no global border-box reset, so it is declared here: the sizes
+     below are then the rendered ones. 38 + 2x4px padding + 2x1px border lands
+     the row exactly on the DESIGN.md 48px (large) step. */
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  min-height: 42px;
-  padding: 0 var(--spacing-sm);
+  min-height: 48px;
+  padding: var(--spacing-xxs) var(--spacing-sm);
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-lg);
   background: var(--color-surface-soft);
+}
+
+.tool-file-upload__thumb {
+  box-sizing: border-box;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+}
+
+.tool-file-upload__thumb-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tool-file-upload__thumb-icon {
+  color: var(--color-text-3);
 }
 
 .tool-file-upload__name {

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { allTools } from '@/tools/registry';
+import { CATEGORY_ANCHOR_OFFSET } from '@/utils/category-anchor';
 
 // 自动生成工具路由
 const toolRoutes: RouteRecordRaw[] = allTools.map((tool) => ({
@@ -61,5 +62,14 @@ const routes: RouteRecordRaw[] = [
 export const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior: () => ({ top: 0 }),
+  scrollBehavior(to) {
+    // A category link carries the section id as its hash; land on that section with
+    // the same offset the section keeps for in-place scrolling. Anything else (and a
+    // hash whose category renders no section) starts at the top.
+    if (to.hash) {
+      const el = document.getElementById(to.hash.slice(1));
+      if (el) return { el, top: CATEGORY_ANCHOR_OFFSET, behavior: 'smooth' };
+    }
+    return { top: 0 };
+  },
 });

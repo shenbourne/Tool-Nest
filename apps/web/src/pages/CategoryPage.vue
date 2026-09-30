@@ -6,6 +6,7 @@ import { computed, onMounted } from 'vue';
 import ToolCard from '@/components/ToolCard.vue';
 import { useToolStore } from '@/stores/tool.store';
 import { usePreferencesStore } from '@/stores/preferences.store';
+import { categoryAnchorHref } from '@/utils/category-anchor';
 import { TOOL_CATEGORIES } from '@toolnest/shared';
 
 const route = useRoute();
@@ -27,7 +28,7 @@ const tools = computed(() =>
 // In anchor mode, redirect to home with hash
 onMounted(() => {
   if (preferencesStore.sidebarMode === 'anchor') {
-    router.replace(`/#${categoryName.value}`);
+    router.replace(categoryAnchorHref(categoryName.value));
   }
 });
 </script>
