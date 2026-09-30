@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { containDestRect, coverSourceRect, thumbnailKind } from './file-thumbnail';
+import { containDestRect, coverSourceRect, fileCategory, thumbnailKind } from './file-thumbnail';
 
 function file(name: string, type = '') {
   return { name, type };
@@ -101,5 +101,74 @@ describe('containDestRect', () => {
     expect(containDestRect(50, 100, 0)).toBeNull();
     expect(containDestRect(50, 100, -1)).toBeNull();
     expect(containDestRect(50, Number.NaN, 40)).toBeNull();
+  });
+});
+
+describe('fileCategory', () => {
+  it('classifies PDF by MIME type', () => {
+    expect(fileCategory(file('report.pdf', 'application/pdf'))).toBe('pdf');
+  });
+
+  it('classifies PDF by extension when MIME is empty', () => {
+    expect(fileCategory(file('report.pdf'))).toBe('pdf');
+    expect(fileCategory(file('REPORT.PDF'))).toBe('pdf');
+  });
+
+  it('classifies video by MIME type', () => {
+    expect(fileCategory(file('clip.mp4', 'video/mp4'))).toBe('video');
+    expect(fileCategory(file('clip.mov', 'video/quicktime'))).toBe('video');
+  });
+
+  it('classifies video by extension when MIME is empty', () => {
+    expect(fileCategory(file('clip.mp4'))).toBe('video');
+    expect(fileCategory(file('clip.MKV'))).toBe('video');
+  });
+
+  it('classifies audio by MIME type', () => {
+    expect(fileCategory(file('song.mp3', 'audio/mpeg'))).toBe('audio');
+    expect(fileCategory(file('song.wav', 'audio/wav'))).toBe('audio');
+  });
+
+  it('classifies audio by extension when MIME is empty', () => {
+    expect(fileCategory(file('song.flac'))).toBe('audio');
+    expect(fileCategory(file('song.M4A'))).toBe('audio');
+  });
+
+  it('classifies image by MIME type', () => {
+    expect(fileCategory(file('photo.png', 'image/png'))).toBe('image');
+    expect(fileCategory(file('photo.jpg', 'image/jpeg'))).toBe('image');
+  });
+
+  it('classifies archives by extension', () => {
+    expect(fileCategory(file('backup.zip'))).toBe('archive');
+    expect(fileCategory(file('backup.tar.gz'))).toBe('archive');
+    expect(fileCategory(file('backup.7z'))).toBe('archive');
+  });
+
+  it('classifies spreadsheets by extension', () => {
+    expect(fileCategory(file('data.xlsx'))).toBe('spreadsheet');
+    expect(fileCategory(file('data.csv'))).toBe('spreadsheet');
+  });
+
+  it('classifies code files by extension', () => {
+    expect(fileCategory(file('app.ts'))).toBe('code');
+    expect(fileCategory(file('style.css'))).toBe('code');
+    expect(fileCategory(file('data.json'))).toBe('code');
+    expect(fileCategory(file('README.md'))).toBe('code');
+  });
+
+  it('classifies plain text by MIME type', () => {
+    expect(fileCategory(file('notes.txt', 'text/plain'))).toBe('text');
+    expect(fileCategory(file('log', 'text/log'))).toBe('text');
+  });
+
+  it('returns other for unknown types', () => {
+    expect(fileCategory(file('mystery'))).toBe('other');
+    expect(fileCategory(file('data.bin', 'application/octet-stream'))).toBe('other');
+  });
+
+  it('prefers MIME type over a misleading extension', () => {
+    expect(fileCategory(file('renamed.pdf', 'image/png'))).toBe('image');
+    expect(fileCategory(file('actually-video.pdf', 'video/mp4'))).toBe('video');
   });
 });

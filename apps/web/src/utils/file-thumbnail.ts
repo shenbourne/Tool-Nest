@@ -9,6 +9,17 @@
 
 export type ThumbnailKind = 'image' | 'pdf' | 'video' | 'none';
 
+export type FileCategory =
+  | 'pdf'
+  | 'video'
+  | 'audio'
+  | 'image'
+  | 'archive'
+  | 'code'
+  | 'spreadsheet'
+  | 'text'
+  | 'other';
+
 export interface SourceRect {
   x: number;
   y: number;
@@ -19,6 +30,16 @@ export interface SourceRect {
 // Only used when the browser supplies no usable MIME type, which happens for
 // files dragged in from some clients.
 const VIDEO_EXTENSIONS = ['.mp4', '.m4v', '.mov', '.webm', '.ogv', '.mkv', '.avi'];
+const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.ogg', '.flac', '.aac', '.m4a', '.wma'];
+const ARCHIVE_EXTENSIONS = ['.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz', '.zst'];
+const CODE_EXTENSIONS = [
+  '.js', '.ts', '.jsx', '.tsx', '.vue', '.py', '.java', '.go', '.rs', '.c', '.cpp', '.h',
+  '.cs', '.rb', '.php', '.swift', '.kt', '.scala', '.r', '.m', '.mm', '.sh', '.bash',
+  '.zsh', '.fish', '.ps1', '.bat', '.cmd', '.sql', '.html', '.css', '.scss', '.less',
+  '.json', '.xml', '.yaml', '.yml', '.toml', '.ini', '.cfg', '.conf', '.env', '.md',
+  '.markdown', '.txt', '.log', '.diff', '.patch',
+];
+const SPREADSHEET_EXTENSIONS = ['.xlsx', '.xls', '.csv', '.tsv', '.ods'];
 
 function extensionOf(name: string): string {
   const dot = name.lastIndexOf('.');
@@ -39,6 +60,27 @@ export function thumbnailKind(file: { name: string; type: string }): ThumbnailKi
   if (extension === '.pdf') return 'pdf';
   if (VIDEO_EXTENSIONS.includes(extension)) return 'video';
   return 'none';
+}
+
+export function fileCategory(file: { name: string; type: string }): FileCategory {
+  const type = file.type.toLowerCase();
+  const ext = extensionOf(file.name);
+
+  // MIME-type checks first — a renamed file's true type is in the MIME header.
+  if (type === 'application/pdf') return 'pdf';
+  if (type.startsWith('video/')) return 'video';
+  if (type.startsWith('audio/')) return 'audio';
+  if (type.startsWith('image/')) return 'image';
+  if (type.startsWith('text/')) return 'text';
+
+  // Extension fallbacks for when the browser supplies no usable MIME type.
+  if (ext === '.pdf') return 'pdf';
+  if (VIDEO_EXTENSIONS.includes(ext)) return 'video';
+  if (AUDIO_EXTENSIONS.includes(ext)) return 'audio';
+  if (ARCHIVE_EXTENSIONS.includes(ext)) return 'archive';
+  if (SPREADSHEET_EXTENSIONS.includes(ext)) return 'spreadsheet';
+  if (CODE_EXTENSIONS.includes(ext)) return 'code';
+  return 'other';
 }
 
 /**

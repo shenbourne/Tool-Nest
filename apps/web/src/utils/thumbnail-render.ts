@@ -16,7 +16,7 @@
 import { containDestRect, coverSourceRect, thumbnailKind } from './file-thumbnail';
 
 /** Square thumbnail size in CSS pixels; `ToolFileUpload`'s `.tool-file-upload__thumb` must match. */
-export const THUMBNAIL_BOX = 38;
+export const THUMBNAIL_BOX = 128;
 
 // Render at 2x so the thumbnail is still sharp on a HiDPI display.
 const RENDER_SCALE = 2;
