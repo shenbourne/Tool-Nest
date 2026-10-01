@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
+import FileCard from '@/components/FileCard.vue';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
@@ -16,12 +17,14 @@ const processing = ref(false);
 const error = ref('');
 const extractedText = ref('');
 const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
 
 function onFile(files: File[]) {
   const f = files[0] ?? null;
   file.value = f;
   extractedText.value = '';
   resultUrl.value = '';
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -47,6 +50,7 @@ async function convert() {
   error.value = '';
   extractedText.value = '';
   resultUrl.value = '';
+  resultFile.value = null;
   try {
     const pdfjsLib = await import('pdfjs-dist');
     pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url).toString();
@@ -66,6 +70,7 @@ async function convert() {
     extractedText.value = textParts.join('\n\n');
     const blob = new Blob([extractedText.value], { type: 'text/plain' });
     resultUrl.value = URL.createObjectURL(blob);
+    resultFile.value = new File([extractedText.value], 'extracted.txt', { type: 'text/plain' });
   } catch (e: any) {
     error.value = e.message || t('tools.pdfToEpub.failed');
   }
@@ -80,9 +85,7 @@ async function convert() {
           <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
         </template>
         <template #output-files>
-          <NCard v-if="extractedText" :title="t('tools.pdfToEpub.previewTitle')" size="small">
-            <pre style="max-height: 400px; overflow: auto; white-space: pre-wrap; font-size: 12px;">{{ extractedText }}</pre>
-          </NCard>
+          <FileCard v-if="resultFile" name="extracted.txt" :file="resultFile" file-type="text/plain" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
