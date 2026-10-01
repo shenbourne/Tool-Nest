@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NAlert, NButton, NDivider } from 'naive-ui';
+import { NInput, NSpace, NAlert, NCard, NDivider } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { convertDockerComposeTo1panel } from './docker-compose-to-1panel.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref(`services:
@@ -51,12 +50,6 @@ volumes:
 
 const result = computed(() => convertDockerComposeTo1panel(input.value));
 
-function copyOutput() {
-  if (result.value.success) {
-    copyToClipboard(result.value.output);
-  }
-}
-
 const sampleInput = `services:
   web:
     image: nginx:latest
@@ -68,32 +61,31 @@ const sampleInput = `services:
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard :title="t('tools.dockerComposeTo1panel.inputTitle')">
-        <NInput
-          v-model:value="input"
-          type="textarea"
-          :placeholder="t('tools.dockerComposeTo1panel.inputPlaceholder')"
-          :autosize="{ minRows: 10, maxRows: 30 }"
-          style="font-family: monospace;"
-         :input-props="{ id: 'dockerComposeTo1panelField0' }"/>
-      </NCard>
-
-      <NAlert v-if="!result.success && result.error" type="error">
-        {{ result.error }}
-      </NAlert>
-
-      <NCard v-if="result.success" :title="t('tools.dockerComposeTo1panel.outputTitle')">
-        <template #header-extra>
-          <NButton size="small" @click="copyOutput">{{ t('tool.copy') }}</NButton>
+      <ToolTextPanel v-model:input-text="input" :output-text="result.success ? result.output : ''" :input-title="t('tools.dockerComposeTo1panel.inputTitle')" :output-title="t('tools.dockerComposeTo1panel.outputTitle')" export-name="docker-compose.yml">
+        <template #input>
+          <NInput
+            v-model:value="input"
+            type="textarea"
+            :placeholder="t('tools.dockerComposeTo1panel.inputPlaceholder')"
+            :autosize="{ minRows: 10, maxRows: 30 }"
+            style="font-family: monospace;"
+           :input-props="{ id: 'dockerComposeTo1panelField0' }"/>
         </template>
-        <NInput
-          :value="result.output"
-          type="textarea"
-          readonly
-          :autosize="{ minRows: 10, maxRows: 30 }"
-          style="font-family: monospace;"
-         :input-props="{ id: 'dockerComposeTo1panelField1' }"/>
-      </NCard>
+        <template #output>
+          <NInput
+            :value="result.output"
+            type="textarea"
+            readonly
+            :autosize="{ minRows: 10, maxRows: 30 }"
+            style="font-family: monospace;"
+           :input-props="{ id: 'dockerComposeTo1panelField1' }"/>
+        </template>
+        <template #params>
+          <NAlert v-if="!result.success && result.error" type="error">
+            {{ result.error }}
+          </NAlert>
+        </template>
+      </ToolTextPanel>
 
       <NDivider />
 

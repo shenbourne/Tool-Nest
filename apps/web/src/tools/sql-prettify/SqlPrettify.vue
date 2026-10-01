@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton, NAlert, NSelect } from 'naive-ui';
+import { NInput, NSpace, NAlert, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { formatSql, type SqlFormatOptions } from './sql-prettify.service';
 import type { SqlLanguage } from 'sql-formatter';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 const input = ref('');
 const language = ref<SqlLanguage>('sql');
@@ -43,18 +42,30 @@ const options = computed<SqlFormatOptions>(() => ({
 
 const output = computed(() => formatSql(input.value, options.value).result);
 const errorMsg = computed(() => formatSql(input.value, options.value).error);
-
-function copyOutput() {
-  copyToClipboard(output.value);
-}
 </script>
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
-        {{ errorMsg }}
-      </NAlert>
-      <NCard :title="t('common.settings')">
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('tools.sqlPrettify.inputTitle')" :output-title="t('tools.sqlPrettify.outputTitle')" export-name="output.sql">
+      <template #input>
+        <NInput
+          v-model:value="input"
+          type="textarea"
+          :rows="10"
+          placeholder="SELECT id, name FROM users WHERE active = 1 ORDER BY name"
+          style="font-family: monospace;"
+         :input-props="{ id: 'sqlPrettifyField0' }"/>
+      </template>
+      <template #output>
+        <NInput
+          :value="output"
+          type="textarea"
+          :rows="10"
+          readonly
+          :placeholder="t('tools.sqlPrettify.outputPlaceholder')"
+          style="font-family: monospace;"
+         :input-props="{ id: 'sqlPrettifyField1' }"/>
+      </template>
+      <template #params>
         <NSpace :size="16">
           <div>
             <div style="margin-bottom: 4px; font-weight: 500;">{{ t('tools.sqlPrettify.dialect') }}</div>
@@ -73,33 +84,10 @@ function copyOutput() {
             />
           </div>
         </NSpace>
-      </NCard>
-      <NCard :title="t('tools.sqlPrettify.inputTitle')">
-        <NSpace vertical :size="12">
-          <NInput
-            v-model:value="input"
-            type="textarea"
-            :rows="10"
-            placeholder="SELECT id, name FROM users WHERE active = 1 ORDER BY name"
-            style="font-family: monospace;"
-           :input-props="{ id: 'sqlPrettifyField0' }"/>
-        </NSpace>
-      </NCard>
-      <NCard :title="t('tools.sqlPrettify.outputTitle')">
-        <NSpace vertical :size="12">
-          <NInput
-            :value="output"
-            type="textarea"
-            :rows="10"
-            readonly
-            :placeholder="t('tools.sqlPrettify.outputPlaceholder')"
-            style="font-family: monospace;"
-           :input-props="{ id: 'sqlPrettifyField1' }"/>
-          <NButton :disabled="!output" @click="copyOutput">
-            {{ t('tool.copy') }}
-          </NButton>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
+          {{ errorMsg }}
+        </NAlert>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

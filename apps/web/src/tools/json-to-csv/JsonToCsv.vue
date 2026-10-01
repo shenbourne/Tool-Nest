@@ -1,54 +1,45 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton, NAlert } from 'naive-ui';
+import { NInput, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { jsonToCsv } from './json-to-csv.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 const input = ref('');
 
 const output = computed(() => jsonToCsv(input.value).result);
 const errorMsg = computed(() => jsonToCsv(input.value).error);
 
-function copyOutput() {
-  copyToClipboard(output.value);
-}
 </script>
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.inputJson')" :output-title="t('tools.jsonToCsv.outputTitle')" export-name="output.csv">
+      <template #input>
+        <NInput
+        v-model:value="input"
+        type="textarea"
+        :rows="10"
+        placeholder='[{"name":"John","age":30}]'
+        :input-props="{ id: 'jsonToCsvField0' }"/>
+      </template>
+      <template #output>
+        <NInput
+        :value="output"
+        type="textarea"
+        :rows="10"
+        readonly
+        placeholder="name,age&#10;John,30"
+        :input-props="{ id: 'jsonToCsvField1' }"/>
+      </template>
+      <template #params>
+        <NAlert v-if="errorMsg" type="error" :title="t('common.error')">
         {{ errorMsg }}
-      </NAlert>
-      <NCard :title="t('common.inputJson')">
-        <NSpace vertical :size="12">
-          <NInput
-            v-model:value="input"
-            type="textarea"
-            :rows="10"
-            placeholder='[{"name":"John","age":30}]'
-           :input-props="{ id: 'jsonToCsvField0' }"/>
-        </NSpace>
-      </NCard>
-      <NCard :title="t('tools.jsonToCsv.outputTitle')">
-        <NSpace vertical :size="12">
-          <NInput
-            :value="output"
-            type="textarea"
-            :rows="10"
-            readonly
-            placeholder="name,age&#10;John,30"
-           :input-props="{ id: 'jsonToCsvField1' }"/>
-          <NButton :disabled="!output" @click="copyOutput">
-            {{ t('tool.copy') }}
-          </NButton>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </NAlert>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

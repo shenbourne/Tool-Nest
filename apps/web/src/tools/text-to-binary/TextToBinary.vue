@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton, NAlert } from 'naive-ui';
+import { NInput, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { convertTextToAsciiBinary, convertAsciiBinaryToText } from './text-to-binary.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const inputText = ref('');
@@ -31,33 +30,30 @@ function isValidBinary(v: string) {
   if (!v) return true;
   try { convertAsciiBinaryToText(v); return true; } catch { return false; }
 }
-
-function copyBinary() {
-  if (binaryFromText.value) copyToClipboard(binaryFromText.value);
-}
-function copyText() {
-  if (textFromBinary.value) copyToClipboard(textFromBinary.value);
-}
 </script>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard :title="t('tools.textToBinary.textToAsciiBinary')">
-        <NSpace vertical :size="8">
+      <ToolTextPanel v-model:input-text="inputText" :output-text="binaryFromText" :input-title="t('common.input')" :output-title="t('tools.textToBinary.textToAsciiBinary')" export-name="binary.txt">
+        <template #input>
           <NInput v-model:value="inputText" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.inputPlaceholder')"  :input-props="{ id: 'textToBinaryField0' }"/>
+        </template>
+        <template #output>
           <NInput :value="binaryFromText" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.binaryOutputPlaceholder')"  :input-props="{ id: 'textToBinaryField1' }"/>
-          <NButton :disabled="!binaryFromText" @click="copyBinary">{{ t('tool.copy') }}</NButton>
-        </NSpace>
-      </NCard>
-      <NCard :title="t('tools.textToBinary.asciiBinaryToText')">
-        <NSpace vertical :size="8">
+        </template>
+      </ToolTextPanel>
+      <ToolTextPanel v-model:input-text="inputBinary" :output-text="textFromBinary" :input-title="t('common.input')" :output-title="t('tools.textToBinary.asciiBinaryToText')" export-name="output.txt">
+        <template #input>
           <NInput v-model:value="inputBinary" type="textarea" :rows="4" :placeholder="t('tools.textToBinary.binaryInputPlaceholder')" :status="inputBinary && !isValidBinary(inputBinary) ? 'error' : undefined"  :input-props="{ id: 'textToBinaryField2' }"/>
-          <NAlert v-if="binaryError" type="error" :title="binaryError" />
+        </template>
+        <template #output>
           <NInput :value="textFromBinary" type="textarea" :rows="4" readonly :placeholder="t('tools.textToBinary.textOutputPlaceholder')"  :input-props="{ id: 'textToBinaryField3' }"/>
-          <NButton :disabled="!textFromBinary" @click="copyText">{{ t('tool.copy') }}</NButton>
-        </NSpace>
-      </NCard>
+        </template>
+        <template #params>
+          <NAlert v-if="binaryError" type="error" :title="binaryError" />
+        </template>
+      </ToolTextPanel>
     </NSpace>
   </ToolLayout>
 </template>

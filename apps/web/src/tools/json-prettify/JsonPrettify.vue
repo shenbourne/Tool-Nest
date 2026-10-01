@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { NCard, NInput, NSelect, NSpace, NButton, NAlert } from 'naive-ui';
+import { NInput, NSelect, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { ref, computed, watch } from 'vue';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref('');
@@ -33,27 +32,24 @@ const output = computed(() => {
 });
 
 watch(input, () => { error.value = ''; });
-
-function copyOutput() {
-  if (output.value) copyToClipboard(output.value);
-}
 </script>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NSpace align="center">
-        <NSelect v-model:value="indent" :options="indentOptions" style="width: 140px;" />
-        <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
-        <NButton type="primary" @click="copyOutput" :disabled="!output">{{ t('tool.copy') }}</NButton>
-      </NSpace>
-      <NAlert v-if="error" type="error" :title="error" />
-      <NCard :title="t('tools.jsonPrettify.input')">
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('tools.jsonPrettify.input')" :output-title="t('tools.jsonPrettify.output')" export-name="output.json">
+      <template #input>
         <NInput v-model:value="input" type="textarea" :rows="8" placeholder='{"key":"value"}'  :input-props="{ id: 'jsonPrettifyField0' }"/>
-      </NCard>
-      <NCard :title="t('tools.jsonPrettify.output')">
+      </template>
+      <template #output>
         <NInput :value="output" type="textarea" :rows="8" readonly  :input-props="{ id: 'jsonPrettifyField1' }"/>
-      </NCard>
-    </NSpace>
+      </template>
+      <template #params>
+        <NSpace align="center">
+          <NSelect v-model:value="indent" :options="indentOptions" style="width: 140px;" />
+          <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
+        </NSpace>
+        <NAlert v-if="error" type="error" :title="error" />
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

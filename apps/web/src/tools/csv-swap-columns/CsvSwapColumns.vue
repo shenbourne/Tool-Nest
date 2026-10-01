@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NInputNumber } from 'naive-ui';
+import { NInput, NSpace, NInputNumber } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { parseCSV, serializeCSV } from '@/utils/csv';
 import { tool } from './index';
 
@@ -23,10 +24,16 @@ const output = computed(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="5" :placeholder="t('common.csvInputPlaceholder')"  :input-props="{ id: 'csvSwapColumnsField0' }"/>
-      <NSpace><NInputNumber v-model:value="colA" :min="0" :placeholder="t('tools.csvSwapColumns.columnA')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField1' }"/><NInputNumber v-model:value="colB" :min="0" :placeholder="t('tools.csvSwapColumns.columnB')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField2' }"/></NSpace>
-      <NInput :value="output" type="textarea" :rows="5" readonly  :input-props="{ id: 'csvSwapColumnsField3' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.csv">
+      <template #input>
+        <NInput v-model:value="input" type="textarea" :rows="5" :placeholder="t('common.csvInputPlaceholder')"  :input-props="{ id: 'csvSwapColumnsField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="5" readonly  :input-props="{ id: 'csvSwapColumnsField3' }"/>
+      </template>
+      <template #params>
+        <NSpace><NInputNumber v-model:value="colA" :min="0" :placeholder="t('tools.csvSwapColumns.columnA')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField1' }"/><NInputNumber v-model:value="colB" :min="0" :placeholder="t('tools.csvSwapColumns.columnB')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField2' }"/></NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton, NAlert, NDataTable } from 'naive-ui';
+import { NCard, NInput, NAlert, NDataTable } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { normalizeEmails } from './email-normalizer.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref('John.Doe+newsletter@gmail.com\nJane.Smith@outlook.com');
@@ -19,11 +18,6 @@ const normalizedOutput = computed(() =>
   results.value.map(r => r.error ? r.original : r.normalized).join('\n'),
 );
 
-function copyOutput() {
-  if (normalizedOutput.value) {
-    copyToClipboard(normalizedOutput.value);
-  }
-}
 
 const columns = computed(() => [
   { title: t('tools.emailNormalizer.original'), key: 'original' },
@@ -42,37 +36,34 @@ const tableData = computed(() =>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.emailNormalizer.inputTitle')">
+    <ToolTextPanel v-model:input-text="input" :output-text="normalizedOutput" :input-title="t('tools.emailNormalizer.inputTitle')" :output-title="t('tools.emailNormalizer.outputTitle')" export-name="emails.txt">
+      <template #input>
         <NInput
-          v-model:value="input"
-          type="textarea"
-          :placeholder="t('tools.emailNormalizer.inputPlaceholder')"
-          :autosize="{ minRows: 3, maxRows: 10 }"
-         :input-props="{ id: 'emailNormalizerField0' }"/>
-      </NCard>
-
-      <NCard :title="t('common.results')">
+        v-model:value="input"
+        type="textarea"
+        :placeholder="t('tools.emailNormalizer.inputPlaceholder')"
+        :autosize="{ minRows: 3, maxRows: 10 }"
+        :input-props="{ id: 'emailNormalizerField0' }"/>
+      </template>
+      <template #output>
+        <NInput
+        :value="normalizedOutput"
+        type="textarea"
+        :autosize="{ minRows: 3, maxRows: 10 }"
+        readonly
+        :input-props="{ id: 'emailNormalizerField1' }"/>
+      </template>
+      <template #params>
+        <NCard :title="t('common.results')">
         <NDataTable
-          v-if="results.length > 0"
-          :columns="columns"
-          :data="tableData"
-          :bordered="false"
-          size="small"
+        v-if="results.length > 0"
+        :columns="columns"
+        :data="tableData"
+        :bordered="false"
+        size="small"
         />
-      </NCard>
-
-      <NCard :title="t('tools.emailNormalizer.outputTitle')">
-        <NInput
-          :value="normalizedOutput"
-          type="textarea"
-          :autosize="{ minRows: 3, maxRows: 10 }"
-          readonly
-         :input-props="{ id: 'emailNormalizerField1' }"/>
-        <NButton :disabled="!normalizedOutput" @click="copyOutput" style="margin-top: 8px;">
-          {{ t('tool.copy') }}
-        </NButton>
-      </NCard>
-    </NSpace>
+        </NCard>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

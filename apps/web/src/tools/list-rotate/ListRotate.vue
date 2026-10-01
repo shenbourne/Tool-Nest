@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NInputNumber } from 'naive-ui';
+import { NInput, NInputNumber } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -17,10 +18,16 @@ const output = computed(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')"  :input-props="{ id: 'listRotateField0' }"/>
-      <NInputNumber v-model:value="pos" :placeholder="t('common.positions')" style="width:130px"  :input-props="{ id: 'listRotateField1' }"/>
-      <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'listRotateField2' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+      <template #input>
+        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.listItemsPlaceholder')"  :input-props="{ id: 'listRotateField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'listRotateField2' }"/>
+      </template>
+      <template #params>
+        <NInputNumber v-model:value="pos" :placeholder="t('common.positions')" style="width:130px"  :input-props="{ id: 'listRotateField1' }"/>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

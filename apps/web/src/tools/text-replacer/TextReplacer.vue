@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NSwitch, NAlert } from 'naive-ui';
+import { NInput, NSpace, NSwitch, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
 const input = ref('');
@@ -24,12 +25,18 @@ const output = computed(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textReplacer.inputPlaceholder')"  :input-props="{ id: 'textReplacerField0' }"/>
-      <NSpace><NInput v-model:value="find" :placeholder="t('tools.textReplacer.findPlaceholder')" style="width:200px"  :input-props="{ id: 'textReplacerField1' }"/><NInput v-model:value="replace" :placeholder="t('tools.textReplacer.replacePlaceholder')" style="width:200px"  :input-props="{ id: 'textReplacerField2' }"/></NSpace>
-      <NSwitch v-model:value="useRegex">{{ t('common.regex') }}</NSwitch>
-      <NAlert v-if="regexError" type="error" :title="regexError" />
-      <NInput :value="output" type="textarea" :rows="4" readonly  :input-props="{ id: 'textReplacerField3' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+      <template #input>
+        <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textReplacer.inputPlaceholder')"  :input-props="{ id: 'textReplacerField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="4" readonly  :input-props="{ id: 'textReplacerField3' }"/>
+      </template>
+      <template #params>
+        <NSpace><NInput v-model:value="find" :placeholder="t('tools.textReplacer.findPlaceholder')" style="width:200px"  :input-props="{ id: 'textReplacerField1' }"/><NInput v-model:value="replace" :placeholder="t('tools.textReplacer.replacePlaceholder')" style="width:200px"  :input-props="{ id: 'textReplacerField2' }"/></NSpace>
+        <NSwitch v-model:value="useRegex">{{ t('common.regex') }}</NSwitch>
+        <NAlert v-if="regexError" type="error" :title="regexError" />
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
