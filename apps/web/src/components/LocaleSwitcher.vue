@@ -7,6 +7,6 @@ const preferencesStore = usePreferencesStore();
 
 <template>
   <NButton quaternary @click="preferencesStore.toggleLocale">
-    {{ preferencesStore.isZh ? 'EN' : '中文' }}
+    {{ preferencesStore.isZh ? '中文' : 'EN' }}
   </NButton>
 </template>
