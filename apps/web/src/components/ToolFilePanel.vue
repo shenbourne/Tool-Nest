@@ -4,8 +4,11 @@ import { useI18n } from 'vue-i18n';
 
 withDefaults(defineProps<{
   gap?: number;
+  /** Set when the tool's result box can hold more than one file. */
+  outputMultiple?: boolean;
 }>(), {
   gap: 16,
+  outputMultiple: false,
 });
 
 const emit = defineEmits<{
@@ -23,7 +26,10 @@ const { t } = useI18n();
       <div class="tool-file-panel__column tool-file-panel__input">
         <slot name="input-files" />
       </div>
-      <div class="tool-file-panel__column tool-file-panel__output">
+      <div
+        class="tool-file-panel__column tool-file-panel__output"
+        :class="{ 'tool-file-panel__output--multi': outputMultiple }"
+      >
         <slot name="output-files" />
       </div>
     </div>
@@ -71,10 +77,23 @@ const { t } = useI18n();
   flex-direction: column;
 }
 
-.tool-file-panel__column > .tool-file-upload,
-.tool-file-panel__column > .file-card {
+.tool-file-panel__column > .tool-file-upload {
   flex: 1;
   min-height: 0;
+}
+
+/* Several result files: 128x128 tiles in a grid, the same shape a multi-file
+   input box uses. One result file keeps the column, so it renders as the
+   full-width card. */
+.tool-file-panel__output--multi {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 128px);
+  gap: var(--spacing-sm);
+  align-content: start;
+}
+
+.tool-file-panel__output:not(.tool-file-panel__output--multi) :deep(.file-card__name) {
+  text-align: left;
 }
 
 .tool-file-panel__params {
