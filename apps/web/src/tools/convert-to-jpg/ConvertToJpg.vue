@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import FileCard from '@/components/FileCard.vue';
 import { tool } from './index';
 import { useCopy } from '@/composables/useCopy';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -13,14 +14,21 @@ const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
 const processing = ref(false);
-function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
-function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'output.jpg'; a.click(); } }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; resultFile.value = null; }
+function download() {
+  if (!resultFile.value) return;
+  const url = URL.createObjectURL(resultFile.value);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'output.jpg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 async function copy() {
-  if (!resultUrl.value) return;
-  const res = await fetch(resultUrl.value);
-  const blob = await res.blob();
-  await copyFileToClipboard(blob);
+  if (!resultFile.value) return;
+  await copyFileToClipboard(resultFile.value);
 }
 async function process() {
   if (!file.value) return;
@@ -32,9 +40,14 @@ async function process() {
     const ctx = canvas.getContext('2d')!;
     ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0);
-    resultUrl.value = canvas.toDataURL('image/jpeg', 0.92);
-    URL.revokeObjectURL(objectUrl);
-    processing.value = false;
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resultFile.value = new File([blob], 'output.jpg', { type: 'image/jpeg' });
+        resultUrl.value = URL.createObjectURL(blob);
+      }
+      URL.revokeObjectURL(objectUrl);
+      processing.value = false;
+    }, 'image/jpeg', 0.92);
   };
   const objectUrl = URL.createObjectURL(file.value);
   img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
@@ -49,11 +62,11 @@ async function process() {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
         </template>
         <template #output-files>
-          <img v-if="resultUrl" :src="resultUrl" class="tool-file-panel__output-image" />
+          <FileCard v-if="resultFile" name="output.jpg" :file="resultFile" :thumbnail-url="resultUrl" />
         </template>
         <template #actions-right>
-          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-          <NButton :disabled="!resultUrl" @click="download">{{ t('tools.convertToJpg.downloadJpg') }}</NButton>
+          <NButton :disabled="!resultFile" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultFile" @click="download">{{ t('tools.convertToJpg.downloadJpg') }}</NButton>
         </template>
         <template #params>
           <NSpace vertical :size="12">
@@ -66,12 +79,3 @@ async function process() {
     </NCard>
   </ToolLayout>
 </template>
-
-<style scoped>
-.tool-file-panel__output-image {
-  max-width: 100%;
-  max-height: 300px;
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-md);
-}
-</style>

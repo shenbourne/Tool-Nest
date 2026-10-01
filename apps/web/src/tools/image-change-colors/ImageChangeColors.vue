@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -15,6 +16,7 @@ const { copyFileToClipboard } = useCopy();
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
+const resultFile = ref<File | null>(null);
 const hueRotate = ref(0);
 const saturate = ref(100);
 const brightness = ref(100);
@@ -29,6 +31,8 @@ function onFileChange(files: File[]) {
   file.value = f;
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
   imageUrl.value = f ? URL.createObjectURL(f) : '';
+  resultFile.value = null;
+  if (f) process();
 }
 
 function createCanvas(img: HTMLImageElement) {
@@ -40,6 +44,22 @@ function createCanvas(img: HTMLImageElement) {
   ctx.filter = filterStyle.value;
   ctx.drawImage(img, 0, 0);
   return canvas;
+}
+
+function process() {
+  if (!file.value) return;
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const canvas = createCanvas(img);
+    if (!canvas) return;
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resultFile.value = new File([blob], 'image-changed.png', { type: 'image/png' });
+      }
+    }, 'image/png');
+  };
+  img.src = imageUrl.value;
 }
 
 function download() {
@@ -89,9 +109,7 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <div v-if="imageUrl">
-            <img :src="imageUrl" :style="{ filter: filterStyle, maxWidth: '100%' }" />
-          </div>
+          <FileCard v-if="resultFile" name="image-changed.png" :file="resultFile" :thumbnail-url="imageUrl" />
         </template>
         <template #actions-right>
           <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>

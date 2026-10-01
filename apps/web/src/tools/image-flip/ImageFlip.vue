@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import FileCard from '@/components/FileCard.vue';
 import { tool } from './index';
 import { useCopy } from '@/composables/useCopy';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -15,8 +16,9 @@ const file = ref<File | null>(null);
 const horizontal = ref(true);
 const vertical = ref(false);
 const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
 const processing = ref(false);
-function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; resultFile.value = null; }
 function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'flipped'; a.click(); } }
 async function copy() {
   if (!resultUrl.value) return;
@@ -34,9 +36,15 @@ async function process() {
     const ctx = canvas.getContext('2d')!;
     ctx.scale(horizontal.value ? -1 : 1, vertical.value ? -1 : 1);
     ctx.drawImage(img, horizontal.value ? -img.width : 0, vertical.value ? -img.height : 0);
-    resultUrl.value = canvas.toDataURL(file.value!.type || 'image/png');
-    URL.revokeObjectURL(objectUrl);
-    processing.value = false;
+    const mime = file.value!.type || 'image/png';
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resultFile.value = new File([blob], 'flipped.png', { type: mime });
+        resultUrl.value = URL.createObjectURL(blob);
+      }
+      URL.revokeObjectURL(objectUrl);
+      processing.value = false;
+    }, mime);
   };
   const objectUrl = URL.createObjectURL(file.value);
   img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
@@ -51,7 +59,7 @@ async function process() {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
         </template>
         <template #output-files>
-          <img v-if="resultUrl" :src="resultUrl" class="tool-file-panel__output-image" />
+          <FileCard v-if="resultFile" name="flipped.png" :file="resultFile" :thumbnail-url="resultUrl" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
@@ -72,12 +80,3 @@ async function process() {
     </NCard>
   </ToolLayout>
 </template>
-
-<style scoped>
-.tool-file-panel__output-image {
-  max-width: 100%;
-  max-height: 300px;
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-md);
-}
-</style>

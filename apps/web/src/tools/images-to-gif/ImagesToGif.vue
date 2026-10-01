@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { buildImagesToGifCommand } from '@/utils/image-slideshow';
@@ -20,6 +21,8 @@ const frameDuration = ref(0.5);
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
+const resultThumbnail = computed(() => resultFile.value ? URL.createObjectURL(resultFile.value) : '');
 // Bumped whenever the file list changes so a render still in flight for the
 // old list cannot overwrite the new selection's result.
 let generation = 0;
@@ -28,6 +31,7 @@ function onFileChange(selected: File[]) {
   generation++;
   files.value = selected;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -90,20 +94,13 @@ async function copy() {
   await copyFileToClipboard(blob);
 }
 
-const resultUrl = ref('');
-
 watch(resultData, (data) => {
-  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
   if (data) {
     const blob = new Blob([data], { type: 'image/gif' });
-    resultUrl.value = URL.createObjectURL(blob);
+    resultFile.value = new File([blob], 'animation.gif', { type: 'image/gif' });
   } else {
-    resultUrl.value = '';
+    resultFile.value = null;
   }
-});
-
-onUnmounted(() => {
-  if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
 });
 </script>
 
@@ -123,7 +120,7 @@ onUnmounted(() => {
           </div>
         </template>
         <template #output-files>
-          <img v-if="resultUrl" :src="resultUrl" style="max-width: 100%; max-height: 300px;" />
+          <FileCard v-if="resultFile" name="animation.gif" :file="resultFile" :thumbnail-url="resultUrl" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultData" @click="copy">{{ t('tool.copyFile') }}</NButton>

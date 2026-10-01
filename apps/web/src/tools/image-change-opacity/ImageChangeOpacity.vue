@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import FileCard from '@/components/FileCard.vue';
 import { tool } from './index';
 import { useCopy } from '@/composables/useCopy';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -14,14 +15,21 @@ const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const opacity = ref(0.5);
 const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
 const processing = ref(false);
-function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
-function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'transparent'; a.click(); } }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; resultFile.value = null; }
+function download() {
+  if (!resultFile.value) return;
+  const url = URL.createObjectURL(resultFile.value);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'transparent';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 async function copy() {
-  if (!resultUrl.value) return;
-  const res = await fetch(resultUrl.value);
-  const blob = await res.blob();
-  await copyFileToClipboard(blob);
+  if (!resultFile.value) return;
+  await copyFileToClipboard(resultFile.value);
 }
 async function process() {
   if (!file.value) return;
@@ -33,9 +41,14 @@ async function process() {
     const ctx = canvas.getContext('2d')!;
     ctx.globalAlpha = opacity.value;
     ctx.drawImage(img, 0, 0);
-    resultUrl.value = canvas.toDataURL('image/png');
-    URL.revokeObjectURL(objectUrl);
-    processing.value = false;
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resultFile.value = new File([blob], 'transparent.png', { type: 'image/png' });
+        resultUrl.value = URL.createObjectURL(blob);
+      }
+      URL.revokeObjectURL(objectUrl);
+      processing.value = false;
+    }, 'image/png');
   };
   const objectUrl = URL.createObjectURL(file.value);
   img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
@@ -50,11 +63,11 @@ async function process() {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
         </template>
         <template #output-files>
-          <img v-if="resultUrl" :src="resultUrl" class="tool-file-panel__output-image" />
+          <FileCard v-if="resultFile" name="transparent.png" :file="resultFile" :thumbnail-url="resultUrl" />
         </template>
         <template #actions-right>
-          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-          <NButton :disabled="!resultUrl" @click="download">{{ t('tools.imageChangeOpacity.downloadPng') }}</NButton>
+          <NButton :disabled="!resultFile" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultFile" @click="download">{{ t('tools.imageChangeOpacity.downloadPng') }}</NButton>
         </template>
         <template #params>
           <NSpace vertical :size="12">
@@ -68,12 +81,3 @@ async function process() {
     </NCard>
   </ToolLayout>
 </template>
-
-<style scoped>
-.tool-file-panel__output-image {
-  max-width: 100%;
-  max-height: 300px;
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-md);
-}
-</style>

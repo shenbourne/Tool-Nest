@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
@@ -14,15 +15,22 @@ const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const width = ref(800);
 const height = ref(600);
-const resultUrl = ref('');
+const resultFile = ref<File | null>(null);
+const resultThumbnail = computed(() => resultFile.value ? URL.createObjectURL(resultFile.value) : '');
 const processing = ref(false);
-function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; }
-function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'resized'; a.click(); } }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultFile.value = null; }
+function download() {
+  if (!resultFile.value) return;
+  const url = URL.createObjectURL(resultFile.value);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'resized';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 async function copy() {
-  if (!resultUrl.value) return;
-  const res = await fetch(resultUrl.value);
-  const blob = await res.blob();
-  await copyFileToClipboard(blob);
+  if (!resultFile.value) return;
+  await copyFileToClipboard(resultFile.value);
 }
 async function process() {
   if (!file.value) return;
@@ -32,9 +40,14 @@ async function process() {
     const canvas = document.createElement('canvas');
     canvas.width = width.value; canvas.height = height.value;
     canvas.getContext('2d')!.drawImage(img, 0, 0, width.value, height.value);
-    resultUrl.value = canvas.toDataURL(file.value!.type || 'image/png');
-    URL.revokeObjectURL(objectUrl);
-    processing.value = false;
+    const mime = file.value!.type || 'image/png';
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resultFile.value = new File([blob], 'resized.png', { type: mime });
+      }
+      URL.revokeObjectURL(objectUrl);
+      processing.value = false;
+    }, mime);
   };
   const objectUrl = URL.createObjectURL(file.value);
   img.onerror = () => { URL.revokeObjectURL(objectUrl); processing.value = false; };
@@ -49,11 +62,11 @@ async function process() {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
         </template>
         <template #output-files>
-          <img v-if="resultUrl" :src="resultUrl" class="tool-file-panel__output-image" />
+          <FileCard v-if="resultFile" name="resized.png" :file="resultFile" :thumbnail-url="resultThumbnail" />
         </template>
         <template #actions-right>
-          <NButton :disabled="!resultUrl" @click="copy">{{ t('tool.copyFile') }}</NButton>
-          <NButton :disabled="!resultUrl" @click="download">{{ t('tool.exportFile') }}</NButton>
+          <NButton :disabled="!resultFile" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultFile" @click="download">{{ t('tool.exportFile') }}</NButton>
         </template>
         <template #params>
           <NSpace vertical :size="12">
@@ -70,12 +83,3 @@ async function process() {
     </NCard>
   </ToolLayout>
 </template>
-
-<style scoped>
-.tool-file-panel__output-image {
-  max-width: 100%;
-  max-height: 300px;
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-md);
-}
-</style>

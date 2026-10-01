@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NColorPicker } from 'naive-ui';
+import FileCard from '@/components/FileCard.vue';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
@@ -19,11 +20,13 @@ const targetColor = ref('#ffffff');
 const tolerance = ref(30);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const hasResult = ref(false);
+const resultFile = ref<File | null>(null);
 
 function onFileChange(files: File[]) {
   const f = files[0] ?? null;
   file.value = f;
   hasResult.value = false;
+  resultFile.value = null;
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
   imageUrl.value = f ? URL.createObjectURL(f) : '';
 }
@@ -60,6 +63,11 @@ function processImage() {
     }
     ctx.putImageData(imageData, 0, 0);
     hasResult.value = true;
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resultFile.value = new File([blob], 'transparent.png', { type: 'image/png' });
+      }
+    }, 'image/png');
   };
   img.src = imageUrl.value;
 }
@@ -103,9 +111,7 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <div v-if="file" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 20px 20px;">
-            <canvas ref="canvasRef" style="max-width:100%;" />
-          </div>
+          <FileCard v-if="resultFile" name="transparent.png" :file="resultFile" file-type="image/png" />
         </template>
         <template #actions-right>
           <NButton :disabled="!hasResult" @click="copy">{{ t('tool.copyFile') }}</NButton>

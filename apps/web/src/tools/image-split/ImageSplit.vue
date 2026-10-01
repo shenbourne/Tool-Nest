@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
+import FileCard from '@/components/FileCard.vue';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
@@ -18,12 +19,14 @@ const imageUrl = ref<string>('');
 const rows = ref(2);
 const cols = ref(2);
 const tiles = ref<string[]>([]);
+const tileFiles = ref<File[]>([]);
 const error = ref('');
 
 function onFileChange(files: File[]) {
   const f = files[0] ?? null;
   file.value = f;
   tiles.value = [];
+  tileFiles.value = [];
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
   imageUrl.value = f ? URL.createObjectURL(f) : '';
 }
@@ -61,6 +64,20 @@ watch([rows, cols], () => {
   if (file.value) splitImage();
 });
 
+watch(tiles, async (newTiles) => {
+  if (!newTiles.length) {
+    tileFiles.value = [];
+    return;
+  }
+  const files: File[] = [];
+  for (let i = 0; i < newTiles.length; i++) {
+    const res = await fetch(newTiles[i]);
+    const blob = await res.blob();
+    files.push(new File([blob], `tile_${i + 1}.png`, { type: 'image/png' }));
+  }
+  tileFiles.value = files;
+});
+
 function downloadTile(dataUrl: string, idx: number) {
   const a = document.createElement('a');
   a.href = dataUrl;
@@ -90,14 +107,8 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <div v-if="tiles.length" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:8px;width:100%;">
-            <div v-for="(tile, idx) in tiles" :key="idx">
-              <img :src="tile" style="width:100%;border:1px solid var(--color-hairline);" />
-              <NSpace>
-                <NButton size="small" @click="downloadTile(tile, idx)" style="margin-top:4px;">{{ t('tool.download') }}</NButton>
-                <NButton size="small" @click="copyTile(tile)" style="margin-top:4px;">{{ t('tool.copyFile') }}</NButton>
-              </NSpace>
-            </div>
+          <div v-if="tileFiles.length" class="tool-file-panel__output-grid">
+            <FileCard v-for="(tf, idx) in tileFiles" :key="idx" :name="`tile_${idx + 1}.png`" :file="tf" file-type="image/png" />
           </div>
         </template>
         <template #actions-right>
@@ -123,3 +134,12 @@ onUnmounted(() => {
     </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+</style>
