@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -14,18 +14,24 @@ const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const quality = ref(0.7);
-const resultUrl = ref('');
 const resultFile = ref<File | null>(null);
+const resultThumbnail = computed(() => resultFile.value ? URL.createObjectURL(resultFile.value) : '');
 const origSize = ref(0);
 const newSize = ref(0);
 const processing = ref(false);
-function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; resultFile.value = null; }
-function download() { if (resultUrl.value) { const a = document.createElement('a'); a.href = resultUrl.value; a.download = 'compressed'; a.click(); } }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultFile.value = null; }
+function download() {
+  if (!resultFile.value) return;
+  const url = URL.createObjectURL(resultFile.value);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'compressed';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 async function copy() {
-  if (!resultUrl.value) return;
-  const res = await fetch(resultUrl.value);
-  const blob = await res.blob();
-  await copyFileToClipboard(blob);
+  if (!resultFile.value) return;
+  await copyFileToClipboard(resultFile.value);
 }
 async function process() {
   if (!file.value) return;
@@ -39,7 +45,6 @@ async function process() {
     canvas.toBlob(blob => {
       if (blob) {
         newSize.value = blob.size;
-        resultUrl.value = URL.createObjectURL(blob);
         const mime = file.value!.type === 'image/png' ? 'image/png' : 'image/jpeg';
         resultFile.value = new File([blob], 'compressed.png', { type: mime });
       }
@@ -60,7 +65,7 @@ async function process() {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
         </template>
         <template #output-files>
-          <FileCard v-if="resultFile" name="compressed.png" :file="resultFile" :thumbnail-url="resultUrl" />
+          <FileCard v-if="resultFile" name="compressed.png" :file="resultFile" :thumbnail-url="resultThumbnail" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultFile" @click="copy">{{ t('tool.copyFile') }}</NButton>

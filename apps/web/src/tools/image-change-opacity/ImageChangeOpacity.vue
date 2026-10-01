@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -14,10 +14,10 @@ const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const opacity = ref(0.5);
-const resultUrl = ref('');
 const resultFile = ref<File | null>(null);
+const resultThumbnail = computed(() => resultFile.value ? URL.createObjectURL(resultFile.value) : '');
 const processing = ref(false);
-function onFile(files: File[]) { file.value = files[0] ?? null; resultUrl.value = ''; resultFile.value = null; }
+function onFile(files: File[]) { file.value = files[0] ?? null; resultFile.value = null; }
 function download() {
   if (!resultFile.value) return;
   const url = URL.createObjectURL(resultFile.value);
@@ -44,7 +44,6 @@ async function process() {
     canvas.toBlob((blob) => {
       if (blob) {
         resultFile.value = new File([blob], 'transparent.png', { type: 'image/png' });
-        resultUrl.value = URL.createObjectURL(blob);
       }
       URL.revokeObjectURL(objectUrl);
       processing.value = false;
@@ -63,7 +62,7 @@ async function process() {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
         </template>
         <template #output-files>
-          <FileCard v-if="resultFile" name="transparent.png" :file="resultFile" :thumbnail-url="resultUrl" />
+          <FileCard v-if="resultFile" name="transparent.png" :file="resultFile" file-type="image/png" :thumbnail-url="resultThumbnail" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultFile" @click="copy">{{ t('tool.copyFile') }}</NButton>
