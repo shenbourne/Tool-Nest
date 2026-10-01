@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -17,6 +17,7 @@ const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
 const resultFile = ref<File | null>(null);
+const resultThumbnail = computed(() => resultFile.value ? URL.createObjectURL(resultFile.value) : '');
 const hueRotate = ref(0);
 const saturate = ref(100);
 const brightness = ref(100);
@@ -32,7 +33,6 @@ function onFileChange(files: File[]) {
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
   imageUrl.value = f ? URL.createObjectURL(f) : '';
   resultFile.value = null;
-  if (f) process();
 }
 
 function createCanvas(img: HTMLImageElement) {
@@ -46,14 +46,17 @@ function createCanvas(img: HTMLImageElement) {
   return canvas;
 }
 
-function process() {
-  if (!file.value) return;
+let regenGeneration = 0;
+function regenerate() {
+  if (!file.value || !imageUrl.value) return;
+  const gen = ++regenGeneration;
   const img = new Image();
   img.crossOrigin = 'anonymous';
   img.onload = () => {
     const canvas = createCanvas(img);
     if (!canvas) return;
     canvas.toBlob((blob) => {
+      if (gen !== regenGeneration) return;
       if (blob) {
         resultFile.value = new File([blob], 'image-changed.png', { type: 'image/png' });
       }
@@ -63,42 +66,21 @@ function process() {
 }
 
 function download() {
-  if (!file.value) return;
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = () => {
-    const canvas = createCanvas(img);
-    if (!canvas) return;
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'image-changed.png';
-      a.click();
-      URL.revokeObjectURL(url);
-    }, 'image/png');
-  };
-  img.src = imageUrl.value;
+  if (!resultFile.value) return;
+  const url = URL.createObjectURL(resultFile.value);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'image-changed.png';
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 async function copy() {
-  if (!file.value) return;
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = () => {
-    const canvas = createCanvas(img);
-    if (!canvas) return;
-    canvas.toBlob(async (blob) => {
-      if (!blob) return;
-      await copyFileToClipboard(blob);
-    }, 'image/png');
-  };
-  img.src = imageUrl.value;
+  if (!resultFile.value) return;
+  await copyFileToClipboard(resultFile.value);
 }
-onUnmounted(() => {
-  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
-});
+
+watchEffect(regenerate);
 </script>
 
 <template>
