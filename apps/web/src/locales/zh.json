@@ -1225,7 +1225,7 @@
       "extensionsColumn": "扩展名"
     },
     "keycodeInfo": {
-      "name": "按键信息",
+      "name": "键盘信息",
       "description": "显示键盘事件属性",
       "key": "键名：",
       "keyCode": "键码：",

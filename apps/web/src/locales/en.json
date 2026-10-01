@@ -1225,7 +1225,7 @@
       "extensionsColumn": "Extensions"
     },
     "keycodeInfo": {
-      "name": "Keycode Info",
+      "name": "Keyboard Info",
       "description": "Display keyboard event properties",
       "key": "Key:",
       "keyCode": "Key Code:",
