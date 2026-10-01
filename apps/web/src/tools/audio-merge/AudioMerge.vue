@@ -78,7 +78,6 @@ async function process() {
     resultData.value = result;
     const blob = new Blob([result], { type: 'audio/mpeg' });
     resultFile.value = new File([blob], 'merged_audio.mp3', { type: 'audio/mpeg' });
-    downloadBlob(result, 'merged_audio.mp3', 'audio/mpeg');
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -116,6 +115,9 @@ async function copy() {
         
         
         <template #actions-right>
+          <NButton :disabled="!resultFile" @click="resultFile && resultData && downloadBlob(resultData, resultFile.name, resultFile.type)">
+            {{ t('tool.exportFile') }}
+          </NButton>
           <NButton :disabled="!resultData" @click="copy">
             {{ t('tool.copyFile') }}
           </NButton>

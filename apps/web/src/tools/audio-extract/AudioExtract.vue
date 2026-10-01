@@ -84,7 +84,6 @@ async function process() {
     resultData.value = result;
     const baseName = file.value.name.replace(/\.[^.]+$/, '');
     resultFile.value = new File([result], `${baseName}_audio${ext}`, { type: mime });
-    downloadBlob(result, `${baseName}_audio${ext}`, mime);
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -118,6 +117,9 @@ async function copy() {
         
         
         <template #actions-right>
+          <NButton :disabled="!resultFile" @click="resultFile && resultData && downloadBlob(resultData, resultFile.name, resultFile.type)">
+            {{ t('tool.exportFile') }}
+          </NButton>
           <NButton :disabled="!resultData" @click="copy">
             {{ t('tool.copyFile') }}
           </NButton>
