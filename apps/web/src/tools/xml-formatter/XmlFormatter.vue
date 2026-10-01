@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton, NRadioGroup, NRadioButton, NAlert } from 'naive-ui';
+import { NInput, NSpace, NRadioGroup, NRadioButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { formatXml, minifyXml } from './xml-formatter.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const input = ref('<root>\n<child name="test">\n<sub>Hello</sub>\n</child>\n</root>');
@@ -21,18 +20,12 @@ const result = computed(() => {
   }
   return formatXml(input.value, indentSize.value);
 });
-
-function copyOutput() {
-  if (result.value.formatted) {
-    copyToClipboard(result.value.formatted);
-  }
-}
 </script>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.xmlFormatter.inputTitle')">
+    <ToolTextPanel v-model:input-text="input" :output-text="result.formatted" :input-title="t('tools.xmlFormatter.inputTitle')" :output-title="t('common.output')" export-name="output.xml">
+      <template #input>
         <NInput
           v-model:value="input"
           type="textarea"
@@ -40,7 +33,18 @@ function copyOutput() {
           :autosize="{ minRows: 6, maxRows: 20 }"
           monospace
          :input-props="{ id: 'xmlFormatterField0' }"/>
-        <NSpace align="center" :size="12" style="margin-top: 8px;">
+      </template>
+      <template #output>
+        <NInput
+          :value="result.formatted"
+          type="textarea"
+          :autosize="{ minRows: 6, maxRows: 20 }"
+          readonly
+          monospace
+         :input-props="{ id: 'xmlFormatterField1' }"/>
+      </template>
+      <template #params>
+        <NSpace align="center" :size="12">
           <NRadioGroup v-model:value="mode">
             <NRadioButton value="format">{{ t('common.format') }}</NRadioButton>
             <NRadioButton value="minify">{{ t('tools.xmlFormatter.minify') }}</NRadioButton>
@@ -53,24 +57,10 @@ function copyOutput() {
             </NRadioGroup>
           </template>
         </NSpace>
-      </NCard>
-
-      <NCard :title="t('common.output')">
         <NAlert v-if="result.error" type="error" style="margin-bottom: 12px;">
           {{ result.error }}
         </NAlert>
-        <NInput
-          v-else
-          :value="result.formatted"
-          type="textarea"
-          :autosize="{ minRows: 6, maxRows: 20 }"
-          readonly
-          monospace
-         :input-props="{ id: 'xmlFormatterField1' }"/>
-        <NButton :disabled="!result.formatted" @click="copyOutput" style="margin-top: 8px;">
-          {{ t('tool.copy') }}
-        </NButton>
-      </NCard>
-    </NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
