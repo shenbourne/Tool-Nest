@@ -71,8 +71,10 @@ const { t } = useI18n();
   flex-direction: column;
 }
 
-.tool-file-panel__column > * {
+.tool-file-panel__column > .tool-file-upload,
+.tool-file-panel__column > .file-card {
   flex: 1;
+  min-height: 0;
 }
 
 .tool-file-panel__params {

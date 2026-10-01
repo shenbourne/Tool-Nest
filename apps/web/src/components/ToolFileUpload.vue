@@ -240,7 +240,8 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
 .tool-file-upload {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
 .tool-file-upload__body {
@@ -269,18 +270,20 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
 
 .tool-file-upload__files {
   list-style: none;
-  margin: var(--spacing-xs) 0 0;
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
   flex: 1;
+  min-height: 0;
 }
 
 .tool-file-upload__item {
   list-style: none;
   flex: 1;
   display: flex;
+  min-height: 0;
 }
 
 .tool-file-upload__compact-trigger {

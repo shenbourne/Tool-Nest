@@ -111,7 +111,8 @@ function handleClick() {
   cursor: pointer;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
   width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   justify-content: center;
 }
 
