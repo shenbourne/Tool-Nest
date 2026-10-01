@@ -141,7 +141,6 @@
     "pasteFile": "Paste file",
     "fileUpload": {
       "choose": "Click, drop, or paste a file here",
-      "replace": "Click, drop, or paste to replace",
       "accepted": "Accepted: {types}",
       "rejected": "The pasted content is not a supported file type"
     }
@@ -194,7 +193,6 @@
     "convert": "Convert",
     "compare": "Compare",
     "add": "Add",
-    "remove": "Remove",
     "pageNotFound": "Page not found",
     "goHome": "Go Home",
     "swap": "Swap",
@@ -211,8 +209,6 @@
     "trim": "Trim",
     "merge": "Merge",
     "loop": "Loop",
-    "moveUp": "Up",
-    "moveDown": "Down",
     "horizontal": "Horizontal",
     "vertical": "Vertical",
     "min": "Min",
