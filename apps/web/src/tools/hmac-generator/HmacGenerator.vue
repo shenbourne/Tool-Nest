@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NInput, NSelect, NSpace } from 'naive-ui';
+import { NInput, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { HmacMD5, HmacRIPEMD160, HmacSHA1, HmacSHA224, HmacSHA256, HmacSHA3, HmacSHA384, HmacSHA512, enc } from 'crypto-js';
 import type { lib } from 'crypto-js';
