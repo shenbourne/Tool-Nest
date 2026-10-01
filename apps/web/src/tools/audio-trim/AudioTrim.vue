@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { NCard, NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
+import { NSpace, NButton, NAlert, NInputNumber, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
@@ -19,10 +20,12 @@ const endTime = ref(10);
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
 
 function onFileChange(files: File[]) {
   file.value = files[0] ?? null;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -61,6 +64,7 @@ async function process() {
 
     resultData.value = result;
     const baseName = file.value.name.replace(/\.[^.]+$/, '');
+    resultFile.value = new File([result], `${baseName}_trimmed.mp3`, { type: 'audio/mpeg' });
     downloadBlob(result, `${baseName}_trimmed.mp3`, 'audio/mpeg');
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
@@ -89,7 +93,7 @@ async function copy() {
           <ToolFileUpload ref="fileUpload" accept="audio/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <NAlert v-if="resultData" type="success" :title="t('tools.audioTrim.audioTrimmed')" />
+          <FileCard v-if="resultFile" :name="resultFile.name" :file="resultFile" file-type="audio/mpeg" />
         </template>
         
         
