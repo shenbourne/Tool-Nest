@@ -6,6 +6,7 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useQrCode, downloadDataUrl } from './qr-code-generator.service';
 import { useCopy } from '@/composables/useCopy';
+import FileCard from '@/components/FileCard.vue';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -27,6 +28,14 @@ const { dataUrl, error: qrError } = useQrCode(text, {
   foreground,
   background,
   errorCorrectionLevel,
+});
+
+const resultFile = ref<File | null>(null);
+watch(dataUrl, async (url) => {
+  if (!url) { resultFile.value = null; return; }
+  const res = await fetch(url);
+  const blob = await res.blob();
+  resultFile.value = new File([blob], 'qrcode.png', { type: 'image/png' });
 });
 
 function download() {
@@ -80,9 +89,7 @@ function copyImage() {
 
       <NCard :title="t('common.qrCode')">
         <NAlert v-if="qrError" type="error" :title="t('tools.qrCodeGenerator.generationFailed')" />
-        <div v-else-if="dataUrl" style="text-align: center; margin-bottom: 16px;">
-          <img :src="dataUrl" :alt="t('common.qrCode')" style="max-width: 300px; width: 100%;" />
-        </div>
+        <FileCard v-else-if="resultFile" name="qrcode.png" :file="resultFile" file-type="image/png" />
         <div v-else style="text-align: center; color: var(--color-text-3); padding: 40px 0;">
           {{ t('tools.qrCodeGenerator.emptyHint') }}
         </div>

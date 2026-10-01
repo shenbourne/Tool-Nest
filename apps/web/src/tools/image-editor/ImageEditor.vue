@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NColorPicker, NInput, NPopconfirm } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -193,11 +195,13 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.imageEditor.name')">
-        <NSpace vertical :size="12">
-          <ToolFileUpload accept="image/*" @change="onFileChange" />
-          <div v-if="imageUrl">
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </template>
+        <template #output-files>
+          <div v-if="imageUrl" class="canvas-wrapper">
             <v-stage
               :config="{ width: stageWidth, height: stageHeight }"
               @click="onStageClick"
@@ -256,48 +260,58 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
               v-if="editingAnnotation && editingAnnotation.type === 'text'"
               v-model:value="editingAnnotation.text"
               :placeholder="t('tools.imageEditor.textPlaceholder')"
-              style="max-width: 260px;"
+              style="max-width: 260px; margin-top: 8px;"
               @keyup.enter="editingAnnotation.editing = false"
               @blur="editingAnnotation.editing = false"
-             :input-props="{ id: 'imageEditorField0' }"/>
+              :input-props="{ id: 'imageEditorField0' }"
+            />
           </div>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('common.settings', 'Settings')">
-        <NSpace vertical :size="12">
-          <NSpace :size="8">
-            <NButton :type="activeTool === 'text' ? 'primary' : 'default'" @click="setTool('text')">{{ t('tools.imageEditor.addText') }}</NButton>
-            <NButton :type="activeTool === 'line' ? 'primary' : 'default'" @click="setTool('line')">{{ t('tools.imageEditor.drawLine') }}</NButton>
-            <NButton @click="setTool('none')">{{ t('common.select') }}</NButton>
-            <NPopconfirm @positive-click="clearAll">
-              <template #trigger>
-                <NButton type="error">{{ t('tools.imageEditor.clearAll') }}</NButton>
-              </template>
-              {{ t('tools.imageEditor.confirmClearAll') }}
-            </NPopconfirm>
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!file" @click="downloadImage">{{ t('tool.exportFile') }}</NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NSpace :size="8">
+              <NButton :type="activeTool === 'text' ? 'primary' : 'default'" @click="setTool('text')">{{ t('tools.imageEditor.addText') }}</NButton>
+              <NButton :type="activeTool === 'line' ? 'primary' : 'default'" @click="setTool('line')">{{ t('tools.imageEditor.drawLine') }}</NButton>
+              <NButton @click="setTool('none')">{{ t('common.select') }}</NButton>
+              <NPopconfirm @positive-click="clearAll">
+                <template #trigger>
+                  <NButton type="error">{{ t('tools.imageEditor.clearAll') }}</NButton>
+                </template>
+                {{ t('tools.imageEditor.confirmClearAll') }}
+              </NPopconfirm>
+            </NSpace>
+            <NSpace :size="16">
+              <div>
+                <span>{{ t('tools.imageEditor.color') }}</span>
+                <NColorPicker v-model:value="drawColor" style="width:160px;" />
+              </div>
+              <div>
+                <label :for="'imageEditorField1'">{{ t('tools.imageEditor.lineWidth') }}</label>
+                <NInputNumber v-model:value="lineWidth" :min="1" :max="50" :step="1" style="width:120px;" :input-props="{ id: 'imageEditorField1' }" />
+              </div>
+              <div>
+                <label :for="'imageEditorField2'">{{ t('tools.imageEditor.fontSize') }}</label>
+                <NInputNumber v-model:value="fontSize" :min="8" :max="200" :step="1" style="width:120px;" :input-props="{ id: 'imageEditorField2' }" />
+              </div>
+            </NSpace>
+            <div v-if="activeTool === 'text'">
+              <label :for="'imageEditorField3'">{{ t('tools.imageEditor.text') }}</label>
+              <NInput v-model:value="textContent" :placeholder="t('tools.imageEditor.textPlaceholder')" style="width:250px;" :input-props="{ id: 'imageEditorField3' }" />
+            </div>
           </NSpace>
-          <NSpace :size="16">
-            <div>
-              <span>{{ t('tools.imageEditor.color') }}</span>
-              <NColorPicker v-model:value="drawColor" style="width:160px;" />
-            </div>
-            <div>
-              <label :for="'imageEditorField1'">{{ t('tools.imageEditor.lineWidth') }}</label>
-              <NInputNumber v-model:value="lineWidth" :min="1" :max="50" :step="1" style="width:120px;"  :input-props="{ id: 'imageEditorField1' }"/>
-            </div>
-            <div>
-              <label :for="'imageEditorField2'">{{ t('tools.imageEditor.fontSize') }}</label>
-              <NInputNumber v-model:value="fontSize" :min="8" :max="200" :step="1" style="width:120px;"  :input-props="{ id: 'imageEditorField2' }"/>
-            </div>
-          </NSpace>
-          <div v-if="activeTool === 'text'">
-            <label :for="'imageEditorField3'">{{ t('tools.imageEditor.text') }}</label>
-            <NInput v-model:value="textContent" :placeholder="t('tools.imageEditor.textPlaceholder')" style="width:250px;"  :input-props="{ id: 'imageEditorField3' }"/>
-          </div>
-          <NSpace><NButton type="success" :disabled="!file" @click="downloadImage">{{ t('tool.download') }}</NButton><NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton></NSpace>
-        </NSpace>
-      </NCard>
-    </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.canvas-wrapper {
+  max-width: 100%;
+  overflow: auto;
+}
+</style>

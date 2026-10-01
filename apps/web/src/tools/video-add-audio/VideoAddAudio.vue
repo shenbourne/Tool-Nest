@@ -3,9 +3,12 @@ import { NCard, NSpace, NButton, NAlert, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
@@ -17,16 +20,19 @@ const processing = ref(false);
 const taskProgress = ref(0);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
 
 function onVideoChange(files: File[]) {
   videoFile.value = files[0] ?? null;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
 function onAudioChange(files: File[]) {
   audioFile.value = files[0] ?? null;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -46,6 +52,7 @@ async function process() {
   taskProgress.value = 0;
   error.value = '';
   resultData.value = null;
+  resultFile.value = null;
 
   try {
     const videoBytes = new Uint8Array(await videoFile.value.arrayBuffer());
@@ -71,6 +78,7 @@ async function process() {
     }, (p) => { taskProgress.value = p; });
 
     resultData.value = result;
+    resultFile.value = new File([result], 'with-audio.mp4', { type: 'video/mp4' });
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -88,42 +96,49 @@ async function copy() {
 <template>
   <ToolLayout :tool="tool">
     <NCard>
-      <NSpace vertical :size="12">
-        <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
-          {{ t('tool.loadFfmpeg') }}
-        </NButton>
-        <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
-        <NAlert v-if="loadError" type="error" :title="loadError" />
-
-        <div>
-          <span>{{ t('tools.videoAddAudio.videoFile') }}</span>
-          <ToolFileUpload accept="video/*" @change="onVideoChange" />
-        </div>
-
-        <div>
-          <span>{{ t('tools.videoAddAudio.audioFile') }}</span>
-          <ToolFileUpload accept="audio/*" @change="onAudioChange" />
-        </div>
-
-        <NButton
-          type="primary"
-          :loading="processing"
-          :disabled="!videoFile || !audioFile || !isLoaded"
-          @click="process"
-        >
-          {{ t('tools.videoAddAudio.addAudio') }}
-        </NButton>
-
-        <NProgress v-if="processing" type="line" :percentage="Math.round(taskProgress * 100)" indicator-placement="inside" />
-        <NAlert v-if="error" type="error" :title="error" />
-
-        <NButton v-if="resultData" @click="downloadBlob(resultData, 'with-audio.mp4', 'video/mp4')">
-          {{ t('tool.download') }}
-        </NButton>
-        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
-          {{ t('tool.copyFile') }}
-        </NButton>
-      </NSpace>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <NButton v-if="!isLoaded" :loading="isLoading" @click="load">
+            {{ t('tool.loadFfmpeg') }}
+          </NButton>
+          <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
+          <NAlert v-if="loadError" type="error" :title="loadError" />
+          <div>
+            <span>{{ t('tools.videoAddAudio.videoFile') }}</span>
+            <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onVideoChange" />
+          </div>
+          <div style="margin-top: 8px;">
+            <span>{{ t('tools.videoAddAudio.audioFile') }}</span>
+            <ToolFileUpload accept="audio/*" compact @change="onAudioChange" />
+          </div>
+        </template>
+        <template #output-files>
+          <FileCard v-if="resultFile" name="with-audio.mp4" :file="resultFile" file-type="video/mp4" />
+        </template>
+        <template #actions-right>
+          <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'with-audio.mp4', 'video/mp4')">
+            {{ t('tool.download') }}
+          </NButton>
+          <NButton :disabled="!resultData" @click="copy">
+            {{ t('tool.copyFile') }}
+          </NButton>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NButton
+              type="primary"
+              :loading="processing"
+              :disabled="!videoFile || !audioFile || !isLoaded"
+              @click="process"
+              block
+            >
+              {{ t('tools.videoAddAudio.addAudio') }}
+            </NButton>
+            <NProgress v-if="processing" type="line" :percentage="Math.round(taskProgress * 100)" indicator-placement="inside" />
+            <NAlert v-if="error" type="error" :title="error" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
     </NCard>
   </ToolLayout>
 </template>

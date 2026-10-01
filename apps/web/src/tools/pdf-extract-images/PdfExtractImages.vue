@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
+import FileCard from '@/components/FileCard.vue';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const { copyFileToClipboard } = useCopy();
@@ -19,6 +22,7 @@ const file = ref<File | null>(null);
 const processing = ref(false);
 const error = ref('');
 const images = ref<PageImage[]>([]);
+const imageFiles = ref<{ page: number; file: File }[]>([]);
 const progress = ref('');
 
 function revokeImages() {
@@ -30,6 +34,7 @@ function onFile(files: File[]) {
   revokeImages();
   file.value = f;
   images.value = [];
+  imageFiles.value = [];
   error.value = '';
 }
 
@@ -79,27 +84,52 @@ async function extract() {
   processing.value = false;
 }
 onUnmounted(() => revokeImages());
+
+watch(images, async (newImages) => {
+  if (!newImages.length) {
+    imageFiles.value = [];
+    return;
+  }
+  const files: { page: number; file: File }[] = [];
+  for (const img of newImages) {
+    const res = await fetch(img.url);
+    const blob = await res.blob();
+    files.push({ page: img.page, file: new File([blob], `page-${img.page}.png`, { type: 'image/png' }) });
+  }
+  imageFiles.value = files;
+});
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <ToolFileUpload accept=".pdf" @change="onFile" />
-      <NButton type="primary" :loading="processing" @click="extract" :disabled="!file">
-        {{ t('tools.pdfExtractImages.extract') }}
-      </NButton>
-      <NAlert v-if="error" type="error" :title="error" />
-      <NAlert v-if="progress" type="info" :title="progress" />
-      <NSpace v-if="images.length" :wrap="true">
-        <NCard v-for="img in images" :key="img.page" :title="t('common.page', { n: img.page })" size="small" style="width: 200px;">
-          <img :src="img.url" style="width: 100%;" />
-          <NButton size="small" @click="downloadImage(img)" style="margin-top: 8px;">
-            {{ t('tool.downloadPng') }}
-          </NButton>
-          <NButton size="small" @click="copyImage(img)" style="margin-top: 8px;">
-            {{ t('tool.copyFile') }}
-          </NButton>
-        </NCard>
-      </NSpace>
-    </NSpace></NCard>
+    <NCard>
+      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <template #input-files>
+          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
+        </template>
+        <template #output-files>
+          <div v-if="imageFiles.length" class="tool-file-panel__output-grid">
+            <FileCard v-for="(imgFile, idx) in imageFiles" :key="idx" :name="`page-${imgFile.page}.png`" :file="imgFile.file" file-type="image/png" />
+          </div>
+        </template>
+        <template #params>
+          <NSpace vertical :size="12">
+            <NButton type="primary" :loading="processing" @click="extract" :disabled="!file" block>
+              {{ t('tools.pdfExtractImages.extract') }}
+            </NButton>
+            <NAlert v-if="error" type="error" :title="error" />
+            <NAlert v-if="progress" type="info" :title="progress" />
+          </NSpace>
+        </template>
+      </ToolFilePanel>
+    </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.tool-file-panel__output-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+</style>
