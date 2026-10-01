@@ -117,7 +117,19 @@ const EXCLUDED: string[] = [
 
 // Tools converted so far. Grows batch by batch; the last batch of the phase
 // sets this to EXPECTED so the first test covers the whole scope.
-const MIGRATED: string[] = [];
+const MIGRATED: string[] = [
+  'csv-change-separator/CsvChangeSeparator.vue',
+  'csv-find-incomplete/CsvFindIncomplete.vue',
+  'csv-insert-columns/CsvInsertColumns.vue',
+  'csv-rows-to-columns/CsvRowsToColumns.vue',
+  'csv-swap-columns/CsvSwapColumns.vue',
+  'csv-to-json/CsvToJson.vue',
+  'csv-to-tsv/CsvToTsv.vue',
+  'csv-to-xml/CsvToXml.vue',
+  'csv-to-yaml/CsvToYaml.vue',
+  'csv-transpose/CsvTranspose.vue',
+  'tsv-to-json/TsvToJson.vue',
+];
 
 function componentPaths(): string[] {
   const paths: string[] = [];
