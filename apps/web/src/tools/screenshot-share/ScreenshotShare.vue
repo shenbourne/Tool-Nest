@@ -6,6 +6,7 @@ import html2canvas from 'html2canvas';
 import { tool } from './index';
 import { useI18n } from 'vue-i18n';
 import { useCopy } from '@/composables/useCopy';
+import FileCard from '@/components/FileCard.vue';
 
 const { t } = useI18n();
 const { copyImageToClipboard } = useCopy();
@@ -14,6 +15,14 @@ const selector = ref('body');
 const previewUrl = ref('');
 const capturing = ref(false);
 const errorMsg = ref('');
+const resultFile = ref<File | null>(null);
+
+watch(previewUrl, async (url) => {
+  if (!url) { resultFile.value = null; return; }
+  const res = await fetch(url);
+  const blob = await res.blob();
+  resultFile.value = new File([blob], 'screenshot.png', { type: 'image/png' });
+});
 
 async function capture() {
   errorMsg.value = '';
@@ -66,9 +75,9 @@ async function copyScreenshot() {
         </NSpace>
       </NCard>
       <NAlert v-if="errorMsg" type="error" :title="errorMsg" />
-      <NCard v-if="previewUrl" :title="t('common.preview')">
+      <NCard v-if="resultFile" :title="t('common.preview')">
         <NSpace vertical :size="8">
-          <img :src="previewUrl" style="max-width:100%;border:1px solid var(--color-hairline);border-radius:4px;" />
+          <FileCard name="screenshot.png" :file="resultFile" file-type="image/png" />
           <NSpace>
             <NButton type="primary" @click="downloadPng">{{ t('tools.screenshotShare.downloadPng') }}</NButton>
             <NButton @click="copyScreenshot">{{ t('tools.screenshotShare.copyToClipboard') }}</NButton>

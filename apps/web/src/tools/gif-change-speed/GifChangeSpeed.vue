@@ -7,6 +7,7 @@ import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { gifSpeedFilter } from '@/utils/ffmpeg-speed';
 import { tool } from './index';
+import FileCard from '@/components/FileCard.vue';
 
 const { t } = useI18n();
 const { isLoaded, isLoading, load, loadProgress, loadError } = useFFmpeg();
@@ -18,6 +19,12 @@ const processing = ref(false);
 const taskProgress = ref(0);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
+
+watch(resultData, (data) => {
+  if (!data) { resultFile.value = null; return; }
+  resultFile.value = new File([data], 'respeed.gif', { type: 'image/gif' });
+});
 
 const speedOptions = computed(() => [
   { label: t('tools.gifChangeSpeed.speedVerySlow'), value: '0.25' },
@@ -114,12 +121,16 @@ async function copy() {
         <NProgress v-if="processing" type="line" :percentage="Math.round(taskProgress * 100)" indicator-placement="inside" />
         <NAlert v-if="error" type="error" :title="error" />
 
-        <NButton v-if="resultData" @click="resultData && downloadBlob(resultData, 'respeed.gif', 'image/gif')">
-          {{ t('tool.downloadGif') }}
-        </NButton>
-        <NButton v-if="resultData" :disabled="!resultData" @click="copy">
-          {{ t('tool.copyFile') }}
-        </NButton>
+        <FileCard v-if="resultFile" name="respeed.gif" :file="resultFile" file-type="image/gif" />
+
+        <NSpace v-if="resultData">
+          <NButton @click="resultData && downloadBlob(resultData, 'respeed.gif', 'image/gif')">
+            {{ t('tool.downloadGif') }}
+          </NButton>
+          <NButton :disabled="!resultData" @click="copy">
+            {{ t('tool.copyFile') }}
+          </NButton>
+        </NSpace>
       </NSpace>
     </NCard>
   </ToolLayout>

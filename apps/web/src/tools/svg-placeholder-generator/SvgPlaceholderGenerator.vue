@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import FileCard from '@/components/FileCard.vue';
 import { generateSvgPlaceholder, svgToDataUrl, downloadSvg } from './svg-placeholder-generator.service';
 
 const { t } = useI18n();
@@ -30,6 +31,14 @@ const svgCode = computed(() =>
 );
 
 const dataUrl = computed(() => svgToDataUrl(svgCode.value));
+
+const resultFile = ref<File | null>(null);
+watch(dataUrl, async (url) => {
+  if (!url) { resultFile.value = null; return; }
+  const res = await fetch(url);
+  const blob = await res.blob();
+  resultFile.value = new File([blob], `placeholder-${width.value}x${height.value}.svg`, { type: 'image/svg+xml' });
+});
 
 function copySvg() {
   copyToClipboard(svgCode.value);
@@ -83,10 +92,8 @@ async function copySvgFile() {
       </NCard>
 
       <NCard :title="t('common.preview')">
-        <div style="text-align: center; margin-bottom: 16px;">
-          <img :src="dataUrl" :alt="t('tools.svgPlaceholderGenerator.alt')" style="max-width: 100%; border: 1px solid var(--color-hairline);" />
-        </div>
-        <NSpace>
+        <FileCard v-if="resultFile" :name="`placeholder-${width}x${height}.svg`" :file="resultFile" file-type="image/svg+xml" />
+        <NSpace style="margin-top: 8px;">
           <NButton @click="download">{{ t('tools.svgPlaceholderGenerator.downloadSvg') }}</NButton>
           <NButton @click="copySvgFile">{{ t('tool.copyFile') }}</NButton>
         </NSpace>

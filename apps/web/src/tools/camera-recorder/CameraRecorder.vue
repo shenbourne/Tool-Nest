@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+import FileCard from '@/components/FileCard.vue';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
@@ -25,7 +26,7 @@ const selectedMic = ref<string>('');
 const recordingState = ref<'stopped' | 'recording' | 'paused'>('stopped');
 const mediaRecorder = ref<MediaRecorder | null>(null);
 const recordedChunks = ref<Blob[]>([]);
-const recordings = ref<{ url: string; type: string; createdAt: Date }[]>([]);
+const recordings = ref<{ url: string; type: string; createdAt: Date; file: File }[]>([]);
 
 const isRecordingSupported = computed(() => typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('video/webm'));
 
@@ -98,10 +99,11 @@ function startRecording() {
   mediaRecorder.value.onstop = () => {
     const blob = new Blob(recordedChunks.value, { type: 'video/webm' });
     const url = URL.createObjectURL(blob);
+    const file = new File([blob], `video-${Date.now()}.webm`, { type: 'video/webm' });
     // When unmounting, stopRecording() fires this handler after teardown has
     // begun — that recording would leak, so release it immediately.
     if (unmounted) { URL.revokeObjectURL(url); return; }
-    recordings.value.unshift({ url, type: 'video', createdAt: new Date() });
+    recordings.value.unshift({ url, type: 'video', createdAt: new Date(), file });
     recordedChunks.value = [];
   };
 
@@ -130,17 +132,15 @@ function resumeRecording() {
   }
 }
 
-function downloadRecording(item: { url: string; type: string; createdAt: Date }) {
+function downloadRecording(item: { url: string; type: string; createdAt: Date; file: File }) {
   const a = document.createElement('a');
   a.href = item.url;
   a.download = `${item.type}-${item.createdAt.getTime()}.webm`;
   a.click();
 }
 
-async function copyRecording(item: { url: string; type: string; createdAt: Date }) {
-  const res = await fetch(item.url);
-  const blob = await res.blob();
-  await copyFileToClipboard(blob);
+async function copyRecording(item: { url: string; type: string; createdAt: Date; file: File }) {
+  await copyFileToClipboard(item.file);
 }
 
 function removeRecording(index: number) {
@@ -233,7 +233,7 @@ onBeforeUnmount(() => {
           <div v-for="(item, index) in recordings" :key="index" style="border: 1px solid var(--color-hairline); border-radius: 8px; padding: 12px;">
             <video :src="item.url" controls style="width: 100%; max-height: 300px;" />
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-              <span>{{ item.createdAt.toLocaleString() }}</span>
+              <FileCard :name="`video-${item.createdAt.getTime()}.webm`" :file="item.file" file-type="video/webm" />
               <NSpace>
                 <NButton size="small" @click="downloadRecording(item)">{{ t('tool.download') }}</NButton>
                 <NButton size="small" @click="copyRecording(item)">{{ t('tool.copyFile') }}</NButton>
