@@ -48,3 +48,14 @@ Fixtures served via `fetch('/@fs/...')` + `DataTransfer` into the real `<input t
 7. `12780b7` chore(web): drop locale keys orphaned by the file box cleanup
 8. `dd18abe` fix(web): stop the upload trigger shrink-wrapping the file grid
 9. `8b37647` test(web): pin the classified file box contract
+
+## Integration (2026-10-02)
+
+Merged into `master` on the user's authorization with `git merge --no-ff`, merge commit `69e57ac`, branch tip `1142fa5`. The list above is the implementation sequence; the branch's full 11 commits add the two phase-record commits (`cabab6f`, `1142fa5`).
+
+- No conflicts. `master`'s only commit since the base `b44a61a` is `f58d694`, which touches only `apps/web/src/components/LocaleSwitcher.vue`; the branch's 59 files are 53 under `apps/web` plus 6 under `.workflow`.
+- Ancestry verified both directions: `1142fa5` and `f58d694` are ancestors of `69e57ac`.
+- Byte gate: `git diff 1142fa5 HEAD -- <the 59 changed paths>` is empty, so the merged business code is byte-identical to the verified tip.
+- Gates re-run on the merged tree in the main worktree: `pnpm --filter @toolnest/web test` PASS (228 tests in 33 files), `pnpm build:web` PASS (vue-tsc + vite, 24.71 s). Server tests not re-run — `apps/server` is outside the diff. Differential lint carries over unchanged (byte-identical content, 0 added / 0 removed).
+- `git fetch origin` succeeded and left `origin/master` unchanged; local `master` is now 60 commits ahead and **not pushed**.
+- Left untouched in the main worktree: the modified-with-empty-content `apps/web/src/components.d.ts` (CRLF drift) and other sessions' untracked files. Both the branch and `.worktrees/phase-10-file-box-layout` are kept, as with every earlier phase.
