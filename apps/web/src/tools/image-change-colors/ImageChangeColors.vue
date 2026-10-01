@@ -91,11 +91,11 @@ watchEffect(regenerate);
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <FileCard v-if="resultFile" name="image-changed.png" :file="resultFile" :thumbnail-url="imageUrl" />
+          <FileCard v-if="resultFile" name="image-changed.png" :file="resultFile" file-type="image/png" :thumbnail-url="resultThumbnail" />
         </template>
         <template #actions-right>
-          <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
-          <NButton :disabled="!file" @click="download">{{ t('tool.download') }}</NButton>
+          <NButton :disabled="!resultFile" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!resultFile" @click="download">{{ t('tool.download') }}</NButton>
         </template>
         <template #params>
           <NSpace vertical :size="12">
