@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import KeyboardVisual from './KeyboardVisual.vue';
 
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
@@ -53,6 +54,8 @@ function copyText(text: string) {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
+      <KeyboardVisual :active-code="event?.code ?? null" />
+
       <NCard>
         <div style="text-align: center; padding: 24px 0;">
           <div v-if="event" style="font-size: 48px; margin-bottom: 12px; font-weight: bold;">
