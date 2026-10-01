@@ -78,3 +78,17 @@ export async function writeClipboardFile(blob: Blob): Promise<boolean> {
     return false;
   }
 }
+
+// There is no legacy fallback for reading: execCommand cannot read the
+// clipboard. Callers treat null as "paste unavailable / denied" and tell the
+// user instead of looking like a no-op.
+export async function readClipboardText(): Promise<string | null> {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.readText) {
+      return await navigator.clipboard.readText();
+    }
+  } catch {
+    // Insecure context, unfocused document, or denied permission.
+  }
+  return null;
+}

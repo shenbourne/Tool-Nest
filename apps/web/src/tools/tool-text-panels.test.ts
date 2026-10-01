@@ -1,0 +1,157 @@
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { describe, expect, it } from 'vitest';
+
+// Every text-based tool (input textarea -> transform -> output textarea)
+// renders the shared ToolTextPanel so all of them show the same two-column
+// layout with import/paste (input side) and copy/export (output side), like
+// the file tools do through ToolFilePanel. A tool re-growing its own card +
+// button row layout is the drift this pins down.
+const toolsDir = fileURLToPath(new URL('.', import.meta.url));
+
+// Full in-scope list (see .workflow/phases/11-text-tool-actions/CONTEXT.md).
+const EXPECTED: string[] = [
+  // csv/tsv
+  'csv-change-separator/CsvChangeSeparator.vue',
+  'csv-find-incomplete/CsvFindIncomplete.vue',
+  'csv-insert-columns/CsvInsertColumns.vue',
+  'csv-rows-to-columns/CsvRowsToColumns.vue',
+  'csv-swap-columns/CsvSwapColumns.vue',
+  'csv-to-json/CsvToJson.vue',
+  'csv-to-tsv/CsvToTsv.vue',
+  'csv-to-xml/CsvToXml.vue',
+  'csv-to-yaml/CsvToYaml.vue',
+  'csv-transpose/CsvTranspose.vue',
+  'tsv-to-json/TsvToJson.vue',
+  // json
+  'json-diff/JsonDiff.vue',
+  'json-escape/JsonEscape.vue',
+  'json-minify/JsonMinify.vue',
+  'json-prettify/JsonPrettify.vue',
+  'json-sort/JsonSort.vue',
+  'json-stringify/JsonStringify.vue',
+  'json-to-csv/JsonToCsv.vue',
+  'json-to-toml/JsonToToml.vue',
+  'json-to-xml/JsonToXml.vue',
+  'json-to-yaml/JsonToYaml.vue',
+  'json-validate/JsonValidate.vue',
+  'json-viewer/JsonViewer.vue',
+  // xml/yaml/toml/sql
+  'xml-formatter/XmlFormatter.vue',
+  'xml-to-json/XmlToJson.vue',
+  'xml-validator/XmlValidator.vue',
+  'yaml-to-json/YamlToJson.vue',
+  'yaml-to-toml/YamlToToml.vue',
+  'yaml-viewer/YamlViewer.vue',
+  'toml-to-json/TomlToJson.vue',
+  'toml-to-yaml/TomlToYaml.vue',
+  'sql-prettify/SqlPrettify.vue',
+  // data/dev converters
+  'base64-encoder/Base64Encoder.vue',
+  'docker-compose-to-1panel/DockerComposeTo1panel.vue',
+  'docker-run-to-compose/DockerRunToCompose.vue',
+  'email-extractor/EmailExtractor.vue',
+  'email-normalizer/EmailNormalizer.vue',
+  'hash-text/HashText.vue',
+  'hmac-generator/HmacGenerator.vue',
+  'html-entities/HtmlEntities.vue',
+  'jwt-parser/JwtParser.vue',
+  // list
+  'list-converter/ListConverter.vue',
+  'list-duplicate/ListDuplicate.vue',
+  'list-find-popular/ListFindPopular.vue',
+  'list-find-unique/ListFindUnique.vue',
+  'list-group/ListGroup.vue',
+  'list-reverse/ListReverse.vue',
+  'list-rotate/ListRotate.vue',
+  'list-shuffle/ListShuffle.vue',
+  'list-sort/ListSort.vue',
+  'list-truncate/ListTruncate.vue',
+  'list-unwrap/ListUnwrap.vue',
+  'list-wrap/ListWrap.vue',
+  // text
+  'text-censor/TextCensor.vue',
+  'text-diff/TextDiff.vue',
+  'text-join/TextJoin.vue',
+  'text-replacer/TextReplacer.vue',
+  'text-reverse/TextReverse.vue',
+  'text-rotate/TextRotate.vue',
+  'text-split/TextSplit.vue',
+  'text-to-binary/TextToBinary.vue',
+  'text-to-nato-alphabet/TextToNatoAlphabet.vue',
+  'text-to-unicode/TextToUnicode.vue',
+  'text-truncate/TextTruncate.vue',
+  'remove-duplicate-lines/RemoveDuplicateLines.vue',
+  'morse-code/MorseCode.vue',
+  'rot13/Rot13.vue',
+  'extract-substring/ExtractSubstring.vue',
+  'hidden-char-detector/HiddenCharDetector.vue',
+  'info-masking/InfoMasking.vue',
+  'markdown-to-html/MarkdownToHtml.vue',
+  // math/time/encryption
+  'check-leap-years/CheckLeapYears.vue',
+  'create-palindrome/CreatePalindrome.vue',
+  'days-to-hours/DaysToHours.vue',
+  'hours-to-days/HoursToDays.vue',
+  'number-generator/NumberGenerator.vue',
+  'number-sum/NumberSum.vue',
+  'number-to-words/NumberToWords.vue',
+  'palindrome-checker/PalindromeChecker.vue',
+  'seconds-to-time/SecondsToTime.vue',
+  'time-to-decimal/TimeToDecimal.vue',
+  'time-to-seconds/TimeToSeconds.vue',
+  'truncate-clock-time/TruncateClockTime.vue',
+  'encryption/EncryptionTool.vue',
+];
+
+// Two-textarea tools deliberately NOT converted, with the reason kept in
+// phase 11 CONTEXT.md: file-based (has ToolFileUpload already), form
+// generators, or no input->output text pair.
+const EXCLUDED: string[] = [
+  'base64-file-converter/Base64FileConverter.vue',
+  'meta-tag-generator/MetaTagGenerator.vue',
+  'rsa-key-pair-generator/RsaKeyPair.vue',
+  'bip39-generator/Bip39Generator.vue',
+];
+
+// Tools converted so far. Grows batch by batch; the last batch of the phase
+// sets this to EXPECTED so the first test covers the whole scope.
+const MIGRATED: string[] = [];
+
+function componentPaths(): string[] {
+  const paths: string[] = [];
+  for (const entry of readdirSync(toolsDir)) {
+    const full = join(toolsDir, entry);
+    if (!statSync(full).isDirectory()) continue;
+    for (const file of readdirSync(full)) {
+      if (file.endsWith('.vue')) paths.push(`${entry}/${file}`);
+    }
+  }
+  return paths.sort();
+}
+
+const source = (name: string) => readFileSync(join(toolsDir, name), 'utf8');
+
+describe('tool text panels', () => {
+  it('renders ToolTextPanel in every migrated tool', () => {
+    const offenders = MIGRATED.filter((name) => !source(name).includes('<ToolTextPanel'));
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps excluded tools off ToolTextPanel', () => {
+    const offenders = EXCLUDED.filter((name) => source(name).includes('<ToolTextPanel'));
+    expect(offenders).toEqual([]);
+  });
+
+  it('accounts for every two-textarea tool', () => {
+    const accounted = new Set([...EXPECTED, ...EXCLUDED]);
+    const decided = componentPaths().filter((name) => {
+      const count = (source(name).match(/type="textarea"/g) ?? []).length;
+      return count >= 2;
+    });
+    const missing = decided.filter((name) => !accounted.has(name));
+    const ghost = [...accounted].filter((name) => !componentPaths().includes(name));
+    expect({ missing, ghost }).toEqual({ missing: [], ghost: [] });
+  });
+});

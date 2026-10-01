@@ -139,6 +139,8 @@
     "importFile": "Import file",
     "exportFile": "Export file",
     "pasteFile": "Paste file",
+    "importFailed": "Failed to read the file",
+    "pasteFailed": "Failed to read the clipboard",
     "fileUpload": {
       "choose": "Click, drop, or paste a file here",
       "replace": "Click, drop, or paste to replace",
