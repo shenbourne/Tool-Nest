@@ -84,7 +84,7 @@ onUnmounted(() => {
     <NCard>
       <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" :removable="false" />
         </template>
         <template #output-files>
           <NInput

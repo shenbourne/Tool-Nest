@@ -13,10 +13,12 @@ const props = withDefaults(defineProps<{
   accept?: string;
   multiple?: boolean;
   compact?: boolean;
+  removable?: boolean;
 }>(), {
   accept: '',
   multiple: false,
   compact: false,
+  removable: true,
 });
 
 const emit = defineEmits<{ change: [files: File[]] }>();
@@ -220,11 +222,11 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
           :file="item.file ?? undefined"
           :file-type="item.type ?? undefined"
           :thumbnail-url="thumbnails[item.id]"
-          removable
+          :removable="removable"
           @remove="remove(index)"
         />
       </li>
-      <li v-if="compact && (multiple || !fileList.length)" class="tool-file-upload__item tool-file-upload__compact-slot" @click="triggerSelect()">
+      <li v-if="compact && (multiple || fileList.length === 0)" class="tool-file-upload__item tool-file-upload__compact-slot" @click="triggerSelect()">
         <div class="tool-file-upload__compact-trigger">
           <NIcon :size="20" :component="CloudUpload" class="tool-file-upload__compact-icon" />
         </div>

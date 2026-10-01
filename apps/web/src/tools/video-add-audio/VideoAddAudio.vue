@@ -105,11 +105,11 @@ async function copy() {
           <NAlert v-if="loadError" type="error" :title="loadError" />
           <div>
             <span>{{ t('tools.videoAddAudio.videoFile') }}</span>
-            <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onVideoChange" />
+            <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onVideoChange" :removable="false" />
           </div>
           <div style="margin-top: 8px;">
             <span>{{ t('tools.videoAddAudio.audioFile') }}</span>
-            <ToolFileUpload accept="audio/*" compact @change="onAudioChange" />
+            <ToolFileUpload accept="audio/*" compact @change="onAudioChange" :removable="false" />
           </div>
         </template>
         <template #output-files>
