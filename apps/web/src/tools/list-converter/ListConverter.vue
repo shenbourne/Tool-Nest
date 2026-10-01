@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NSelect, NSwitch, NButton } from 'naive-ui';
+import { NInput, NSpace, NSelect, NSwitch } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 import { convertList } from './list-converter.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 
 const inputText = ref('apple, banana, apple, cherry, banana, date');
 
@@ -47,25 +46,28 @@ const output = computed(() => {
     itemSuffix: itemSuffix.value,
   });
 });
-
-function copyOutput() {
-  copyToClipboard(output.value);
-}
 </script>
 
 <template>
   <ToolLayout :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('common.input')">
+    <ToolTextPanel v-model:input-text="inputText" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+      <template #input>
         <NInput
           v-model:value="inputText"
           type="textarea"
           :placeholder="t('tools.listConverter.inputPlaceholder')"
           :autosize="{ minRows: 4, maxRows: 10 }"
          :input-props="{ id: 'listConverterField0' }"/>
-      </NCard>
-
-      <NCard :title="t('common.options')">
+      </template>
+      <template #output>
+        <NInput
+          :value="output"
+          type="textarea"
+          readonly
+          :autosize="{ minRows: 4, maxRows: 10 }"
+         :input-props="{ id: 'listConverterField3' }"/>
+      </template>
+      <template #params>
         <NSpace vertical :size="12">
           <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
             <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('common.separator') }}</span>
@@ -100,19 +102,7 @@ function copyOutput() {
             <NInput v-model:value="itemSuffix" :placeholder="t('common.suffix')" clearable style="width: 200px;"  :input-props="{ id: 'listConverterField2' }"/>
           </div>
         </NSpace>
-      </NCard>
-
-      <NCard :title="t('common.output')">
-        <NSpace vertical :size="8">
-          <NInput
-            :value="output"
-            type="textarea"
-            readonly
-            :autosize="{ minRows: 4, maxRows: 10 }"
-           :input-props="{ id: 'listConverterField3' }"/>
-          <NButton @click="copyOutput" size="small">{{ t('tool.copy') }}</NButton>
-        </NSpace>
-      </NCard>
-    </NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
