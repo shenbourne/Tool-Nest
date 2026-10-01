@@ -291,6 +291,13 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
   width: 100%;
 }
 
+/* naive renders its trigger wrapper inline-block, which would shrink-wrap the
+   box to one grid column; the box fills the panel column instead. */
+.tool-file-upload__upload :deep(.n-upload-trigger) {
+  display: block;
+  width: 100%;
+}
+
 /* naive-ui's dragger chrome is replaced: the element is only the drop area and
    the click-to-pick trigger, its surface belongs to the shape below. */
 .tool-file-upload__zone {
