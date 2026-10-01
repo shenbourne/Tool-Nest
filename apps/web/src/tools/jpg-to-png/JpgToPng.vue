@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -17,6 +17,7 @@ const { copyFileToClipboard } = useCopy();
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
 const resultFile = ref<File | null>(null);
+const resultThumbnail = computed(() => resultFile.value ? URL.createObjectURL(resultFile.value) : '');
 const error = ref('');
 
 function onFileChange(files: File[]) {
@@ -78,11 +79,11 @@ async function copy() {
           <ToolFileUpload ref="fileUpload" accept="image/jpeg" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <FileCard v-if="resultFile" name="converted.png" :file="resultFile" :thumbnail-url="imageUrl" />
+          <FileCard v-if="resultFile" name="converted.png" :file="resultFile" file-type="image/png" :thumbnail-url="resultThumbnail" />
         </template>
         <template #actions-right>
-          <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
-          <NButton type="primary" :disabled="!file" @click="download">{{ t('tools.jpgToPng.downloadAsPng') }}</NButton>
+          <NButton :disabled="!resultFile" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton type="primary" :disabled="!resultFile" @click="download">{{ t('tools.jpgToPng.downloadAsPng') }}</NButton>
         </template>
         <template #params>
           <NSpace vertical :size="12">

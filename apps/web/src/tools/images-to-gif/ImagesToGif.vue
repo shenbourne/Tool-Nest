@@ -120,7 +120,7 @@ watch(resultData, (data) => {
           </div>
         </template>
         <template #output-files>
-          <FileCard v-if="resultFile" name="animation.gif" :file="resultFile" :thumbnail-url="resultUrl" />
+          <FileCard v-if="resultFile" name="animation.gif" :file="resultFile" file-type="image/gif" :thumbnail-url="resultThumbnail" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultData" @click="copy">{{ t('tool.copyFile') }}</NButton>

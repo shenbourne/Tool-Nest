@@ -11,6 +11,7 @@ declare module 'vue' {
     FileCard: typeof import('./components/FileCard.vue')['default']
     FilePreviewOverlay: typeof import('./components/FilePreviewOverlay.vue')['default']
     LocaleSwitcher: typeof import('./components/LocaleSwitcher.vue')['default']
+    NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
