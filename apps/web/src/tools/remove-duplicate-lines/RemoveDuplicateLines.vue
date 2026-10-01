@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace } from 'naive-ui';
+import { NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
 const input = ref('');
@@ -10,9 +11,13 @@ const output = computed(() => [...new Set(input.value.split('\n'))].join('\n'));
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')"  :input-props="{ id: 'removeDuplicateLinesField0' }"/>
-      <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'removeDuplicateLinesField1' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+      <template #input>
+        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')"  :input-props="{ id: 'removeDuplicateLinesField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'removeDuplicateLinesField1' }"/>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

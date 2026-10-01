@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton } from 'naive-ui';
+import { NInput, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { textToNatoAlphabet } from './text-to-nato-alphabet.service';
@@ -21,14 +22,16 @@ function copyOutput() {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('common.input')">
+    <ToolTextPanel v-model:input-text="input" :output-text="natoOutput" :input-title="t('common.input')" :output-title="t('tools.textToNatoAlphabet.natoAlphabet')" export-name="output.txt">
+      <template #input>
         <NInput v-model:value="input" type="textarea" :rows="4" :placeholder="t('tools.textToNatoAlphabet.inputPlaceholder')"  :input-props="{ id: 'textToNatoAlphabetField0' }"/>
-      </NCard>
-      <NCard :title="t('tools.textToNatoAlphabet.natoAlphabet')">
+      </template>
+      <template #output>
         <NInput :value="natoOutput" type="textarea" :rows="4" readonly :placeholder="t('tools.textToNatoAlphabet.outputPlaceholder')"  :input-props="{ id: 'textToNatoAlphabetField1' }"/>
-      </NCard>
-      <NButton type="primary" :disabled="!natoOutput" @click="copyOutput">{{ t('tool.copy') }}</NButton>
-    </NSpace>
+      </template>
+      <template #params>
+        <NButton type="primary" :disabled="!natoOutput" @click="copyOutput">{{ t('tool.copy') }}</NButton>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NInputNumber, NSpace, NCheckbox, NCheckboxGroup, NButton, NDivider, NTag } from 'naive-ui';
+import { NInput, NInputNumber, NSpace, NCheckbox, NCheckboxGroup, NCard, NDivider, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { maskText, detectPatterns, MASK_PATTERNS, type MaskPattern } from './info-masking.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const inputText = ref(`Contact us at support@example.com or call +1-555-123-4567.
@@ -33,32 +32,36 @@ const maskedOutput = computed(() =>
 );
 
 const detectedPatterns = computed(() => detectPatterns(inputText.value));
-
-function copyOutput() {
-  copyToClipboard(maskedOutput.value);
-}
 </script>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <NCard :title="t('tools.infoMasking.inputText')">
-        <NInput
-          v-model:value="inputText"
-          type="textarea"
-          :placeholder="t('tools.infoMasking.pasteSensitivePlaceholder')"
-          :autosize="{ minRows: 5, maxRows: 20 }"
-         :input-props="{ id: 'infoMaskingField0' }"/>
-        <div v-if="detectedPatterns.length > 0" style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-          <span style="opacity: 0.6; font-size: 12px;">{{ t('tools.infoMasking.detected') }}</span>
-          <NTag v-for="d in detectedPatterns" :key="d.pattern.key" size="small" type="warning">
-            {{ t(d.pattern.labelKey) }} ({{ d.count }})
-          </NTag>
-        </div>
-      </NCard>
-
-      <NCard :title="t('common.options')">
-        <NSpace vertical :size="12">
+      <ToolTextPanel v-model:input-text="inputText" :output-text="maskedOutput" :input-title="t('tools.infoMasking.inputText')" :output-title="t('tools.infoMasking.maskedOutput')" export-name="masked.txt">
+        <template #input>
+          <NInput
+            v-model:value="inputText"
+            type="textarea"
+            :placeholder="t('tools.infoMasking.pasteSensitivePlaceholder')"
+            :autosize="{ minRows: 5, maxRows: 20 }"
+           :input-props="{ id: 'infoMaskingField0' }"/>
+        </template>
+        <template #output>
+          <NInput
+            :value="maskedOutput"
+            type="textarea"
+            readonly
+            :autosize="{ minRows: 5, maxRows: 20 }"
+            style="font-family: monospace;"
+           :input-props="{ id: 'infoMaskingField4' }"/>
+        </template>
+        <template #params>
+          <div v-if="detectedPatterns.length > 0" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <span style="opacity: 0.6; font-size: 12px;">{{ t('tools.infoMasking.detected') }}</span>
+            <NTag v-for="d in detectedPatterns" :key="d.pattern.key" size="small" type="warning">
+              {{ t(d.pattern.labelKey) }} ({{ d.count }})
+            </NTag>
+          </div>
           <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <label :for="'infoMaskingField1'">{{ t('tools.infoMasking.maskCharacter') }}</label>
@@ -81,21 +84,8 @@ function copyOutput() {
               </NSpace>
             </NCheckboxGroup>
           </div>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('tools.infoMasking.maskedOutput')">
-        <template #header-extra>
-          <NButton size="small" @click="copyOutput">{{ t('tool.copy') }}</NButton>
         </template>
-        <NInput
-          :value="maskedOutput"
-          type="textarea"
-          readonly
-          :autosize="{ minRows: 5, maxRows: 20 }"
-          style="font-family: monospace;"
-         :input-props="{ id: 'infoMaskingField4' }"/>
-      </NCard>
+      </ToolTextPanel>
 
       <NDivider />
 
