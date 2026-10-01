@@ -109,7 +109,7 @@ async function copy() {
           </NButton>
           <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
           <NAlert v-if="loadError" type="error" :title="loadError" />
-          <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="video/*" @change="onFileChange" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" :name="resultFile.name" :file="resultFile" :file-type="resultFile.type" />

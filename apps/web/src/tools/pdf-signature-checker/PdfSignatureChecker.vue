@@ -54,7 +54,7 @@ async function checkSignatures() {
     <NCard>
       <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
+          <ToolFileUpload ref="fileUpload" accept=".pdf" @change="onFile" />
         </template>
         <template #output-files>
           <NAlert v-if="checked && !error" :type="hasSignatures ? 'success' : 'warning'">

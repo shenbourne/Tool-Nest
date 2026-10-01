@@ -54,7 +54,7 @@ onUnmounted(() => {
     <NCard>
       <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept=".pdf" multiple compact @change="onFiles" />
+          <ToolFileUpload ref="fileUpload" accept=".pdf" multiple @change="onFiles" />
           <NAlert v-if="files.length" type="info" :title="t('tools.pdfMerge.filesSelected', { count: files.length })" style="margin-top: 8px;" />
         </template>
         <template #output-files>

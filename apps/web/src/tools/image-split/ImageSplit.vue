@@ -102,14 +102,12 @@ onUnmounted(() => {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NCard>
-      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+      <ToolFilePanel output-multiple @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFileChange" />
         </template>
         <template #output-files>
-          <div v-if="tileFiles.length" class="tool-file-panel__output-grid">
-            <FileCard v-for="(tf, idx) in tileFiles" :key="idx" :name="`tile_${idx + 1}.png`" :file="tf" file-type="image/png" />
-          </div>
+          <FileCard v-for="(tf, idx) in tileFiles" :key="idx" :name="`tile_${idx + 1}.png`" :file="tf" file-type="image/png" />
         </template>
         <template #actions-right>
           <NButton v-if="tiles.length" @click="downloadAll">{{ t('tools.imageSplit.downloadAll') }}</NButton>
@@ -135,11 +133,3 @@ onUnmounted(() => {
   </ToolLayout>
 </template>
 
-<style scoped>
-.tool-file-panel__output-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
-  gap: 8px;
-  width: 100%;
-}
-</style>

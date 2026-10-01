@@ -114,7 +114,7 @@ watch(resultData, (data) => {
           </NButton>
           <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
           <NAlert v-if="loadError" type="error" :title="loadError" />
-          <ToolFileUpload ref="fileUpload" accept="image/*" multiple compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="image/*" multiple @change="onFileChange" />
           <div v-if="files.length" style="font-size: 13px; color: var(--color-text-3)">
             {{ t('tools.imagesToGif.filesSelected', { count: files.length }) }}
           </div>

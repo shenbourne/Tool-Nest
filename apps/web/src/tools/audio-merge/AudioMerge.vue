@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NSpace, NButton, NAlert, NProgress, NTag } from 'naive-ui';
+import { NSpace, NButton, NAlert, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
@@ -102,12 +102,7 @@ async function copy() {
           </NButton>
           <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" />
           <NAlert v-if="loadError" type="error" :title="loadError" />
-          <ToolFileUpload ref="fileUpload" accept="audio/*" multiple compact @change="onFileChange" />
-          <NSpace v-if="files.length > 0" style="margin-top: 8px;">
-            <NTag v-for="(f, i) in files" :key="i" size="small" closable @close="files.splice(i, 1)">
-              {{ f.name }}
-            </NTag>
-          </NSpace>
+          <ToolFileUpload ref="fileUpload" accept="audio/*" multiple @change="onFileChange" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" name="merged_audio.mp3" :file="resultFile" file-type="audio/mpeg" />

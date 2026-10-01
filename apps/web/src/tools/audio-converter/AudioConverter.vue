@@ -114,7 +114,7 @@ async function copy() {
           </NButton>
           <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" style="margin-top: 8px;" />
           <NAlert v-if="loadError" type="error" :title="loadError" style="margin-top: 8px;" />
-          <ToolFileUpload ref="fileUpload" accept="audio/*" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="audio/*" @change="onFileChange" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" :name="resultFile.name" :file="resultFile" :file-type="resultFile.type" />

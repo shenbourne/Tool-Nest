@@ -59,7 +59,7 @@ async function process() {
     <NCard>
       <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFile" />
+          <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFile" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" name="resized.png" :file="resultFile" :thumbnail-url="resultThumbnail" />
