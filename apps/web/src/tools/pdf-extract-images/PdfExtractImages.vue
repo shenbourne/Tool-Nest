@@ -104,7 +104,7 @@ watch(images, async (newImages) => {
     <NCard>
       <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" :removable="false" />
+          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
         </template>
         <template #output-files>
           <div v-if="imageFiles.length" class="tool-file-panel__output-grid">

@@ -265,8 +265,8 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
   list-style: none;
   margin: var(--spacing-xs) 0 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-sm);
 }
 
