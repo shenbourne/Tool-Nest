@@ -93,14 +93,12 @@ watch(images, async (newImages) => {
 <template>
   <ToolLayout :tool="tool">
     <NCard>
-      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+      <ToolFilePanel output-multiple @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept=".pdf" compact @change="onFile" />
+          <ToolFileUpload ref="fileUpload" accept=".pdf" @change="onFile" />
         </template>
         <template #output-files>
-          <div v-if="imageFiles.length" class="tool-file-panel__output-grid">
-            <FileCard v-for="(imgFile, idx) in imageFiles" :key="idx" :name="`page-${imgFile.page}.png`" :file="imgFile.file" file-type="image/png" />
-          </div>
+          <FileCard v-for="(imgFile, idx) in imageFiles" :key="idx" :name="`page-${imgFile.page}.png`" :file="imgFile.file" file-type="image/png" />
         </template>
         <template #params>
           <NSpace vertical :size="12">
@@ -119,11 +117,3 @@ watch(images, async (newImages) => {
   </ToolLayout>
 </template>
 
-<style scoped>
-.tool-file-panel__output-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
-  gap: 8px;
-  width: 100%;
-}
-</style>

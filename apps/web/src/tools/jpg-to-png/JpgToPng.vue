@@ -76,7 +76,7 @@ async function copy() {
     <NCard>
       <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept="image/jpeg" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="image/jpeg" @change="onFileChange" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" name="converted.png" :file="resultFile" file-type="image/png" :thumbnail-url="resultThumbnail" />

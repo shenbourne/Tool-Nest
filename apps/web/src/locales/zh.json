@@ -141,7 +141,6 @@
     "pasteFile": "粘贴文件",
     "fileUpload": {
       "choose": "点击、拖拽或粘贴文件到此处",
-      "replace": "点击、拖拽或粘贴以更换文件",
       "accepted": "支持格式：{types}",
       "rejected": "粘贴的内容不是支持的文件格式"
     }
@@ -194,7 +193,6 @@
     "convert": "转换",
     "compare": "比较",
     "add": "添加",
-    "remove": "移除",
     "pageNotFound": "页面不存在",
     "goHome": "返回首页",
     "swap": "交换",
@@ -211,8 +209,6 @@
     "trim": "裁剪",
     "merge": "合并",
     "loop": "循环",
-    "moveUp": "上移",
-    "moveDown": "下移",
     "horizontal": "水平",
     "vertical": "垂直",
     "min": "最小",

@@ -27,24 +27,6 @@ function onFileChange(selected: File[]) {
   error.value = '';
 }
 
-function removeFile(index: number) {
-  files.value.splice(index, 1);
-}
-
-function moveUp(index: number) {
-  if (index <= 0) return;
-  const arr = files.value;
-  [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
-  files.value = [...arr];
-}
-
-function moveDown(index: number) {
-  if (index >= files.value.length - 1) return;
-  const arr = files.value;
-  [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-  files.value = [...arr];
-}
-
 function downloadBlob(data: Uint8Array, filename: string, mimeType: string) {
   const blob = new Blob([data], { type: mimeType });
   const url = URL.createObjectURL(blob);
@@ -117,15 +99,7 @@ async function copy() {
           </NButton>
           <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" style="width: 100%" />
           <NAlert v-if="loadError" type="error" :title="loadError" />
-          <ToolFileUpload ref="fileUpload" accept="video/*" multiple compact @change="onFileChange" />
-          <div v-if="files.length > 0" style="margin-top: 12px; width: 100%">
-            <div v-for="(f, i) in files" :key="i" style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-              <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ f.name }}</span>
-              <NButton size="tiny" @click="moveUp(i)" :disabled="i === 0">{{ t('common.moveUp') }}</NButton>
-              <NButton size="tiny" @click="moveDown(i)" :disabled="i === files.length - 1">{{ t('common.moveDown') }}</NButton>
-              <NButton size="tiny" type="error" @click="removeFile(i)">{{ t('common.remove') }}</NButton>
-            </div>
-          </div>
+          <ToolFileUpload ref="fileUpload" accept="video/*" multiple @change="onFileChange" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" name="merged.mp4" :file="resultFile" file-type="video/mp4" />

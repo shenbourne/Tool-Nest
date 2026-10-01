@@ -89,7 +89,7 @@ async function copy() {
           </NButton>
           <NProgress v-if="isLoading" type="line" :percentage="Math.round(loadProgress * 100)" style="width: 100%" />
           <NAlert v-if="loadError" type="error" :title="loadError" />
-          <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="video/*" @change="onFileChange" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" name="trimmed.mp4" :file="resultFile" file-type="video/mp4" />

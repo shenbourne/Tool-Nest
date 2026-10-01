@@ -88,7 +88,7 @@ watchEffect(regenerate);
     <NCard>
       <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
         <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFileChange" />
         </template>
         <template #output-files>
           <FileCard v-if="resultFile" name="image-changed.png" :file="resultFile" file-type="image/png" :thumbnail-url="resultThumbnail" />

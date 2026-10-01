@@ -33,6 +33,7 @@ const EXPECTED: Record<string, Expectation> = {
   'image-to-text-ocr/ImageToTextOcr.vue': { accept: ['image/*'] },
   'images-to-gif/ImagesToGif.vue': { accept: ['image/*'], multiple: true },
   'jpg-to-png/JpgToPng.vue': { accept: ['image/jpeg'] },
+  'pdf-merge/PdfMerge.vue': { accept: ['.pdf'], multiple: true },
   'video-add-audio/VideoAddAudio.vue': { accept: ['video/*', 'audio/*'] },
   'video-change-speed/VideoChangeSpeed.vue': { accept: ['video/*'] },
   'video-compress/VideoCompress.vue': { accept: ['video/*'] },
@@ -100,5 +101,36 @@ describe('tool file import controls', () => {
     }
 
     expect(failures).toEqual([]);
+  });
+});
+
+// A box shows one file or many, and only that decides its shape: several files
+// are 128x128 tiles the user can drag to reorder and remove with the card's own
+// button, one file is the full-width card. A tool that re-implements any of
+// that next to the control (a duplicate filename list, its own reorder buttons)
+// is the layout drift this pins down.
+const MULTI_OUTPUT_TOOLS = [
+  'image-split/ImageSplit.vue',
+  'pdf-to-png/PdfToPng.vue',
+  'pdf-extract-images/PdfExtractImages.vue',
+];
+
+describe('file box shapes', () => {
+  it('leaves every box shape to the control', () => {
+    const offenders = componentPaths.filter((name) => {
+      const src = source(name);
+      if (controlTags(src).some((tag) => /\s:?compact\b/.test(tag))) return true;
+      return /common\.(moveUp|moveDown)/.test(src);
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('hands several result files to the panel as a grid', () => {
+    const offenders = MULTI_OUTPUT_TOOLS.filter(
+      (name) => !source(name).includes('<ToolFilePanel output-multiple'),
+    );
+
+    expect(offenders).toEqual([]);
   });
 });

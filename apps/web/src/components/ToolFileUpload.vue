@@ -7,17 +7,16 @@ import { useI18n } from 'vue-i18n';
 import { collectClipboardFiles, splitByAccept } from '@/utils/clipboard-files';
 import { thumbnailKind } from '@/utils/file-thumbnail';
 import { renderThumbnailDataUrl } from '@/utils/thumbnail-render';
+import { moveItem } from '@/utils/file-reorder';
 import FileCard from '@/components/FileCard.vue';
 
 const props = withDefaults(defineProps<{
   accept?: string;
   multiple?: boolean;
-  compact?: boolean;
   removable?: boolean;
 }>(), {
   accept: '',
   multiple: false,
-  compact: false,
   removable: true,
 });
 
@@ -26,6 +25,10 @@ const emit = defineEmits<{ change: [files: File[]] }>();
 const { t } = useI18n();
 const message = useMessage();
 const fileList = ref<UploadFileInfo[]>([]);
+
+// The box holds one file or many, and that is what picks the layout: a single
+// file fills the width at 128px tall, several files are 128x128 tiles in a grid.
+const single = computed(() => fileList.value[0] ?? null);
 
 const files = computed(() =>
   fileList.value.map((item) => item.file).filter((f): f is File => f !== null),
@@ -69,9 +72,22 @@ function emitFiles() {
   emit('change', files.value);
 }
 
-// naive-ui appends every pick to the list, so single-file tools keep only the newest entry.
+function isAccepted(file: File) {
+  return splitByAccept([file], props.accept).accepted.length > 0;
+}
+
+// naive-ui filters dropped files itself but not the ones chosen in the file
+// dialog, so every path is re-checked here: the tools' contract is that only
+// accepted files ever reach them.
 function onUpdate(list: UploadFileInfo[]) {
-  fileList.value = props.multiple ? list : list.slice(-1);
+  const kept = list.filter((item) => {
+    const file = item.file;
+    return file != null && isAccepted(file);
+  });
+  if (kept.length !== list.length) message.warning(t('tool.fileUpload.rejected'));
+
+  // naive-ui appends every pick to the list, so single-file boxes keep only the newest entry.
+  fileList.value = props.multiple ? kept : kept.slice(-1);
   emitFiles();
 }
 
@@ -79,6 +95,42 @@ function remove(index: number) {
   const item = fileList.value[index];
   if (item) delete thumbnails.value[item.id];
   fileList.value = fileList.value.filter((_, i) => i !== index);
+  emitFiles();
+}
+
+const dragFrom = ref<number | null>(null);
+const dropTarget = ref<number | null>(null);
+
+function clearDrag() {
+  dragFrom.value = null;
+  dropTarget.value = null;
+}
+
+function onTileDragStart(index: number, event: DragEvent) {
+  dragFrom.value = index;
+  dropTarget.value = null;
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move';
+    // Firefox starts no drag at all unless some data is attached.
+    event.dataTransfer.setData('text/plain', String(index));
+  }
+}
+
+function onTileDragOver(index: number, event: DragEvent) {
+  if (dragFrom.value === null || dragFrom.value === index) return;
+  event.preventDefault();
+  if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+  dropTarget.value = index;
+}
+
+function onTileDrop(index: number, event: DragEvent) {
+  event.preventDefault();
+  const from = dragFrom.value;
+  clearDrag();
+  if (from === null || from === index) return;
+
+  const ordered = moveItem(fileList.value, from, index);
+  fileList.value = ordered;
   emitFiles();
 }
 
@@ -92,6 +144,12 @@ function toFileInfo(file: File): UploadFileInfo {
     file,
     type: file.type,
   };
+}
+
+function append(files: File[]) {
+  const entries = (props.multiple ? files : files.slice(0, 1)).map(toFileInfo);
+  fileList.value = props.multiple ? [...fileList.value, ...entries] : entries;
+  emitFiles();
 }
 
 // The paste event is the only channel that carries a copied file (or a copied
@@ -110,67 +168,41 @@ function onPaste(event: ClipboardEvent) {
   }
 
   event.preventDefault();
-  const entries = (props.multiple ? accepted : accepted.slice(0, 1)).map(toFileInfo);
-  fileList.value = props.multiple ? [...fileList.value, ...entries] : entries;
-  emitFiles();
+  append(accepted);
+}
+
+async function readClipboard(): Promise<File[]> {
+  const items = await navigator.clipboard.read();
+  const pasted: File[] = [];
+  for (const item of items) {
+    for (const type of item.types) {
+      const blob = await item.getType(type);
+      const ext = type.split('/').pop() ?? 'bin';
+      pasted.push(new File([blob], `pasted.${ext}`, { type }));
+    }
+  }
+  return pasted;
 }
 
 async function triggerPaste() {
   try {
-    const items = await navigator.clipboard.read();
-    const pasted: File[] = [];
-    for (const item of items) {
-      for (const type of item.types) {
-        const blob = await item.getType(type);
-        const ext = type.split('/').pop() ?? 'bin';
-        pasted.push(new File([blob], `pasted.${ext}`, { type }));
-      }
-    }
-    if (!pasted.length) {
-      message.warning(t('tool.fileUpload.rejected'));
-      return;
-    }
+    const pasted = await readClipboard();
     const { accepted } = splitByAccept(pasted, props.accept);
     if (!accepted.length) {
       message.warning(t('tool.fileUpload.rejected'));
       return;
     }
-    const entries = (props.multiple ? accepted : accepted.slice(0, 1)).map(toFileInfo);
-    fileList.value = props.multiple ? [...fileList.value, ...entries] : entries;
-    emitFiles();
+    append(accepted);
   } catch {
     message.warning(t('tool.fileUpload.rejected'));
   }
 }
 
 const uploadRef = ref<InstanceType<typeof NUpload> | null>(null);
-const fileInputRef = ref<HTMLInputElement | null>(null);
 
 function triggerSelect() {
-  if (fileInputRef.value) {
-    fileInputRef.value.click();
-  } else if (uploadRef.value) {
-    const input = uploadRef.value.$el?.querySelector('input[type="file"]');
-    if (input) input.click();
-  }
-}
-
-function onFileInputChange(event: Event) {
-  const input = event.target as HTMLInputElement;
-  const selectedFiles = input.files ? Array.from(input.files) : [];
-  if (!selectedFiles.length) return;
-
-  const { accepted } = splitByAccept(selectedFiles, props.accept);
-  if (!accepted.length) {
-    message.warning(t('tool.fileUpload.rejected'));
-    input.value = '';
-    return;
-  }
-
-  const entries = (props.multiple ? accepted : accepted.slice(0, 1)).map(toFileInfo);
-  fileList.value = props.multiple ? [...fileList.value, ...entries] : entries;
-  emitFiles();
-  input.value = '';
+  const root = uploadRef.value?.$el as HTMLElement | undefined;
+  root?.querySelector<HTMLInputElement>('input[type="file"]')?.click();
 }
 
 defineExpose({ triggerPaste, triggerSelect });
@@ -180,10 +212,10 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
 </script>
 
 <template>
-  <div class="tool-file-upload">
+  <div class="tool-file-upload" :class="{ 'tool-file-upload--multi': multiple }">
     <NUpload
-      v-if="!compact"
       ref="uploadRef"
+      class="tool-file-upload__upload"
       :file-list="fileList"
       :accept="accept"
       :multiple="multiple"
@@ -191,48 +223,58 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
       :show-file-list="false"
       @update:file-list="onUpdate"
     >
-      <NUploadDragger>
-        <div class="tool-file-upload__body">
+      <!-- The dragger has to be n-upload's first child or naive-ui ignores drops. -->
+      <NUploadDragger class="tool-file-upload__zone">
+        <ul v-if="multiple" class="tool-file-upload__grid">
+          <li
+            v-for="(item, index) in fileList"
+            :key="item.id"
+            class="tool-file-upload__cell"
+            :class="{ 'tool-file-upload__cell--drop': dropTarget === index }"
+            draggable="true"
+            @click.stop
+            @dragstart="onTileDragStart(index, $event)"
+            @dragover="onTileDragOver(index, $event)"
+            @drop="onTileDrop(index, $event)"
+            @dragend="clearDrag"
+          >
+            <FileCard
+              :name="item.name"
+              :file="item.file ?? undefined"
+              :file-type="item.type ?? undefined"
+              :thumbnail-url="thumbnails[item.id]"
+              :removable="removable"
+              @remove="remove(index)"
+            />
+          </li>
+          <li class="tool-file-upload__cell tool-file-upload__cell--add">
+            <span class="tool-file-upload__add">
+              <NIcon :size="20" :component="CloudUpload" class="tool-file-upload__add-icon" />
+            </span>
+            <span class="tool-file-upload__add-name" aria-hidden="true"></span>
+          </li>
+        </ul>
+
+        <div v-else-if="single" class="tool-file-upload__single" @click.stop>
+          <FileCard
+            :name="single.name"
+            :file="single.file ?? undefined"
+            :file-type="single.type ?? undefined"
+            :thumbnail-url="thumbnails[single.id]"
+            :removable="removable"
+            @remove="remove(0)"
+          />
+        </div>
+
+        <div v-else class="tool-file-upload__body">
           <NIcon :size="26" :component="CloudUpload" class="tool-file-upload__icon" />
-          <p class="tool-file-upload__label">
-            {{ files.length ? t('tool.fileUpload.replace') : t('tool.fileUpload.choose') }}
-          </p>
+          <p class="tool-file-upload__label">{{ t('tool.fileUpload.choose') }}</p>
           <p v-if="accept" class="tool-file-upload__hint">
             {{ t('tool.fileUpload.accepted', { types: accept }) }}
           </p>
         </div>
       </NUploadDragger>
     </NUpload>
-
-    <!-- Hidden file input for compact mode -->
-    <input
-      v-if="compact"
-      ref="fileInputRef"
-      type="file"
-      :accept="accept"
-      :multiple="multiple"
-      style="display: none"
-      @change="onFileInputChange"
-    />
-
-    <ul v-if="fileList.length || compact" class="tool-file-upload__files">
-      <li v-for="(item, index) in fileList" :key="item.id" class="tool-file-upload__item">
-        <FileCard
-          :name="item.name"
-          :file="item.file ?? undefined"
-          :file-type="item.type ?? undefined"
-          :thumbnail-url="thumbnails[item.id]"
-          :removable="removable"
-          @remove="remove(index)"
-        />
-      </li>
-      <li v-if="compact && (multiple || fileList.length === 0)" class="tool-file-upload__item tool-file-upload__compact-slot" @click="triggerSelect()">
-        <div class="tool-file-upload__compact-trigger">
-          <NIcon :size="20" :component="CloudUpload" class="tool-file-upload__compact-icon" />
-        </div>
-        <span class="tool-file-upload__compact-name"></span>
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -244,11 +286,52 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
   min-height: 0;
 }
 
+.tool-file-upload__upload {
+  display: block;
+  width: 100%;
+}
+
+/* naive renders its trigger wrapper inline-block, which would shrink-wrap the
+   box to one grid column; the box fills the panel column instead. */
+.tool-file-upload__upload :deep(.n-upload-trigger) {
+  display: block;
+  width: 100%;
+}
+
+/* naive-ui's dragger chrome is replaced: the element is only the drop area and
+   the click-to-pick trigger, its surface belongs to the shape below. */
+.tool-file-upload__zone {
+  box-sizing: border-box;
+  width: 100% !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+}
+
+.tool-file-upload__single {
+  width: 100%;
+}
+
 .tool-file-upload__body {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: var(--spacing-xxs);
+  width: 100%;
+  height: 128px;
+  border: 2px dashed var(--color-hairline-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.tool-file-upload__body:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
 }
 
 .tool-file-upload__icon {
@@ -268,25 +351,30 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
   color: var(--color-text-3);
 }
 
-.tool-file-upload__files {
+.tool-file-upload__grid {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 128px);
   gap: var(--spacing-sm);
-  flex: 1;
-  min-height: 0;
+  align-content: start;
+  width: 100%;
 }
 
-.tool-file-upload__item {
-  list-style: none;
-  flex: 1;
-  display: flex;
-  min-height: 0;
+.tool-file-upload__cell {
+  box-sizing: border-box;
+  width: 128px;
+  min-width: 0;
 }
 
-.tool-file-upload__compact-trigger {
+.tool-file-upload__cell--drop {
+  border-radius: var(--radius-md);
+  outline: 2px dashed var(--color-primary);
+  outline-offset: 2px;
+}
+
+.tool-file-upload__add {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -300,25 +388,23 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.tool-file-upload__compact-trigger:hover {
+.tool-file-upload__add:hover {
   border-color: var(--color-primary);
   background: var(--color-primary-soft);
 }
 
-.tool-file-upload__compact-slot {
-  cursor: pointer;
+.tool-file-upload__add-icon {
+  color: var(--color-text-3);
 }
 
-.tool-file-upload__compact-slot:hover .tool-file-upload__compact-trigger {
-  border-color: var(--color-primary);
-  background: var(--color-primary-soft);
-}
-
-.tool-file-upload__compact-name {
+/* Keeps the add tile's row as tall as a tile that carries a filename. */
+.tool-file-upload__add-name {
+  display: block;
   min-height: 1em;
 }
 
-.tool-file-upload__compact-icon {
-  color: var(--color-text-3);
+/* A single file fills the box, so its name lines up with the card. */
+.tool-file-upload:not(.tool-file-upload--multi) :deep(.file-card__name) {
+  text-align: left;
 }
 </style>
