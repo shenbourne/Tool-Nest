@@ -87,6 +87,15 @@ time-to-seconds, truncate-clock-time, encryption (two panels: encrypt / decrypt)
   base per file, browser evidence (Chrome DevTools MCP) for import/paste/copy/export on
   representative tools per layout type (uniform, top-params, two-section, stacked-output)
 
+## Result (all done)
+
+- Batches A–H committed: `3bd1e9d` (foundation), `1ddc37d` (csv/tsv), `2203fd3` (json),
+  `0f4374c` (xml/yaml/toml/sql), `46b0b39` (data/dev converters), `bc34961` (list),
+  `2707cf0` (text), `380f97c` (math/time/encryption), `03a7469` (lint fix)
+- Two codemods (`.scratch/phase-11/migrate-*.mjs`) handled the 59 uniform/card-shaped
+  tools; 23 bespoke files were hand-edited
+- Full gate + browser evidence in VERIFICATION.md; acceptance in ACCEPTANCE.md
+
 ## Risks
 
 - 84 files × template variance → codemod only for the strict uniform shape; hand-edit the
