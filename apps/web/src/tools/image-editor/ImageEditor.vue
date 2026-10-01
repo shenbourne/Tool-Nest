@@ -201,7 +201,7 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <div v-if="imageUrl">
+          <div v-if="imageUrl" class="canvas-wrapper">
             <v-stage
               :config="{ width: stageWidth, height: stageHeight }"
               @click="onStageClick"
@@ -308,3 +308,10 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
     </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.canvas-wrapper {
+  max-width: 100%;
+  overflow: auto;
+}
+</style>

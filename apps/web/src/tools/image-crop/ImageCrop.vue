@@ -175,7 +175,7 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <div v-if="imageUrl">
+          <div v-if="imageUrl" class="canvas-wrapper">
             <v-stage :config="{ width: stageWidth, height: stageHeight }">
               <v-layer>
                 <v-image
@@ -239,3 +239,10 @@ onUnmounted(() => {
     </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.canvas-wrapper {
+  max-width: 100%;
+  overflow: auto;
+}
+</style>

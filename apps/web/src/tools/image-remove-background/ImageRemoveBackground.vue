@@ -117,20 +117,9 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <div v-if="processedImageUrl" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 20px 20px;">
+          <img :src="imageUrl" style="display:none" @load="onImageLoad" />
+          <div v-if="processedImageUrl" class="canvas-wrapper" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 20px 20px;">
             <v-stage :config="{ width: stageWidth, height: stageHeight }">
-              <v-layer>
-                <v-image
-                  :config="{
-                    image: originalImageEl,
-                    x: 0,
-                    y: 0,
-                    width: stageWidth,
-                    height: stageHeight,
-                  }"
-                  @load="onImageLoad"
-                />
-              </v-layer>
               <v-layer>
                 <v-image
                   :config="{
@@ -166,3 +155,10 @@ onUnmounted(() => {
     </NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.canvas-wrapper {
+  max-width: 100%;
+  overflow: auto;
+}
+</style>
