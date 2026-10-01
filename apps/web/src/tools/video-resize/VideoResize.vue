@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
@@ -20,6 +21,7 @@ const keepAspectRatio = ref(true);
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
 
 const scaleFilter = computed(() => {
   if (keepAspectRatio.value) {
@@ -31,6 +33,7 @@ const scaleFilter = computed(() => {
 function onFileChange(files: File[]) {
   file.value = files[0] ?? null;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -49,6 +52,7 @@ async function process() {
   processing.value = true;
   error.value = '';
   resultData.value = null;
+  resultFile.value = null;
 
   try {
     const inputBytes = new Uint8Array(await file.value.arrayBuffer());
@@ -66,6 +70,7 @@ async function process() {
     });
 
     resultData.value = result;
+    resultFile.value = new File([result], 'resized.mp4', { type: 'video/mp4' });
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -92,8 +97,9 @@ async function copy() {
           <NAlert v-if="loadError" type="error" :title="loadError" />
           <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onFileChange" />
         </template>
-        
-        
+        <template #output-files>
+          <FileCard v-if="resultFile" name="resized.mp4" :file="resultFile" file-type="video/mp4" />
+        </template>
         <template #actions-right>
           <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'resized.mp4', 'video/mp4')">
             {{ t('tool.download') }}

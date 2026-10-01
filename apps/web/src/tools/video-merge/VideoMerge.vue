@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
@@ -17,10 +18,12 @@ const files = ref<File[]>([]);
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
 
 function onFileChange(selected: File[]) {
   files.value = selected;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -57,6 +60,7 @@ async function process() {
   processing.value = true;
   error.value = '';
   resultData.value = null;
+  resultFile.value = null;
 
   try {
     const fileBytes: Uint8Array[] = [];
@@ -88,6 +92,7 @@ async function process() {
     });
 
     resultData.value = result;
+    resultFile.value = new File([result], 'merged.mp4', { type: 'video/mp4' });
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -122,8 +127,9 @@ async function copy() {
             </div>
           </div>
         </template>
-        
-        
+        <template #output-files>
+          <FileCard v-if="resultFile" name="merged.mp4" :file="resultFile" file-type="video/mp4" />
+        </template>
         <template #actions-right>
           <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'merged.mp4', 'video/mp4')">
             {{ t('tool.download') }}

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import FileCard from '@/components/FileCard.vue';
 import { useFFmpeg, runFFmpegTask } from '@/composables/useFFmpeg';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
@@ -19,16 +20,19 @@ const processing = ref(false);
 const taskProgress = ref(0);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
 
 function onVideoChange(files: File[]) {
   videoFile.value = files[0] ?? null;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
 function onAudioChange(files: File[]) {
   audioFile.value = files[0] ?? null;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -48,6 +52,7 @@ async function process() {
   taskProgress.value = 0;
   error.value = '';
   resultData.value = null;
+  resultFile.value = null;
 
   try {
     const videoBytes = new Uint8Array(await videoFile.value.arrayBuffer());
@@ -73,6 +78,7 @@ async function process() {
     }, (p) => { taskProgress.value = p; });
 
     resultData.value = result;
+    resultFile.value = new File([result], 'with-audio.mp4', { type: 'video/mp4' });
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -106,8 +112,9 @@ async function copy() {
             <ToolFileUpload accept="audio/*" compact @change="onAudioChange" />
           </div>
         </template>
-        
-        
+        <template #output-files>
+          <FileCard v-if="resultFile" name="with-audio.mp4" :file="resultFile" file-type="video/mp4" />
+        </template>
         <template #actions-right>
           <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'with-audio.mp4', 'video/mp4')">
             {{ t('tool.download') }}

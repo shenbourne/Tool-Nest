@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
+import FileCard from '@/components/FileCard.vue';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
@@ -18,6 +19,7 @@ const quality = ref<string>('medium');
 const processing = ref(false);
 const error = ref('');
 const resultData = ref<Uint8Array | null>(null);
+const resultFile = ref<File | null>(null);
 
 const qualityOptions = computed(() => [
   { label: t('tools.videoCompress.qualityLow'), value: 'low' },
@@ -31,6 +33,7 @@ const crf = computed(() => crfMap[quality.value] ?? '23');
 function onFileChange(files: File[]) {
   file.value = files[0] ?? null;
   resultData.value = null;
+  resultFile.value = null;
   error.value = '';
 }
 
@@ -67,6 +70,7 @@ async function process() {
     });
 
     resultData.value = result;
+    resultFile.value = new File([result], 'compressed.mp4', { type: 'video/mp4' });
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.processingFailed');
   } finally {
@@ -94,7 +98,7 @@ async function copy() {
           <ToolFileUpload ref="fileUpload" accept="video/*" compact @change="onFileChange" />
         </template>
         <template #output-files>
-          <NAlert v-if="resultData" type="success" :title="t('common.compress') + ' ✓'" />
+          <FileCard v-if="resultFile" name="compressed.mp4" :file="resultFile" file-type="video/mp4" />
         </template>
         <template #actions-right>
           <NButton :disabled="!resultData" @click="resultData && downloadBlob(resultData, 'compressed.mp4', 'video/mp4')">
