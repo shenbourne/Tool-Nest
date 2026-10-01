@@ -67,6 +67,12 @@ const { t } = useI18n();
   border-radius: var(--radius-lg);
   padding: var(--spacing-sm);
   background: var(--color-surface-soft);
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-file-panel__column > * {
+  flex: 1;
 }
 
 .tool-file-panel__params {

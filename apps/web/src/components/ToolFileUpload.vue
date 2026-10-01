@@ -237,6 +237,12 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
 </template>
 
 <style scoped>
+.tool-file-upload {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .tool-file-upload__body {
   display: flex;
   flex-direction: column;
@@ -268,10 +274,13 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  flex: 1;
 }
 
 .tool-file-upload__item {
   list-style: none;
+  flex: 1;
+  display: flex;
 }
 
 .tool-file-upload__compact-trigger {

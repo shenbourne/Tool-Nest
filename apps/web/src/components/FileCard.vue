@@ -110,6 +110,9 @@ function handleClick() {
   background: var(--color-surface-soft);
   cursor: pointer;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
 }
 
 .file-card:hover {
