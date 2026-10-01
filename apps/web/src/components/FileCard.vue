@@ -98,27 +98,18 @@ function handleClick() {
 </template>
 
 <style scoped>
+/* The card takes whatever width its container hands it: a 128px grid cell
+   renders a 128x128 tile, a full-width cell renders the wide card. */
 .file-card {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: var(--spacing-xxs);
   position: relative;
-  padding: var(--spacing-xs);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface-soft);
-  cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   width: 100%;
-  flex: 1;
-  min-height: 0;
-  justify-content: center;
-}
-
-.file-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 0;
+  cursor: pointer;
 }
 
 .file-card__remove {
@@ -155,19 +146,27 @@ function handleClick() {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 128px;
+  width: 100%;
   height: 128px;
   overflow: hidden;
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-md);
   background: var(--color-surface-2);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.file-card:hover .file-card__thumb {
+  border-color: var(--color-hairline-strong);
+  box-shadow: var(--shadow-card);
+}
+
+/* Thumbnails are square data URLs, so `contain` keeps a wide card's preview
+   whole instead of cropping it. */
 .file-card__thumb-image {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .file-card__thumb-icon {
@@ -175,7 +174,6 @@ function handleClick() {
 }
 
 .file-card__name {
-  margin-top: var(--spacing-xxs);
   width: 100%;
   text-align: center;
   overflow: hidden;
