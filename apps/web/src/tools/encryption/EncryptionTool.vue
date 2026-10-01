@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSelect, NButton, NSpace, NAlert } from 'naive-ui';
+import { NInput, NSelect, NButton, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { AES, RC4, Rabbit, TripleDES, enc } from 'crypto-js';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const algos = { AES, TripleDES, Rabbit, RC4 };
 type Algo = keyof typeof algos;
 const algoOptions = Object.keys(algos).map(l => ({ label: l, value: l }));
@@ -40,33 +39,42 @@ watch([decryptInput, decryptAlgo, decryptSecret], () => {
   decryptOutput.value = '';
   decryptError.value = '';
 });
-
-function copy() { copyToClipboard(encryptOutput.value); }
 </script>
 
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <NCard :title="t('common.encrypt')">
-        <NSpace vertical :size="12">
+      <ToolTextPanel v-model:input-text="encryptInput" :output-text="encryptOutput" :input-title="t('common.encrypt')" :output-title="t('common.output')" export-name="encrypted.txt">
+        <template #input>
           <NInput v-model:value="encryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.encryptPlaceholder')"  :input-props="{ id: 'encryptionField0' }"/>
-          <NInput v-model:value="encryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField1' }"/>
-          <NSelect v-model:value="encryptAlgo" :options="algoOptions" />
+        </template>
+        <template #output>
           <NInput :value="encryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'encryptionField2' }"/>
-          <NButton @click="copy">{{ t('tool.copy') }}</NButton>
-        </NSpace>
-      </NCard>
+        </template>
+        <template #params>
+          <NSpace>
+            <NInput v-model:value="encryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField1' }"/>
+            <NSelect v-model:value="encryptAlgo" :options="algoOptions" />
+          </NSpace>
+        </template>
+      </ToolTextPanel>
 
-      <NCard :title="t('common.decrypt')">
-        <NSpace vertical :size="12">
+      <ToolTextPanel v-model:input-text="decryptInput" :output-text="decryptOutput" :input-title="t('common.decrypt')" :output-title="t('common.output')" export-name="decrypted.txt">
+        <template #input>
           <NInput v-model:value="decryptInput" type="textarea" :rows="3" :placeholder="t('tools.encryption.decryptPlaceholder')"  :input-props="{ id: 'encryptionField3' }"/>
-          <NInput v-model:value="decryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField4' }"/>
-          <NSelect v-model:value="decryptAlgo" :options="algoOptions" />
+        </template>
+        <template #output>
+          <NInput :value="decryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'encryptionField5' }"/>
+        </template>
+        <template #params>
+          <NSpace>
+            <NInput v-model:value="decryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField4' }"/>
+            <NSelect v-model:value="decryptAlgo" :options="algoOptions" />
+            <NButton @click="doDecrypt">{{ t('common.decrypt') }}</NButton>
+          </NSpace>
           <NAlert v-if="decryptError" type="error">{{ decryptError }}</NAlert>
-          <NInput v-else-if="decryptOutput" :value="decryptOutput" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'encryptionField5' }"/>
-          <NButton @click="doDecrypt">{{ t('common.decrypt') }}</NButton>
-        </NSpace>
-      </NCard>
+        </template>
+      </ToolTextPanel>
     </NSpace>
   </ToolLayout>
 </template>

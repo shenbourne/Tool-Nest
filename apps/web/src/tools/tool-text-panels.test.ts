@@ -25,7 +25,6 @@ const EXPECTED: string[] = [
   'csv-transpose/CsvTranspose.vue',
   'tsv-to-json/TsvToJson.vue',
   // json
-  'json-diff/JsonDiff.vue',
   'json-escape/JsonEscape.vue',
   'json-minify/JsonMinify.vue',
   'json-prettify/JsonPrettify.vue',
@@ -72,7 +71,6 @@ const EXPECTED: string[] = [
   'list-wrap/ListWrap.vue',
   // text
   'text-censor/TextCensor.vue',
-  'text-diff/TextDiff.vue',
   'text-join/TextJoin.vue',
   'text-replacer/TextReplacer.vue',
   'text-reverse/TextReverse.vue',
@@ -113,23 +111,15 @@ const EXCLUDED: string[] = [
   'meta-tag-generator/MetaTagGenerator.vue',
   'rsa-key-pair-generator/RsaKeyPair.vue',
   'bip39-generator/Bip39Generator.vue',
+  // two-input comparators: both textareas are inputs and the result is a
+  // structured diff card, so the input/output action split does not apply
+  'json-diff/JsonDiff.vue',
+  'text-diff/TextDiff.vue',
 ];
 
 // Tools converted so far. Grows batch by batch; the last batch of the phase
 // sets this to EXPECTED so the first test covers the whole scope.
-const MIGRATED: string[] = [
-  'csv-change-separator/CsvChangeSeparator.vue',
-  'csv-find-incomplete/CsvFindIncomplete.vue',
-  'csv-insert-columns/CsvInsertColumns.vue',
-  'csv-rows-to-columns/CsvRowsToColumns.vue',
-  'csv-swap-columns/CsvSwapColumns.vue',
-  'csv-to-json/CsvToJson.vue',
-  'csv-to-tsv/CsvToTsv.vue',
-  'csv-to-xml/CsvToXml.vue',
-  'csv-to-yaml/CsvToYaml.vue',
-  'csv-transpose/CsvTranspose.vue',
-  'tsv-to-json/TsvToJson.vue',
-];
+const MIGRATED: string[] = EXPECTED;
 
 function componentPaths(): string[] {
   const paths: string[] = [];

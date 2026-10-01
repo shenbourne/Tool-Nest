@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NAlert } from 'naive-ui';
+import { NInput, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
 const input = ref('');
@@ -17,10 +18,16 @@ const output = computed(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')"  :input-props="{ id: 'checkLeapYearsField0' }"/>
-      <NAlert v-if="skipped.length" type="warning" :title="t('tools.checkLeapYears.ignored', { tokens: skipped.join(', ') })" />
-      <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'checkLeapYearsField1' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+      <template #input>
+        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')"  :input-props="{ id: 'checkLeapYearsField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'checkLeapYearsField1' }"/>
+      </template>
+      <template #params>
+        <NAlert v-if="skipped.length" type="warning" :title="t('tools.checkLeapYears.ignored', { tokens: skipped.join(', ') })" />
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
