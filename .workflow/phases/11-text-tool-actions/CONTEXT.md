@@ -32,6 +32,8 @@ User requirement (grilling-confirmed 2026-10-02):
   textareas are independent outputs).
 - `bip39-generator` — generate section is output-only; validate result is a status
   alert, not a text output.
+- `json-diff`, `text-diff` — two-input comparators: both textareas are inputs and the
+  result is a structured diff card, so the input/output action split does not apply.
 
 Special handling inside scope:
 
