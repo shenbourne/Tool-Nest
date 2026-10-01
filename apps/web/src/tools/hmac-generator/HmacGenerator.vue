@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSelect, NButton, NSpace } from 'naive-ui';
+import { NInput, NSelect, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { HmacMD5, HmacRIPEMD160, HmacSHA1, HmacSHA224, HmacSHA256, HmacSHA3, HmacSHA384, HmacSHA512, enc } from 'crypto-js';
 import type { lib } from 'crypto-js';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 
 const algos = { MD5: HmacMD5, RIPEMD160: HmacRIPEMD160, SHA1: HmacSHA1, SHA3: HmacSHA3, SHA224: HmacSHA224, SHA256: HmacSHA256, SHA384: HmacSHA384, SHA512: HmacSHA512 } as const;
 type Algo = keyof typeof algos;
@@ -30,23 +29,24 @@ const hmac = computed(() => {
   const result = algos[hashFunction.value](plainText.value, secret.value);
   return result.toString(enc[encoding.value]);
 });
-
-function copy() { copyToClipboard(hmac.value); }
 </script>
 
 <template>
   <ToolLayout :tool="tool">
-    <NCard>
-      <NSpace vertical :size="12">
+    <ToolTextPanel v-model:input-text="plainText" :output-text="hmac" :input-title="t('common.input')" :output-title="t('common.output')" export-name="hmac.txt">
+      <template #input>
         <NInput v-model:value="plainText" type="textarea" :rows="3" :placeholder="t('tools.hmacGenerator.inputPlaceholder')"  :input-props="{ id: 'hmacGeneratorField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="hmac" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'hmacGeneratorField2' }"/>
+      </template>
+      <template #params>
         <NInput v-model:value="secret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'hmacGeneratorField1' }"/>
         <div style="display: flex; gap: 12px;">
           <NSelect v-model:value="hashFunction" :options="Object.keys(algos).map(l => ({ label: l, value: l }))" :label="t('tools.hmacGenerator.hashFunction')" style="flex: 1;" />
           <NSelect v-model:value="encoding" :options="encodingOptions" :label="t('tools.hmacGenerator.encoding')" style="flex: 1;" />
         </div>
-        <NInput :value="hmac" readonly type="textarea" :rows="2" style="font-family: monospace;"  :input-props="{ id: 'hmacGeneratorField2' }"/>
-        <NButton @click="copy">{{ t('tool.copy') }}</NButton>
-      </NSpace>
-    </NCard>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
