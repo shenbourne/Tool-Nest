@@ -31,12 +31,18 @@ defineProps<{ activeCode: string | null }>();
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-lg);
   padding: 5px;
+  container-type: inline-size;
 }
 
 .kb-grid {
+  /* Row height tracks one key unit so the 1u caps stay square. A 1u cap spans 4
+     grid columns; its 1.5px margins shrink both axes equally, so the row track
+     must be the full 4-column width (not that width minus the margins). */
+  --kb-unit: 34px;
+  --kb-unit: calc(100cqw / 92 * 4);
   display: grid;
   grid-template-columns: repeat(92, minmax(0, 1fr));
-  grid-template-rows: repeat(6, 34px);
+  grid-template-rows: repeat(6, var(--kb-unit));
 }
 
 .kb-key {
