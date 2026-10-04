@@ -56,8 +56,12 @@ function onFileChange(files: File[]) {
   file.value = f;
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
   imageUrl.value = f ? URL.createObjectURL(f) : '';
+  if (!f) imageEl.value = null;
 }
 
+// Konva's Image shape only *listens* for a load event on its source element, it
+// never dispatches one, so the element has to be loaded by a real DOM <img>
+// before it can be handed to the stage.
 function onImageLoad(e: Event) {
   const img = (e.target as HTMLImageElement);
   imageEl.value = img;
@@ -175,6 +179,7 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFileChange" />
         </template>
         <template #output-files>
+          <img v-if="imageUrl" :src="imageUrl" style="display:none" @load="onImageLoad" />
           <div v-if="imageUrl" class="canvas-wrapper">
             <v-stage :config="{ width: stageWidth, height: stageHeight }">
               <v-layer>
@@ -187,7 +192,6 @@ onUnmounted(() => {
                     width: stageWidth,
                     height: stageHeight,
                   }"
-                  @load="onImageLoad"
                 />
                 <v-rect
                   ref="rectNodeRef"
