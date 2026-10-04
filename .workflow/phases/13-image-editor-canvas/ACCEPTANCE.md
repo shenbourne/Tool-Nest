@@ -23,3 +23,9 @@ Evidence for every check is recorded in `VERIFICATION.md`.
 - [x] AC-11 `tool-file-import-controls.test.ts` still passes: `ImageEditor.vue` keeps exactly one `ToolFileUpload` with `accept="image/*"` and no native `<input type="file">`.
 - [x] AC-12 `pnpm --filter @toolnest/web test` 222/222 PASS, `type-check` PASS, `build` PASS (33.58 s); differential lint 0 added / 0 removed on all four files (the repo-wide lint baseline already fails as `STATE.md` records, and the 3 `no-explicit-any` errors per canvas file are pre-existing, on lines this phase does not touch).
 - [x] AC-13 Every other tool page keeps the two-column file area: `columns` defaults to 2, verified on `/image-compress` and on `/image-crop`.
+
+## Centring (follow-up, user decision 2026-10-02)
+
+- [x] AC-14 `/image-editor`: with a 120×80 image in a 241 px-wide box the gaps around the stage are left 60.5 = right 60.5 and top 53 = bottom 53 px — centred on both axes, no longer pinned to the top-left.
+- [x] AC-15 `/image-crop`: with a 60×40 image and the column widened to 400 px the gaps are left 170 = right 170 and top 77.2 = bottom 77.2 px; the earlier render checks (image drawn, `Transformer.nodes() = [Rect]`) still hold, since the change is CSS-only.
+- [x] AC-16 The centring is CSS-only, scoped to these two tools: `ToolFilePanel`'s own column rules and the other 40+ tools' file boxes are untouched (`/image-compress` still two columns, `image-remove-background` unchanged).

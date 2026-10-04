@@ -16,10 +16,17 @@ pnpm --filter @toolnest/web type-check   # PASS (vue-tsc --noEmit, no output)
 # build
 pnpm --filter @toolnest/web build        # PASS, built in 33.58 s
 
+# after the centring follow-up (CSS-only, re-run in full)
+pnpm --filter @toolnest/web type-check   # PASS
+pnpm --filter @toolnest/web build        # PASS, built in 30.36 s
+pnpm --filter @toolnest/web test         # 33 files / 222 tests PASS
+
 # differential lint (repo lint already fails on a pre-existing baseline)
 git show HEAD:./<path> | npx eslint --stdin --stdin-filename <path>
 npx eslint <path>
 ```
+
+For the centring round the differential lint compares each file against the `HEAD` that already carries the first four commits: `ImageEditor.vue` 3 → 3, `ImageCrop.vue` 3 → 3 (the pre-existing `no-explicit-any` errors).
 
 ### Differential lint result
 
@@ -108,6 +115,29 @@ rectBox: { x: 60, y: 40, w: 120, h: 80 }   # centred 50 % initial crop
 topLeftOutsideRect  (0.05, 0.05): [210, 43, 43, 255]   # fixture red
 bottomRightOutsideRect (0.97, 0.97): [34, 192, 64, 255] # fixture green stripe
 ```
+
+### Centring follow-up (user decision 2026-10-02: horizontal + vertical, both canvas tools)
+
+Second dev server session on :3031 (the :3000/:3001 servers belong to the shared main worktree). Same in-page `Konva.Util.requestAnimFrame` substitution; the tab still reported `document.hidden === true`, so no screenshot. Gaps are measured as `canvasRect - boxRect` on the `.konvajs-content` element, so they include the box's 12 px padding + 1 px border.
+
+`/image-editor`, 120×80 fixture, box 241×186 (`min-height: 160`, content box 215×160):
+
+```
+canvas: [120, 80]
+gaps: { left: 60.5, right: 60.5, top: 53, bottom: 53 }
+wrapper computed: display flex, align-items center, justify-content center
+```
+
+`60.5 = 13 + (215 − 120)/2` and `53 = 13 + (160 − 80)/2`, so both axes are exactly centred.
+
+`/image-crop`, 60×40 fixture. At this viewport (571 px wide) the two-column grid is narrower than its min-content, so each column hugs its content and the output box is 86 px wide — the canvas fills it and no free space exists to centre in. Widening the grid to `400px 400px` (an inline style applied for the measurement only) makes the free space visible:
+
+```
+box 400 wide, wrapper 374.4, canvas [60, 40]
+gaps: { left: 170, right: 170, top: 77.2, bottom: 77.2 }
+```
+
+`170 = 13 + (374.4 − 60)/2` and `77.2 = 13 + (160 − 40)/2` — again exactly centred on both axes.
 
 ### Two-column tools are unaffected
 

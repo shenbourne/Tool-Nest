@@ -21,12 +21,14 @@ User report 2026-10-02 with a screenshot of `/image-editor`:
 1. `/image-editor` file area = **one column**, containing only the image edit box. Action bar and parameter block unchanged.
 2. With no image picked, the box shows a centered, **clickable dashed "import image" area** (click = open the file picker). Once an image is picked, only the canvas shows.
 3. `image-crop` has the same rendering defect and **is fixed in this phase too**; its existing two-column layout is not changed.
+4. Follow-up, same day: the stage must be **centred horizontally and vertically** inside its file box rather than pinned to the top-left corner. Applies to both canvas tools (`image-editor` and `image-crop`).
 
 ## Approach
 
 - `ToolFilePanel` gains a `columns` prop (`1 | 2`, default `2`). In single mode it renders one full-width column box holding the default slot. Both modes keep the identical action bar and params area, so no tool's buttons change.
 - `ImageEditor` keeps its `ToolFileUpload` mounted (it owns the paste listener, the `accept="image/*"` filter and the programmatic `<input>`) but renders it inside a `display:none` wrapper, because the canvas is the only thing the user asked to see. Import/paste stay reachable through the panel's own buttons.
 - Both canvas tools gain the hidden `<img … @load="onImageLoad">` loader used by `image-remove-background`; the dead `@load` on `<v-image>` is removed.
+- Both tools' `.canvas-wrapper` becomes the centring box (`flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center`). The two rules are duplicated rather than shared, because the class is scoped per component and only these two tools are in scope (`image-remove-background` keeps its current placement).
 
 ## Boundary
 
