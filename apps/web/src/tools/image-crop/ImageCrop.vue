@@ -245,8 +245,16 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* The box is wider and taller than most images; centre the stage in it rather
+   than leaving it pinned to the top-left corner. */
 .canvas-wrapper {
+  flex: 1;
+  min-height: 0;
   max-width: 100%;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>
