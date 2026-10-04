@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue';
-import { NCard, NSpace, NButton, NInputNumber, NColorPicker, NInput, NPopconfirm } from 'naive-ui';
+import { NCard, NSpace, NButton, NInputNumber, NColorPicker, NInput, NPopconfirm, NIcon } from 'naive-ui';
+import { CloudUpload } from '@vicons/tabler';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
@@ -43,8 +44,12 @@ function onFileChange(files: File[]) {
   file.value = f;
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
   imageUrl.value = f ? URL.createObjectURL(f) : '';
+  if (!f) imageEl.value = null;
 }
 
+// Konva's Image shape only *listens* for a load event on its source element, it
+// never dispatches one, so the element has to be loaded by a real DOM <img>
+// before it can be handed to the stage.
 function onImageLoad(e: Event) {
   const img = (e.target as HTMLImageElement);
   imageEl.value = img;
@@ -196,77 +201,83 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NCard>
-      <ToolFilePanel @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
-        <template #input-files>
-          <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFileChange" />
-        </template>
-        <template #output-files>
-          <div v-if="imageUrl" class="canvas-wrapper">
-            <v-stage
-              :config="{ width: stageWidth, height: stageHeight }"
-              @click="onStageClick"
-              @mousedown="onStageMouseDown"
-              @mousemove="onStageMouseMove"
-              @mouseup="onStageMouseUp"
-            >
-              <v-layer>
-                <v-image
+      <ToolFilePanel :columns="1" @request-paste="fileUpload?.triggerPaste()" @request-import="fileUpload?.triggerSelect()">
+        <!-- The upload control stays mounted for the paste listener, the accept
+             filter and the programmatic picker; the canvas is the only thing
+             the box shows. -->
+        <div class="image-editor__hidden">
+          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+        </div>
+        <img v-if="imageUrl" :src="imageUrl" style="display:none" @load="onImageLoad" />
+        <div v-if="imageUrl" class="canvas-wrapper">
+          <v-stage
+            :config="{ width: stageWidth, height: stageHeight }"
+            @click="onStageClick"
+            @mousedown="onStageMouseDown"
+            @mousemove="onStageMouseMove"
+            @mouseup="onStageMouseUp"
+          >
+            <v-layer>
+              <v-image
+                :config="{
+                  image: imageEl,
+                  x: 0,
+                  y: 0,
+                  width: stageWidth,
+                  height: stageHeight,
+                }"
+              />
+              <template v-for="ann in displayAnnotations" :key="ann.id">
+                <v-text
+                  v-if="ann.type === 'text'"
                   :config="{
-                    image: imageEl,
-                    x: 0,
-                    y: 0,
-                    width: stageWidth,
-                    height: stageHeight,
+                    x: ann.x,
+                    y: ann.y,
+                    text: ann.text,
+                    fontSize: ann.fontSize,
+                    fill: ann.color,
+                    draggable: true,
                   }"
-                  @load="onImageLoad"
+                  @dblclick="onTextDblClick(ann)"
+                  @dragend="onTextDragEnd(ann, $event)"
                 />
-                <template v-for="ann in displayAnnotations" :key="ann.id">
-                  <v-text
-                    v-if="ann.type === 'text'"
-                    :config="{
-                      x: ann.x,
-                      y: ann.y,
-                      text: ann.text,
-                      fontSize: ann.fontSize,
-                      fill: ann.color,
-                      draggable: true,
-                    }"
-                    @dblclick="onTextDblClick(ann)"
-                    @dragend="onTextDragEnd(ann, $event)"
-                  />
-                  <v-line
-                    v-if="ann.type === 'line'"
-                    :config="{
-                      points: ann.points,
-                      stroke: ann.color,
-                      strokeWidth: ann.strokeWidth,
-                      lineCap: 'round',
-                    }"
-                  />
-                </template>
                 <v-line
-                  v-if="tempLine.length >= 4"
+                  v-if="ann.type === 'line'"
                   :config="{
-                    points: tempLine,
-                    stroke: drawColor,
-                    strokeWidth: lineWidth,
+                    points: ann.points,
+                    stroke: ann.color,
+                    strokeWidth: ann.strokeWidth,
                     lineCap: 'round',
-                    dash: [5, 5],
                   }"
                 />
-              </v-layer>
-            </v-stage>
-            <NInput
-              v-if="editingAnnotation && editingAnnotation.type === 'text'"
-              v-model:value="editingAnnotation.text"
-              :placeholder="t('tools.imageEditor.textPlaceholder')"
-              style="max-width: 260px; margin-top: 8px;"
-              @keyup.enter="editingAnnotation.editing = false"
-              @blur="editingAnnotation.editing = false"
-              :input-props="{ id: 'imageEditorField0' }"
-            />
-          </div>
-        </template>
+              </template>
+              <v-line
+                v-if="tempLine.length >= 4"
+                :config="{
+                  points: tempLine,
+                  stroke: drawColor,
+                  strokeWidth: lineWidth,
+                  lineCap: 'round',
+                  dash: [5, 5],
+                }"
+              />
+            </v-layer>
+          </v-stage>
+          <NInput
+            v-if="editingAnnotation && editingAnnotation.type === 'text'"
+            v-model:value="editingAnnotation.text"
+            :placeholder="t('tools.imageEditor.textPlaceholder')"
+            style="max-width: 260px; margin-top: 8px;"
+            @keyup.enter="editingAnnotation.editing = false"
+            @blur="editingAnnotation.editing = false"
+            :input-props="{ id: 'imageEditorField0' }"
+          />
+        </div>
+        <button v-else type="button" class="image-editor__empty" @click="fileUpload?.triggerSelect()">
+          <NIcon :size="26" :component="CloudUpload" class="image-editor__empty-icon" />
+          <span class="image-editor__empty-label">{{ t('tool.importFile') }}</span>
+          <span class="image-editor__empty-hint">{{ t('tool.fileUpload.accepted', { types: 'image/*' }) }}</span>
+        </button>
         <template #actions-right>
           <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
           <NButton :disabled="!file" @click="downloadImage">{{ t('tool.exportFile') }}</NButton>
@@ -313,5 +324,50 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
 .canvas-wrapper {
   max-width: 100%;
   overflow: auto;
+}
+
+.image-editor__hidden {
+  display: none;
+}
+
+.image-editor__empty {
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 128px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xxs);
+  border: 2px dashed var(--color-hairline-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color var(--motion-fast) var(--motion-ease),
+    background var(--motion-fast) var(--motion-ease);
+}
+
+.image-editor__empty:hover,
+.image-editor__empty:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.image-editor__empty-icon {
+  color: var(--color-primary);
+}
+
+.image-editor__empty-label {
+  font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-ink);
+}
+
+.image-editor__empty-hint {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-3);
 }
 </style>
