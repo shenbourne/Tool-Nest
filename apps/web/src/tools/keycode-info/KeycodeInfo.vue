@@ -6,7 +6,7 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import KeyboardVisual from './KeyboardVisual.vue';
-import { computeHighlight, isModifierCode, toggleHeldModifier } from './keyboard-highlight';
+import { computeHighlight, isModifierCode, syncHeldModifiers } from './keyboard-highlight';
 import {
   formatClock,
   formatComboLabel,
@@ -33,7 +33,10 @@ function handleKeyDown(e: KeyboardEvent) {
   // Never block default browser shortcuts (F5, Ctrl+R, F12, Tab navigation);
   // this tool only observes keys, it has no input to protect.
   event.value = e;
-  heldModifiers = toggleHeldModifier(heldModifiers, e.code, true);
+  // Rebuild from the event's modifier flags rather than accumulating, so a
+  // modifier whose keyup was missed does not stay stuck and light on a later,
+  // unrelated press.
+  heldModifiers = syncHeldModifiers(heldModifiers, e);
   highlightCodes.value = computeHighlight(heldModifiers, e.code);
   clearTimeout(highlightTimer);
   highlightTimer = setTimeout(() => {
@@ -50,8 +53,8 @@ function handleKeyDown(e: KeyboardEvent) {
 }
 
 function handleKeyUp(e: KeyboardEvent) {
-  // Track releases so letting a modifier go is not shown by a later combo.
-  heldModifiers = toggleHeldModifier(heldModifiers, e.code, false);
+  // Track releases so the held set stays accurate between keydowns.
+  heldModifiers = heldModifiers.filter((code) => code !== e.code);
 }
 
 onMounted(() => {
