@@ -952,7 +952,10 @@
       "text": "Text: ",
       "textPlaceholder": "Enter text...",
       "defaultText": "Text",
-      "confirmClearAll": "Clear all annotations?"
+      "confirmClearAll": "Clear all annotations?",
+      "undo": "Undo",
+      "redo": "Redo",
+      "deleteSelected": "Delete selected"
     },
     "imageRemoveBackground": {
       "name": "Image Remove Background",
