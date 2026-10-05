@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NColorPicker, NInput, NPopconfirm, NIcon } from 'naive-ui';
 import { CloudUpload } from '@vicons/tabler';
 import { useI18n } from 'vue-i18n';
@@ -8,36 +8,76 @@ import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+import { usePreferencesStore } from '@/stores/preferences.store';
+import { resolveCssColorToken } from '@/utils/css-tokens';
+import {
+  canRedo,
+  canUndo,
+  commit,
+  createHistory,
+  historyState,
+  moveLine,
+  moveLineEndpoint,
+  paramsFor,
+  redo,
+  undo,
+  type ActiveTool,
+  type Annotation,
+  type LineAnnotation,
+  type TextAnnotation,
+} from './image-editor.service';
+
+/** The slice of a Konva node (or of an event's target) this component touches. */
+interface KonvaNode {
+  x(): number;
+  y(): number;
+  position(position: { x: number; y: number }): void;
+  getStage(): { getPointerPosition(): { x: number; y: number } | null };
+  getLayer(): { batchDraw(): void } | null;
+}
+
+interface KonvaPointerEvent {
+  target: KonvaNode;
+  /** Stops the event reaching the stage, which owns the background click. */
+  cancelBubble?: boolean;
+}
+
+interface KonvaTransformer {
+  nodes(nodes: KonvaNode[]): void;
+  forceUpdate(): void;
+  getLayer(): { batchDraw(): void } | null;
+}
+
+/** A `vue-konva` node component exposes its Konva node through `getNode`. */
+interface KonvaComponentRef<N = KonvaNode> {
+  getNode(): N;
+}
+
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const preferences = usePreferencesStore();
 const { copyFileToClipboard } = useCopy();
 
-type Annotation =
-  | { id: number; type: 'text'; x: number; y: number; text: string; fontSize: number; color: string; editing: boolean }
-  | { id: number; type: 'line'; points: number[]; color: string; strokeWidth: number };
+// Konva cannot resolve CSS `var()` expressions, so the selection chrome needs
+// concrete token values, re-read whenever the theme class changes.
+const primaryColor = ref('');
+const canvasColor = ref('');
+watch(
+  [() => preferences.isDark, () => preferences.loaded],
+  () => {
+    primaryColor.value = resolveCssColorToken('--color-primary');
+    canvasColor.value = resolveCssColorToken('--color-canvas');
+  },
+  { immediate: true, flush: 'post' },
+);
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
 const imageEl = ref<HTMLImageElement | null>(null);
 const stageWidth = ref(800);
 const stageHeight = ref(600);
-
-const drawColor = ref('#ff0000');
-const lineWidth = ref(3);
-const fontSize = ref(24);
-const textContent = ref(t('tools.imageEditor.defaultText'));
-
-// Active tool: 'none' | 'text' | 'line'
-const activeTool = ref<'none' | 'text' | 'line'>('none');
-
-const annotations = ref<Annotation[]>([]);
-let nextId = 1;
-
-// Drawing state for line tool
-const isDrawing = ref(false);
-const currentLine = ref<number[]>([]);
 
 function onFileChange(files: File[]) {
   const f = files[0] ?? null;
@@ -60,46 +100,215 @@ function onImageLoad(e: Event) {
   stageHeight.value = Math.round(img.naturalHeight * scale);
 }
 
-function setTool(toolType: 'none' | 'text' | 'line') {
-  activeTool.value = toolType;
+const activeTool = ref<ActiveTool>('none');
+const selectedId = ref<number | null>(null);
+
+// Defaults for the next annotation. The panel falls back to these while a
+// drawing tool is active.
+const drawColor = ref('#ff0000');
+const lineWidth = ref(3);
+const fontSize = ref(24);
+const textContent = ref(t('tools.imageEditor.defaultText'));
+
+const annotations = ref<Annotation[]>([]);
+const history = ref(createHistory<Annotation[]>([]));
+let nextId = 1;
+
+const isDrawing = ref(false);
+const currentLine = ref<number[]>([]);
+const tempLine = computed(() => currentLine.value);
+
+const selected = computed(() => annotations.value.find((a) => a.id === selectedId.value) ?? null);
+/** The annotation the panel edits; a drawing tool owns the panel while active. */
+const editing = computed(() => (activeTool.value === 'none' ? selected.value : null));
+const editingText = computed(() => (editing.value?.type === 'text' ? editing.value : null));
+const editingLine = computed(() => (editing.value?.type === 'line' ? editing.value : null));
+
+const visibleParams = computed(() => paramsFor(activeTool.value, selected.value));
+/** Selecting and editing is the 选择 mode's job, so drawing modes stay inert. */
+const canManipulate = computed(() => activeTool.value === 'none');
+
+const endpointPositions = computed(() => {
+  const line = editingLine.value;
+  if (!line) return [];
+  const [x1, y1, x2, y2] = line.points;
+  return [
+    { end: 0 as const, x: x1, y: y1 },
+    { end: 1 as const, x: x2, y: y2 },
+  ];
+});
+
+const transformerConfig = computed(() => ({
+  resizeEnabled: false,
+  rotateEnabled: false,
+  enabledAnchors: [],
+  borderStroke: primaryColor.value,
+  borderDash: [4, 4],
+  borderWidth: 1,
+  padding: 4,
+}));
+
+const canUndoNow = computed(() => canUndo(history.value));
+const canRedoNow = computed(() => canRedo(history.value));
+
+const colorValue = computed(() => editing.value?.color ?? drawColor.value);
+const lineWidthValue = computed(() => editingLine.value?.strokeWidth ?? lineWidth.value);
+const fontSizeValue = computed(() => editingText.value?.fontSize ?? fontSize.value);
+const textValue = computed(() => editingText.value?.text ?? textContent.value);
+
+// --- history -----------------------------------------------------------------
+
+let pendingCommit: ReturnType<typeof setTimeout> | null = null;
+
+/**
+ * Records the current annotations. Property edits fire many times per gesture,
+ * so they coalesce and structural edits commit through here immediately.
+ */
+function pushHistory() {
+  if (pendingCommit) {
+    clearTimeout(pendingCommit);
+    pendingCommit = null;
+  }
+  if (JSON.stringify(annotations.value) === JSON.stringify(historyState(history.value))) return;
+  history.value = commit(history.value, annotations.value);
+}
+
+function scheduleCommit() {
+  if (pendingCommit) clearTimeout(pendingCommit);
+  pendingCommit = setTimeout(() => {
+    pendingCommit = null;
+    pushHistory();
+  }, 400);
+}
+
+function undoAction() {
+  pushHistory();
+  history.value = undo(history.value);
+  applyRestored();
+}
+
+function redoAction() {
+  pushHistory();
+  history.value = redo(history.value);
+  applyRestored();
+}
+
+function applyRestored() {
+  annotations.value = historyState(history.value);
+  if (selectedId.value !== null && !annotations.value.some((a) => a.id === selectedId.value)) {
+    selectedId.value = null;
+  }
+}
+
+// --- annotation edits --------------------------------------------------------
+
+function replaceAnnotation(id: number, next: Annotation) {
+  annotations.value = annotations.value.map((a) => (a.id === id ? next : a));
+}
+
+function setColor(value: string | null) {
+  const next = value ?? '#000000';
+  const target = editing.value;
+  if (target) {
+    target.color = next;
+    scheduleCommit();
+  } else {
+    drawColor.value = next;
+  }
+}
+
+function setLineWidth(value: number | null) {
+  const next = value ?? 1;
+  const target = editingLine.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, strokeWidth: next });
+    scheduleCommit();
+  } else {
+    lineWidth.value = next;
+  }
+}
+
+function setFontSize(value: number | null) {
+  const next = value ?? 8;
+  const target = editingText.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, fontSize: next });
+    scheduleCommit();
+  } else {
+    fontSize.value = next;
+  }
+}
+
+function setText(value: string) {
+  const target = editingText.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, text: value });
+    scheduleCommit();
+  } else {
+    textContent.value = value;
+  }
+}
+
+function deleteSelected() {
+  if (selectedId.value === null) return;
+  annotations.value = annotations.value.filter((a) => a.id !== selectedId.value);
+  selectedId.value = null;
+  pushHistory();
 }
 
 function clearAll() {
   annotations.value = [];
+  selectedId.value = null;
   activeTool.value = 'none';
+  pushHistory();
 }
 
-function onStageClick(e: any) {
+function setTool(toolType: ActiveTool) {
+  activeTool.value = toolType;
+}
+
+// --- stage interactions ------------------------------------------------------
+
+function onStageClick(e: KonvaPointerEvent) {
   if (activeTool.value === 'text') {
-    const stage = e.target.getStage();
-    const pointer = stage.getPointerPosition();
+    const pointer = e.target.getStage().getPointerPosition();
     if (!pointer) return;
-    annotations.value.push({
-      id: nextId++,
-      type: 'text',
-      x: pointer.x,
-      y: pointer.y,
-      text: textContent.value,
-      fontSize: fontSize.value,
-      color: drawColor.value,
-      editing: false,
-    });
+    annotations.value = [
+      ...annotations.value,
+      {
+        id: nextId++,
+        type: 'text',
+        x: pointer.x,
+        y: pointer.y,
+        text: textContent.value,
+        fontSize: fontSize.value,
+        color: drawColor.value,
+      },
+    ];
+    pushHistory();
+    return;
   }
+  if (activeTool.value === 'none') selectedId.value = null;
 }
 
-function onStageMouseDown(e: any) {
+/** Clicks on an annotation must not reach the stage, which would draw a new one. */
+function onAnnotationClick(annotation: Annotation, e: KonvaPointerEvent) {
+  e.cancelBubble = true;
+  if (activeTool.value !== 'none') return;
+  selectedId.value = annotation.id;
+}
+
+function onStageMouseDown(e: KonvaPointerEvent) {
   if (activeTool.value !== 'line') return;
-  const stage = e.target.getStage();
-  const pointer = stage.getPointerPosition();
+  const pointer = e.target.getStage().getPointerPosition();
   if (!pointer) return;
   isDrawing.value = true;
   currentLine.value = [pointer.x, pointer.y, pointer.x, pointer.y];
 }
 
-function onStageMouseMove(e: any) {
+function onStageMouseMove(e: KonvaPointerEvent) {
   if (!isDrawing.value) return;
-  const stage = e.target.getStage();
-  const pointer = stage.getPointerPosition();
+  const pointer = e.target.getStage().getPointerPosition();
   if (!pointer) return;
   currentLine.value = [currentLine.value[0], currentLine.value[1], pointer.x, pointer.y];
 }
@@ -108,38 +317,97 @@ function onStageMouseUp() {
   if (!isDrawing.value) return;
   isDrawing.value = false;
   if (currentLine.value.length >= 4) {
-    annotations.value.push({
-      id: nextId++,
-      type: 'line',
-      points: [...currentLine.value],
-      color: drawColor.value,
-      strokeWidth: lineWidth.value,
-    });
+    const [x1, y1, x2, y2] = currentLine.value;
+    annotations.value = [
+      ...annotations.value,
+      { id: nextId++, type: 'line', points: [x1, y1, x2, y2], color: drawColor.value, strokeWidth: lineWidth.value },
+    ];
+    pushHistory();
   }
   currentLine.value = [];
 }
 
-function onTextDblClick(annotation: Annotation) {
-  if (annotation.type === 'text') {
-    annotation.editing = true;
+function onTextDragEnd(annotation: TextAnnotation, e: KonvaPointerEvent) {
+  replaceAnnotation(annotation.id, { ...annotation, x: e.target.x(), y: e.target.y() });
+  pushHistory();
+}
+
+// Konva reports a dragged shape as a translation on the node; the annotation
+// stores absolute points, so the travel is folded in and the node reset.
+function onLineDragEnd(annotation: LineAnnotation, e: KonvaPointerEvent) {
+  const dx = e.target.x();
+  const dy = e.target.y();
+  if (dx === 0 && dy === 0) return;
+  e.target.position({ x: 0, y: 0 });
+  replaceAnnotation(annotation.id, moveLine(annotation, dx, dy));
+  pushHistory();
+}
+
+function onEndpointDrag(e: KonvaPointerEvent, end: 0 | 1) {
+  const line = editingLine.value;
+  if (!line) return;
+  replaceAnnotation(line.id, moveLineEndpoint(line, end, e.target.x(), e.target.y()));
+}
+
+// --- selection outline -------------------------------------------------------
+
+const nodeRefs = new Map<number, KonvaComponentRef | null>();
+const transformerRef = ref<unknown>(null);
+
+function setNodeRef(id: number, instance: unknown) {
+  nodeRefs.set(id, (instance as KonvaComponentRef | null) ?? null);
+}
+
+function shapeNode(id: number): KonvaNode | null {
+  return nodeRefs.get(id)?.getNode() ?? null;
+}
+
+function transformerNode(): KonvaTransformer | null {
+  const instance = transformerRef.value as KonvaComponentRef<KonvaTransformer> | null;
+  return instance?.getNode() ?? null;
+}
+
+function syncTransformer() {
+  const transformer = transformerNode();
+  if (!transformer) return;
+  const target = selectedId.value === null ? null : shapeNode(selectedId.value);
+  transformer.nodes(target ? [target] : []);
+  transformer.forceUpdate();
+  transformer.getLayer()?.batchDraw();
+}
+
+watch([selectedId, annotations], syncTransformer, { deep: true, flush: 'post' });
+
+// --- keyboard ----------------------------------------------------------------
+
+function isEditableTarget(target: EventTarget | null): boolean {
+  const element = target as HTMLElement | null;
+  if (!element?.tagName) return false;
+  const tag = element.tagName.toLowerCase();
+  return tag === 'input' || tag === 'textarea' || tag === 'select' || element.isContentEditable;
+}
+
+function onKeydown(event: KeyboardEvent) {
+  // Typing keeps the browser's own undo: only page-level shortcuts are taken.
+  if (isEditableTarget(event.target)) return;
+  if (event.key === 'Delete' || event.key === 'Backspace') {
+    if (selectedId.value === null) return;
+    event.preventDefault();
+    deleteSelected();
+    return;
+  }
+  if (!event.ctrlKey && !event.metaKey) return;
+  const key = event.key.toLowerCase();
+  if (key === 'z' && !event.shiftKey) {
+    event.preventDefault();
+    undoAction();
+  } else if ((key === 'z' && event.shiftKey) || key === 'y') {
+    event.preventDefault();
+    redoAction();
   }
 }
 
-// Write the dragged position back into the annotation so the export matches
-// what is on screen.
-function onTextDragEnd(annotation: Annotation, e: { target: { x(): number; y(): number } }) {
-  if (annotation.type === 'text') {
-    annotation.x = e.target.x();
-    annotation.y = e.target.y();
-  }
-}
-
-const editingAnnotation = computed(() =>
-  annotations.value.find(a => a.type === 'text' && a.editing),
-);
-
-const displayAnnotations = computed(() => annotations.value);
-const tempLine = computed(() => currentLine.value);
+// --- export ------------------------------------------------------------------
 
 function createCanvas() {
   if (!imageEl.value) return null;
@@ -161,7 +429,7 @@ function createCanvas() {
       ctx.font = `${ann.fontSize * scaleY}px sans-serif`;
       ctx.fillStyle = ann.color;
       ctx.fillText(ann.text, ann.x * scaleX, ann.y * scaleY + ann.fontSize * scaleY);
-    } else if (ann.type === 'line') {
+    } else {
       ctx.strokeStyle = ann.color;
       ctx.lineWidth = ann.strokeWidth * scaleX;
       ctx.beginPath();
@@ -195,7 +463,13 @@ async function copy() {
     await copyFileToClipboard(blob);
   }, 'image/png');
 }
-onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
+
+onMounted(() => document.addEventListener('keydown', onKeydown));
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKeydown);
+  if (pendingCommit) clearTimeout(pendingCommit);
+  if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
+});
 </script>
 
 <template>
@@ -227,28 +501,34 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
                   height: stageHeight,
                 }"
               />
-              <template v-for="ann in displayAnnotations" :key="ann.id">
+              <template v-for="ann in annotations" :key="ann.id">
                 <v-text
                   v-if="ann.type === 'text'"
+                  :ref="(el: unknown) => setNodeRef(ann.id, el)"
                   :config="{
                     x: ann.x,
                     y: ann.y,
                     text: ann.text,
                     fontSize: ann.fontSize,
                     fill: ann.color,
-                    draggable: true,
+                    draggable: canManipulate,
                   }"
-                  @dblclick="onTextDblClick(ann)"
+                  @click="onAnnotationClick(ann, $event)"
                   @dragend="onTextDragEnd(ann, $event)"
                 />
                 <v-line
-                  v-if="ann.type === 'line'"
+                  v-else
+                  :ref="(el: unknown) => setNodeRef(ann.id, el)"
                   :config="{
                     points: ann.points,
                     stroke: ann.color,
                     strokeWidth: ann.strokeWidth,
                     lineCap: 'round',
+                    hitStrokeWidth: 12,
+                    draggable: canManipulate,
                   }"
+                  @click="onAnnotationClick(ann, $event)"
+                  @dragend="onLineDragEnd(ann, $event)"
                 />
               </template>
               <v-line
@@ -261,17 +541,24 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
                   dash: [5, 5],
                 }"
               />
+              <v-transformer v-if="selected" ref="transformerRef" :config="transformerConfig" />
+              <v-circle
+                v-for="endpoint in endpointPositions"
+                :key="`endpoint-${endpoint.end}`"
+                :config="{
+                  x: endpoint.x,
+                  y: endpoint.y,
+                  radius: 6,
+                  fill: primaryColor,
+                  stroke: canvasColor,
+                  strokeWidth: 2,
+                  draggable: true,
+                }"
+                @dragmove="onEndpointDrag($event, endpoint.end)"
+                @dragend="pushHistory()"
+              />
             </v-layer>
           </v-stage>
-          <NInput
-            v-if="editingAnnotation && editingAnnotation.type === 'text'"
-            v-model:value="editingAnnotation.text"
-            :placeholder="t('tools.imageEditor.textPlaceholder')"
-            style="max-width: 260px; margin-top: 8px;"
-            @keyup.enter="editingAnnotation.editing = false"
-            @blur="editingAnnotation.editing = false"
-            :input-props="{ id: 'imageEditorField0' }"
-          />
         </div>
         <button v-else type="button" class="image-editor__empty" @click="fileUpload?.triggerSelect()">
           <NIcon :size="26" :component="CloudUpload" class="image-editor__empty-icon" />
@@ -283,37 +570,47 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
           <NButton :disabled="!file" @click="downloadImage">{{ t('tool.exportFile') }}</NButton>
         </template>
         <template #params>
-          <NSpace vertical :size="12">
-            <NSpace :size="8">
-              <NButton :type="activeTool === 'text' ? 'primary' : 'default'" @click="setTool('text')">{{ t('tools.imageEditor.addText') }}</NButton>
-              <NButton :type="activeTool === 'line' ? 'primary' : 'default'" @click="setTool('line')">{{ t('tools.imageEditor.drawLine') }}</NButton>
-              <NButton @click="setTool('none')">{{ t('common.select') }}</NButton>
-              <NPopconfirm @positive-click="clearAll">
-                <template #trigger>
-                  <NButton type="error">{{ t('tools.imageEditor.clearAll') }}</NButton>
-                </template>
-                {{ t('tools.imageEditor.confirmClearAll') }}
-              </NPopconfirm>
-            </NSpace>
-            <NSpace :size="16">
-              <div>
-                <span>{{ t('tools.imageEditor.color') }}</span>
-                <NColorPicker v-model:value="drawColor" style="width:160px;" />
-              </div>
-              <div>
-                <label :for="'imageEditorField1'">{{ t('tools.imageEditor.lineWidth') }}</label>
-                <NInputNumber v-model:value="lineWidth" :min="1" :max="50" :step="1" style="width:120px;" :input-props="{ id: 'imageEditorField1' }" />
-              </div>
-              <div>
-                <label :for="'imageEditorField2'">{{ t('tools.imageEditor.fontSize') }}</label>
-                <NInputNumber v-model:value="fontSize" :min="8" :max="200" :step="1" style="width:120px;" :input-props="{ id: 'imageEditorField2' }" />
-              </div>
-            </NSpace>
-            <div v-if="activeTool === 'text'">
-              <label :for="'imageEditorField3'">{{ t('tools.imageEditor.text') }}</label>
-              <NInput v-model:value="textContent" :placeholder="t('tools.imageEditor.textPlaceholder')" style="width:250px;" :input-props="{ id: 'imageEditorField3' }" />
+          <div class="image-editor__params">
+            <div class="image-editor__actions">
+              <NSpace :size="8">
+                <NButton :type="activeTool === 'text' ? 'primary' : 'default'" @click="setTool('text')">{{ t('tools.imageEditor.addText') }}</NButton>
+                <NButton :type="activeTool === 'line' ? 'primary' : 'default'" @click="setTool('line')">{{ t('tools.imageEditor.drawLine') }}</NButton>
+                <NButton :type="activeTool === 'none' ? 'primary' : 'default'" @click="setTool('none')">{{ t('common.select') }}</NButton>
+                <NPopconfirm @positive-click="clearAll">
+                  <template #trigger>
+                    <NButton type="error">{{ t('tools.imageEditor.clearAll') }}</NButton>
+                  </template>
+                  {{ t('tools.imageEditor.confirmClearAll') }}
+                </NPopconfirm>
+              </NSpace>
+              <NSpace :size="8">
+                <NButton :disabled="!canUndoNow" @click="undoAction">{{ t('tools.imageEditor.undo') }}</NButton>
+                <NButton :disabled="!canRedoNow" @click="redoAction">{{ t('tools.imageEditor.redo') }}</NButton>
+              </NSpace>
             </div>
-          </NSpace>
+
+            <div v-if="visibleParams.length" class="image-editor__rows">
+              <div v-if="visibleParams.includes('color')" class="image-editor__row">
+                <span class="image-editor__row-label">{{ t('tools.imageEditor.color') }}</span>
+                <NColorPicker :value="colorValue" style="width:160px;" @update:value="setColor" />
+              </div>
+              <div v-if="visibleParams.includes('lineWidth')" class="image-editor__row">
+                <label class="image-editor__row-label" for="imageEditorLineWidth">{{ t('tools.imageEditor.lineWidth') }}</label>
+                <NInputNumber :value="lineWidthValue" :min="1" :max="50" :step="1" style="width:140px;" :input-props="{ id: 'imageEditorLineWidth' }" @update:value="setLineWidth" />
+              </div>
+              <div v-if="visibleParams.includes('fontSize')" class="image-editor__row">
+                <label class="image-editor__row-label" for="imageEditorFontSize">{{ t('tools.imageEditor.fontSize') }}</label>
+                <NInputNumber :value="fontSizeValue" :min="8" :max="200" :step="1" style="width:140px;" :input-props="{ id: 'imageEditorFontSize' }" @update:value="setFontSize" />
+              </div>
+              <div v-if="visibleParams.includes('text')" class="image-editor__row">
+                <label class="image-editor__row-label" for="imageEditorText">{{ t('tools.imageEditor.text') }}</label>
+                <NInput :value="textValue" :placeholder="t('tools.imageEditor.textPlaceholder')" style="width:280px;" :input-props="{ id: 'imageEditorText' }" @update:value="setText" />
+              </div>
+              <div v-if="editing" class="image-editor__row">
+                <NButton type="error" size="small" @click="deleteSelected">{{ t('tools.imageEditor.deleteSelected') }}</NButton>
+              </div>
+            </div>
+          </div>
         </template>
       </ToolFilePanel>
     </NCard>
@@ -377,5 +674,40 @@ onUnmounted(() => { if (imageUrl.value) URL.revokeObjectURL(imageUrl.value); });
 .image-editor__empty-hint {
   font-size: var(--font-size-caption);
   color: var(--color-text-3);
+}
+
+.image-editor__params {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.image-editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.image-editor__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* One parameter per row, description left of its control, so a row can never
+   wrap its label above the control at a narrow width. */
+.image-editor__row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.image-editor__row-label {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-2);
 }
 </style>
