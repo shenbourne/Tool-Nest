@@ -10,7 +10,7 @@
 
 | Task | Change | Test/evidence | Commit | Status |
 | --- | --- | --- | --- | --- |
-| 1 | keyboard-highlight.ts + 单测（先行） | vitest 6 tests PASS（修饰键识别/增删/高亮集合组合与去重） | SHA pending | Done |
-| 2 | 组件接线（集合 prop + keyup） | 浏览器：Ctrl+A 同时高亮 ControlLeft 与 KeyA，700ms 后同时变暗；六条验收全 PASS | SHA pending | Done |
+| 1 | keyboard-highlight.ts + 单测（先行） | vitest 6 tests PASS（修饰键识别/增删/高亮集合组合与去重） | 01ce414 | Done |
+| 2 | 组件接线（集合 prop + keyup） | 浏览器：Ctrl+A 同时高亮 ControlLeft 与 KeyA，700ms 后同时变暗；六条验收全 PASS | 01ce414 | Done |
 
 Update this plan when discoveries change the implementation. Record scope changes rather than silently replacing them.

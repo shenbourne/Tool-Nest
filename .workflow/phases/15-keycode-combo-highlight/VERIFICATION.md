@@ -1,6 +1,6 @@
 # Engineering verification
 
-- Commit/branch: SHA pending — `feature/phase-15-keycode-combo-highlight`（worktree `.worktrees/phase-15-keycode-combo-highlight`，基线 phase 14 tip `926ec88`）
+- Commit/branch: `01ce414`（代码）+ `2292b9d`（文档）— `feature/phase-15-keycode-combo-highlight`（worktree `.worktrees/phase-15-keycode-combo-highlight`，基线 phase 14 tip `926ec88`）
 - Date: 2026-10-02
 - Review: pending
 - Codebase health: not triggered（单工具内行为微调，无跨模块/依赖变更）
