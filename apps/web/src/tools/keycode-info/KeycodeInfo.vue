@@ -6,7 +6,7 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import KeyboardVisual from './KeyboardVisual.vue';
-import { computeHighlight, toggleHeldModifier } from './keyboard-highlight';
+import { computeHighlight, isModifierCode, toggleHeldModifier } from './keyboard-highlight';
 import {
   formatClock,
   formatComboLabel,
@@ -39,10 +39,14 @@ function handleKeyDown(e: KeyboardEvent) {
   highlightTimer = setTimeout(() => {
     highlightCodes.value = [];
   }, HIGHLIGHT_MS);
-  history.value = pushHistory(history.value, {
-    label: formatComboLabel(e),
-    time: formatClock(new Date()),
-  });
+  // Only a non-modifier press is a history entry; the modifier keydowns that
+  // precede a combo would otherwise each push their own partial row.
+  if (!isModifierCode(e.code)) {
+    history.value = pushHistory(history.value, {
+      label: formatComboLabel(e),
+      time: formatClock(new Date()),
+    });
+  }
 }
 
 function handleKeyUp(e: KeyboardEvent) {
