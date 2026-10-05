@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { KEYS, UNITS_PER_KEY } from '@/utils/keyboard-layout';
 
-defineProps<{ activeCode: string | null }>();
+defineProps<{ activeCodes: string[] }>();
 </script>
 
 <template>
@@ -11,7 +11,7 @@ defineProps<{ activeCode: string | null }>();
         v-for="key in KEYS"
         :key="key.code"
         class="kb-key"
-        :class="{ 'kb-key--active': key.code === activeCode }"
+        :class="{ 'kb-key--active': activeCodes.includes(key.code) }"
         :style="{
           gridColumn: `${key.col + 1} / span ${key.u * UNITS_PER_KEY}`,
           gridRow: `${key.row + 1} / span ${key.rowSpan}`,

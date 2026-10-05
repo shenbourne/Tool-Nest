@@ -6,6 +6,7 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import KeyboardVisual from './KeyboardVisual.vue';
+import { computeHighlight, toggleHeldModifier } from './keyboard-highlight';
 import {
   formatClock,
   formatComboLabel,
@@ -14,7 +15,8 @@ import {
   type HistoryEntry,
 } from './keyboard-history';
 
-// A pressed key stays lit for this long after the last keydown, then dims.
+// The pressed key and any held modifiers stay lit for this long after the last
+// keydown, then dim together.
 const HIGHLIGHT_MS = 500;
 
 const { t } = useI18n();
@@ -22,18 +24,20 @@ const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const event = ref<KeyboardEvent | null>(null);
-const highlightCode = ref<string | null>(null);
+const highlightCodes = ref<string[]>([]);
 const history = ref<HistoryEntry[]>([]);
+let heldModifiers: string[] = [];
 let highlightTimer: ReturnType<typeof setTimeout> | undefined;
 
 function handleKeyDown(e: KeyboardEvent) {
   // Never block default browser shortcuts (F5, Ctrl+R, F12, Tab navigation);
   // this tool only observes keys, it has no input to protect.
   event.value = e;
-  highlightCode.value = e.code;
+  heldModifiers = toggleHeldModifier(heldModifiers, e.code, true);
+  highlightCodes.value = computeHighlight(heldModifiers, e.code);
   clearTimeout(highlightTimer);
   highlightTimer = setTimeout(() => {
-    highlightCode.value = null;
+    highlightCodes.value = [];
   }, HIGHLIGHT_MS);
   history.value = pushHistory(history.value, {
     label: formatComboLabel(e),
@@ -41,12 +45,19 @@ function handleKeyDown(e: KeyboardEvent) {
   });
 }
 
+function handleKeyUp(e: KeyboardEvent) {
+  // Track releases so letting a modifier go is not shown by a later combo.
+  heldModifiers = toggleHeldModifier(heldModifiers, e.code, false);
+}
+
 onMounted(() => {
   document.addEventListener('keydown', handleKeyDown);
+  document.addEventListener('keyup', handleKeyUp);
 });
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeyDown);
+  document.removeEventListener('keyup', handleKeyUp);
   clearTimeout(highlightTimer);
 });
 
@@ -74,7 +85,7 @@ function copyText(text: string) {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <div class="keycode">
-      <KeyboardVisual :active-code="highlightCode" />
+      <KeyboardVisual :active-codes="highlightCodes" />
 
       <div class="keycode__columns">
         <NCard :title="t('tools.keycodeInfo.currentKey')" class="keycode__col">
