@@ -51,21 +51,30 @@ const syntaxHelpers = computed(() => [
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
       <NCard :title="t('tools.crontabGenerator.cronFields')">
-        <NSpace vertical :size="12">
-          <div v-for="(field, i) in fields" :key="i" style="display: flex; align-items: center; gap: 12px;">
-            <span style="min-width: 130px; font-weight: 500;">{{ CRON_FIELDS[i].name }}</span>
-            <NInput
-              :value="fields[i]"
-              @update:value="(v: string) => fields[i] = v"
-              :placeholder="`${CRON_FIELDS[i].min}-${CRON_FIELDS[i].max}`"
-              style="flex: 1; font-family: monospace;"
-              :status="fieldValid[i] ? undefined : 'error'"
-             :input-props="{ id: 'crontabGeneratorField0' }"/>
-            <span style="min-width: 80px; color: var(--color-text-3); font-size: 12px;">
-              {{ CRON_FIELDS[i].min }} - {{ CRON_FIELDS[i].max }}
-            </span>
-          </div>
-        </NSpace>
+        <div
+          style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 12px; row-gap: 6px;"
+        >
+          <span v-for="(def, i) in CRON_FIELDS" :key="`label-${i}`" style="font-weight: 500;">
+            {{ t(`tools.crontabGenerator.${def.labelKey}`) }}
+          </span>
+          <NInput
+            v-for="(field, i) in fields"
+            :key="`input-${i}`"
+            :value="field"
+            @update:value="(v: string) => fields[i] = v"
+            :placeholder="`${CRON_FIELDS[i].min}-${CRON_FIELDS[i].max}`"
+            style="font-family: monospace;"
+            :status="fieldValid[i] ? undefined : 'error'"
+            :input-props="{ id: `crontabGeneratorField${i}` }"
+          />
+          <span
+            v-for="(def, i) in CRON_FIELDS"
+            :key="`range-${i}`"
+            style="color: var(--color-text-3); font-size: 12px;"
+          >
+            {{ def.min }} - {{ def.max }}
+          </span>
+        </div>
       </NCard>
 
       <NCard :title="t('tools.crontabGenerator.cronExpression')">
