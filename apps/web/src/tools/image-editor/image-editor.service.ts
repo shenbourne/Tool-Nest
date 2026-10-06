@@ -297,7 +297,11 @@ export function applyMosaic(src: HTMLCanvasElement, region: MosaicAnnotation['re
   const processed = effect === 'mosaic'
     ? mosaicImageData(imageData, strength)
     : boxBlurImageData(imageData, strength);
-  offCtx.putImageData(processed, 0, 0);
+  offCtx.putImageData(
+    new ImageData(processed.data, processed.width, processed.height),
+    0,
+    0,
+  );
 
   // Composite the processed patch back, clipped to the region shape.
   ctx.save();
