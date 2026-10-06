@@ -103,7 +103,7 @@ function formatVal(v: any): string {
                   >{{ t(`tools.jsonDiff.${d.type}`) }}</NTag>
                   <strong>{{ d.path }}</strong>
                 </div>
-                <div class="json-diff-value" :class="d.type==='added' ? '' : 'json-diff-left-fill'">
+                <div class="json-diff-value json-diff-value-left" :class="d.type==='added' ? '' : 'json-diff-left-fill'">
                   <template v-if="d.type !== 'added'">{{ formatVal(d.oldValue) }}</template>
                 </div>
                 <div class="json-diff-value" :class="d.type==='removed' ? '' : 'json-diff-right-fill'">
@@ -173,7 +173,7 @@ function formatVal(v: any): string {
   word-break: break-all;
 }
 
-.json-diff-value:nth-child(3) {
+.json-diff-value-left {
   border-right: 1px solid var(--color-hairline);
 }
 
