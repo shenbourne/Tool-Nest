@@ -13,6 +13,17 @@
   --color-error-soft: rgba(224, 49, 49, 0.1);
   --color-info: #0075de;
 
+  /* Functional — diff viewer (JetBrains-style line backgrounds) */
+  --diff-added-bg: rgba(26, 174, 57, 0.12);
+  --diff-added-inline: rgba(26, 174, 57, 0.32);
+  --diff-removed-bg: rgba(224, 49, 49, 0.1);
+  --diff-removed-inline: rgba(224, 49, 49, 0.3);
+  --diff-changed-bg: rgba(0, 117, 222, 0.1);
+  --diff-changed-inline: rgba(0, 117, 222, 0.28);
+  --diff-gutter-added: rgba(26, 174, 57, 0.55);
+  --diff-gutter-removed: rgba(224, 49, 49, 0.55);
+  --diff-gutter-changed: rgba(0, 117, 222, 0.55);
+
   /* Neutral — warm gray ramp (Notion stone) */
   --color-canvas: #ffffff;
   --color-surface: #f6f5f4;
@@ -98,6 +109,17 @@ html.dark {
   --color-error: #e03131;
   --color-error-soft: rgba(224, 49, 49, 0.16);
   --color-info: #4ba3f5;
+
+  /* Functional — diff viewer (JetBrains-style line backgrounds) */
+  --diff-added-bg: rgba(35, 165, 91, 0.18);
+  --diff-added-inline: rgba(35, 165, 91, 0.38);
+  --diff-removed-bg: rgba(224, 49, 49, 0.16);
+  --diff-removed-inline: rgba(224, 49, 49, 0.38);
+  --diff-changed-bg: rgba(75, 163, 245, 0.14);
+  --diff-changed-inline: rgba(75, 163, 245, 0.34);
+  --diff-gutter-added: rgba(35, 165, 91, 0.7);
+  --diff-gutter-removed: rgba(224, 49, 49, 0.7);
+  --diff-gutter-changed: rgba(75, 163, 245, 0.7);
 
   /* Neutral — warm dark ramp */
   --color-canvas: #191919;
