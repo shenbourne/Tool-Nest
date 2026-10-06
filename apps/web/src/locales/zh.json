@@ -1000,7 +1000,11 @@
       "strength": "强度：",
       "mode": "模式：",
       "startArrow": "起点箭头：",
-      "endArrow": "终点箭头："
+      "endArrow": "终点箭头：",
+      "numberFormat": "序号格式：",
+      "leaderLine": "引导线：",
+      "leaderWidth": "引导线宽度：",
+      "leaderStroke": "引导线样式："
     },
     "imageRemoveBackground": {
       "name": "图片去背景",

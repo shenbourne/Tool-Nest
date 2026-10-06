@@ -1000,7 +1000,11 @@
       "strength": "Strength: ",
       "mode": "Mode: ",
       "startArrow": "Start arrow: ",
-      "endArrow": "End arrow: "
+      "endArrow": "End arrow: ",
+      "numberFormat": "Number format: ",
+      "leaderLine": "Leader line: ",
+      "leaderWidth": "Leader width: ",
+      "leaderStroke": "Leader stroke: "
     },
     "imageRemoveBackground": {
       "name": "Image Remove Background",

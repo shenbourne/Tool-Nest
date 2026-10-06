@@ -40,6 +40,7 @@ import {
   canUndo,
   commit,
   createHistory,
+  formatNumber,
   historyState,
   rectFromPoints,
   redo,
@@ -49,6 +50,8 @@ import {
   type ArrowConfig,
   type ArrowStyle,
   type LineAnnotation,
+  type NumberAnnotation,
+  type NumberFormat,
   type PenAnnotation,
   type ShapeAnnotation,
   type StrokeStyle,
@@ -173,6 +176,7 @@ const canRedoNow = computed(() => canRedo(history.value));
 const selected = computed(() => annotations.value.find((a) => a.id === selectedId.value) ?? null);
 const selectedShape = computed(() => (selected.value?.type === 'shape' ? selected.value : null));
 const selectedLine = computed(() => (selected.value?.type === 'line' ? selected.value : null));
+const selectedNumber = computed(() => (selected.value?.type === 'number' ? selected.value : null));
 const selectedPen = computed(() => (selected.value?.type === 'pen' ? selected.value : null));
 const selectedText = computed(() => (selected.value?.type === 'text' ? selected.value : null));
 
@@ -236,6 +240,7 @@ function clearAll() {
   annotations.value = [];
   selectedId.value = null;
   activeTool.value = 'select';
+  nextNumber.value = 1;
   pushHistory();
 }
 
@@ -275,6 +280,21 @@ const textDefaults = ref({
   background: { enabled: false, color: '#ffffff', opacity: 0.8 },
 });
 
+const numberDefaults = ref({
+  format: 'number' as NumberFormat,
+  color: '#ff0000',
+  size: 24,
+  fontFamily: 'sans-serif',
+  leaderEnabled: false,
+  leaderStrokeWidth: 2,
+  leaderStrokeStyle: 'solid' as StrokeStyle,
+  leaderArrow: { style: 'triangle' as ArrowStyle, size: 10 },
+});
+
+// Auto-increment counter for the number tool: starts at 1, bumps per placement,
+// resets on clear-all and on format change. Deleting a badge never renumbers.
+const nextNumber = ref(1);
+
 // --- stage interactions ------------------------------------------------------
 
 const stageRef = ref<KonvaComponentRef | null>(null);
@@ -291,6 +311,8 @@ const lineDraft = ref<number[] | null>(null);
 const polylineDraft = ref<number[]>([]);
 /** In-progress freehand pen trail (absolute stage coordinates). */
 const penDraft = ref<number[] | null>(null);
+/** In-progress leader-line drag: badge centre plus current pointer position. */
+const leaderDraft = ref<number[] | null>(null);
 
 const shapeDraftRect = computed(() => {
   const d = shapeDraft.value;
@@ -303,6 +325,8 @@ const editingShape = computed(() =>
   activeTool.value === 'shape' ? selectedShape.value : null);
 const editingLine = computed(() =>
   activeTool.value === 'line' ? selectedLine.value : null);
+const editingNumber = computed(() =>
+  activeTool.value === 'number' ? selectedNumber.value : null);
 const editingPen = computed(() =>
   activeTool.value === 'pen' ? selectedPen.value : null);
 const editingText = computed(() =>
@@ -410,6 +434,34 @@ function finishPolyline() {
   }
 }
 
+/**
+ * Places a numbered badge at the pointer. When the leader line is enabled the
+ * same press-drag-release gesture aims the leader from the badge to the arrow
+ * tip, so the badge is created immediately and the drag only fills the leader.
+ */
+function placeNumber(x: number, y: number) {
+  const d = numberDefaults.value;
+  const annotation: NumberAnnotation = {
+    id: nextId++,
+    type: 'number',
+    x,
+    y,
+    value: nextNumber.value,
+    format: d.format,
+    color: d.color,
+    size: d.size,
+    fontFamily: d.fontFamily,
+    leaderLine: null,
+  };
+  annotations.value = [...annotations.value, annotation];
+  nextNumber.value += 1;
+  selectedId.value = annotation.id;
+  pushHistory();
+  if (d.leaderEnabled) {
+    leaderDraft.value = [x, y, x, y];
+  }
+}
+
 function onStageMouseDown(e: KonvaPointerEvent) {
   if (activeTool.value === 'shape') {
     const pointer = pointerPosition(e);
@@ -427,6 +479,11 @@ function onStageMouseDown(e: KonvaPointerEvent) {
     const pointer = pointerPosition(e);
     if (!pointer) return;
     penDraft.value = [pointer.x, pointer.y];
+  }
+  if (activeTool.value === 'number') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    placeNumber(pointer.x, pointer.y);
   }
 }
 
@@ -453,6 +510,12 @@ function onStageMouseMove(e: KonvaPointerEvent) {
     if (Math.hypot(pointer.x - lx, pointer.y - ly) >= 1) {
       penDraft.value = [...pts, pointer.x, pointer.y];
     }
+    return;
+  }
+  if (leaderDraft.value) {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    leaderDraft.value = [leaderDraft.value[0], leaderDraft.value[1], pointer.x, pointer.y];
   }
 }
 
@@ -524,6 +587,28 @@ function onStageMouseUp() {
       ];
       pushHistory();
     }
+    return;
+  }
+  if (leaderDraft.value) {
+    const pts = leaderDraft.value;
+    leaderDraft.value = null;
+    // A leader shorter than the badge radius is a plain badge, not a leader.
+    if (Math.hypot(pts[2] - pts[0], pts[3] - pts[1]) >= 8) {
+      const badge = annotations.value.find((a) => a.id === selectedId.value);
+      if (badge && badge.type === 'number') {
+        replaceAnnotation(badge.id, {
+          ...badge,
+          leaderLine: {
+            enabled: true,
+            points: [pts[0], pts[1], pts[2], pts[3]],
+            strokeWidth: numberDefaults.value.leaderStrokeWidth,
+            strokeStyle: numberDefaults.value.leaderStrokeStyle,
+            arrow: { ...numberDefaults.value.leaderArrow },
+          },
+        });
+        pushHistory();
+      }
+    }
   }
 }
 
@@ -587,6 +672,33 @@ function onTextDragEnd(annotation: TextAnnotation, e: KonvaPointerEvent) {
   if (dx === 0 && dy === 0) return;
   e.target.position({ x: annotation.x, y: annotation.y });
   replaceAnnotation(annotation.id, { ...annotation, x: annotation.x + dx, y: annotation.y + dy });
+  pushHistory();
+}
+
+// A number badge anchors at its centre; dragging shifts the badge and the
+// leader line's start point follows so the arrow keeps pointing where aimed.
+function onNumberDragEnd(annotation: NumberAnnotation, e: KonvaPointerEvent) {
+  const dx = e.target.x() - annotation.x;
+  const dy = e.target.y() - annotation.y;
+  if (dx === 0 && dy === 0) return;
+  e.target.position({ x: annotation.x, y: annotation.y });
+  const leaderLine = annotation.leaderLine
+    ? {
+        ...annotation.leaderLine,
+        points: [
+          annotation.leaderLine.points[0] + dx,
+          annotation.leaderLine.points[1] + dy,
+          annotation.leaderLine.points[2],
+          annotation.leaderLine.points[3],
+        ] as [number, number, number, number],
+      }
+    : null;
+  replaceAnnotation(annotation.id, {
+    ...annotation,
+    x: annotation.x + dx,
+    y: annotation.y + dy,
+    leaderLine,
+  });
   pushHistory();
 }
 
@@ -915,6 +1027,52 @@ function createCanvas() {
       ctx.fillStyle = ann.color;
       ctx.fillText(ann.text, 0, 0);
       ctx.restore();
+    } else if (ann.type === 'number') {
+      const label = formatNumber(ann.value, ann.format);
+      const r = numberBadgeRadius(ann) * scaleX;
+      const cx = ann.x * scaleX;
+      const cy = ann.y * scaleY;
+      ctx.save();
+      if (ann.leaderLine?.enabled) {
+        const [lx1, ly1, lx2, ly2] = numberLeaderSegment(ann);
+        ctx.strokeStyle = ann.color;
+        ctx.lineWidth = ann.leaderLine.strokeWidth * scaleX;
+        ctx.setLineDash(strokeDash(ann.leaderLine.strokeStyle, ann.leaderLine.strokeWidth * scaleX));
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(lx1 * scaleX, ly1 * scaleY);
+        ctx.lineTo(lx2 * scaleX, ly2 * scaleY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        if (ann.leaderLine.arrow.style !== 'none') {
+          const head = arrowPoints(lx1 * scaleX, ly1 * scaleY, lx2 * scaleX, ly2 * scaleY,
+            { ...ann.leaderLine.arrow, size: ann.leaderLine.arrow.size * scaleX });
+          if (head.length >= 4) {
+            ctx.beginPath();
+            ctx.moveTo(head[0], head[1]);
+            for (let i = 2; i < head.length; i += 2) ctx.lineTo(head[i], head[i + 1]);
+            if (ann.leaderLine.arrow.style === 'open') {
+              ctx.stroke();
+            } else {
+              ctx.closePath();
+              ctx.fill();
+            }
+          }
+        }
+      }
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = ann.color;
+      ctx.lineWidth = 2 * scaleX;
+      ctx.fillStyle = canvasColor.value || '#ffffff';
+      ctx.fill();
+      ctx.stroke();
+      ctx.font = `${ann.size * scaleX}px ${ann.fontFamily}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = ann.color;
+      ctx.fillText(label, cx, cy);
+      ctx.restore();
     }
   }
   return canvas;
@@ -982,6 +1140,14 @@ const fontFamilyOptions = computed(() => [
   { label: 'Serif', value: 'serif' },
   { label: 'Monospace', value: 'monospace' },
   { label: 'Cursive', value: 'cursive' },
+]);
+
+const numberFormatOptions = computed(() => [
+  { label: t('tools.imageEditor.formatNumber'), value: 'number' },
+  { label: t('tools.imageEditor.formatLowerAlpha'), value: 'lower-alpha' },
+  { label: t('tools.imageEditor.formatUpperAlpha'), value: 'upper-alpha' },
+  { label: t('tools.imageEditor.formatLowerRoman'), value: 'lower-roman' },
+  { label: t('tools.imageEditor.formatUpperRoman'), value: 'upper-roman' },
 ]);
 
 function updateShape(patch: Partial<ShapeAnnotation>) {
@@ -1058,6 +1224,47 @@ function updateTextBackground(patch: Partial<NonNullable<TextAnnotation['backgro
   }
 }
 
+function updateNumber(patch: Partial<NumberAnnotation>) {
+  const target = editingNumber.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, ...patch });
+    scheduleCommit();
+  } else {
+    const prevFormat = numberDefaults.value.format;
+    Object.assign(numberDefaults.value, patch);
+    // Changing the format restarts the auto-increment sequence.
+    if (patch.format && patch.format !== prevFormat) {
+      nextNumber.value = 1;
+    }
+  }
+}
+
+/** The leader-line model the params row edits (never null while toggling). */
+function numberLeaderOf(source: NumberAnnotation | null): NonNullable<NumberAnnotation['leaderLine']> {
+  return source?.leaderLine ?? {
+    enabled: numberDefaults.value.leaderEnabled,
+    points: [0, 0, 0, 0],
+    strokeWidth: numberDefaults.value.leaderStrokeWidth,
+    strokeStyle: numberDefaults.value.leaderStrokeStyle,
+    arrow: { ...numberDefaults.value.leaderArrow },
+  };
+}
+
+function updateNumberLeader(patch: Partial<NonNullable<NumberAnnotation['leaderLine']>>) {
+  const target = editingNumber.value;
+  const current = numberLeaderOf(target);
+  const next = { ...current, ...patch };
+  if (target) {
+    replaceAnnotation(target.id, { ...target, leaderLine: next });
+    scheduleCommit();
+  } else {
+    numberDefaults.value.leaderEnabled = next.enabled;
+    numberDefaults.value.leaderStrokeWidth = next.strokeWidth;
+    numberDefaults.value.leaderStrokeStyle = next.strokeStyle;
+    numberDefaults.value.leaderArrow = { ...next.arrow };
+  }
+}
+
 function arrowStyleValue(cfg: ArrowConfig | null): ArrowStyle {
   return cfg?.style ?? 'none';
 }
@@ -1109,6 +1316,45 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
     if (pts && pts.length >= 4) out.push({ key: end, pts, cfg });
   }
   return out;
+}
+
+// --- number badge geometry ---------------------------------------------------
+
+/** Circle radius that fits the formatted label at the given font size. */
+function numberBadgeRadius(annotation: NumberAnnotation): number {
+  const label = formatNumber(annotation.value, annotation.format);
+  const ctx = document.createElement('canvas').getContext('2d');
+  let textWidth = label.length * annotation.size * 0.6;
+  if (ctx) {
+    ctx.font = `${annotation.size}px ${annotation.fontFamily}`;
+    textWidth = ctx.measureText(label).width;
+  }
+  return Math.max(annotation.size * 0.75, textWidth / 2 + annotation.size * 0.35);
+}
+
+/**
+ * Leader line segment trimmed to the badge edge: the model stores badge centre
+ * to arrow tip, but the visible line starts where it exits the circle.
+ */
+function numberLeaderSegment(annotation: NumberAnnotation): [number, number, number, number] {
+  const leader = annotation.leaderLine!;
+  const [cx, cy, tx, ty] = leader.points;
+  const r = numberBadgeRadius(annotation);
+  const len = Math.hypot(tx - cx, ty - cy);
+  if (len <= r || len === 0) return [cx, cy, tx, ty];
+  const ux = (tx - cx) / len;
+  const uy = (ty - cy) / len;
+  return [cx + ux * r, cy + uy * r, tx, ty];
+}
+
+/** Arrowhead polygon for a number leader line (null when no arrow or degenerate). */
+function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
+  const leader = annotation.leaderLine;
+  if (!leader || !leader.arrow || leader.arrow.style === 'none') return null;
+  const [, , ex, ey] = numberLeaderSegment(annotation);
+  const [cx, cy] = [leader.points[0], leader.points[1]];
+  const pts = arrowPoints(cx, cy, ex, ey, leader.arrow);
+  return pts.length >= 4 ? pts : null;
 }
 </script>
 
@@ -1250,6 +1496,57 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                     @dragend="onTextDragEnd(ann, $event)"
                   />
                 </template>
+                <template v-else-if="ann.type === 'number'">
+                  <v-line
+                    v-if="ann.leaderLine?.enabled"
+                    :config="{
+                      points: numberLeaderSegment(ann),
+                      stroke: ann.color,
+                      strokeWidth: ann.leaderLine.strokeWidth,
+                      dash: strokeDash(ann.leaderLine.strokeStyle, ann.leaderLine.strokeWidth),
+                      lineCap: 'round',
+                      listening: false,
+                    }"
+                  />
+                  <v-line
+                    v-if="ann.leaderLine?.enabled && numberLeaderArrow(ann)"
+                    :config="{
+                      points: numberLeaderArrow(ann)!,
+                      closed: ann.leaderLine.arrow.style !== 'open',
+                      fill: ann.leaderLine.arrow.style === 'open' ? undefined : ann.color,
+                      stroke: ann.color,
+                      strokeWidth: 1,
+                      listening: false,
+                    }"
+                  />
+                  <v-circle
+                    :ref="(el: unknown) => setNodeRef(ann.id, el)"
+                    :config="{
+                      x: ann.x,
+                      y: ann.y,
+                      radius: numberBadgeRadius(ann),
+                      stroke: ann.color,
+                      strokeWidth: 2,
+                      fill: canvasColor,
+                      draggable: canManipulate,
+                    }"
+                    @click="onAnnotationClick(ann, $event)"
+                    @dragend="onNumberDragEnd(ann, $event)"
+                  />
+                  <v-text
+                    :config="{
+                      x: ann.x,
+                      y: ann.y,
+                      text: formatNumber(ann.value, ann.format),
+                      fontSize: ann.size,
+                      fontFamily: ann.fontFamily,
+                      fill: ann.color,
+                      offsetX: formatNumber(ann.value, ann.format).length * ann.size * 0.3,
+                      offsetY: ann.size * 0.4,
+                      listening: false,
+                    }"
+                  />
+                </template>
               </template>
               <!-- In-progress drafts -->
               <v-rect
@@ -1295,6 +1592,16 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                   lineCap: 'round',
                   lineJoin: 'round',
                   dash: [5, 5],
+                }"
+              />
+              <v-line
+                v-if="leaderDraft"
+                :config="{
+                  points: leaderDraft,
+                  stroke: numberDefaults.color,
+                  strokeWidth: numberDefaults.leaderStrokeWidth,
+                  dash: strokeDash(numberDefaults.leaderStrokeStyle, numberDefaults.leaderStrokeWidth),
+                  lineCap: 'round',
                 }"
               />
               <v-transformer
@@ -1620,6 +1927,76 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                     />
                   </template>
                 </div>
+              </template>
+
+              <!-- Number params -->
+              <template v-if="activeTool === 'number'">
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.numberFormat') }}</span>
+                  <NSelect
+                    :value="editingNumber?.format ?? numberDefaults.format"
+                    :options="numberFormatOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateNumber({ format: v as NumberFormat })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
+                  <NColorPicker
+                    :value="editingNumber?.color ?? numberDefaults.color"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateNumber({ color: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
+                  <NInputNumber
+                    :value="editingNumber?.size ?? numberDefaults.size"
+                    :min="10"
+                    :max="80"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => updateNumber({ size: v ?? 24 })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.fontFamily') }}</span>
+                  <NSelect
+                    :value="editingNumber?.fontFamily ?? numberDefaults.fontFamily"
+                    :options="fontFamilyOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateNumber({ fontFamily: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.leaderLine') }}</span>
+                  <NSwitch
+                    :value="numberLeaderOf(editingNumber).enabled"
+                    @update:value="(v: boolean) => updateNumberLeader({ enabled: v })"
+                  />
+                </div>
+                <template v-if="numberLeaderOf(editingNumber).enabled">
+                  <div class="image-editor__row">
+                    <span class="image-editor__row-label">{{ t('tools.imageEditor.leaderWidth') }}</span>
+                    <NInputNumber
+                      :value="numberLeaderOf(editingNumber).strokeWidth"
+                      :min="1"
+                      :max="20"
+                      :step="1"
+                      style="width: 160px;"
+                      @update:value="(v: number | null) => updateNumberLeader({ strokeWidth: v ?? 2 })"
+                    />
+                  </div>
+                  <div class="image-editor__row">
+                    <span class="image-editor__row-label">{{ t('tools.imageEditor.leaderStroke') }}</span>
+                    <NSelect
+                      :value="numberLeaderOf(editingNumber).strokeStyle"
+                      :options="strokeStyleOptions"
+                      style="width: 160px;"
+                      @update:value="(v: string) => updateNumberLeader({ strokeStyle: v as StrokeStyle })"
+                    />
+                  </div>
+                </template>
               </template>
             </div>
 
