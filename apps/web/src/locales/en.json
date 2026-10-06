@@ -998,7 +998,9 @@
       "opacity": "Opacity: ",
       "effect": "Effect: ",
       "strength": "Strength: ",
-      "mode": "Mode: "
+      "mode": "Mode: ",
+      "startArrow": "Start arrow: ",
+      "endArrow": "End arrow: "
     },
     "imageRemoveBackground": {
       "name": "Image Remove Background",

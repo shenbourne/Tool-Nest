@@ -1,6 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, type Component } from 'vue';
-import { NButton, NCard, NIcon, NPopconfirm, NTooltip } from 'naive-ui';
+import { computed, onMounted, onUnmounted, ref, watch, type Component } from 'vue';
+import {
+  NButton,
+  NCard,
+  NColorPicker,
+  NIcon,
+  NInputNumber,
+  NPopconfirm,
+  NSelect,
+  NSwitch,
+  NTooltip,
+} from 'naive-ui';
 import {
   ArrowBackUp,
   ArrowForwardUp,
@@ -21,36 +31,75 @@ import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
+import { usePreferencesStore } from '@/stores/preferences.store';
+import { resolveCssColorToken } from '@/utils/css-tokens';
 import {
+  arrowPoints,
   canRedo,
   canUndo,
   commit,
   createHistory,
   historyState,
+  rectFromPoints,
   redo,
+  strokeDash,
   undo,
   type Annotation,
+  type ArrowConfig,
+  type ArrowStyle,
+  type LineAnnotation,
+  type ShapeAnnotation,
+  type StrokeStyle,
   type Tool,
 } from './image-editor.service';
+
+/** The slice of a Konva node (or of an event's target) this component touches. */
+interface KonvaNode {
+  x(): number;
+  y(): number;
+  position(position: { x: number; y: number }): void;
+  getStage(): { getPointerPosition(): { x: number; y: number } | null };
+  getLayer(): { batchDraw(): void } | null;
+}
 
 /** The Konva stage node, used to tell background clicks from annotation clicks. */
 interface KonvaPointerEvent {
   /** The node that received the click; the stage itself means empty background. */
-  target: unknown;
+  target: KonvaNode;
   /** Stops the event reaching the stage, which owns the background click. */
   cancelBubble?: boolean;
 }
 
+interface KonvaTransformer {
+  nodes(nodes: KonvaNode[]): void;
+  forceUpdate(): void;
+  getLayer(): { batchDraw(): void } | null;
+}
+
 /** A `vue-konva` node component exposes its Konva node through `getNode`. */
-interface KonvaComponentRef {
-  getNode(): unknown;
+interface KonvaComponentRef<N = KonvaNode> {
+  getNode(): N;
 }
 
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const preferences = usePreferencesStore();
 const { copyFileToClipboard } = useCopy();
+
+// Konva cannot resolve CSS `var()` expressions, so the selection chrome needs
+// concrete token values, re-read whenever the theme class changes.
+const primaryColor = ref('');
+const canvasColor = ref('');
+watch(
+  [() => preferences.isDark, () => preferences.loaded],
+  () => {
+    primaryColor.value = resolveCssColorToken('--color-primary');
+    canvasColor.value = resolveCssColorToken('--color-canvas');
+  },
+  { immediate: true, flush: 'post' },
+);
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
@@ -109,9 +158,14 @@ function setTool(next: Tool) {
 
 const annotations = ref<Annotation[]>([]);
 const history = ref(createHistory<Annotation[]>([]));
+let nextId = 1;
 
 const canUndoNow = computed(() => canUndo(history.value));
 const canRedoNow = computed(() => canRedo(history.value));
+
+const selected = computed(() => annotations.value.find((a) => a.id === selectedId.value) ?? null);
+const selectedShape = computed(() => (selected.value?.type === 'shape' ? selected.value : null));
+const selectedLine = computed(() => (selected.value?.type === 'line' ? selected.value : null));
 
 let pendingCommit: ReturnType<typeof setTimeout> | null = null;
 
@@ -126,6 +180,15 @@ function pushHistory() {
   }
   if (JSON.stringify(annotations.value) === JSON.stringify(historyState(history.value))) return;
   history.value = commit(history.value, annotations.value);
+}
+
+/** Property edits (panel controls, handle drags) coalesce through this timer. */
+function scheduleCommit() {
+  if (pendingCommit) clearTimeout(pendingCommit);
+  pendingCommit = setTimeout(() => {
+    pendingCommit = null;
+    pushHistory();
+  }, 400);
 }
 
 function undoAction() {
@@ -149,6 +212,10 @@ function applyRestored() {
 
 // --- annotation edits --------------------------------------------------------
 
+function replaceAnnotation(id: number, next: Annotation) {
+  annotations.value = annotations.value.map((a) => (a.id === id ? next : a));
+}
+
 function deleteSelected() {
   if (selectedId.value === null) return;
   annotations.value = annotations.value.filter((a) => a.id !== selectedId.value);
@@ -163,6 +230,27 @@ function clearAll() {
   pushHistory();
 }
 
+// --- draw defaults (params panel edits these while a drawing tool is active) ---
+
+const shapeDefaults = ref({
+  kind: 'rect' as ShapeAnnotation['kind'],
+  stroke: '#ff0000',
+  strokeWidth: 3,
+  strokeStyle: 'solid' as StrokeStyle,
+  fillEnabled: false,
+  fill: '#ff0000',
+  cornerRadius: 0,
+});
+
+const lineDefaults = ref({
+  kind: 'straight' as LineAnnotation['kind'],
+  stroke: '#ff0000',
+  strokeWidth: 3,
+  strokeStyle: 'solid' as StrokeStyle,
+  startArrow: null as ArrowConfig | null,
+  endArrow: null as ArrowConfig | null,
+});
+
 // --- stage interactions ------------------------------------------------------
 
 const stageRef = ref<KonvaComponentRef | null>(null);
@@ -171,11 +259,276 @@ function stageNode(): unknown {
   return stageRef.value?.getNode() ?? null;
 }
 
-/** A background click (target is the stage itself) clears the selection. */
-function onStageClick(e: KonvaPointerEvent) {
-  if (activeTool.value !== 'select') return;
-  if (e.target === stageNode()) selectedId.value = null;
+/** In-progress shape drag (normalised on mouseup via `rectFromPoints`). */
+const shapeDraft = ref<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
+/** In-progress straight-line drag. */
+const lineDraft = ref<number[] | null>(null);
+/** In-progress polyline vertices (absolute stage coordinates). */
+const polylineDraft = ref<number[]>([]);
+
+const shapeDraftRect = computed(() => {
+  const d = shapeDraft.value;
+  if (!d) return null;
+  return rectFromPoints(d.x1, d.y1, d.x2, d.y2);
+});
+
+/** The annotation the params panel edits; drawing tools fall back to defaults. */
+const editingShape = computed(() =>
+  activeTool.value === 'shape' ? selectedShape.value : null);
+const editingLine = computed(() =>
+  activeTool.value === 'line' ? selectedLine.value : null);
+
+function pointerPosition(e: KonvaPointerEvent): { x: number; y: number } | null {
+  return e.target.getStage().getPointerPosition();
 }
+
+/**
+ * Konva synthesises dblclick from two rapid mousedown/mouseup pairs at the
+ * same position. During polyline drawing a single click adds a vertex; a
+ * double-click (two clicks at the same spot) finishes. Clicks at different
+ * positions always count as separate vertices, no matter how fast they come.
+ */
+const DBLCLICK_MS = 300;
+const DBLCLICK_DIST = 5;
+let lastClick: { x: number; y: number; time: number } | null = null;
+
+function onStageClick(e: KonvaPointerEvent) {
+  if (activeTool.value === 'line' && lineDefaults.value.kind === 'polyline') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    const now = Date.now();
+    if (lastClick
+      && now - lastClick.time < DBLCLICK_MS
+      && Math.hypot(pointer.x - lastClick.x, pointer.y - lastClick.y) < DBLCLICK_DIST) {
+      // Second half of a double-click: finish without adding a vertex.
+      lastClick = null;
+      finishPolyline();
+      return;
+    }
+    lastClick = { x: pointer.x, y: pointer.y, time: now };
+    polylineDraft.value = [...polylineDraft.value, pointer.x, pointer.y];
+    return;
+  }
+  if (activeTool.value === 'select') {
+    if (e.target === stageNode()) selectedId.value = null;
+  }
+}
+
+function finishPolyline() {
+  lastClick = null;
+  const pts = polylineDraft.value;
+  polylineDraft.value = [];
+  if (pts.length >= 6) {
+    annotations.value = [
+      ...annotations.value,
+      {
+        id: nextId++,
+        type: 'line',
+        kind: 'polyline',
+        points: pts,
+        stroke: lineDefaults.value.stroke,
+        strokeWidth: lineDefaults.value.strokeWidth,
+        strokeStyle: lineDefaults.value.strokeStyle,
+        startArrow: lineDefaults.value.startArrow,
+        endArrow: lineDefaults.value.endArrow,
+      },
+    ];
+    pushHistory();
+  } else if (pts.length === 4) {
+    // Two clicks make a straight line, not a polyline.
+    annotations.value = [
+      ...annotations.value,
+      {
+        id: nextId++,
+        type: 'line',
+        kind: 'straight',
+        points: pts,
+        stroke: lineDefaults.value.stroke,
+        strokeWidth: lineDefaults.value.strokeWidth,
+        strokeStyle: lineDefaults.value.strokeStyle,
+        startArrow: lineDefaults.value.startArrow,
+        endArrow: lineDefaults.value.endArrow,
+      },
+    ];
+    pushHistory();
+  }
+}
+
+function onStageMouseDown(e: KonvaPointerEvent) {
+  if (activeTool.value === 'shape') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    shapeDraft.value = { x1: pointer.x, y1: pointer.y, x2: pointer.x, y2: pointer.y };
+    return;
+  }
+  if (activeTool.value === 'line' && lineDefaults.value.kind === 'straight') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    lineDraft.value = [pointer.x, pointer.y, pointer.x, pointer.y];
+  }
+}
+
+function onStageMouseMove(e: KonvaPointerEvent) {
+  if (shapeDraft.value) {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    shapeDraft.value = { ...shapeDraft.value, x2: pointer.x, y2: pointer.y };
+    return;
+  }
+  if (lineDraft.value) {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    lineDraft.value = [lineDraft.value[0], lineDraft.value[1], pointer.x, pointer.y];
+  }
+}
+
+function onStageMouseUp() {
+  if (shapeDraft.value) {
+    const rect = shapeDraftRect.value;
+    shapeDraft.value = null;
+    if (rect && rect.width >= 2 && rect.height >= 2) {
+      annotations.value = [
+        ...annotations.value,
+        {
+          id: nextId++,
+          type: 'shape',
+          kind: shapeDefaults.value.kind,
+          x: rect.x,
+          y: rect.y,
+          width: rect.width,
+          height: rect.height,
+          rotation: 0,
+          stroke: shapeDefaults.value.stroke,
+          strokeWidth: shapeDefaults.value.strokeWidth,
+          strokeStyle: shapeDefaults.value.strokeStyle,
+          fillEnabled: shapeDefaults.value.fillEnabled,
+          fill: shapeDefaults.value.fill,
+          cornerRadius: shapeDefaults.value.kind === 'rect' ? shapeDefaults.value.cornerRadius : 0,
+        },
+      ];
+      pushHistory();
+    }
+    return;
+  }
+  if (lineDraft.value) {
+    const pts = lineDraft.value;
+    lineDraft.value = null;
+    if (Math.hypot(pts[2] - pts[0], pts[3] - pts[1]) >= 2) {
+      annotations.value = [
+        ...annotations.value,
+        {
+          id: nextId++,
+          type: 'line',
+          kind: 'straight',
+          points: pts,
+          stroke: lineDefaults.value.stroke,
+          strokeWidth: lineDefaults.value.strokeWidth,
+          strokeStyle: lineDefaults.value.strokeStyle,
+          startArrow: lineDefaults.value.startArrow,
+          endArrow: lineDefaults.value.endArrow,
+        },
+      ];
+      pushHistory();
+    }
+  }
+}
+
+/** Clicks on an annotation must not reach the stage, which would draw a new one. */
+function onAnnotationClick(annotation: Annotation, e: KonvaPointerEvent) {
+  e.cancelBubble = true;
+  if (activeTool.value !== 'select') return;
+  selectedId.value = annotation.id;
+}
+
+/** Selection and dragging are the select tool's job, so drawing modes stay inert. */
+const canManipulate = computed(() => activeTool.value === 'select');
+
+// Konva reports a dragged shape as the node's absolute position (model
+// position plus travel); the delta is recovered by subtracting the model
+// position, then the node is reset so the re-render starts from (0, 0).
+function onShapeDragEnd(annotation: ShapeAnnotation, e: KonvaPointerEvent) {
+  const dx = e.target.x() - annotation.x;
+  const dy = e.target.y() - annotation.y;
+  if (dx === 0 && dy === 0) return;
+  e.target.position({ x: 0, y: 0 });
+  replaceAnnotation(annotation.id, {
+    ...annotation,
+    x: annotation.x + dx,
+    y: annotation.y + dy,
+  });
+  pushHistory();
+}
+
+// Same fold-in for lines: the annotation stores absolute points, so the
+// travel is folded into the points and the node reset.
+function onLineDragEnd(annotation: LineAnnotation, e: KonvaPointerEvent) {
+  const dx = e.target.x();
+  const dy = e.target.y();
+  if (dx === 0 && dy === 0) return;
+  e.target.position({ x: 0, y: 0 });
+  replaceAnnotation(annotation.id, {
+    ...annotation,
+    points: annotation.points.map((v, i) => (i % 2 === 0 ? v + dx : v + dy)),
+  });
+  pushHistory();
+}
+
+/** Endpoint (straight) / vertex (polyline) handles for the selected line. */
+const lineHandlePositions = computed(() => {
+  const line = selectedLine.value;
+  if (!line || activeTool.value !== 'select') return [];
+  const out: Array<{ index: number; x: number; y: number }> = [];
+  for (let i = 0; i < line.points.length; i += 2) {
+    out.push({ index: i / 2, x: line.points[i], y: line.points[i + 1] });
+  }
+  return out;
+});
+
+function onLineHandleDrag(line: LineAnnotation, index: number, e: KonvaPointerEvent) {
+  const points = [...line.points];
+  points[index * 2] = e.target.x();
+  points[index * 2 + 1] = e.target.y();
+  replaceAnnotation(line.id, { ...line, points });
+}
+
+// --- selection outline -------------------------------------------------------
+
+const nodeRefs = new Map<number, KonvaComponentRef | null>();
+const transformerRef = ref<unknown>(null);
+
+function setNodeRef(id: number, instance: unknown) {
+  nodeRefs.set(id, (instance as KonvaComponentRef | null) ?? null);
+}
+
+function shapeNode(id: number): KonvaNode | null {
+  return nodeRefs.get(id)?.getNode() ?? null;
+}
+
+function transformerNode(): KonvaTransformer | null {
+  const instance = transformerRef.value as KonvaComponentRef<KonvaTransformer> | null;
+  return instance?.getNode() ?? null;
+}
+
+const transformerConfig = computed(() => ({
+  resizeEnabled: false,
+  rotateEnabled: false,
+  enabledAnchors: [],
+  borderStroke: primaryColor.value,
+  borderDash: [4, 4],
+  borderWidth: 1,
+  padding: 4,
+}));
+
+function syncTransformer() {
+  const transformer = transformerNode();
+  if (!transformer) return;
+  const target = selectedId.value === null ? null : shapeNode(selectedId.value);
+  transformer.nodes(target ? [target] : []);
+  transformer.forceUpdate();
+  transformer.getLayer()?.batchDraw();
+}
+
+watch([selectedId, annotations], syncTransformer, { deep: true, flush: 'post' });
 
 // --- keyboard ----------------------------------------------------------------
 
@@ -189,6 +542,22 @@ function isEditableTarget(target: EventTarget | null): boolean {
 function onKeydown(event: KeyboardEvent) {
   // Typing keeps the browser's own undo: only page-level shortcuts are taken.
   if (isEditableTarget(event.target)) return;
+  if (event.key === 'Escape') {
+    if (polylineDraft.value.length > 0) {
+      event.preventDefault();
+      lastClick = null;
+      polylineDraft.value = [];
+    }
+    return;
+  }
+  if (event.key === 'Enter') {
+    if (activeTool.value === 'line' && lineDefaults.value.kind === 'polyline'
+      && polylineDraft.value.length > 0) {
+      event.preventDefault();
+      finishPolyline();
+    }
+    return;
+  }
   if (event.key === 'Delete' || event.key === 'Backspace') {
     if (selectedId.value === null) return;
     event.preventDefault();
@@ -208,6 +577,40 @@ function onKeydown(event: KeyboardEvent) {
 
 // --- export ------------------------------------------------------------------
 
+function traceLinePath(ctx: CanvasRenderingContext2D, points: number[],
+  scaleX: number, scaleY: number) {
+  ctx.beginPath();
+  ctx.moveTo(points[0] * scaleX, points[1] * scaleY);
+  for (let i = 2; i < points.length; i += 2) {
+    ctx.lineTo(points[i] * scaleX, points[i + 1] * scaleY);
+  }
+}
+
+function drawArrowHeads(ctx: CanvasRenderingContext2D, line: LineAnnotation,
+  scaleX: number, scaleY: number) {
+  const pts = line.points;
+  const [sx, sy] = [pts[0], pts[1]];
+  const [ex, ey] = [pts[pts.length - 2], pts[pts.length - 1]];
+  const ends: Array<[ArrowConfig | null, number, number, number, number]> = [
+    [line.startArrow, ex, ey, sx, sy],
+    [line.endArrow, sx, sy, ex, ey],
+  ];
+  for (const [cfg, x1, y1, x2, y2] of ends) {
+    if (!cfg || cfg.style === 'none') continue;
+    const head = arrowPoints(x1 * scaleX, y1 * scaleY, x2 * scaleX, y2 * scaleY, cfg);
+    if (head.length < 4) continue;
+    ctx.beginPath();
+    ctx.moveTo(head[0], head[1]);
+    for (let i = 2; i < head.length; i += 2) ctx.lineTo(head[i], head[i + 1]);
+    if (cfg.style === 'open') {
+      ctx.stroke();
+    } else {
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+}
+
 function createCanvas() {
   if (!imageEl.value) return null;
   const canvas = document.createElement('canvas');
@@ -218,10 +621,48 @@ function createCanvas() {
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
 
+  const scaleX = imgW / stageWidth.value;
+  const scaleY = imgH / stageHeight.value;
+
   ctx.drawImage(imageEl.value, 0, 0);
 
-  // Annotation rasterisation lands in Tasks 3–7 as each tool's renderer is
-  // added; the base image at natural resolution is the export skeleton.
+  for (const ann of annotations.value) {
+    if (ann.type === 'shape') {
+      ctx.save();
+      ctx.strokeStyle = ann.stroke;
+      ctx.lineWidth = ann.strokeWidth * scaleX;
+      ctx.setLineDash(strokeDash(ann.strokeStyle, ann.strokeWidth * scaleX));
+      if (ann.fillEnabled) ctx.fillStyle = ann.fill;
+      const x = ann.x * scaleX;
+      const y = ann.y * scaleY;
+      const w = ann.width * scaleX;
+      const h = ann.height * scaleY;
+      ctx.beginPath();
+      if (ann.kind === 'rect') {
+        const r = Math.min(ann.cornerRadius * scaleX, w / 2, h / 2);
+        ctx.roundRect(x, y, w, h, r);
+      } else {
+        ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2);
+      }
+      if (ann.fillEnabled) ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    } else if (ann.type === 'line') {
+      ctx.save();
+      ctx.strokeStyle = ann.stroke;
+      ctx.lineWidth = ann.strokeWidth * scaleX;
+      ctx.setLineDash(strokeDash(ann.strokeStyle, ann.strokeWidth * scaleX));
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      traceLinePath(ctx, ann.points, scaleX, scaleY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = ann.stroke;
+      ctx.strokeStyle = ann.stroke;
+      drawArrowHeads(ctx, ann, scaleX, scaleY);
+      ctx.restore();
+    }
+  }
   return canvas;
 }
 
@@ -254,6 +695,106 @@ onUnmounted(() => {
   if (pendingCommit) clearTimeout(pendingCommit);
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
 });
+
+// --- param rows ---------------------------------------------------------------
+
+const strokeStyleOptions = computed(() => [
+  { label: t('tools.imageEditor.strokeSolid'), value: 'solid' },
+  { label: t('tools.imageEditor.strokeDashLong'), value: 'dash-long' },
+  { label: t('tools.imageEditor.strokeDashShort'), value: 'dash-short' },
+  { label: t('tools.imageEditor.strokeDashDot'), value: 'dash-dot' },
+  { label: t('tools.imageEditor.strokeDashDotDot'), value: 'dash-dot-dot' },
+]);
+
+const arrowStyleOptions = computed(() => [
+  { label: t('tools.imageEditor.arrowNone'), value: 'none' },
+  { label: t('tools.imageEditor.arrowTriangle'), value: 'triangle' },
+  { label: t('tools.imageEditor.arrowOpen'), value: 'open' },
+  { label: t('tools.imageEditor.arrowCircle'), value: 'circle' },
+]);
+
+const shapeKindOptions = computed(() => [
+  { label: t('tools.imageEditor.shapeRect'), value: 'rect' },
+  { label: t('tools.imageEditor.shapeEllipse'), value: 'ellipse' },
+]);
+
+const lineKindOptions = computed(() => [
+  { label: t('tools.imageEditor.lineStraight'), value: 'straight' },
+  { label: t('tools.imageEditor.linePolyline'), value: 'polyline' },
+]);
+
+function updateShape(patch: Partial<ShapeAnnotation>) {
+  const target = editingShape.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, ...patch });
+    scheduleCommit();
+  } else {
+    Object.assign(shapeDefaults.value, patch);
+  }
+}
+
+function updateLine(patch: Partial<LineAnnotation>) {
+  const target = editingLine.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, ...patch });
+    scheduleCommit();
+  } else {
+    Object.assign(lineDefaults.value, patch);
+  }
+}
+
+function arrowStyleValue(cfg: ArrowConfig | null): ArrowStyle {
+  return cfg?.style ?? 'none';
+}
+
+function updateStartArrow(style: ArrowStyle, size?: number) {
+  const current = lineDefaults.value.startArrow;
+  const nextSize = size ?? current?.size ?? 12;
+  const next: ArrowConfig | null = style === 'none' ? null : { style, size: nextSize };
+  updateLine({ startArrow: next });
+}
+
+function updateEndArrow(style: ArrowStyle, size?: number) {
+  const current = lineDefaults.value.endArrow;
+  const nextSize = size ?? current?.size ?? 12;
+  const next: ArrowConfig | null = style === 'none' ? null : { style, size: nextSize };
+  updateLine({ endArrow: next });
+}
+
+function updateStartArrowSize(size: number | null) {
+  const current = lineDefaults.value.startArrow;
+  if (!current) return;
+  updateLine({ startArrow: { ...current, size: size ?? 12 } });
+}
+
+function updateEndArrowSize(size: number | null) {
+  const current = lineDefaults.value.endArrow;
+  if (!current) return;
+  updateLine({ endArrow: { ...current, size: size ?? 12 } });
+}
+
+/** Arrowhead polygons for one end of a rendered line (null = no arrowhead). */
+function arrowHeadPoints(line: LineAnnotation, end: 'start' | 'end'): number[] | null {
+  const cfg = end === 'start' ? line.startArrow : line.endArrow;
+  if (!cfg || cfg.style === 'none') return null;
+  const pts = line.points;
+  const [sx, sy] = [pts[0], pts[1]];
+  const [ex, ey] = [pts[pts.length - 2], pts[pts.length - 1]];
+  if (end === 'start') return arrowPoints(ex, ey, sx, sy, cfg);
+  return arrowPoints(sx, sy, ex, ey, cfg);
+}
+
+/** Arrowheads to render for a line: only the ends with a non-null, non-'none' config. */
+function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[]; cfg: ArrowConfig }> {
+  const out: Array<{ key: string; pts: number[]; cfg: ArrowConfig }> = [];
+  for (const end of ['start', 'end'] as const) {
+    const cfg = end === 'start' ? line.startArrow : line.endArrow;
+    if (!cfg || cfg.style === 'none') continue;
+    const pts = arrowHeadPoints(line, end);
+    if (pts && pts.length >= 4) out.push({ key: end, pts, cfg });
+  }
+  return out;
+}
 </script>
 
 <template>
@@ -272,6 +813,9 @@ onUnmounted(() => {
             ref="stageRef"
             :config="{ width: stageWidth, height: stageHeight }"
             @click="onStageClick"
+            @mousedown="onStageMouseDown"
+            @mousemove="onStageMouseMove"
+            @mouseup="onStageMouseUp"
           >
             <v-layer>
               <v-image
@@ -283,8 +827,127 @@ onUnmounted(() => {
                   height: stageHeight,
                 }"
               />
-              <!-- Per-type Konva renderers are added in Tasks 3–7; the shell
-                   keeps `annotations` reactive and history-backed. -->
+              <template v-for="ann in annotations" :key="ann.id">
+                <v-rect
+                  v-if="ann.type === 'shape' && ann.kind === 'rect'"
+                  :ref="(el: unknown) => setNodeRef(ann.id, el)"
+                  :config="{
+                    x: ann.x,
+                    y: ann.y,
+                    width: ann.width,
+                    height: ann.height,
+                    stroke: ann.stroke,
+                    strokeWidth: ann.strokeWidth,
+                    dash: strokeDash(ann.strokeStyle, ann.strokeWidth),
+                    fill: ann.fillEnabled ? ann.fill : undefined,
+                    cornerRadius: ann.cornerRadius,
+                    draggable: canManipulate,
+                  }"
+                  @click="onAnnotationClick(ann, $event)"
+                  @dragend="onShapeDragEnd(ann, $event)"
+                />
+                <v-ellipse
+                  v-else-if="ann.type === 'shape'"
+                  :ref="(el: unknown) => setNodeRef(ann.id, el)"
+                  :config="{
+                    x: ann.x + ann.width / 2,
+                    y: ann.y + ann.height / 2,
+                    radiusX: ann.width / 2,
+                    radiusY: ann.height / 2,
+                    stroke: ann.stroke,
+                    strokeWidth: ann.strokeWidth,
+                    dash: strokeDash(ann.strokeStyle, ann.strokeWidth),
+                    fill: ann.fillEnabled ? ann.fill : undefined,
+                    draggable: canManipulate,
+                  }"
+                  @click="onAnnotationClick(ann, $event)"
+                  @dragend="onShapeDragEnd(ann, $event)"
+                />
+                <v-line
+                  v-else-if="ann.type === 'line'"
+                  :ref="(el: unknown) => setNodeRef(ann.id, el)"
+                  :config="{
+                    points: ann.points,
+                    stroke: ann.stroke,
+                    strokeWidth: ann.strokeWidth,
+                    dash: strokeDash(ann.strokeStyle, ann.strokeWidth),
+                    lineCap: 'round',
+                    lineJoin: 'round',
+                    hitStrokeWidth: 12,
+                    draggable: canManipulate,
+                  }"
+                  @click="onAnnotationClick(ann, $event)"
+                  @dragend="onLineDragEnd(ann, $event)"
+                />
+                <template v-if="ann.type === 'line'">
+                  <v-line
+                    v-for="head in lineArrowHeads(ann)"
+                    :key="`${ann.id}-${head.key}`"
+                    :config="{
+                      points: head.pts,
+                      closed: head.cfg?.style !== 'open',
+                      fill: head.cfg?.style === 'open' ? undefined : ann.stroke,
+                      stroke: ann.stroke,
+                      strokeWidth: 1,
+                      listening: false,
+                    }"
+                  />
+                </template>
+              </template>
+              <!-- In-progress drafts -->
+              <v-rect
+                v-if="shapeDraftRect"
+                :config="{
+                  x: shapeDraftRect.x,
+                  y: shapeDraftRect.y,
+                  width: shapeDraftRect.width,
+                  height: shapeDraftRect.height,
+                  stroke: shapeDefaults.stroke,
+                  strokeWidth: shapeDefaults.strokeWidth,
+                  dash: [5, 5],
+                }"
+              />
+              <v-line
+                v-if="lineDraft"
+                :config="{
+                  points: lineDraft,
+                  stroke: lineDefaults.stroke,
+                  strokeWidth: lineDefaults.strokeWidth,
+                  lineCap: 'round',
+                  dash: [5, 5],
+                }"
+              />
+              <v-line
+                v-if="polylineDraft.length >= 2"
+                :config="{
+                  points: polylineDraft,
+                  stroke: lineDefaults.stroke,
+                  strokeWidth: lineDefaults.strokeWidth,
+                  lineCap: 'round',
+                  lineJoin: 'round',
+                  dash: [5, 5],
+                }"
+              />
+              <v-transformer
+                v-if="selected && canManipulate"
+                ref="transformerRef"
+                :config="transformerConfig"
+              />
+              <v-circle
+                v-for="handle in lineHandlePositions"
+                :key="`handle-${selectedLine?.id}-${handle.index}`"
+                :config="{
+                  x: handle.x,
+                  y: handle.y,
+                  radius: 6,
+                  fill: primaryColor,
+                  stroke: canvasColor,
+                  strokeWidth: 2,
+                  draggable: true,
+                }"
+                @dragmove="onLineHandleDrag(selectedLine!, handle.index, $event)"
+                @dragend="pushHistory()"
+              />
             </v-layer>
           </v-stage>
         </div>
@@ -316,9 +979,149 @@ onUnmounted(() => {
               </NTooltip>
             </div>
 
-            <!-- Per-tool param rows are added in Tasks 3–7; the shell renders
-                 only the shared footer. -->
-            <div class="image-editor__rows" />
+            <div class="image-editor__rows">
+              <!-- Shape params -->
+              <template v-if="activeTool === 'shape'">
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.toolShape') }}</span>
+                  <NSelect
+                    :value="editingShape?.kind ?? shapeDefaults.kind"
+                    :options="shapeKindOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateShape({ kind: v as ShapeAnnotation['kind'] })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
+                  <NColorPicker
+                    :value="editingShape?.stroke ?? shapeDefaults.stroke"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateShape({ stroke: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.width') }}</span>
+                  <NInputNumber
+                    :value="editingShape?.strokeWidth ?? shapeDefaults.strokeWidth"
+                    :min="1"
+                    :max="50"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => updateShape({ strokeWidth: v ?? 1 })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
+                  <NSelect
+                    :value="editingShape?.strokeStyle ?? shapeDefaults.strokeStyle"
+                    :options="strokeStyleOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateShape({ strokeStyle: v as StrokeStyle })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.fill') }}</span>
+                  <NSwitch
+                    :checked="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
+                    @update:checked="(v: boolean) => updateShape({ fillEnabled: v })"
+                  />
+                  <NColorPicker
+                    v-if="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
+                    :value="editingShape?.fill ?? shapeDefaults.fill"
+                    style="width: 120px;"
+                    @update:value="(v: string) => updateShape({ fill: v })"
+                  />
+                </div>
+                <div v-if="(editingShape?.kind ?? shapeDefaults.kind) === 'rect'" class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.cornerRadius') }}</span>
+                  <NInputNumber
+                    :value="editingShape?.cornerRadius ?? shapeDefaults.cornerRadius"
+                    :min="0"
+                    :max="100"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => updateShape({ cornerRadius: v ?? 0 })"
+                  />
+                </div>
+              </template>
+
+              <!-- Line params -->
+              <template v-if="activeTool === 'line'">
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.toolLine') }}</span>
+                  <NSelect
+                    :value="editingLine?.kind ?? lineDefaults.kind"
+                    :options="lineKindOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateLine({ kind: v as LineAnnotation['kind'] })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
+                  <NColorPicker
+                    :value="editingLine?.stroke ?? lineDefaults.stroke"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateLine({ stroke: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.width') }}</span>
+                  <NInputNumber
+                    :value="editingLine?.strokeWidth ?? lineDefaults.strokeWidth"
+                    :min="1"
+                    :max="50"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => updateLine({ strokeWidth: v ?? 1 })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
+                  <NSelect
+                    :value="editingLine?.strokeStyle ?? lineDefaults.strokeStyle"
+                    :options="strokeStyleOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateLine({ strokeStyle: v as StrokeStyle })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.startArrow') }}</span>
+                  <NSelect
+                    :value="arrowStyleValue(editingLine?.startArrow ?? lineDefaults.startArrow)"
+                    :options="arrowStyleOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateStartArrow(v as ArrowStyle)"
+                  />
+                  <NInputNumber
+                    v-if="arrowStyleValue(editingLine?.startArrow ?? lineDefaults.startArrow) !== 'none'"
+                    :value="(editingLine?.startArrow ?? lineDefaults.startArrow)?.size ?? 12"
+                    :min="4"
+                    :max="40"
+                    :step="1"
+                    style="width: 100px;"
+                    @update:value="updateStartArrowSize"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.endArrow') }}</span>
+                  <NSelect
+                    :value="arrowStyleValue(editingLine?.endArrow ?? lineDefaults.endArrow)"
+                    :options="arrowStyleOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateEndArrow(v as ArrowStyle)"
+                  />
+                  <NInputNumber
+                    v-if="arrowStyleValue(editingLine?.endArrow ?? lineDefaults.endArrow) !== 'none'"
+                    :value="(editingLine?.endArrow ?? lineDefaults.endArrow)?.size ?? 12"
+                    :min="4"
+                    :max="40"
+                    :step="1"
+                    style="width: 100px;"
+                    @update:value="updateEndArrowSize"
+                  />
+                </div>
+              </template>
+            </div>
 
             <div class="image-editor__footer">
               <NTooltip placement="bottom">

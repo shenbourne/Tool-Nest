@@ -998,7 +998,9 @@
       "opacity": "不透明度：",
       "effect": "效果：",
       "strength": "强度：",
-      "mode": "模式："
+      "mode": "模式：",
+      "startArrow": "起点箭头：",
+      "endArrow": "终点箭头："
     },
     "imageRemoveBackground": {
       "name": "图片去背景",
