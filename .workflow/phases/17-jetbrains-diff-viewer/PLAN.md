@@ -11,12 +11,12 @@
 
 | Task | Change | Test/evidence | Commit | Status |
 | --- | --- | --- | --- | --- |
-| 1 | `line-diff.ts` + `line-diff.test.ts`（TDD 先测） | vitest：中间插入行后下方仍对齐为 same；删除/新增/修改；字符级分段公共前后缀 | SHA pending | Planned |
-| 2 | `tokens.css` diff 令牌（亮+暗） | 浏览器验收时核对暗色 | SHA pending | Planned |
-| 3 | `DiffViewer.vue` 组件 | 浏览器验收：双栏对齐/行号/滚动同步/gutter 条纹/行内高亮 | SHA pending | Planned |
-| 4 | `TextDiff.vue` 接入 DiffViewer | 浏览器验收 + 既有 locale key 复用 | SHA pending | Planned |
-| 5 | `JsonDiff.vue` 结果区改造 | 浏览器验收：路径 gutter + 红/绿双栏 | SHA pending | Planned |
-| 6 | 门禁：test/type-check/build + 差分 lint | pnpm 三门禁 PASS；变更文件 0 新增 lint | SHA pending | Planned |
-| 7 | 浏览器验收 + VERIFICATION/ACCEPTANCE/STATE/ROADMAP | Chrome DevTools 证据 | SHA pending | Planned |
+| 1 | `line-diff.ts` + `line-diff.test.ts`（TDD 先测） | vitest 13/13 GREEN（RED 已观察：模块缺失） | 44bcc04 | Done |
+| 2 | `tokens.css` diff 令牌（亮+暗） | 浏览器计算样式核对暗色 rgba | aa3c04e | Done |
+| 3 | `DiffViewer.vue` 组件 | 浏览器：双栏对齐/行号/gutter/行内高亮/单滚动容器 | ab80038 | Done |
+| 4 | `TextDiff.vue` 接入 DiffViewer | 浏览器：插入场景行类型序与统计正确 | ab80038 | Done |
+| 5 | `JsonDiff.vue` 结果区改造 | 浏览器：双栏填充/路径 gutter/删除与错误路径；自查改为显式值列类 | 29b4492 + cdcf46e | Done |
+| 6 | 门禁：test/type-check/build + 差分 lint | 272+52 PASS、type-check PASS、build PASS、差分 0/0 | —（见 VERIFICATION） | Done |
+| 7 | 浏览器验收 + VERIFICATION/ACCEPTANCE/STATE/ROADMAP | 9 项验收全 PASS | docs commit | Done |
 
 Update this plan when discoveries change the implementation. Record scope changes rather than silently replacing them.
