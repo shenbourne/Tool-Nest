@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { NCard, NSpace, NTag } from 'naive-ui';
+import { computed } from 'vue';
+import { NCard, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
@@ -13,83 +14,83 @@ interface GitCommand {
   description: string;
 }
 
-const sections: { title: string; commands: GitCommand[] }[] = [
+const sections = computed<{ title: string; commands: GitCommand[] }[]>(() => [
   {
-    title: 'Configuration',
+    title: t('tools.gitMemo.sections.configuration'),
     commands: [
-      { command: 'git config --global user.name "[name]"', description: 'Set the name associated with your commits' },
-      { command: 'git config --global user.email "[email]"', description: 'Set the email associated with your commits' },
+      { command: 'git config --global user.name "[name]"', description: t('tools.gitMemo.commands.configUserName') },
+      { command: 'git config --global user.email "[email]"', description: t('tools.gitMemo.commands.configUserEmail') },
     ],
   },
   {
-    title: 'Get Started',
+    title: t('tools.gitMemo.sections.getStarted'),
     commands: [
-      { command: 'git init', description: 'Create a git repository' },
-      { command: 'git clone [url]', description: 'Clone an existing git repository' },
+      { command: 'git init', description: t('tools.gitMemo.commands.init') },
+      { command: 'git clone [url]', description: t('tools.gitMemo.commands.clone') },
     ],
   },
   {
-    title: 'Snapshot',
+    title: t('tools.gitMemo.sections.snapshot'),
     commands: [
-      { command: 'git status', description: 'Show the status of files in the working directory and staging area' },
-      { command: 'git add [file]', description: 'Stage a file for commit' },
-      { command: 'git add .', description: 'Stage all changes for commit' },
-      { command: 'git commit -am "[message]"', description: 'Commit all staged changes with a message' },
-      { command: 'git diff', description: 'Show unstaged changes' },
-      { command: 'git diff --staged', description: 'Show staged changes' },
+      { command: 'git status', description: t('tools.gitMemo.commands.status') },
+      { command: 'git add [file]', description: t('tools.gitMemo.commands.addFile') },
+      { command: 'git add .', description: t('tools.gitMemo.commands.addAll') },
+      { command: 'git commit -am "[message]"', description: t('tools.gitMemo.commands.commitAll') },
+      { command: 'git diff', description: t('tools.gitMemo.commands.diff') },
+      { command: 'git diff --staged', description: t('tools.gitMemo.commands.diffStaged') },
     ],
   },
   {
-    title: 'Branch & Merge',
+    title: t('tools.gitMemo.sections.branchMerge'),
     commands: [
-      { command: 'git branch', description: 'List all local branches' },
-      { command: 'git branch [branch-name]', description: 'Create a new branch' },
-      { command: 'git checkout [branch-name]', description: 'Switch to a branch' },
-      { command: 'git checkout -b [branch-name]', description: 'Create and switch to a new branch' },
-      { command: 'git merge [branch]', description: 'Merge a branch into the current branch' },
-      { command: 'git branch -d [branch]', description: 'Delete a branch' },
-      { command: 'git branch -m master main', description: 'Rename the local master branch to main' },
+      { command: 'git branch', description: t('tools.gitMemo.commands.branchList') },
+      { command: 'git branch [branch-name]', description: t('tools.gitMemo.commands.branchCreate') },
+      { command: 'git checkout [branch-name]', description: t('tools.gitMemo.commands.checkout') },
+      { command: 'git checkout -b [branch-name]', description: t('tools.gitMemo.commands.checkoutNew') },
+      { command: 'git merge [branch]', description: t('tools.gitMemo.commands.merge') },
+      { command: 'git branch -d [branch]', description: t('tools.gitMemo.commands.branchDelete') },
+      { command: 'git branch -m master main', description: t('tools.gitMemo.commands.branchRename') },
     ],
   },
   {
-    title: 'Remote',
+    title: t('tools.gitMemo.sections.remote'),
     commands: [
-      { command: 'git remote add [alias] [url]', description: 'Add a remote repository' },
-      { command: 'git fetch [remote]', description: 'Fetch from a remote' },
-      { command: 'git pull [remote] [branch]', description: 'Pull from a remote branch' },
-      { command: 'git push [remote] [branch]', description: 'Push to a remote branch' },
+      { command: 'git remote add [alias] [url]', description: t('tools.gitMemo.commands.remoteAdd') },
+      { command: 'git fetch [remote]', description: t('tools.gitMemo.commands.fetch') },
+      { command: 'git pull [remote] [branch]', description: t('tools.gitMemo.commands.pull') },
+      { command: 'git push [remote] [branch]', description: t('tools.gitMemo.commands.push') },
     ],
   },
   {
-    title: 'Undo',
+    title: t('tools.gitMemo.sections.undo'),
     commands: [
-      { command: 'git commit --amend', description: 'Change last commit message' },
-      { command: 'git commit --amend --no-edit', description: 'Add modifications to last commit without changing message' },
-      { command: 'git reset HEAD~1', description: 'Undo most recent commit and keep changes' },
-      { command: 'git reset HEAD~N', description: 'Undo the N most recent commits and keep changes' },
-      { command: 'git reset HEAD~1 --hard', description: 'Undo most recent commit and discard changes' },
-      { command: 'git fetch origin && git reset --hard origin/[branch]', description: 'Reset branch to remote state' },
-      { command: 'git revert [commit]', description: 'Create a new commit that undoes a previous commit' },
+      { command: 'git commit --amend', description: t('tools.gitMemo.commands.amendMessage') },
+      { command: 'git commit --amend --no-edit', description: t('tools.gitMemo.commands.amendNoEdit') },
+      { command: 'git reset HEAD~1', description: t('tools.gitMemo.commands.resetLast') },
+      { command: 'git reset HEAD~N', description: t('tools.gitMemo.commands.resetN') },
+      { command: 'git reset HEAD~1 --hard', description: t('tools.gitMemo.commands.resetLastHard') },
+      { command: 'git fetch origin && git reset --hard origin/[branch]', description: t('tools.gitMemo.commands.resetToRemote') },
+      { command: 'git revert [commit]', description: t('tools.gitMemo.commands.revert') },
     ],
   },
   {
-    title: 'Stash',
+    title: t('tools.gitMemo.sections.stash'),
     commands: [
-      { command: 'git stash', description: 'Temporarily save uncommitted changes' },
-      { command: 'git stash pop', description: 'Restore the most recently stashed changes' },
-      { command: 'git stash list', description: 'List all stashed changes' },
-      { command: 'git stash drop', description: 'Discard the most recently stashed changes' },
+      { command: 'git stash', description: t('tools.gitMemo.commands.stash') },
+      { command: 'git stash pop', description: t('tools.gitMemo.commands.stashPop') },
+      { command: 'git stash list', description: t('tools.gitMemo.commands.stashList') },
+      { command: 'git stash drop', description: t('tools.gitMemo.commands.stashDrop') },
     ],
   },
   {
-    title: 'Log & History',
+    title: t('tools.gitMemo.sections.logHistory'),
     commands: [
-      { command: 'git log', description: 'View commit history' },
-      { command: 'git log --oneline', description: 'View compact commit history' },
-      { command: 'git log --graph', description: 'View commit history as a graph' },
+      { command: 'git log', description: t('tools.gitMemo.commands.log') },
+      { command: 'git log --oneline', description: t('tools.gitMemo.commands.logOneline') },
+      { command: 'git log --graph', description: t('tools.gitMemo.commands.logGraph') },
     ],
   },
-];
+]);
 
 function copyCommand(command: string) {
   copyToClipboard(command);
