@@ -33,10 +33,11 @@ describe('keyboard-layout', () => {
     expect(codes.every((c) => c.length > 0)).toBe(true);
   });
 
-  it('covers the full 104-key ANSI layout shown in the reference image', () => {
-    expect(KEYS.length).toBe(104);
+  it('covers the full 108-key layout shown in the reference image', () => {
+    expect(KEYS.length).toBe(108);
     for (const code of [
       'Escape', 'F1', 'F12', 'PrintScreen', 'ScrollLock', 'Pause',
+      'AudioVolumeDown', 'AudioVolumeUp', 'AudioVolumeMute', 'LaunchCalculator',
       'Backquote', 'Digit1', 'Digit0', 'Minus', 'Equal', 'Backspace',
       'Tab', 'KeyQ', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash',
       'CapsLock', 'KeyA', 'KeyL', 'Semicolon', 'Quote', 'Enter',
@@ -52,6 +53,19 @@ describe('keyboard-layout', () => {
     ]) {
       expect(findKeyByCode(code), code).toBeDefined();
     }
+  });
+
+  it('aligns F12 right edge with Backspace right edge via a 1u Esc/F1 gap', () => {
+    const f12 = findKeyByCode('F12');
+    const backspace = findKeyByCode('Backspace');
+    expect(f12!.col + f12!.u * UNITS_PER_KEY).toBe(backspace!.col + backspace!.u * UNITS_PER_KEY);
+  });
+
+  it('offsets the function row and the arrow cluster down from the rows above', () => {
+    // The function row sits one half-unit below the number row, and the arrow
+    // cluster sits one half-unit below the Insert/Home/PageUp block.
+    expect(findKeyByCode('Escape')!.rowOffset).toBeGreaterThan(0);
+    expect(findKeyByCode('ArrowUp')!.rowOffset).toBeGreaterThan(0);
   });
 
   it('findKeyByCode matches by physical code and returns the key metadata', () => {

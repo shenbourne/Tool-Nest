@@ -10,13 +10,18 @@ export interface KeyDef {
   row: number;
   col: number;
   rowSpan: number;
+  // Vertical offset of this key's row from the tight grid, in key units. Rows
+  // are stacked on integer tracks by default; a positive offset pushes a row
+  // down to open a gap between it and the row above (e.g. under the function
+  // row, or above the arrow cluster).
+  rowOffset: number;
 }
 
 type RowItem =
-  | (Omit<KeyDef, 'row' | 'col' | 'rowSpan'> & { rowSpan?: number })
+  | (Omit<KeyDef, 'row' | 'col' | 'rowSpan' | 'rowOffset'> & { rowSpan?: number })
   | { gap: number };
 
-function buildRow(items: RowItem[], rowIndex: number): KeyDef[] {
+function buildRow(items: RowItem[], rowIndex: number, rowOffset: number): KeyDef[] {
   let col = 0;
   const keys: KeyDef[] = [];
   for (const item of items) {
@@ -24,7 +29,7 @@ function buildRow(items: RowItem[], rowIndex: number): KeyDef[] {
       col += item.gap * UNITS_PER_KEY;
       continue;
     }
-    keys.push({ ...item, row: rowIndex, col, rowSpan: item.rowSpan ?? 1 });
+    keys.push({ ...item, row: rowIndex, col, rowSpan: item.rowSpan ?? 1, rowOffset });
     col += item.u * UNITS_PER_KEY;
   }
   return keys;
@@ -39,15 +44,16 @@ const gap = (u: number): RowItem => ({ gap: u });
 const ROWS: RowItem[][] = [
   [
     k('Escape', 'ESC'),
-    gap(0.5),
+    gap(1),
     k('F1', 'F1'), k('F2', 'F2'), k('F3', 'F3'), k('F4', 'F4'),
     gap(0.5),
     k('F5', 'F5'), k('F6', 'F6'), k('F7', 'F7'), k('F8', 'F8'),
     gap(0.5),
     k('F9', 'F9'), k('F10', 'F10'), k('F11', 'F11'), k('F12', 'F12'),
-    gap(0.5), gap(0.5),
+    gap(0.5),
     k('PrintScreen', 'PRTSC'), k('ScrollLock', 'SCRLK'), k('Pause', 'PAUSE'),
-    gap(0.5), gap(4),
+    gap(0.5),
+    k('AudioVolumeDown', 'VOL−'), k('AudioVolumeUp', 'VOL+'), k('AudioVolumeMute', 'MUTE'), k('LaunchCalculator', 'CALC'),
   ],
   [
     k('Backquote', '`', 1, '~'),
@@ -111,7 +117,18 @@ const ROWS: RowItem[][] = [
   ],
 ];
 
-export const KEYS: KeyDef[] = ROWS.flatMap((items, row) => buildRow(items, row));
+// The function row sits a half-unit below the number row, and the arrow cluster
+// sits a half-unit below the Insert/Home/PageUp block, matching the reference
+// board where those blocks are separated from the rows above them.
+const FUNCTION_ROW_OFFSET = 0.5;
+const ARROW_ROW_OFFSET = 0.5;
+const ARROW_CODES = new Set(['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight']);
+
+export const KEYS: KeyDef[] = ROWS.flatMap((items, row) =>
+  buildRow(items, row, row === 0 ? FUNCTION_ROW_OFFSET : 0).map((key) =>
+    ARROW_CODES.has(key.code) ? { ...key, rowOffset: ARROW_ROW_OFFSET } : key,
+  ),
+);
 
 export const ROW_GAPS: readonly number[] = ROWS.map(
   (items) => items.reduce<number>((sum, item) => ('gap' in item ? sum + item.gap : sum), 0),

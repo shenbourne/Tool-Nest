@@ -14,7 +14,7 @@ defineProps<{ activeCodes: string[] }>();
         :class="{ 'kb-key--active': activeCodes.includes(key.code) }"
         :style="{
           gridColumn: `${key.col + 1} / span ${key.u * UNITS_PER_KEY}`,
-          gridRow: `${key.row + 1} / span ${key.rowSpan}`,
+          gridRow: `${(key.row + key.rowOffset) * 2 + 1} / span ${key.rowSpan * 2}`,
         }"
         :title="key.code"
       >
@@ -37,12 +37,14 @@ defineProps<{ activeCodes: string[] }>();
 .kb-grid {
   /* Row height tracks one key unit so the 1u caps stay square. A 1u cap spans 4
      grid columns; its 1.5px margins shrink both axes equally, so the row track
-     must be the full 4-column width (not that width minus the margins). */
+     must be the full 4-column width (not that width minus the margins). Rows
+     are split into half-unit tracks so a key's rowOffset can open a gap under
+     the function row and above the arrow cluster without stretching the caps. */
   --kb-unit: 34px;
   --kb-unit: calc(100cqw / 92 * 4);
   display: grid;
   grid-template-columns: repeat(92, minmax(0, 1fr));
-  grid-template-rows: repeat(6, var(--kb-unit));
+  grid-template-rows: repeat(14, calc(var(--kb-unit) / 2));
 }
 
 .kb-key {
