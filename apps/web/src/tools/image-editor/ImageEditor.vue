@@ -5,6 +5,7 @@ import {
   NCard,
   NColorPicker,
   NIcon,
+  NInput,
   NInputNumber,
   NPopconfirm,
   NSelect,
@@ -48,8 +49,10 @@ import {
   type ArrowConfig,
   type ArrowStyle,
   type LineAnnotation,
+  type PenAnnotation,
   type ShapeAnnotation,
   type StrokeStyle,
+  type TextAnnotation,
   type Tool,
 } from './image-editor.service';
 
@@ -58,6 +61,10 @@ interface KonvaNode {
   x(): number;
   y(): number;
   position(position: { x: number; y: number }): void;
+  width(): number;
+  height(): number;
+  rotation(): number;
+  rotation(degrees: number): void;
   getStage(): { getPointerPosition(): { x: number; y: number } | null };
   getLayer(): { batchDraw(): void } | null;
 }
@@ -166,6 +173,8 @@ const canRedoNow = computed(() => canRedo(history.value));
 const selected = computed(() => annotations.value.find((a) => a.id === selectedId.value) ?? null);
 const selectedShape = computed(() => (selected.value?.type === 'shape' ? selected.value : null));
 const selectedLine = computed(() => (selected.value?.type === 'line' ? selected.value : null));
+const selectedPen = computed(() => (selected.value?.type === 'pen' ? selected.value : null));
+const selectedText = computed(() => (selected.value?.type === 'text' ? selected.value : null));
 
 let pendingCommit: ReturnType<typeof setTimeout> | null = null;
 
@@ -251,6 +260,21 @@ const lineDefaults = ref({
   endArrow: null as ArrowConfig | null,
 });
 
+const penDefaults = ref({
+  stroke: '#ff0000',
+  strokeWidth: 3,
+  strokeStyle: 'solid' as StrokeStyle,
+});
+
+const textDefaults = ref({
+  text: '',
+  color: '#ff0000',
+  fontSize: 24,
+  fontFamily: 'sans-serif',
+  stroke: { enabled: false, color: '#000000', width: 1 },
+  background: { enabled: false, color: '#ffffff', opacity: 0.8 },
+});
+
 // --- stage interactions ------------------------------------------------------
 
 const stageRef = ref<KonvaComponentRef | null>(null);
@@ -265,6 +289,8 @@ const shapeDraft = ref<{ x1: number; y1: number; x2: number; y2: number } | null
 const lineDraft = ref<number[] | null>(null);
 /** In-progress polyline vertices (absolute stage coordinates). */
 const polylineDraft = ref<number[]>([]);
+/** In-progress freehand pen trail (absolute stage coordinates). */
+const penDraft = ref<number[] | null>(null);
 
 const shapeDraftRect = computed(() => {
   const d = shapeDraft.value;
@@ -277,6 +303,10 @@ const editingShape = computed(() =>
   activeTool.value === 'shape' ? selectedShape.value : null);
 const editingLine = computed(() =>
   activeTool.value === 'line' ? selectedLine.value : null);
+const editingPen = computed(() =>
+  activeTool.value === 'pen' ? selectedPen.value : null);
+const editingText = computed(() =>
+  activeTool.value === 'text' ? selectedText.value : null);
 
 function pointerPosition(e: KonvaPointerEvent): { x: number; y: number } | null {
   return e.target.getStage().getPointerPosition();
@@ -311,6 +341,32 @@ function onStageClick(e: KonvaPointerEvent) {
   }
   if (activeTool.value === 'select') {
     if (e.target === stageNode()) selectedId.value = null;
+    return;
+  }
+  if (activeTool.value === 'text') {
+    // Annotation clicks stop bubbling (see onAnnotationClick), so reaching
+    // here means the background — which is covered by the base image, not
+    // the stage node itself.
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    const d = textDefaults.value;
+    annotations.value = [
+      ...annotations.value,
+      {
+        id: nextId++,
+        type: 'text',
+        x: pointer.x,
+        y: pointer.y,
+        text: d.text || t('tools.imageEditor.defaultText'),
+        fontSize: d.fontSize,
+        color: d.color,
+        fontFamily: d.fontFamily,
+        rotation: 0,
+        stroke: { ...d.stroke },
+        background: { ...d.background },
+      },
+    ];
+    pushHistory();
   }
 }
 
@@ -365,6 +421,12 @@ function onStageMouseDown(e: KonvaPointerEvent) {
     const pointer = pointerPosition(e);
     if (!pointer) return;
     lineDraft.value = [pointer.x, pointer.y, pointer.x, pointer.y];
+    return;
+  }
+  if (activeTool.value === 'pen') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    penDraft.value = [pointer.x, pointer.y];
   }
 }
 
@@ -379,6 +441,18 @@ function onStageMouseMove(e: KonvaPointerEvent) {
     const pointer = pointerPosition(e);
     if (!pointer) return;
     lineDraft.value = [lineDraft.value[0], lineDraft.value[1], pointer.x, pointer.y];
+    return;
+  }
+  if (penDraft.value) {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    const pts = penDraft.value;
+    const lx = pts[pts.length - 2];
+    const ly = pts[pts.length - 1];
+    // Skip sub-pixel jitter so the trail stays dense but not bloated.
+    if (Math.hypot(pointer.x - lx, pointer.y - ly) >= 1) {
+      penDraft.value = [...pts, pointer.x, pointer.y];
+    }
   }
 }
 
@@ -430,6 +504,26 @@ function onStageMouseUp() {
       ];
       pushHistory();
     }
+    return;
+  }
+  if (penDraft.value) {
+    const pts = penDraft.value;
+    penDraft.value = null;
+    // A pen click without travel is a dot, not a stroke.
+    if (pts.length >= 4) {
+      annotations.value = [
+        ...annotations.value,
+        {
+          id: nextId++,
+          type: 'pen',
+          points: pts,
+          stroke: penDefaults.value.stroke,
+          strokeWidth: penDefaults.value.strokeWidth,
+          strokeStyle: penDefaults.value.strokeStyle,
+        },
+      ];
+      pushHistory();
+    }
   }
 }
 
@@ -470,6 +564,110 @@ function onLineDragEnd(annotation: LineAnnotation, e: KonvaPointerEvent) {
     ...annotation,
     points: annotation.points.map((v, i) => (i % 2 === 0 ? v + dx : v + dy)),
   });
+  pushHistory();
+}
+
+// Pens store absolute points too, so a drag folds travel into the trail.
+function onPenDragEnd(annotation: PenAnnotation, e: KonvaPointerEvent) {
+  const dx = e.target.x();
+  const dy = e.target.y();
+  if (dx === 0 && dy === 0) return;
+  e.target.position({ x: 0, y: 0 });
+  replaceAnnotation(annotation.id, {
+    ...annotation,
+    points: annotation.points.map((v, i) => (i % 2 === 0 ? v + dx : v + dy)),
+  });
+  pushHistory();
+}
+
+// Text stores its anchor position; a drag shifts the anchor by the travel.
+function onTextDragEnd(annotation: TextAnnotation, e: KonvaPointerEvent) {
+  const dx = e.target.x() - annotation.x;
+  const dy = e.target.y() - annotation.y;
+  if (dx === 0 && dy === 0) return;
+  e.target.position({ x: annotation.x, y: annotation.y });
+  replaceAnnotation(annotation.id, { ...annotation, x: annotation.x + dx, y: annotation.y + dy });
+  pushHistory();
+}
+
+// --- text rotation handle ----------------------------------------------------
+
+const TEXT_BG_PADDING = 4;
+
+/**
+ * Measured size of a text annotation's Konva node, so the background rect
+ * can sit exactly behind the glyphs. Falls back to a canvas-2d measurement
+ * before the node has been rendered (e.g. first placement).
+ */
+function textSize(annotation: TextAnnotation): { width: number; height: number } {
+  const node = shapeNode(annotation.id);
+  if (node) {
+    const w = node.width();
+    const h = node.height();
+    if (w > 0 && h > 0) return { width: w, height: h };
+  }
+  const ctx = document.createElement('canvas').getContext('2d');
+  if (!ctx) return { width: annotation.text.length * annotation.fontSize * 0.6, height: annotation.fontSize };
+  ctx.font = `${annotation.fontSize}px ${annotation.fontFamily}`;
+  return { width: ctx.measureText(annotation.text).width, height: annotation.fontSize * 1.2 };
+}
+
+/** Background rect config for a text annotation (null when disabled). */
+function textBackgroundRect(annotation: TextAnnotation) {
+  if (!annotation.background?.enabled) return null;
+  const size = textSize(annotation);
+  const pad = TEXT_BG_PADDING;
+  return {
+    x: annotation.x - pad,
+    y: annotation.y - pad,
+    width: size.width + pad * 2,
+    height: size.height + pad * 2,
+    rotation: annotation.rotation,
+    offsetX: size.width / 2,
+    offsetY: size.height / 2,
+    fill: annotation.background.color,
+    opacity: annotation.background.opacity,
+    listening: false,
+  };
+}
+
+/** Centre of the rendered text, in stage coordinates (rotation pivot). */
+function textCentre(annotation: TextAnnotation): { x: number; y: number } {
+  // The node anchors at (x, y) with its centre as offset, so the centre in
+  // stage space is the anchor itself.
+  return { x: annotation.x, y: annotation.y };
+}
+
+/**
+ * The rotation handle sits above the text's bounding box, on the line from
+ * the text centre through its top edge (i.e. unrotated "up"), so it tracks
+ * the current rotation.
+ */
+const textRotationHandle = computed(() => {
+  const text = selectedText.value;
+  if (!text || activeTool.value !== 'select') return null;
+  const centre = textCentre(text);
+  const size = textSize(text);
+  const distance = size.height / 2 + 28;
+  const rad = (text.rotation - 90) * (Math.PI / 180);
+  return {
+    x: centre.x + distance * Math.cos(rad),
+    y: centre.y + distance * Math.sin(rad),
+  };
+});
+
+function onRotationHandleDrag(e: KonvaPointerEvent) {
+  const text = selectedText.value;
+  if (!text) return;
+  const centre = textCentre(text);
+  // atan2 with the -90° bias: handle directly "above" an unrotated text is
+  // angle -90°, which maps to rotation 0.
+  const degrees = Math.atan2(e.target.y() - centre.y, e.target.x() - centre.x) * 180 / Math.PI + 90;
+  const normalised = ((degrees % 360) + 360) % 360;
+  replaceAnnotation(text.id, { ...text, rotation: Math.round(normalised) });
+}
+
+function onRotationHandleDragEnd() {
   pushHistory();
 }
 
@@ -586,6 +784,28 @@ function traceLinePath(ctx: CanvasRenderingContext2D, points: number[],
   }
 }
 
+/**
+ * Smooth trail through the pen points (quadratic curves across segment
+ * midpoints), approximating Konva's tension spline on the export canvas.
+ */
+function tracePenPath(ctx: CanvasRenderingContext2D, points: number[],
+  scaleX: number, scaleY: number) {
+  const pts = points.map((v, i) => (i % 2 === 0 ? v * scaleX : v * scaleY));
+  ctx.beginPath();
+  ctx.moveTo(pts[0], pts[1]);
+  if (pts.length === 4) {
+    ctx.lineTo(pts[2], pts[3]);
+    return;
+  }
+  for (let i = 2; i < pts.length - 2; i += 2) {
+    const mx = (pts[i] + pts[i + 2]) / 2;
+    const my = (pts[i + 1] + pts[i + 3]) / 2;
+    ctx.quadraticCurveTo(pts[i], pts[i + 1], mx, my);
+  }
+  const n = pts.length;
+  ctx.lineTo(pts[n - 2], pts[n - 1]);
+}
+
 function drawArrowHeads(ctx: CanvasRenderingContext2D, line: LineAnnotation,
   scaleX: number, scaleY: number) {
   const pts = line.points;
@@ -661,6 +881,40 @@ function createCanvas() {
       ctx.strokeStyle = ann.stroke;
       drawArrowHeads(ctx, ann, scaleX, scaleY);
       ctx.restore();
+    } else if (ann.type === 'pen') {
+      ctx.save();
+      ctx.strokeStyle = ann.stroke;
+      ctx.lineWidth = ann.strokeWidth * scaleX;
+      ctx.setLineDash(strokeDash(ann.strokeStyle, ann.strokeWidth * scaleX));
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      tracePenPath(ctx, ann.points, scaleX, scaleY);
+      ctx.stroke();
+      ctx.restore();
+    } else if (ann.type === 'text') {
+      const size = textSize(ann);
+      ctx.save();
+      ctx.translate(ann.x * scaleX, ann.y * scaleY);
+      ctx.rotate((ann.rotation * Math.PI) / 180);
+      if (ann.background?.enabled) {
+        const pad = TEXT_BG_PADDING * scaleX;
+        ctx.globalAlpha = ann.background.opacity;
+        ctx.fillStyle = ann.background.color;
+        ctx.fillRect(-size.width * scaleX / 2 - pad, -size.height * scaleY / 2 - pad,
+          size.width * scaleX + pad * 2, size.height * scaleY + pad * 2);
+        ctx.globalAlpha = 1;
+      }
+      ctx.font = `${ann.fontSize * scaleX}px ${ann.fontFamily}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      if (ann.stroke?.enabled && ann.stroke.width > 0) {
+        ctx.strokeStyle = ann.stroke.color;
+        ctx.lineWidth = ann.stroke.width * scaleX;
+        ctx.strokeText(ann.text, 0, 0);
+      }
+      ctx.fillStyle = ann.color;
+      ctx.fillText(ann.text, 0, 0);
+      ctx.restore();
     }
   }
   return canvas;
@@ -723,6 +977,13 @@ const lineKindOptions = computed(() => [
   { label: t('tools.imageEditor.linePolyline'), value: 'polyline' },
 ]);
 
+const fontFamilyOptions = computed(() => [
+  { label: 'Sans Serif', value: 'sans-serif' },
+  { label: 'Serif', value: 'serif' },
+  { label: 'Monospace', value: 'monospace' },
+  { label: 'Cursive', value: 'cursive' },
+]);
+
 function updateShape(patch: Partial<ShapeAnnotation>) {
   const target = editingShape.value;
   if (target) {
@@ -740,6 +1001,60 @@ function updateLine(patch: Partial<LineAnnotation>) {
     scheduleCommit();
   } else {
     Object.assign(lineDefaults.value, patch);
+  }
+}
+
+function updatePen(patch: Partial<PenAnnotation>) {
+  const target = editingPen.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, ...patch });
+    scheduleCommit();
+  } else {
+    Object.assign(penDefaults.value, patch);
+  }
+}
+
+/** The text stroke model the params row edits (never null while toggling). */
+function textStrokeOf(source: TextAnnotation | null): NonNullable<TextAnnotation['stroke']> {
+  return source?.stroke ?? textDefaults.value.stroke;
+}
+
+/** The text background model the params row edits. */
+function textBackgroundOf(source: TextAnnotation | null): NonNullable<TextAnnotation['background']> {
+  return source?.background ?? textDefaults.value.background;
+}
+
+function updateText(patch: Partial<TextAnnotation>) {
+  const target = editingText.value;
+  if (target) {
+    replaceAnnotation(target.id, { ...target, ...patch });
+    scheduleCommit();
+  } else {
+    Object.assign(textDefaults.value, patch);
+  }
+}
+
+function updateTextStroke(patch: Partial<NonNullable<TextAnnotation['stroke']>>) {
+  const target = editingText.value;
+  const current = textStrokeOf(target);
+  const next = { ...current, ...patch };
+  if (target) {
+    replaceAnnotation(target.id, { ...target, stroke: next });
+    scheduleCommit();
+  } else {
+    textDefaults.value.stroke = next;
+  }
+}
+
+function updateTextBackground(patch: Partial<NonNullable<TextAnnotation['background']>>) {
+  const target = editingText.value;
+  const current = textBackgroundOf(target);
+  const next = { ...current, ...patch };
+  if (target) {
+    replaceAnnotation(target.id, { ...target, background: next });
+    scheduleCommit();
+  } else {
+    textDefaults.value.background = next;
   }
 }
 
@@ -893,6 +1208,48 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                     }"
                   />
                 </template>
+                <v-line
+                  v-else-if="ann.type === 'pen'"
+                  :ref="(el: unknown) => setNodeRef(ann.id, el)"
+                  :config="{
+                    points: ann.points,
+                    stroke: ann.stroke,
+                    strokeWidth: ann.strokeWidth,
+                    dash: strokeDash(ann.strokeStyle, ann.strokeWidth),
+                    tension: 0.5,
+                    lineCap: 'round',
+                    lineJoin: 'round',
+                    hitStrokeWidth: 12,
+                    draggable: canManipulate,
+                  }"
+                  @click="onAnnotationClick(ann, $event)"
+                  @dragend="onPenDragEnd(ann, $event)"
+                />
+                <template v-else-if="ann.type === 'text'">
+                  <v-rect
+                    v-if="textBackgroundRect(ann)"
+                    :config="textBackgroundRect(ann)!"
+                  />
+                  <v-text
+                    :ref="(el: unknown) => setNodeRef(ann.id, el)"
+                    :config="{
+                      x: ann.x,
+                      y: ann.y,
+                      text: ann.text,
+                      fontSize: ann.fontSize,
+                      fontFamily: ann.fontFamily,
+                      fill: ann.color,
+                      stroke: ann.stroke?.enabled ? ann.stroke.color : undefined,
+                      strokeWidth: ann.stroke?.enabled ? ann.stroke.width : undefined,
+                      rotation: ann.rotation,
+                      offsetX: textSize(ann).width / 2,
+                      offsetY: textSize(ann).height / 2,
+                      draggable: canManipulate,
+                    }"
+                    @click="onAnnotationClick(ann, $event)"
+                    @dragend="onTextDragEnd(ann, $event)"
+                  />
+                </template>
               </template>
               <!-- In-progress drafts -->
               <v-rect
@@ -928,6 +1285,18 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                   dash: [5, 5],
                 }"
               />
+              <v-line
+                v-if="penDraft"
+                :config="{
+                  points: penDraft,
+                  stroke: penDefaults.stroke,
+                  strokeWidth: penDefaults.strokeWidth,
+                  tension: 0.5,
+                  lineCap: 'round',
+                  lineJoin: 'round',
+                  dash: [5, 5],
+                }"
+              />
               <v-transformer
                 v-if="selected && canManipulate"
                 ref="transformerRef"
@@ -947,6 +1316,20 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                 }"
                 @dragmove="onLineHandleDrag(selectedLine!, handle.index, $event)"
                 @dragend="pushHistory()"
+              />
+              <v-circle
+                v-if="textRotationHandle"
+                :config="{
+                  x: textRotationHandle.x,
+                  y: textRotationHandle.y,
+                  radius: 7,
+                  fill: primaryColor,
+                  stroke: canvasColor,
+                  strokeWidth: 2,
+                  draggable: true,
+                }"
+                @dragmove="onRotationHandleDrag"
+                @dragend="onRotationHandleDragEnd"
               />
             </v-layer>
           </v-stage>
@@ -1022,8 +1405,8 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                 <div class="image-editor__row">
                   <span class="image-editor__row-label">{{ t('tools.imageEditor.fill') }}</span>
                   <NSwitch
-                    :checked="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
-                    @update:checked="(v: boolean) => updateShape({ fillEnabled: v })"
+                    :value="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
+                    @update:value="(v: boolean) => updateShape({ fillEnabled: v })"
                   />
                   <NColorPicker
                     v-if="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
@@ -1119,6 +1502,123 @@ function lineArrowHeads(line: LineAnnotation): Array<{ key: string; pts: number[
                     style="width: 100px;"
                     @update:value="updateEndArrowSize"
                   />
+                </div>
+              </template>
+
+              <!-- Pen params -->
+              <template v-if="activeTool === 'pen'">
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
+                  <NColorPicker
+                    :value="editingPen?.stroke ?? penDefaults.stroke"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updatePen({ stroke: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.width') }}</span>
+                  <NInputNumber
+                    :value="editingPen?.strokeWidth ?? penDefaults.strokeWidth"
+                    :min="1"
+                    :max="30"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => updatePen({ strokeWidth: v ?? 1 })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
+                  <NSelect
+                    :value="editingPen?.strokeStyle ?? penDefaults.strokeStyle"
+                    :options="strokeStyleOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updatePen({ strokeStyle: v as StrokeStyle })"
+                  />
+                </div>
+              </template>
+
+              <!-- Text params -->
+              <template v-if="activeTool === 'text'">
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.content') }}</span>
+                  <NInput
+                    :value="editingText?.text ?? textDefaults.text"
+                    :placeholder="t('tools.imageEditor.textPlaceholder')"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateText({ text: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
+                  <NColorPicker
+                    :value="editingText?.color ?? textDefaults.color"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateText({ color: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
+                  <NInputNumber
+                    :value="editingText?.fontSize ?? textDefaults.fontSize"
+                    :min="8"
+                    :max="120"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => updateText({ fontSize: v ?? 24 })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.fontFamily') }}</span>
+                  <NSelect
+                    :value="editingText?.fontFamily ?? textDefaults.fontFamily"
+                    :options="fontFamilyOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateText({ fontFamily: v })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
+                  <NSwitch
+                    :value="textStrokeOf(editingText).enabled"
+                    @update:value="(v: boolean) => updateTextStroke({ enabled: v })"
+                  />
+                  <template v-if="textStrokeOf(editingText).enabled">
+                    <NColorPicker
+                      :value="textStrokeOf(editingText).color"
+                      style="width: 120px;"
+                      @update:value="(v: string) => updateTextStroke({ color: v })"
+                    />
+                    <NInputNumber
+                      :value="textStrokeOf(editingText).width"
+                      :min="1"
+                      :max="20"
+                      :step="1"
+                      style="width: 100px;"
+                      @update:value="(v: number | null) => updateTextStroke({ width: v ?? 1 })"
+                    />
+                  </template>
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.background') }}</span>
+                  <NSwitch
+                    :value="textBackgroundOf(editingText).enabled"
+                    @update:value="(v: boolean) => updateTextBackground({ enabled: v })"
+                  />
+                  <template v-if="textBackgroundOf(editingText).enabled">
+                    <NColorPicker
+                      :value="textBackgroundOf(editingText).color"
+                      style="width: 120px;"
+                      @update:value="(v: string) => updateTextBackground({ color: v })"
+                    />
+                    <NInputNumber
+                      :value="textBackgroundOf(editingText).opacity"
+                      :min="0"
+                      :max="1"
+                      :step="0.1"
+                      style="width: 100px;"
+                      @update:value="(v: number | null) => updateTextBackground({ opacity: v ?? 0.8 })"
+                    />
+                  </template>
                 </div>
               </template>
             </div>
