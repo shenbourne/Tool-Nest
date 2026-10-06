@@ -87,7 +87,7 @@ const ROWS: RowItem[][] = [
     k('Semicolon', ';', 1, ':'), k('Quote', "'", 1, '"'),
     k('Enter', 'ENTER', 2.25),
     gap(0.5),
-    gap(1), k('ArrowUp', '↑'), gap(1),
+    gap(3),
     gap(0.5),
     k('Numpad4', '4'), k('Numpad5', '5'), k('Numpad6', '6'),
     gap(1),
@@ -99,7 +99,7 @@ const ROWS: RowItem[][] = [
     k('Comma', ',', 1, '<'), k('Period', '.', 1, '>'), k('Slash', '/', 1, '?'),
     k('ShiftRight', 'SHIFT', 2.75),
     gap(0.5),
-    k('ArrowLeft', '←'), k('ArrowDown', '↓'), k('ArrowRight', '→'),
+    gap(1), k('ArrowUp', '↑'), gap(1),
     gap(0.5),
     k('Numpad1', '1'), k('Numpad2', '2'), k('Numpad3', '3'),
     k('NumpadEnter', 'ENTER', 1, undefined, 2),
@@ -110,25 +110,20 @@ const ROWS: RowItem[][] = [
     k('AltRight', 'ALT', 1.25), k('MetaRight', 'WIN', 1.25),
     k('ContextMenu', 'MENU', 1.25), k('ControlRight', 'CTRL', 1.25),
     gap(0.5),
-    gap(3),
+    k('ArrowLeft', '←'), k('ArrowDown', '↓'), k('ArrowRight', '→'),
     gap(0.5),
     k('Numpad0', '0', 2), k('NumpadDecimal', '.'),
     gap(1),
   ],
 ];
 
-// The function row sits a half-unit below the number row, and the arrow cluster
-// sits a half-unit below the Insert/Home/PageUp block, matching the reference
-// board where those blocks are separated from the rows above them.
-const FUNCTION_ROW_OFFSET = 0.5;
-const ARROW_ROW_OFFSET = 0.5;
-const ARROW_CODES = new Set(['ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight']);
+// The function row sits at the very top; the five rows beneath it (alphanumeric
+// block, arrow cluster and numpad) drop a half-unit together, opening a gap
+// between the function row and the number row like a real board's function-key
+// strip.
+const MAIN_BLOCK_OFFSET = 0.5;
 
-export const KEYS: KeyDef[] = ROWS.flatMap((items, row) =>
-  buildRow(items, row, row === 0 ? FUNCTION_ROW_OFFSET : 0).map((key) =>
-    ARROW_CODES.has(key.code) ? { ...key, rowOffset: ARROW_ROW_OFFSET } : key,
-  ),
-);
+export const KEYS: KeyDef[] = ROWS.flatMap((items, row) => buildRow(items, row, row === 0 ? 0 : MAIN_BLOCK_OFFSET));
 
 export const ROW_GAPS: readonly number[] = ROWS.map(
   (items) => items.reduce<number>((sum, item) => ('gap' in item ? sum + item.gap : sum), 0),

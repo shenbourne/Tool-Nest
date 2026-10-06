@@ -61,11 +61,20 @@ describe('keyboard-layout', () => {
     expect(f12!.col + f12!.u * UNITS_PER_KEY).toBe(backspace!.col + backspace!.u * UNITS_PER_KEY);
   });
 
-  it('offsets the function row and the arrow cluster down from the rows above', () => {
-    // The function row sits one half-unit below the number row, and the arrow
-    // cluster sits one half-unit below the Insert/Home/PageUp block.
-    expect(findKeyByCode('Escape')!.rowOffset).toBeGreaterThan(0);
-    expect(findKeyByCode('ArrowUp')!.rowOffset).toBeGreaterThan(0);
+  it('offsets the main block below the function row', () => {
+    // The function row sits at the top with no offset; every row beneath it
+    // drops a half-unit to open a gap under the function-key strip.
+    expect(findKeyByCode('Escape')!.rowOffset).toBe(0);
+    expect(findKeyByCode('Backquote')!.rowOffset).toBeGreaterThan(0);
+    expect(findKeyByCode('ControlLeft')!.rowOffset).toBe(findKeyByCode('Backquote')!.rowOffset);
+  });
+
+  it('aligns the arrow cluster with the bottom two rows', () => {
+    // ArrowUp sits on the Shift row; ArrowLeft/Down/Right sit on the bottom row.
+    expect(findKeyByCode('ArrowUp')!.row).toBe(findKeyByCode('ShiftLeft')!.row);
+    expect(findKeyByCode('ArrowLeft')!.row).toBe(findKeyByCode('ControlLeft')!.row);
+    expect(findKeyByCode('ArrowDown')!.row).toBe(findKeyByCode('ControlLeft')!.row);
+    expect(findKeyByCode('ArrowRight')!.row).toBe(findKeyByCode('ControlLeft')!.row);
   });
 
   it('findKeyByCode matches by physical code and returns the key metadata', () => {
