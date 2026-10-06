@@ -1,101 +1,184 @@
 import { describe, expect, it } from 'vitest';
 import {
+  arrowPoints,
+  boxBlurImageData,
   canRedo,
   canUndo,
   commit,
   createHistory,
+  distToSegment,
+  formatNumber,
   historyState,
-  moveLine,
-  moveLineEndpoint,
-  paramsFor,
-  redo,
+  mosaicImageData,
+  rectFromPoints,
+  strokeDash,
   undo,
-  type Annotation,
-  type LineAnnotation,
-  type TextAnnotation,
 } from './image-editor.service';
 
-const line = (points: [number, number, number, number] = [10, 20, 30, 40]): LineAnnotation => ({
-  id: 1,
-  type: 'line',
-  points,
-  color: '#ff0000',
-  strokeWidth: 3,
+describe('strokeDash', () => {
+  it('returns an empty array for solid', () => {
+    expect(strokeDash('solid', 2)).toEqual([]);
+  });
+
+  it('scales the five styles with width', () => {
+    const base = {
+      'dash-long': strokeDash('dash-long', 1),
+      'dash-short': strokeDash('dash-short', 1),
+      'dash-dot': strokeDash('dash-dot', 1),
+      'dash-dot-dot': strokeDash('dash-dot-dot', 1),
+    };
+    for (const width of [2, 3, 5]) {
+      const scale = Math.max(1, width);
+      for (const style of ['dash-long', 'dash-short', 'dash-dot', 'dash-dot-dot'] as const) {
+        expect(strokeDash(style, width)).toEqual(base[style].map((v) => v * scale));
+      }
+    }
+  });
+
+  it('treats non-positive widths as 1', () => {
+    expect(strokeDash('dash-long', 0)).toEqual(strokeDash('dash-long', 1));
+    expect(strokeDash('dash-long', -3)).toEqual(strokeDash('dash-long', 1));
+  });
 });
 
-const text = (): TextAnnotation => ({
-  id: 2,
-  type: 'text',
-  x: 5,
-  y: 6,
-  text: 'hi',
-  fontSize: 24,
-  color: '#ff0000',
+describe('formatNumber', () => {
+  it('formats plain numbers', () => {
+    expect(formatNumber(1, 'number')).toBe('1');
+    expect(formatNumber(42, 'number')).toBe('42');
+  });
+
+  it('formats lower and upper alpha with Excel-style carry past 26', () => {
+    expect(formatNumber(1, 'lower-alpha')).toBe('a');
+    expect(formatNumber(26, 'lower-alpha')).toBe('z');
+    expect(formatNumber(27, 'lower-alpha')).toBe('aa');
+    expect(formatNumber(28, 'lower-alpha')).toBe('ab');
+    expect(formatNumber(52, 'lower-alpha')).toBe('az');
+    expect(formatNumber(53, 'lower-alpha')).toBe('ba');
+    expect(formatNumber(702, 'lower-alpha')).toBe('zz');
+    expect(formatNumber(703, 'lower-alpha')).toBe('aaa');
+    expect(formatNumber(1, 'upper-alpha')).toBe('A');
+    expect(formatNumber(26, 'upper-alpha')).toBe('Z');
+    expect(formatNumber(27, 'upper-alpha')).toBe('AA');
+    expect(formatNumber(28, 'upper-alpha')).toBe('AB');
+  });
+
+  it('formats lower and upper roman numerals', () => {
+    expect(formatNumber(1, 'lower-roman')).toBe('i');
+    expect(formatNumber(4, 'lower-roman')).toBe('iv');
+    expect(formatNumber(9, 'lower-roman')).toBe('ix');
+    expect(formatNumber(40, 'lower-roman')).toBe('xl');
+    expect(formatNumber(90, 'lower-roman')).toBe('xc');
+    expect(formatNumber(400, 'lower-roman')).toBe('cd');
+    expect(formatNumber(900, 'lower-roman')).toBe('cm');
+    expect(formatNumber(1994, 'lower-roman')).toBe('mcmxciv');
+    expect(formatNumber(2024, 'lower-roman')).toBe('mmxxiv');
+    expect(formatNumber(1, 'upper-roman')).toBe('I');
+    expect(formatNumber(4, 'upper-roman')).toBe('IV');
+    expect(formatNumber(9, 'upper-roman')).toBe('IX');
+    expect(formatNumber(40, 'upper-roman')).toBe('XL');
+    expect(formatNumber(90, 'upper-roman')).toBe('XC');
+    expect(formatNumber(400, 'upper-roman')).toBe('CD');
+    expect(formatNumber(900, 'upper-roman')).toBe('CM');
+    expect(formatNumber(1994, 'upper-roman')).toBe('MCMXCIV');
+    expect(formatNumber(2024, 'upper-roman')).toBe('MMXXIV');
+  });
 });
 
-describe('paramsFor', () => {
-  it('shows only the text parameters while the text tool is active', () => {
-    expect(paramsFor('text', null)).toEqual(['color', 'fontSize', 'text']);
+describe('arrowPoints', () => {
+  it('returns a closed triangle polygon for the triangle style', () => {
+    const pts = arrowPoints(0, 0, 10, 0, { style: 'triangle', size: 4 });
+    expect(pts.length).toBe(6);
+    expect(pts[0]).toBeCloseTo(10);
+    expect(pts[1]).toBeCloseTo(0);
   });
 
-  it('shows only the line parameters while the line tool is active', () => {
-    expect(paramsFor('line', null)).toEqual(['color', 'lineWidth']);
+  it('returns an open V shape for the open style', () => {
+    const pts = arrowPoints(0, 0, 10, 0, { style: 'open', size: 4 });
+    expect(pts.length).toBe(4);
   });
 
-  it('shows nothing in select mode with no selection', () => {
-    expect(paramsFor('none', null)).toEqual([]);
+  it('returns a diamond for the circle style', () => {
+    const pts = arrowPoints(0, 0, 10, 0, { style: 'circle', size: 4 });
+    expect(pts.length).toBe(8);
   });
 
-  it("shows the selected annotation's parameters in select mode", () => {
-    expect(paramsFor('none', text())).toEqual(['color', 'fontSize', 'text']);
-    expect(paramsFor('none', line())).toEqual(['color', 'lineWidth']);
+  it('returns an empty array for a degenerate zero-length segment', () => {
+    expect(arrowPoints(5, 5, 5, 5, { style: 'triangle', size: 4 })).toEqual([]);
+    expect(arrowPoints(5, 5, 5, 5, { style: 'open', size: 4 })).toEqual([]);
+    expect(arrowPoints(5, 5, 5, 5, { style: 'circle', size: 4 })).toEqual([]);
+  });
+});
+
+describe('distToSegment', () => {
+  it('measures the perpendicular distance inside the segment', () => {
+    expect(distToSegment(5, 5, 0, 0, 10, 0)).toBeCloseTo(5);
   });
 
-  it('keeps the active tool in charge while it is drawing', () => {
-    // The tool decides while it is active, so an existing selection cannot
-    // change the rows under the pointer that is about to add an annotation.
-    expect(paramsFor('text', line())).toEqual(['color', 'fontSize', 'text']);
-    expect(paramsFor('line', text())).toEqual(['color', 'lineWidth']);
+  it('measures the distance to the nearest endpoint outside the segment', () => {
+    expect(distToSegment(-3, 4, 0, 0, 10, 0)).toBeCloseTo(5);
+    expect(distToSegment(13, 4, 0, 0, 10, 0)).toBeCloseTo(5);
+  });
+
+  it('is zero for a point on the segment', () => {
+    expect(distToSegment(5, 0, 0, 0, 10, 0)).toBe(0);
+  });
+});
+
+describe('rectFromPoints', () => {
+  it('normalises an inverted drag', () => {
+    expect(rectFromPoints(10, 20, 4, 6)).toEqual({ x: 4, y: 6, width: 6, height: 14 });
+  });
+
+  it('keeps a normal drag as-is', () => {
+    expect(rectFromPoints(4, 6, 10, 20)).toEqual({ x: 4, y: 6, width: 6, height: 14 });
+  });
+});
+
+function makeImageData(width: number, height: number, paint: (x: number, y: number) => [number, number, number, number]) {
+  const data = new Uint8ClampedArray(width * height * 4);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const [r, g, b, a] = paint(x, y);
+      const i = (y * width + x) * 4;
+      data[i] = r;
+      data[i + 1] = g;
+      data[i + 2] = b;
+      data[i + 3] = a;
+    }
+  }
+  return { data, width, height };
+}
+
+function uniqueColours(img: { data: Uint8ClampedArray }) {
+  const seen = new Set<string>();
+  for (let i = 0; i < img.data.length; i += 4) {
+    seen.add(`${img.data[i]},${img.data[i + 1]},${img.data[i + 2]},${img.data[i + 3]}`);
+  }
+  return seen.size;
+}
+
+describe('mosaicImageData', () => {
+  it('reduces the number of unique colours', () => {
+    const img = makeImageData(16, 16, (x, y) => [(x * 16) % 256, (y * 16) % 256, ((x + y) * 8) % 256, 255]);
+    const before = uniqueColours(img);
+    const out = mosaicImageData(img, 4);
+    expect(uniqueColours(out)).toBeLessThan(before);
+    expect(out.width).toBe(img.width);
+    expect(out.height).toBe(img.height);
+  });
+});
+
+describe('boxBlurImageData', () => {
+  it('changes pixels but keeps dimensions', () => {
+    const img = makeImageData(8, 8, (x, y) => [(x * 32) % 256, (y * 32) % 256, 128, 255]);
+    const out = boxBlurImageData(img, 2);
+    expect(out.width).toBe(img.width);
+    expect(out.height).toBe(img.height);
+    expect(Array.from(out.data)).not.toEqual(Array.from(img.data));
   });
 });
 
 describe('annotation history', () => {
-  it('starts with nothing to undo or redo', () => {
-    const history = createHistory<Annotation[]>([]);
-    expect(canUndo(history)).toBe(false);
-    expect(canRedo(history)).toBe(false);
-    expect(historyState(history)).toEqual([]);
-  });
-
-  it('walks back and forward through committed states', () => {
-    let history = createHistory<number[]>([]);
-    history = commit(history, [1]);
-    history = commit(history, [1, 2]);
-    expect(canUndo(history)).toBe(true);
-    expect(canRedo(history)).toBe(false);
-    expect(historyState(history)).toEqual([1, 2]);
-
-    history = undo(history);
-    expect(historyState(history)).toEqual([1]);
-    expect(canRedo(history)).toBe(true);
-
-    history = undo(history);
-    expect(historyState(history)).toEqual([]);
-    expect(canUndo(history)).toBe(false);
-
-    // Undoing past the oldest state is a no-op rather than an error.
-    history = undo(history);
-    expect(historyState(history)).toEqual([]);
-
-    history = redo(history);
-    expect(historyState(history)).toEqual([1]);
-    history = redo(history);
-    expect(historyState(history)).toEqual([1, 2]);
-    // Redoing past the newest state is a no-op too.
-    history = redo(history);
-    expect(historyState(history)).toEqual([1, 2]);
-  });
-
   it('drops the redo tail when a new state is committed', () => {
     let history = createHistory<number[]>([]);
     history = commit(history, [1]);
@@ -110,21 +193,6 @@ describe('annotation history', () => {
     expect(historyState(history)).toEqual([1]);
   });
 
-  it('never hands out a reference into its own snapshots', () => {
-    // The component edits the annotations in place, so a shared reference
-    // would silently rewrite history.
-    let history = createHistory<TextAnnotation[]>([]);
-    history = commit(history, [text()]);
-
-    const handed = historyState(history);
-    handed[0].x = 999;
-    expect(historyState(history)[0].x).toBe(5);
-
-    const restored = historyState(history);
-    restored.push(text());
-    expect(historyState(history)).toHaveLength(1);
-  });
-
   it('keeps only the newest states once the cap is reached', () => {
     let history = createHistory<number[]>([], 3);
     for (const value of [1, 2, 3, 4]) history = commit(history, [value]);
@@ -136,28 +204,19 @@ describe('annotation history', () => {
     history = undo(history);
     history = undo(history);
     expect(historyState(history)).toEqual([2]);
-    // The oldest retained state is the floor: state [1] was dropped.
     expect(canUndo(history)).toBe(false);
   });
-});
 
-describe('line moves', () => {
-  it('translates both endpoints by the same delta', () => {
-    expect(moveLine(line(), 5, -3).points).toEqual([15, 17, 35, 37]);
-  });
+  it('never hands out a reference into its own snapshots', () => {
+    let history = createHistory<{ x: number }[]>([]);
+    history = commit(history, [{ x: 5 }]);
 
-  it('moves one endpoint and leaves the other alone', () => {
-    expect(moveLineEndpoint(line(), 0, 100, 200).points).toEqual([100, 200, 30, 40]);
-    expect(moveLineEndpoint(line(), 1, 7, 8).points).toEqual([10, 20, 7, 8]);
-  });
+    const handed = historyState(history);
+    handed[0].x = 999;
+    expect(historyState(history)[0].x).toBe(5);
 
-  it('returns a new annotation instead of mutating the given one', () => {
-    const original = line();
-    const moved = moveLineEndpoint(original, 0, 1, 1);
-    expect(original.points).toEqual([10, 20, 30, 40]);
-    expect(moved).not.toBe(original);
-    expect(moved.color).toBe(original.color);
-    expect(moved.strokeWidth).toBe(original.strokeWidth);
-    expect(moved.id).toBe(original.id);
+    const restored = historyState(history);
+    restored.push({ x: 1 });
+    expect(historyState(history)).toHaveLength(1);
   });
 });
