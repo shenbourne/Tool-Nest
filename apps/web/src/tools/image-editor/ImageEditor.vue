@@ -40,6 +40,7 @@ import {
   canUndo,
   commit,
   createHistory,
+  distToSegment,
   formatNumber,
   historyState,
   rectFromPoints,
@@ -244,6 +245,39 @@ function clearAll() {
   pushHistory();
 }
 
+// --- eraser -------------------------------------------------------------------
+
+/**
+ * Deletes every annotation whose bounding region intersects the marquee.
+ * One pushHistory per application so undo restores them all at once.
+ */
+function applyEraserRect(rect: BBox) {
+  const before = annotations.value.length;
+  annotations.value = annotations.value.filter((ann) => !bboxIntersects(annotationBBox(ann), rect));
+  if (annotations.value.length !== before) {
+    if (selectedId.value !== null && !annotations.value.some((a) => a.id === selectedId.value)) {
+      selectedId.value = null;
+    }
+    pushHistory();
+  }
+}
+
+/**
+ * Deletes every annotation within `brushSize` of any trail segment.
+ * One pushHistory per application so undo restores them all at once.
+ */
+function applyEraserBrush(trail: number[]) {
+  const radius = eraserDefaults.value.brushSize;
+  const before = annotations.value.length;
+  annotations.value = annotations.value.filter((ann) => !brushHitsAnnotation(trail, radius, ann));
+  if (annotations.value.length !== before) {
+    if (selectedId.value !== null && !annotations.value.some((a) => a.id === selectedId.value)) {
+      selectedId.value = null;
+    }
+    pushHistory();
+  }
+}
+
 // --- draw defaults (params panel edits these while a drawing tool is active) ---
 
 const shapeDefaults = ref({
@@ -291,6 +325,8 @@ const numberDefaults = ref({
   leaderArrow: { style: 'triangle' as ArrowStyle, size: 10 },
 });
 
+const eraserDefaults = ref({ mode: 'rect' as 'rect' | 'brush', brushSize: 20 });
+
 // Auto-increment counter for the number tool: starts at 1, bumps per placement,
 // resets on clear-all and on format change. Deleting a badge never renumbers.
 const nextNumber = ref(1);
@@ -313,12 +349,150 @@ const polylineDraft = ref<number[]>([]);
 const penDraft = ref<number[] | null>(null);
 /** In-progress leader-line drag: badge centre plus current pointer position. */
 const leaderDraft = ref<number[] | null>(null);
+/** In-progress eraser marquee drag (normalised on mouseup via `rectFromPoints`). */
+const eraserDraft = ref<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
+/** In-progress eraser brush trail (absolute stage coordinates). */
+const eraserTrail = ref<number[] | null>(null);
+/** Pointer position for the brush-mode cursor preview. */
+const eraserPointer = ref<{ x: number; y: number } | null>(null);
 
 const shapeDraftRect = computed(() => {
   const d = shapeDraft.value;
   if (!d) return null;
   return rectFromPoints(d.x1, d.y1, d.x2, d.y2);
 });
+
+const eraserDraftRect = computed(() => {
+  const d = eraserDraft.value;
+  if (!d) return null;
+  return rectFromPoints(d.x1, d.y1, d.x2, d.y2);
+});
+
+// --- eraser hit-testing ------------------------------------------------------
+
+interface BBox { x: number; y: number; width: number; height: number }
+
+function pointsBBox(points: number[]): BBox {
+  let minX = Infinity; let minY = Infinity; let maxX = -Infinity; let maxY = -Infinity;
+  for (let i = 0; i < points.length; i += 2) {
+    minX = Math.min(minX, points[i]);
+    minY = Math.min(minY, points[i + 1]);
+    maxX = Math.max(maxX, points[i]);
+    maxY = Math.max(maxY, points[i + 1]);
+  }
+  return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+}
+
+/** Approximate bounding box of an annotation, padded by its visual extent. */
+function annotationBBox(ann: Annotation): BBox {
+  if (ann.type === 'shape') {
+    return { x: ann.x, y: ann.y, width: ann.width, height: ann.height };
+  }
+  if (ann.type === 'line' || ann.type === 'pen') {
+    const box = pointsBBox(ann.points);
+    const pad = ann.strokeWidth / 2;
+    return { x: box.x - pad, y: box.y - pad, width: box.width + pad * 2, height: box.height + pad * 2 };
+  }
+  if (ann.type === 'number') {
+    const r = numberBadgeRadius(ann);
+    const box: BBox = { x: ann.x - r, y: ann.y - r, width: r * 2, height: r * 2 };
+    if (ann.leaderLine?.enabled) {
+      const [, , tx, ty] = ann.leaderLine.points;
+      box.x = Math.min(box.x, tx);
+      box.y = Math.min(box.y, ty);
+      box.width = Math.max(box.width, tx - box.x);
+      box.height = Math.max(box.height, ty - box.y);
+    }
+    return box;
+  }
+  if (ann.type === 'text') {
+    const size = textSize(ann);
+    return {
+      x: ann.x - size.width / 2,
+      y: ann.y - size.height / 2,
+      width: size.width,
+      height: size.height,
+    };
+  }
+  // mosaic
+  if (ann.region.kind === 'rect') {
+    return { x: ann.region.x, y: ann.region.y, width: ann.region.width, height: ann.region.height };
+  }
+  const box = pointsBBox(ann.region.points);
+  const pad = ann.region.brushSize / 2;
+  return { x: box.x - pad, y: box.y - pad, width: box.width + pad * 2, height: box.height + pad * 2 };
+}
+
+function bboxIntersects(a: BBox, b: BBox): boolean {
+  return a.x < b.x + b.width && a.x + a.width > b.x
+    && a.y < b.y + b.height && a.y + a.height > b.y;
+}
+
+/** Sample points along an annotation's outline for brush distance checks. */
+function annotationSamplePoints(ann: Annotation): number[] {
+  if (ann.type === 'shape') {
+    if (ann.kind === 'rect') {
+      const { x, y, width, height } = ann;
+      return [x, y, x + width, y, x + width, y + height, x, y + height,
+        x + width / 2, y, x + width / 2, y + height,
+        x, y + height / 2, x + width, y + height / 2];
+    }
+    const cx = ann.x + ann.width / 2;
+    const cy = ann.y + ann.height / 2;
+    const rx = ann.width / 2;
+    const ry = ann.height / 2;
+    const pts: number[] = [];
+    for (let i = 0; i < 8; i++) {
+      const angle = (i * Math.PI) / 4;
+      pts.push(cx + rx * Math.cos(angle), cy + ry * Math.sin(angle));
+    }
+    return pts;
+  }
+  if (ann.type === 'line' || ann.type === 'pen') return ann.points;
+  if (ann.type === 'number') {
+    const pts = [ann.x, ann.y];
+    if (ann.leaderLine?.enabled) {
+      pts.push(ann.leaderLine.points[2], ann.leaderLine.points[3]);
+    }
+    return pts;
+  }
+  if (ann.type === 'text') return [ann.x, ann.y];
+  // mosaic
+  if (ann.region.kind === 'rect') {
+    const { x, y, width, height } = ann.region;
+    return [x, y, x + width, y + height, x + width / 2, y + height / 2];
+  }
+  return ann.region.points;
+}
+
+/**
+ * Whether a brush trail (polyline) passes within `radius` of an annotation.
+ * Tests each trail segment against the annotation's sample points and its
+ * bounding-box corners, so both thin strokes and filled regions are caught.
+ */
+function brushHitsAnnotation(trail: number[], radius: number, ann: Annotation): boolean {
+  const samples = annotationSamplePoints(ann);
+  const box = annotationBBox(ann);
+  const allPts = [...samples,
+    box.x, box.y, box.x + box.width, box.y,
+    box.x + box.width, box.y + box.height, box.x, box.y + box.height];
+  for (let i = 0; i < trail.length - 2; i += 2) {
+    const x1 = trail[i]; const y1 = trail[i + 1];
+    const x2 = trail[i + 2]; const y2 = trail[i + 3];
+    for (let j = 0; j < allPts.length; j += 2) {
+      if (distToSegment(allPts[j], allPts[j + 1], x1, y1, x2, y2) <= radius) return true;
+    }
+  }
+  return false;
+}
+
+/** Wheel over the stage adjusts the eraser brush size (brush mode only). */
+function onStageWheel(e: WheelEvent) {
+  if (activeTool.value !== 'eraser' || eraserDefaults.value.mode !== 'brush') return;
+  e.preventDefault();
+  const delta = e.deltaY < 0 ? 2 : -2;
+  eraserDefaults.value.brushSize = Math.min(100, Math.max(4, eraserDefaults.value.brushSize + delta));
+}
 
 /** The annotation the params panel edits; drawing tools fall back to defaults. */
 const editingShape = computed(() =>
@@ -485,6 +659,15 @@ function onStageMouseDown(e: KonvaPointerEvent) {
     if (!pointer) return;
     placeNumber(pointer.x, pointer.y);
   }
+  if (activeTool.value === 'eraser') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    if (eraserDefaults.value.mode === 'rect') {
+      eraserDraft.value = { x1: pointer.x, y1: pointer.y, x2: pointer.x, y2: pointer.y };
+    } else {
+      eraserTrail.value = [pointer.x, pointer.y];
+    }
+  }
 }
 
 function onStageMouseMove(e: KonvaPointerEvent) {
@@ -516,6 +699,19 @@ function onStageMouseMove(e: KonvaPointerEvent) {
     const pointer = pointerPosition(e);
     if (!pointer) return;
     leaderDraft.value = [leaderDraft.value[0], leaderDraft.value[1], pointer.x, pointer.y];
+  }
+  if (activeTool.value === 'eraser' && eraserDefaults.value.mode === 'brush') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    eraserPointer.value = { x: pointer.x, y: pointer.y };
+    if (eraserTrail.value) {
+      const pts = eraserTrail.value;
+      const lx = pts[pts.length - 2];
+      const ly = pts[pts.length - 1];
+      if (Math.hypot(pointer.x - lx, pointer.y - ly) >= 1) {
+        eraserTrail.value = [...pts, pointer.x, pointer.y];
+      }
+    }
   }
 }
 
@@ -609,6 +805,20 @@ function onStageMouseUp() {
         pushHistory();
       }
     }
+  }
+  if (eraserDraft.value) {
+    const rect = eraserDraftRect.value;
+    eraserDraft.value = null;
+    if (rect && rect.width >= 2 && rect.height >= 2) {
+      applyEraserRect(rect);
+    }
+    return;
+  }
+  if (eraserTrail.value) {
+    const trail = eraserTrail.value;
+    eraserTrail.value = null;
+    applyEraserBrush(trail);
+    return;
   }
 }
 
@@ -1150,6 +1360,11 @@ const numberFormatOptions = computed(() => [
   { label: t('tools.imageEditor.formatUpperRoman'), value: 'upper-roman' },
 ]);
 
+const eraserModeOptions = computed(() => [
+  { label: t('tools.imageEditor.modeRect'), value: 'rect' },
+  { label: t('tools.imageEditor.modeBrush'), value: 'brush' },
+]);
+
 function updateShape(patch: Partial<ShapeAnnotation>) {
   const target = editingShape.value;
   if (target) {
@@ -1369,7 +1584,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
           <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
         </div>
         <img v-if="imageUrl" :src="imageUrl" style="display:none" @load="onImageLoad" />
-        <div v-if="imageUrl" class="canvas-wrapper">
+        <div v-if="imageUrl" class="canvas-wrapper" @wheel="onStageWheel">
           <v-stage
             ref="stageRef"
             :config="{ width: stageWidth, height: stageHeight }"
@@ -1602,6 +1817,42 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   strokeWidth: numberDefaults.leaderStrokeWidth,
                   dash: strokeDash(numberDefaults.leaderStrokeStyle, numberDefaults.leaderStrokeWidth),
                   lineCap: 'round',
+                }"
+              />
+              <!-- Eraser drafts -->
+              <v-rect
+                v-if="eraserDraftRect"
+                :config="{
+                  x: eraserDraftRect.x,
+                  y: eraserDraftRect.y,
+                  width: eraserDraftRect.width,
+                  height: eraserDraftRect.height,
+                  stroke: primaryColor,
+                  strokeWidth: 1,
+                  dash: [5, 5],
+                }"
+              />
+              <v-line
+                v-if="eraserTrail"
+                :config="{
+                  points: eraserTrail,
+                  stroke: primaryColor,
+                  strokeWidth: eraserDefaults.brushSize * 2,
+                  opacity: 0.3,
+                  lineCap: 'round',
+                  lineJoin: 'round',
+                }"
+              />
+              <v-circle
+                v-if="activeTool === 'eraser' && eraserDefaults.mode === 'brush' && eraserPointer"
+                :config="{
+                  x: eraserPointer.x,
+                  y: eraserPointer.y,
+                  radius: eraserDefaults.brushSize,
+                  stroke: primaryColor,
+                  strokeWidth: 1,
+                  opacity: 0.5,
+                  listening: false,
                 }"
               />
               <v-transformer
@@ -1997,6 +2248,30 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     />
                   </div>
                 </template>
+              </template>
+
+              <!-- Eraser params -->
+              <template v-if="activeTool === 'eraser'">
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.mode') }}</span>
+                  <NSelect
+                    :value="eraserDefaults.mode"
+                    :options="eraserModeOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => { eraserDefaults.mode = v as 'rect' | 'brush'; }"
+                  />
+                </div>
+                <div v-if="eraserDefaults.mode === 'brush'" class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
+                  <NInputNumber
+                    :value="eraserDefaults.brushSize"
+                    :min="4"
+                    :max="100"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => { eraserDefaults.brushSize = v ?? 20; }"
+                  />
+                </div>
               </template>
             </div>
 
