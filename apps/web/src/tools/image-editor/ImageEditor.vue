@@ -398,10 +398,12 @@ function annotationBBox(ann: Annotation): BBox {
     const box: BBox = { x: ann.x - r, y: ann.y - r, width: r * 2, height: r * 2 };
     if (ann.leaderLine?.enabled) {
       const [, , tx, ty] = ann.leaderLine.points;
+      const x2 = Math.max(ann.x + r, tx);
+      const y2 = Math.max(ann.y + r, ty);
       box.x = Math.min(box.x, tx);
       box.y = Math.min(box.y, ty);
-      box.width = Math.max(box.width, tx - box.x);
-      box.height = Math.max(box.height, ty - box.y);
+      box.width = x2 - box.x;
+      box.height = y2 - box.y;
     }
     return box;
   }
