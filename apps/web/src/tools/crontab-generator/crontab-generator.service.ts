@@ -8,17 +8,18 @@ export interface CronField {
 }
 
 export interface CronFieldDef {
-  name: string;
+  /** i18n leaf under `tools.crontabGenerator`, resolved by the component. */
+  labelKey: string;
   min: number;
   max: number;
 }
 
 export const CRON_FIELDS: CronFieldDef[] = [
-  { name: 'Minute', min: 0, max: 59 },
-  { name: 'Hour', min: 0, max: 23 },
-  { name: 'Day of month', min: 1, max: 31 },
-  { name: 'Month', min: 1, max: 12 },
-  { name: 'Day of week', min: 0, max: 6 },
+  { labelKey: 'fieldMinute', min: 0, max: 59 },
+  { labelKey: 'fieldHour', min: 0, max: 23 },
+  { labelKey: 'fieldDayOfMonth', min: 1, max: 31 },
+  { labelKey: 'fieldMonth', min: 1, max: 12 },
+  { labelKey: 'fieldDayOfWeek', min: 0, max: 6 },
 ];
 
 export function validateField(value: string, min: number, max: number): boolean {
