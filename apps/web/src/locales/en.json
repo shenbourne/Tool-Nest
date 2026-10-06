@@ -1258,7 +1258,15 @@
     },
     "chmodCalculator": {
       "name": "Chmod Calculator",
-      "description": "Calculate file permissions numerically and symbolically"
+      "description": "Calculate file permissions numerically and symbolically",
+      "owner": "Owner (u)",
+      "group": "Group (g)",
+      "public": "Public (o)",
+      "read": "Read (4)",
+      "write": "Write (2)",
+      "execute": "Execute (1)",
+      "octal": "Octal",
+      "symbolic": "Symbolic"
     },
     "jsonViewer": {
       "name": "JSON Viewer",
@@ -1392,7 +1400,7 @@
       "rangeOfValues": "Range of values",
       "listOfValues": "List of values",
       "stepValues": "Step values",
-      "syntaxDiagram": "┌──────────── minute (0 - 59)\n| ┌────────── hour (0 - 23)\n| | ┌──────── day of month (1 - 31)\n| | | ┌────── month (1 - 12)\n| | | | ┌──── day of week (0 - 6, Sunday = 0)\n| | | | |\n* * * * *"
+      "syntaxDiagram": "┌──────────── minute (0 - 59)\n│ ┌────────── hour (0 - 23)\n│ │ ┌──────── day of month (1 - 31)\n│ │ │ ┌────── month (1 - 12)\n│ │ │ │ ┌──── day of week (0 - 6, Sunday = 0)\n│ │ │ │ │\n* * * * *"
     },
     "dockerComposeTo1panel": {
       "name": "Docker Compose to 1Panel",

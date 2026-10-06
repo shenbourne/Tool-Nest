@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { NButton, NCard, NCheckbox, NSpace, NText } from 'naive-ui';
+import { ref, computed, watch } from 'vue';
+import { NButton, NCard, NCheckbox, NInput, NSpace, NText } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
-import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation } from './chmod-calculator.service';
+import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation, parseOctalToPermissions, parseSymbolicToPermissions } from './chmod-calculator.service';
 import type { Group, Scope } from './chmod-calculator.types';
 
 const { t } = useI18n();
 const { copyToClipboard } = useCopy();
 
-const scopes: { scope: Scope; title: string }[] = [
-  { scope: 'read', title: 'Read (4)' },
-  { scope: 'write', title: 'Write (2)' },
-  { scope: 'execute', title: 'Execute (1)' },
+const scopes: { scope: Scope; titleKey: string }[] = [
+  { scope: 'read', titleKey: 'tools.chmodCalculator.read' },
+  { scope: 'write', titleKey: 'tools.chmodCalculator.write' },
+  { scope: 'execute', titleKey: 'tools.chmodCalculator.execute' },
 ];
-const groups: Group[] = ['owner', 'group', 'public'];
+const groups: { group: Group; titleKey: string }[] = [
+  { group: 'owner', titleKey: 'tools.chmodCalculator.owner' },
+  { group: 'group', titleKey: 'tools.chmodCalculator.group' },
+  { group: 'public', titleKey: 'tools.chmodCalculator.public' },
+];
 
 const permissions = ref({
   owner: { read: false, write: false, execute: false },
@@ -24,8 +28,45 @@ const permissions = ref({
   public: { read: false, write: false, execute: false },
 });
 
+const octalInput = ref(computeChmodOctalRepresentation({ permissions: permissions.value }));
+const symbolicInput = ref(computeChmodSymbolicRepresentation({ permissions: permissions.value }));
+
+let isUpdatingFromInput = false;
+let isUpdatingFromCheckbox = false;
+
 const octal = computed(() => computeChmodOctalRepresentation({ permissions: permissions.value }));
 const symbolic = computed(() => computeChmodSymbolicRepresentation({ permissions: permissions.value }));
+
+watch(permissions, () => {
+  if (!isUpdatingFromInput) {
+    isUpdatingFromCheckbox = true;
+    octalInput.value = octal.value;
+    symbolicInput.value = symbolic.value;
+    isUpdatingFromCheckbox = false;
+  }
+}, { deep: true });
+
+watch(octalInput, (newOctal) => {
+  if (isUpdatingFromCheckbox) return;
+  const parsed = parseOctalToPermissions(newOctal);
+  if (parsed) {
+    isUpdatingFromInput = true;
+    permissions.value = parsed;
+    symbolicInput.value = computeChmodSymbolicRepresentation({ permissions: parsed });
+    isUpdatingFromInput = false;
+  }
+});
+
+watch(symbolicInput, (newSymbolic) => {
+  if (isUpdatingFromCheckbox) return;
+  const parsed = parseSymbolicToPermissions(newSymbolic);
+  if (parsed) {
+    isUpdatingFromInput = true;
+    permissions.value = parsed;
+    octalInput.value = computeChmodOctalRepresentation({ permissions: parsed });
+    isUpdatingFromInput = false;
+  }
+});
 
 function copyCommand() {
   copyToClipboard(`chmod ${octal.value} path`);
@@ -40,15 +81,15 @@ function copyCommand() {
           <thead>
             <tr>
               <th />
-              <th v-for="group in groups" :key="group" class="text-center">
-                {{ group === 'owner' ? 'Owner (u)' : group === 'group' ? 'Group (g)' : 'Public (o)' }}
+              <th v-for="{ group, titleKey } in groups" :key="group" class="text-center">
+                {{ t(titleKey) }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="{ scope, title } of scopes" :key="scope">
-              <td class="row-header">{{ title }}</td>
-              <td v-for="group in groups" :key="group" class="text-center">
+            <tr v-for="{ scope, titleKey } of scopes" :key="scope">
+              <td class="row-header">{{ t(titleKey) }}</td>
+              <td v-for="{ group } in groups" :key="group" class="text-center">
                 <NCheckbox v-model:checked="permissions[group][scope]" size="large" />
               </td>
             </tr>
@@ -56,8 +97,24 @@ function copyCommand() {
         </table>
 
         <div class="result-section">
-          <div class="result-octal">{{ octal }}</div>
-          <div class="result-symbolic">{{ symbolic }}</div>
+          <div class="result-row">
+            <NText class="result-label">{{ t('tools.chmodCalculator.octal') }}</NText>
+            <NInput
+              v-model:value="octalInput"
+              class="result-input"
+              :maxlength="3"
+              placeholder="000-777"
+            />
+          </div>
+          <div class="result-row">
+            <NText class="result-label">{{ t('tools.chmodCalculator.symbolic') }}</NText>
+            <NInput
+              v-model:value="symbolicInput"
+              class="result-input"
+              :maxlength="9"
+              placeholder="rwxrwxrwx"
+            />
+          </div>
         </div>
 
         <div class="command-section">
@@ -91,22 +148,32 @@ function copyCommand() {
 }
 
 .result-section {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.result-octal {
-  font-size: 48px;
-  font-family: monospace;
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.result-label {
   font-weight: bold;
-  color: var(--color-primary);
-  margin: 12px 0 4px;
+  min-width: 80px;
 }
 
-.result-symbolic {
-  font-size: 24px;
+.result-input {
+  flex: 1;
   font-family: monospace;
-  color: var(--color-text-2);
-  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.result-input :deep(input) {
+  font-family: monospace;
+  font-size: 18px;
+  letter-spacing: 2px;
 }
 
 .command-section {
@@ -130,8 +197,13 @@ function copyCommand() {
     padding: 8px 4px;
   }
 
-  .result-octal {
-    font-size: 36px;
+  .result-label {
+    min-width: 60px;
+    font-size: 14px;
+  }
+
+  .result-input :deep(input) {
+    font-size: 16px;
   }
 }
 </style>
