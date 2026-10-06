@@ -89,16 +89,99 @@ function formatVal(v: any): string {
         <NTag type="warning">{{ t('tools.jsonDiff.changed') }}: {{ stats.changed }}</NTag>
       </NSpace>
       <NCard v-if="diffResult.length" :title="t('tools.jsonDiff.differences')">
-        <div style="font-family:monospace;font-size:13px;">
-          <div v-for="(d, i) in diffResult" :key="i" :style="{ padding: '4px 8px', borderBottom: '1px solid var(--color-hairline)', background: d.type==='added'?'#e6ffed':d.type==='removed'?'#ffeef0':'#fff5b1' }">
-            <NTag :type="d.type==='added'?'success':d.type==='removed'?'error':'warning'" size="small" style="margin-right:8px;">{{ t(`tools.jsonDiff.${d.type}`) }}</NTag>
-            <strong>{{ d.path }}</strong>
-            <span v-if="d.type==='removed'" style="color:var(--color-error);margin-left:8px;">{{ formatVal(d.oldValue) }}</span>
-            <span v-else-if="d.type==='added'" style="color:var(--color-success);margin-left:8px;">{{ formatVal(d.newValue) }}</span>
-            <span v-else style="margin-left:8px;"><span style="color:var(--color-error);">{{ formatVal(d.oldValue) }}</span> → <span style="color:var(--color-success);">{{ formatVal(d.newValue) }}</span></span>
+        <div class="json-diff-viewer">
+          <div class="json-diff-scroll">
+            <div class="json-diff-grid">
+              <div v-for="(d, i) in diffResult" :key="i" class="json-diff-row">
+                <div class="json-diff-stripe" :class="'json-diff-stripe-' + d.type" />
+                <div class="json-diff-path">
+                  <NTag
+                    :type="d.type==='added'?'success':d.type==='removed'?'error':'warning'"
+                    size="small"
+                    :bordered="false"
+                    style="margin-right:8px;"
+                  >{{ t(`tools.jsonDiff.${d.type}`) }}</NTag>
+                  <strong>{{ d.path }}</strong>
+                </div>
+                <div class="json-diff-value" :class="d.type==='added' ? '' : 'json-diff-left-fill'">
+                  <template v-if="d.type !== 'added'">{{ formatVal(d.oldValue) }}</template>
+                </div>
+                <div class="json-diff-value" :class="d.type==='removed' ? '' : 'json-diff-right-fill'">
+                  <template v-if="d.type !== 'removed'">{{ formatVal(d.newValue) }}</template>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </NCard>
     </NSpace>
   </ToolLayout>
 </template>
+
+<style scoped>
+.json-diff-viewer {
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  background: var(--color-canvas);
+  overflow: hidden;
+}
+
+.json-diff-scroll {
+  overflow: auto;
+  max-height: 520px;
+}
+
+.json-diff-grid {
+  display: grid;
+  grid-template-columns: 8px minmax(140px, max-content) minmax(160px, max-content) minmax(160px, max-content);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-code);
+  line-height: 20px;
+}
+
+.json-diff-row {
+  display: contents;
+}
+
+.json-diff-stripe {
+  grid-column: 1;
+}
+
+.json-diff-stripe-added {
+  background: var(--diff-gutter-added);
+}
+
+.json-diff-stripe-removed {
+  background: var(--diff-gutter-removed);
+}
+
+.json-diff-stripe-changed {
+  background: var(--diff-gutter-changed);
+}
+
+.json-diff-path {
+  grid-column: 2;
+  padding: 2px var(--spacing-sm);
+  border-right: 1px solid var(--color-hairline);
+  background: var(--color-surface-soft);
+  white-space: nowrap;
+}
+
+.json-diff-value {
+  padding: 2px var(--spacing-sm);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.json-diff-value:nth-child(3) {
+  border-right: 1px solid var(--color-hairline);
+}
+
+.json-diff-left-fill {
+  background: var(--diff-removed-bg);
+}
+
+.json-diff-right-fill {
+  background: var(--diff-added-bg);
+}
+</style>
