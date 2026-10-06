@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { NCard, NDataTable, NSpace, NTag } from 'naive-ui';
+import { computed } from 'vue';
+import { NCard, NDataTable, NSpace } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -10,6 +11,7 @@ const { t } = useI18n();
 interface RegexEntry {
   syntax: string;
   meaning: string;
+  // Rendered by no column; kept in place, so it stays untranslated.
   example?: string;
 }
 
@@ -18,95 +20,95 @@ interface RegexSection {
   entries: RegexEntry[];
 }
 
-const sections: RegexSection[] = [
+const sections = computed<RegexSection[]>(() => [
   {
-    title: 'Character Classes',
+    title: t('tools.regexMemo.sections.characterClasses'),
     entries: [
-      { syntax: '.', meaning: 'Any character except newline' },
-      { syntax: '[A-Za-z]', meaning: 'Alphabet', example: 'matches a-z, A-Z' },
-      { syntax: '[a-z]', meaning: 'Lowercase alphabet' },
-      { syntax: '[A-Z]', meaning: 'Uppercase alphabet' },
-      { syntax: '\\d or [0-9]', meaning: 'Any digit' },
-      { syntax: '\\D or [^0-9]', meaning: 'Non-digit character' },
-      { syntax: '\\w or [A-Za-z0-9_]', meaning: 'Word character (alphanumeric + underscore)' },
-      { syntax: '\\W or [^A-Za-z0-9_]', meaning: 'Non-word character' },
-      { syntax: '\\s', meaning: 'Whitespace (space, tab, newline)' },
-      { syntax: '\\S', meaning: 'Non-whitespace character' },
+      { syntax: '.', meaning: t('tools.regexMemo.anyChar') },
+      { syntax: '[A-Za-z]', meaning: t('tools.regexMemo.alphabet'), example: 'matches a-z, A-Z' },
+      { syntax: '[a-z]', meaning: t('tools.regexMemo.lowercaseAlphabet') },
+      { syntax: '[A-Z]', meaning: t('tools.regexMemo.uppercaseAlphabet') },
+      { syntax: '\\d or [0-9]', meaning: t('tools.regexMemo.anyDigit') },
+      { syntax: '\\D or [^0-9]', meaning: t('tools.regexMemo.nonDigit') },
+      { syntax: '\\w or [A-Za-z0-9_]', meaning: t('tools.regexMemo.wordChar') },
+      { syntax: '\\W or [^A-Za-z0-9_]', meaning: t('tools.regexMemo.nonWordChar') },
+      { syntax: '\\s', meaning: t('tools.regexMemo.whitespace') },
+      { syntax: '\\S', meaning: t('tools.regexMemo.nonWhitespace') },
     ],
   },
   {
-    title: 'Whitespace Characters',
+    title: t('tools.regexMemo.sections.whitespaceCharacters'),
     entries: [
-      { syntax: ' ', meaning: 'Space' },
-      { syntax: '\\t', meaning: 'Tab' },
-      { syntax: '\\n', meaning: 'Newline' },
-      { syntax: '\\r', meaning: 'Carriage return' },
-      { syntax: '\\s', meaning: 'Space, tab, newline or carriage return' },
+      { syntax: ' ', meaning: t('tools.regexMemo.space') },
+      { syntax: '\\t', meaning: t('tools.regexMemo.tab') },
+      { syntax: '\\n', meaning: t('tools.regexMemo.newline') },
+      { syntax: '\\r', meaning: t('tools.regexMemo.carriageReturn') },
+      { syntax: '\\s', meaning: t('tools.regexMemo.anyWhitespace') },
     ],
   },
   {
-    title: 'Character Sets',
+    title: t('tools.regexMemo.sections.characterSets'),
     entries: [
-      { syntax: '[xyz]', meaning: 'Either x, y or z', example: 'matches one of x, y, z' },
-      { syntax: '[^xyz]', meaning: 'Neither x, y nor z', example: 'negated character set' },
-      { syntax: '[1-3]', meaning: 'Range: 1, 2 or 3', example: 'character range' },
-      { syntax: '[^1-3]', meaning: 'Not 1, 2 nor 3', example: 'negated range' },
+      { syntax: '[xyz]', meaning: t('tools.regexMemo.either'), example: 'matches one of x, y, z' },
+      { syntax: '[^xyz]', meaning: t('tools.regexMemo.neither'), example: 'negated character set' },
+      { syntax: '[1-3]', meaning: t('tools.regexMemo.range'), example: 'character range' },
+      { syntax: '[^1-3]', meaning: t('tools.regexMemo.negatedRange'), example: 'negated range' },
     ],
   },
   {
-    title: 'Quantifiers',
+    title: t('tools.regexMemo.sections.quantifiers'),
     entries: [
-      { syntax: '{n}', meaning: 'Exactly n occurrences' },
-      { syntax: '{n,}', meaning: 'At least n occurrences' },
-      { syntax: '{n,m}', meaning: 'Between n and m occurrences' },
-      { syntax: '*', meaning: '0 or more (same as {0,})' },
-      { syntax: '+', meaning: '1 or more (same as {1,})' },
-      { syntax: '?', meaning: '0 or 1 (same as {0,1})' },
+      { syntax: '{n}', meaning: t('tools.regexMemo.exactlyN') },
+      { syntax: '{n,}', meaning: t('tools.regexMemo.atLeastN') },
+      { syntax: '{n,m}', meaning: t('tools.regexMemo.betweenNandM') },
+      { syntax: '*', meaning: t('tools.regexMemo.zeroOrMore') },
+      { syntax: '+', meaning: t('tools.regexMemo.oneOrMore') },
+      { syntax: '?', meaning: t('tools.regexMemo.zeroOrOne') },
     ],
   },
   {
-    title: 'Boundaries',
+    title: t('tools.regexMemo.sections.boundaries'),
     entries: [
-      { syntax: '^', meaning: 'Start of string' },
-      { syntax: '$', meaning: 'End of string' },
-      { syntax: '\\b', meaning: 'Word boundary' },
-      { syntax: '\\B', meaning: 'Non-word boundary' },
+      { syntax: '^', meaning: t('tools.regexMemo.startOfString') },
+      { syntax: '$', meaning: t('tools.regexMemo.endOfString') },
+      { syntax: '\\b', meaning: t('tools.regexMemo.wordBoundary') },
+      { syntax: '\\B', meaning: t('tools.regexMemo.nonWordBoundary') },
     ],
   },
   {
-    title: 'Groups & Lookaround',
+    title: t('tools.regexMemo.sections.groupsLookaround'),
     entries: [
-      { syntax: '(foo)', meaning: 'Capturing group' },
-      { syntax: '(?:foo)', meaning: 'Non-capturing group' },
-      { syntax: 'foo|bar', meaning: 'Alternation: match foo or bar' },
-      { syntax: 'foo(?=bar)', meaning: 'Positive lookahead: foo followed by bar' },
-      { syntax: 'foo(?!bar)', meaning: 'Negative lookahead: foo not followed by bar' },
-      { syntax: '(?<=bar)foo', meaning: 'Positive lookbehind: foo preceded by bar' },
-      { syntax: '(?<!bar)foo', meaning: 'Negative lookbehind: foo not preceded by bar' },
+      { syntax: '(foo)', meaning: t('tools.regexMemo.capturingGroup') },
+      { syntax: '(?:foo)', meaning: t('tools.regexMemo.nonCapturingGroup') },
+      { syntax: 'foo|bar', meaning: t('tools.regexMemo.alternation') },
+      { syntax: 'foo(?=bar)', meaning: t('tools.regexMemo.positiveLookahead') },
+      { syntax: 'foo(?!bar)', meaning: t('tools.regexMemo.negativeLookahead') },
+      { syntax: '(?<=bar)foo', meaning: t('tools.regexMemo.positiveLookbehind') },
+      { syntax: '(?<!bar)foo', meaning: t('tools.regexMemo.negativeLookbehind') },
     ],
   },
   {
-    title: 'Special Characters (need escaping)',
+    title: t('tools.regexMemo.sections.specialCharacters'),
     entries: [
-      { syntax: '\\.', meaning: 'Literal period' },
-      { syntax: '\\^', meaning: 'Literal caret' },
-      { syntax: '\\$', meaning: 'Literal dollar sign' },
-      { syntax: '\\|', meaning: 'Literal pipe' },
-      { syntax: '\\\\', meaning: 'Literal backslash' },
-      { syntax: '\\(', meaning: 'Literal opening parenthesis' },
-      { syntax: '\\)', meaning: 'Literal closing parenthesis' },
-      { syntax: '\\[', meaning: 'Literal opening square bracket' },
-      { syntax: '\\]', meaning: 'Literal closing square bracket' },
-      { syntax: '\\{', meaning: 'Literal opening curly bracket' },
-      { syntax: '\\}', meaning: 'Literal closing curly bracket' },
+      { syntax: '\\.', meaning: t('tools.regexMemo.literalPeriod') },
+      { syntax: '\\^', meaning: t('tools.regexMemo.literalCaret') },
+      { syntax: '\\$', meaning: t('tools.regexMemo.literalDollar') },
+      { syntax: '\\|', meaning: t('tools.regexMemo.literalPipe') },
+      { syntax: '\\\\', meaning: t('tools.regexMemo.literalBackslash') },
+      { syntax: '\\(', meaning: t('tools.regexMemo.literalOpenParen') },
+      { syntax: '\\)', meaning: t('tools.regexMemo.literalCloseParen') },
+      { syntax: '\\[', meaning: t('tools.regexMemo.literalOpenBracket') },
+      { syntax: '\\]', meaning: t('tools.regexMemo.literalCloseBracket') },
+      { syntax: '\\{', meaning: t('tools.regexMemo.literalOpenBrace') },
+      { syntax: '\\}', meaning: t('tools.regexMemo.literalCloseBrace') },
     ],
   },
-];
+]);
 
-const columns: DataTableColumns<RegexEntry> = [
-  { title: 'Syntax', key: 'syntax', width: 180 },
-  { title: 'Meaning', key: 'meaning' },
-];
+const columns = computed<DataTableColumns<RegexEntry>>(() => [
+  { title: t('tools.regexMemo.syntaxColumn'), key: 'syntax', width: 180 },
+  { title: t('tools.regexMemo.meaningColumn'), key: 'meaning' },
+]);
 </script>
 
 <template>
