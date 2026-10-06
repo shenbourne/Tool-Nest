@@ -118,10 +118,10 @@ const ROWS: RowItem[][] = [
 ];
 
 // The function row sits at the very top; the five rows beneath it (alphanumeric
-// block, arrow cluster and numpad) drop a half-unit together, opening a gap
-// between the function row and the number row like a real board's function-key
-// strip.
-const MAIN_BLOCK_OFFSET = 0.5;
+// block, arrow cluster and numpad) drop a quarter-unit together, opening a small
+// gap between the function row and the number row like a real board's
+// function-key strip.
+const MAIN_BLOCK_OFFSET = 0.25;
 
 export const KEYS: KeyDef[] = ROWS.flatMap((items, row) => buildRow(items, row, row === 0 ? 0 : MAIN_BLOCK_OFFSET));
 
