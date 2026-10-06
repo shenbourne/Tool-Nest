@@ -36,6 +36,7 @@ import { usePreferencesStore } from '@/stores/preferences.store';
 import { resolveCssColorToken } from '@/utils/css-tokens';
 import {
   arrowPoints,
+  applyMosaic,
   canRedo,
   canUndo,
   commit,
@@ -51,6 +52,7 @@ import {
   type ArrowConfig,
   type ArrowStyle,
   type LineAnnotation,
+  type MosaicAnnotation,
   type NumberAnnotation,
   type NumberFormat,
   type PenAnnotation,
@@ -180,6 +182,7 @@ const selectedLine = computed(() => (selected.value?.type === 'line' ? selected.
 const selectedNumber = computed(() => (selected.value?.type === 'number' ? selected.value : null));
 const selectedPen = computed(() => (selected.value?.type === 'pen' ? selected.value : null));
 const selectedText = computed(() => (selected.value?.type === 'text' ? selected.value : null));
+const selectedMosaic = computed(() => (selected.value?.type === 'mosaic' ? selected.value : null));
 
 let pendingCommit: ReturnType<typeof setTimeout> | null = null;
 
@@ -327,9 +330,72 @@ const numberDefaults = ref({
 
 const eraserDefaults = ref({ mode: 'rect' as 'rect' | 'brush', brushSize: 20 });
 
+const mosaicDefaults = ref({ mode: 'rect' as 'rect' | 'brush', effect: 'mosaic' as 'mosaic' | 'blur', strength: 8, brushSize: 30 });
+
 // Auto-increment counter for the number tool: starts at 1, bumps per placement,
 // resets on clear-all and on format change. Deleting a badge never renumbers.
 const nextNumber = ref(1);
+
+// --- mosaic cache ---------------------------------------------------------------
+
+/**
+ * Offscreen source canvas at stage resolution, rebuilt when the image element
+ * or stage size changes. `applyMosaic` draws from this canvas.
+ */
+const mosaicSourceCanvas = ref<HTMLCanvasElement | null>(null);
+
+/** Per-annotation cache canvases, keyed by annotation id. */
+const mosaicCache = new Map<number, HTMLCanvasElement>();
+
+/** Rebuild the offscreen source canvas from the current image at stage resolution. */
+function rebuildMosaicSource() {
+  const img = imageEl.value;
+  if (!img) {
+    mosaicSourceCanvas.value = null;
+    return;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = stageWidth.value;
+  canvas.height = stageHeight.value;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.drawImage(img, 0, 0, stageWidth.value, stageHeight.value);
+  mosaicSourceCanvas.value = canvas;
+  // Source changed — every per-annotation cache is stale.
+  mosaicCache.clear();
+}
+
+/** Rebuild (or invalidate) the cache for one mosaic annotation. */
+function rebuildMosaicCache(ann: MosaicAnnotation) {
+  const src = mosaicSourceCanvas.value;
+  if (!src) return;
+  mosaicCache.set(ann.id, applyMosaic(
+    src, ann.region, ann.effect, ann.strength, stageWidth.value, stageHeight.value,
+  ));
+}
+
+/** Cache canvas for a mosaic annotation (null when the source is not ready). */
+function mosaicCanvasFor(ann: MosaicAnnotation): HTMLCanvasElement | null {
+  return mosaicCache.get(ann.id) ?? null;
+}
+
+// Rebuild the source canvas when the image or stage size changes.
+watch([imageEl, stageWidth, stageHeight], rebuildMosaicSource, { flush: 'post' });
+
+// Rebuild a mosaic annotation's cache when its region/effect/strength changes.
+watch(
+  annotations,
+  () => {
+    for (const ann of annotations.value) {
+      if (ann.type !== 'mosaic') continue;
+      const cached = mosaicCache.get(ann.id);
+      if (!cached) {
+        rebuildMosaicCache(ann);
+      }
+    }
+  },
+  { deep: true, flush: 'post' },
+);
 
 // --- stage interactions ------------------------------------------------------
 
@@ -355,6 +421,12 @@ const eraserDraft = ref<{ x1: number; y1: number; x2: number; y2: number } | nul
 const eraserTrail = ref<number[] | null>(null);
 /** Pointer position for the brush-mode cursor preview. */
 const eraserPointer = ref<{ x: number; y: number } | null>(null);
+/** In-progress mosaic marquee drag (normalised on mouseup via `rectFromPoints`). */
+const mosaicDraft = ref<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
+/** In-progress mosaic brush trail (absolute stage coordinates). */
+const mosaicTrail = ref<number[] | null>(null);
+/** Pointer position for the mosaic brush-mode cursor preview. */
+const mosaicPointer = ref<{ x: number; y: number } | null>(null);
 
 const shapeDraftRect = computed(() => {
   const d = shapeDraft.value;
@@ -364,6 +436,12 @@ const shapeDraftRect = computed(() => {
 
 const eraserDraftRect = computed(() => {
   const d = eraserDraft.value;
+  if (!d) return null;
+  return rectFromPoints(d.x1, d.y1, d.x2, d.y2);
+});
+
+const mosaicDraftRect = computed(() => {
+  const d = mosaicDraft.value;
   if (!d) return null;
   return rectFromPoints(d.x1, d.y1, d.x2, d.y2);
 });
@@ -488,12 +566,18 @@ function brushHitsAnnotation(trail: number[], radius: number, ann: Annotation): 
   return false;
 }
 
-/** Wheel over the stage adjusts the eraser brush size (brush mode only). */
+/** Wheel over the stage adjusts the active brush size (eraser or mosaic, brush mode only). */
 function onStageWheel(e: WheelEvent) {
-  if (activeTool.value !== 'eraser' || eraserDefaults.value.mode !== 'brush') return;
-  e.preventDefault();
   const delta = e.deltaY < 0 ? 2 : -2;
-  eraserDefaults.value.brushSize = Math.min(100, Math.max(4, eraserDefaults.value.brushSize + delta));
+  if (activeTool.value === 'eraser' && eraserDefaults.value.mode === 'brush') {
+    e.preventDefault();
+    eraserDefaults.value.brushSize = Math.min(100, Math.max(4, eraserDefaults.value.brushSize + delta));
+    return;
+  }
+  if (activeTool.value === 'mosaic' && mosaicDefaults.value.mode === 'brush') {
+    e.preventDefault();
+    mosaicDefaults.value.brushSize = Math.min(100, Math.max(4, mosaicDefaults.value.brushSize + delta));
+  }
 }
 
 /** The annotation the params panel edits; drawing tools fall back to defaults. */
@@ -670,6 +754,15 @@ function onStageMouseDown(e: KonvaPointerEvent) {
       eraserTrail.value = [pointer.x, pointer.y];
     }
   }
+  if (activeTool.value === 'mosaic') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    if (mosaicDefaults.value.mode === 'rect') {
+      mosaicDraft.value = { x1: pointer.x, y1: pointer.y, x2: pointer.x, y2: pointer.y };
+    } else {
+      mosaicTrail.value = [pointer.x, pointer.y];
+    }
+  }
 }
 
 function onStageMouseMove(e: KonvaPointerEvent) {
@@ -712,6 +805,25 @@ function onStageMouseMove(e: KonvaPointerEvent) {
       const ly = pts[pts.length - 1];
       if (Math.hypot(pointer.x - lx, pointer.y - ly) >= 1) {
         eraserTrail.value = [...pts, pointer.x, pointer.y];
+      }
+    }
+  }
+  if (mosaicDraft.value) {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    mosaicDraft.value = { ...mosaicDraft.value, x2: pointer.x, y2: pointer.y };
+    return;
+  }
+  if (activeTool.value === 'mosaic' && mosaicDefaults.value.mode === 'brush') {
+    const pointer = pointerPosition(e);
+    if (!pointer) return;
+    mosaicPointer.value = { x: pointer.x, y: pointer.y };
+    if (mosaicTrail.value) {
+      const pts = mosaicTrail.value;
+      const lx = pts[pts.length - 2];
+      const ly = pts[pts.length - 1];
+      if (Math.hypot(pointer.x - lx, pointer.y - ly) >= 1) {
+        mosaicTrail.value = [...pts, pointer.x, pointer.y];
       }
     }
   }
@@ -822,6 +934,50 @@ function onStageMouseUp() {
     applyEraserBrush(trail);
     return;
   }
+  if (mosaicDraft.value) {
+    const rect = mosaicDraftRect.value;
+    mosaicDraft.value = null;
+    if (rect && rect.width >= 2 && rect.height >= 2) {
+      const ann: MosaicAnnotation = {
+        id: nextId++,
+        type: 'mosaic',
+        region: {
+          kind: 'rect',
+          x: rect.x / stageWidth.value,
+          y: rect.y / stageHeight.value,
+          width: rect.width / stageWidth.value,
+          height: rect.height / stageHeight.value,
+        },
+        effect: mosaicDefaults.value.effect,
+        strength: mosaicDefaults.value.strength,
+      };
+      annotations.value = [...annotations.value, ann];
+      rebuildMosaicCache(ann);
+      pushHistory();
+    }
+    return;
+  }
+  if (mosaicTrail.value) {
+    const trail = mosaicTrail.value;
+    mosaicTrail.value = null;
+    if (trail.length >= 4) {
+      const ann: MosaicAnnotation = {
+        id: nextId++,
+        type: 'mosaic',
+        region: {
+          kind: 'path',
+          points: trail.flatMap((v, i) => (i % 2 === 0 ? v / stageWidth.value : v / stageHeight.value)),
+          brushSize: mosaicDefaults.value.brushSize,
+        },
+        effect: mosaicDefaults.value.effect,
+        strength: mosaicDefaults.value.strength,
+      };
+      annotations.value = [...annotations.value, ann];
+      rebuildMosaicCache(ann);
+      pushHistory();
+    }
+    return;
+  }
 }
 
 /** Clicks on an annotation must not reach the stage, which would draw a new one. */
@@ -911,6 +1067,37 @@ function onNumberDragEnd(annotation: NumberAnnotation, e: KonvaPointerEvent) {
     y: annotation.y + dy,
     leaderLine,
   });
+  pushHistory();
+}
+
+/**
+ * Mosaic regions store normalised coordinates; a drag folds the pixel travel
+ * into the region and the cache is rebuilt from the moved region.
+ */
+function onMosaicDragEnd(annotation: MosaicAnnotation, e: KonvaPointerEvent) {
+  const dx = e.target.x();
+  const dy = e.target.y();
+  if (dx === 0 && dy === 0) return;
+  e.target.position({ x: 0, y: 0 });
+  const sx = dx / stageWidth.value;
+  const sy = dy / stageHeight.value;
+  let region: MosaicAnnotation['region'];
+  if (annotation.region.kind === 'rect') {
+    region = {
+      ...annotation.region,
+      x: annotation.region.x + sx,
+      y: annotation.region.y + sy,
+    };
+  } else {
+    region = {
+      ...annotation.region,
+      points: annotation.region.points.map((v, i) => (i % 2 === 0 ? v + sx : v + sy)),
+    };
+  }
+  const next = { ...annotation, region };
+  replaceAnnotation(annotation.id, next);
+  mosaicCache.delete(annotation.id);
+  rebuildMosaicCache(next);
   pushHistory();
 }
 
@@ -1285,6 +1472,11 @@ function createCanvas() {
       ctx.fillStyle = ann.color;
       ctx.fillText(label, cx, cy);
       ctx.restore();
+    } else if (ann.type === 'mosaic') {
+      const cache = mosaicCanvasFor(ann);
+      if (cache) {
+        ctx.drawImage(cache, 0, 0, cache.width * scaleX, cache.height * scaleY);
+      }
     }
   }
   return canvas;
@@ -1365,6 +1557,11 @@ const numberFormatOptions = computed(() => [
 const eraserModeOptions = computed(() => [
   { label: t('tools.imageEditor.modeRect'), value: 'rect' },
   { label: t('tools.imageEditor.modeBrush'), value: 'brush' },
+]);
+
+const mosaicEffectOptions = computed(() => [
+  { label: t('tools.imageEditor.mosaicEffect'), value: 'mosaic' },
+  { label: t('tools.imageEditor.blurEffect'), value: 'blur' },
 ]);
 
 function updateShape(patch: Partial<ShapeAnnotation>) {
@@ -1479,6 +1676,24 @@ function updateNumberLeader(patch: Partial<NonNullable<NumberAnnotation['leaderL
     numberDefaults.value.leaderStrokeWidth = next.strokeWidth;
     numberDefaults.value.leaderStrokeStyle = next.strokeStyle;
     numberDefaults.value.leaderArrow = { ...next.arrow };
+  }
+}
+
+/** The annotation the params panel edits for the mosaic tool. */
+const editingMosaic = computed(() =>
+  activeTool.value === 'mosaic' ? selectedMosaic.value : null);
+
+function updateMosaic(patch: Partial<MosaicAnnotation>) {
+  const target = editingMosaic.value;
+  if (target) {
+    const next = { ...target, ...patch };
+    replaceAnnotation(target.id, next);
+    mosaicCache.delete(target.id);
+    rebuildMosaicCache(next);
+    scheduleCommit();
+  } else {
+    if (patch.effect !== undefined) mosaicDefaults.value.effect = patch.effect;
+    if (patch.strength !== undefined) mosaicDefaults.value.strength = patch.strength;
   }
 }
 
@@ -1764,6 +1979,21 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     }"
                   />
                 </template>
+                <template v-else-if="ann.type === 'mosaic'">
+                  <v-image
+                    :ref="(el: unknown) => setNodeRef(ann.id, el)"
+                    :config="{
+                      image: mosaicCanvasFor(ann),
+                      x: 0,
+                      y: 0,
+                      width: stageWidth,
+                      height: stageHeight,
+                      draggable: canManipulate,
+                    }"
+                    @click="onAnnotationClick(ann, $event)"
+                    @dragend="onMosaicDragEnd(ann, $event)"
+                  />
+                </template>
               </template>
               <!-- In-progress drafts -->
               <v-rect
@@ -1851,6 +2081,42 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   x: eraserPointer.x,
                   y: eraserPointer.y,
                   radius: eraserDefaults.brushSize,
+                  stroke: primaryColor,
+                  strokeWidth: 1,
+                  opacity: 0.5,
+                  listening: false,
+                }"
+              />
+              <!-- Mosaic drafts -->
+              <v-rect
+                v-if="mosaicDraftRect"
+                :config="{
+                  x: mosaicDraftRect.x,
+                  y: mosaicDraftRect.y,
+                  width: mosaicDraftRect.width,
+                  height: mosaicDraftRect.height,
+                  stroke: primaryColor,
+                  strokeWidth: 1,
+                  dash: [5, 5],
+                }"
+              />
+              <v-line
+                v-if="mosaicTrail"
+                :config="{
+                  points: mosaicTrail,
+                  stroke: primaryColor,
+                  strokeWidth: mosaicDefaults.brushSize * 2,
+                  opacity: 0.3,
+                  lineCap: 'round',
+                  lineJoin: 'round',
+                }"
+              />
+              <v-circle
+                v-if="activeTool === 'mosaic' && mosaicDefaults.mode === 'brush' && mosaicPointer"
+                :config="{
+                  x: mosaicPointer.x,
+                  y: mosaicPointer.y,
+                  radius: mosaicDefaults.brushSize,
                   stroke: primaryColor,
                   strokeWidth: 1,
                   opacity: 0.5,
@@ -2272,6 +2538,50 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     :step="1"
                     style="width: 160px;"
                     @update:value="(v: number | null) => { eraserDefaults.brushSize = v ?? 20; }"
+                  />
+                </div>
+              </template>
+
+              <!-- Mosaic params -->
+              <template v-if="activeTool === 'mosaic'">
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.mode') }}</span>
+                  <NSelect
+                    :value="mosaicDefaults.mode"
+                    :options="eraserModeOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => { mosaicDefaults.mode = v as 'rect' | 'brush'; }"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.effect') }}</span>
+                  <NSelect
+                    :value="editingMosaic?.effect ?? mosaicDefaults.effect"
+                    :options="mosaicEffectOptions"
+                    style="width: 160px;"
+                    @update:value="(v: string) => updateMosaic({ effect: v as 'mosaic' | 'blur' })"
+                  />
+                </div>
+                <div class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.strength') }}</span>
+                  <NInputNumber
+                    :value="editingMosaic?.strength ?? mosaicDefaults.strength"
+                    :min="1"
+                    :max="50"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => updateMosaic({ strength: v ?? 8 })"
+                  />
+                </div>
+                <div v-if="mosaicDefaults.mode === 'brush'" class="image-editor__row">
+                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
+                  <NInputNumber
+                    :value="mosaicDefaults.brushSize"
+                    :min="4"
+                    :max="100"
+                    :step="1"
+                    style="width: 160px;"
+                    @update:value="(v: number | null) => { mosaicDefaults.brushSize = v ?? 30; }"
                   />
                 </div>
               </template>
