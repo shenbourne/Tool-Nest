@@ -1223,16 +1223,18 @@
       "extensionsColumn": "Extensions"
     },
     "keycodeInfo": {
-      "name": "Keycode Info",
+      "name": "Keyboard Info",
       "description": "Display keyboard event properties",
+      "currentKey": "Current Key",
+      "fields": "Event Properties",
+      "history": "Key History",
+      "noHistory": "No keys pressed yet",
       "key": "Key:",
       "keyCode": "Key Code:",
       "code": "Code:",
       "location": "Location:",
       "modifiers": "Modifiers:",
-      "pressKeyHint": "Press any key on your keyboard",
-      "modifierKeys": "Active Modifiers",
-      "noModifiers": "No modifier keys pressed"
+      "pressKeyHint": "Press any key on your keyboard"
     },
     "safelinkDecoder": {
       "name": "Safelink Decoder",

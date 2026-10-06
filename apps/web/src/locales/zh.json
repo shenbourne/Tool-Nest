@@ -1223,16 +1223,18 @@
       "extensionsColumn": "扩展名"
     },
     "keycodeInfo": {
-      "name": "按键信息",
+      "name": "键盘信息",
       "description": "显示键盘事件属性",
+      "currentKey": "当前按键",
+      "fields": "事件属性",
+      "history": "历史按键记录",
+      "noHistory": "暂无按键记录",
       "key": "键名：",
       "keyCode": "键码：",
       "code": "代码：",
       "location": "位置：",
       "modifiers": "修饰键：",
-      "pressKeyHint": "在键盘上按下任意键",
-      "modifierKeys": "当前修饰键",
-      "noModifiers": "未按下修饰键"
+      "pressKeyHint": "在键盘上按下任意键"
     },
     "safelinkDecoder": {
       "name": "Safelink 解码器",
