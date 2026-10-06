@@ -748,27 +748,27 @@ function arrowStyleValue(cfg: ArrowConfig | null): ArrowStyle {
 }
 
 function updateStartArrow(style: ArrowStyle, size?: number) {
-  const current = lineDefaults.value.startArrow;
+  const current = editingLine.value?.startArrow ?? lineDefaults.value.startArrow;
   const nextSize = size ?? current?.size ?? 12;
   const next: ArrowConfig | null = style === 'none' ? null : { style, size: nextSize };
   updateLine({ startArrow: next });
 }
 
 function updateEndArrow(style: ArrowStyle, size?: number) {
-  const current = lineDefaults.value.endArrow;
+  const current = editingLine.value?.endArrow ?? lineDefaults.value.endArrow;
   const nextSize = size ?? current?.size ?? 12;
   const next: ArrowConfig | null = style === 'none' ? null : { style, size: nextSize };
   updateLine({ endArrow: next });
 }
 
 function updateStartArrowSize(size: number | null) {
-  const current = lineDefaults.value.startArrow;
+  const current = editingLine.value?.startArrow ?? lineDefaults.value.startArrow;
   if (!current) return;
   updateLine({ startArrow: { ...current, size: size ?? 12 } });
 }
 
 function updateEndArrowSize(size: number | null) {
-  const current = lineDefaults.value.endArrow;
+  const current = editingLine.value?.endArrow ?? lineDefaults.value.endArrow;
   if (!current) return;
   updateLine({ endArrow: { ...current, size: size ?? 12 } });
 }
