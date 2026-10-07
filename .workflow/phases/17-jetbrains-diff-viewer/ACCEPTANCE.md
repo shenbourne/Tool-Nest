@@ -16,5 +16,11 @@
 | JSON 对比：双栏呈现 | gutter 路径 + 左红底旧值 / 右绿底新值，修改行双栏同显 | 4 条目：version/tags/nested.on 均 left-fill+right-fill，路径与类型标签（修改）在 gutter；extra 仅 right-fill 左栏空；左值列宽 429/160 跨行一致 | PASS |
 | JSON 对比：引擎不变 | 语义引擎与错误提示不变 | version 1→2、tags 数组、nested.on、extra 新增均按路径递归输出；删除键呈 removed 条纹+左值填充；非法 JSON `{ bad json` 仍弹 `.n-alert` 错误 | PASS |
 | 暗色主题 | diff 底色暗色清晰 | dark 下：text-diff added `rgba(35,165,91,0.18)`、changed `rgba(75,163,245,0.14)`、inline `rgba(75,163,245,0.34)`、canvas `rgb(25,25,25)`；json-diff removed `rgba(224,49,49,0.16)`；移除 class 后恢复亮色值 | PASS |
+| 长行软换行 | 长行不溢出、不重叠、无横向滚动条 | 500+300 字符长行注入后：`.diff-code` 计算样式 `white-space: pre-wrap`，8 个内容单元格 0 溢出（scrollWidth ≤ clientWidth+1），`.diff-scroll` 无横向滚动条（scrollWidth == clientWidth） | PASS |
+| 输入面板：双栏导入/粘贴 | 两栏各有导入文件+粘贴文件图标按钮（hover tooltip 显示名称） | text-diff：2 栏 ×（1 导入 + 1 粘贴）= 4 个图标按钮，aria-label 分别为「导入文件」「粘贴文件」；标题「原文」「修改后」正确 | PASS |
+| 输入面板：同步折叠 | 点任一栏折叠箭头，两栏 textarea+操作行同步消失/恢复，标题保留 | text-diff：折叠前 textareas=2/actions=2 → 点左栏折叠后 textareas=0/actions=0/collapsed=true，标题仍在；点展开恢复 textareas=2/actions=2。json-diff 同步验证一致 | PASS |
+| 输入面板：文件导入 | 选择文件后内容读入对应栏 | DataTransfer 模拟 `.txt` 文件触发左栏 change 事件，textarea 值变为文件内容 `line one\nline two\nline three`（28 字符） | PASS |
+| 输入面板：json-diff accept | json-diff 文件选择限定 .json | 两个 file input 的 accept 均为 `.json,application/json`；text-diff 无 accept（任意文件） | PASS |
+| 输入面板：暗色 | 面板在暗色下背景正确 | dark 下 `.tool-text-pair-panel__column` 背景 `rgb(37,37,37)`，diff 单元格 `rgb(32,32,32)`（等 ≥800ms 避开全局背景过渡） | PASS |
 
 Status values: `PENDING`, `PASS`, `FAIL`, or `BLOCKED`. An untested criterion remains `PENDING`. Record who performed manual checks and when.

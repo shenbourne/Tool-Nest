@@ -18,5 +18,9 @@
 | 5 | `JsonDiff.vue` 结果区改造 | 浏览器：双栏填充/路径 gutter/删除与错误路径；自查改为显式值列类 | 29b4492 + cdcf46e | Done |
 | 6 | 门禁：test/type-check/build + 差分 lint | 272+52 PASS、type-check PASS、build PASS、差分 0/0 | —（见 VERIFICATION） | Done |
 | 7 | 浏览器验收 + VERIFICATION/ACCEPTANCE/STATE/ROADMAP | 9 项验收全 PASS | docs commit | Done |
+| 8 | DiffViewer 软换行（`minmax(0,1fr)` + `pre-wrap`） | 浏览器：0 溢出单元格、无横向滚动条 | eea3bd0 | Done |
+| 9 | `ToolTextPairPanel.vue` + i18n `tool.collapse/expand` | type-check PASS（修图标名 + emit 联合类型） | da8dddc + 0a48348 | Done |
+| 10 | text-diff/json-diff 接入 + 测试更新 | 273+52 PASS、差分 0/0 | 69a22c6 | Done |
+| 11 | 浏览器验收（折叠/导入/软换行/暗色）+ 文档 | 7 项新验收全 PASS | docs commit | Done |
 
 Update this plan when discoveries change the implementation. Record scope changes rather than silently replacing them.
