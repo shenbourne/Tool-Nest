@@ -27,5 +27,6 @@
 | 14 | 门禁 + 浏览器验收 + 文档 | 284+52 PASS、差分 0 added/6 removed | docs commit | Done |
 | 15 | 引擎加 `isLast` + `ancestorLast` 字段 | vitest 11/11 GREEN | 0a9ca82 | Done |
 | 16 | 标签固定列 + key 树形龙骨线模板 | 浏览器：标签 left=420 固定、key left=472、├─/└─ 正确 | 0a9ca82 | Done |
+| 17 | 行底色修正（same 透明/changed 蓝/removed 左红/added 右绿） | 浏览器：计算样式逐行验证 | de4d16b | Done |
 
 Update this plan when discoveries change the implementation. Record scope changes rather than silently replacing them.
