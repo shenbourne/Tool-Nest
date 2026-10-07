@@ -80,15 +80,13 @@ function rightBgClass(type: DiffRow['type']): string {
 }
 
 .diff-scroll {
-  overflow: auto;
+  overflow-y: auto;
   max-height: 520px;
 }
 
 .diff-grid {
   display: grid;
-  grid-template-columns: 8px 44px minmax(160px, max-content) 44px minmax(160px, max-content);
-  width: max-content;
-  min-width: 100%;
+  grid-template-columns: 8px 44px minmax(0, 1fr) 44px minmax(0, 1fr);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-code);
   line-height: 20px;
@@ -120,7 +118,9 @@ function rightBgClass(type: DiffRow['type']): string {
 
 .diff-code {
   padding: 0 var(--spacing-sm);
-  white-space: pre;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .diff-header-cell {
