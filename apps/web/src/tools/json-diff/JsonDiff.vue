@@ -36,8 +36,12 @@ function tagType(type: JsonDiffRow['type']): 'success' | 'error' | 'warning' | '
   return 'default';
 }
 
-function indentStyle(depth: number) {
-  return { paddingLeft: `${depth * 16 + 8}px` };
+function connector(row: JsonDiffRow): string {
+  return row.isLast ? '└─' : '├─';
+}
+
+function ancestorLine(row: JsonDiffRow, ancestorIdx: number): boolean {
+  return !row.ancestorLast[ancestorIdx];
 }
 </script>
 <template>
@@ -65,15 +69,26 @@ function indentStyle(depth: number) {
             <div class="json-diff-grid">
               <div v-for="(row, i) in diffResult" :key="i" class="json-diff-row" :class="'json-diff-row-' + row.type">
                 <div class="json-diff-stripe" :class="'json-diff-stripe-' + row.type" />
-                <div class="json-diff-path" :style="indentStyle(row.depth)">
-                  <NTag
-                    v-if="row.type !== 'same'"
-                    :type="tagType(row.type)"
-                    size="small"
-                    :bordered="false"
-                    class="json-diff-tag"
-                  >{{ t(`tools.jsonDiff.${row.type}`) }}</NTag>
-                  <span class="json-diff-label" :class="{ 'json-diff-label-dim': row.type === 'same' }">{{ row.label }}</span>
+                <div class="json-diff-path">
+                  <div class="json-diff-tag-cell">
+                    <NTag
+                      v-if="row.type !== 'same'"
+                      :type="tagType(row.type)"
+                      size="small"
+                      :bordered="false"
+                      class="json-diff-tag"
+                    >{{ t(`tools.jsonDiff.${row.type}`) }}</NTag>
+                  </div>
+                  <div class="json-diff-tree-cell">
+                    <span
+                      v-for="(ancestor, ai) in row.ancestorLast"
+                      :key="ai"
+                      class="json-diff-tree-indent"
+                      :class="{ 'json-diff-tree-line': ancestorLine(row, ai) }"
+                    />
+                    <span class="json-diff-connector">{{ connector(row) }}</span>
+                    <span class="json-diff-label" :class="{ 'json-diff-label-dim': row.type === 'same' }">{{ row.label }}</span>
+                  </div>
                 </div>
                 <div class="json-diff-value json-diff-value-left" :class="row.type === 'added' ? '' : 'json-diff-left-fill'">
                   <template v-if="row.type !== 'added'">{{ row.leftValue }}</template>
@@ -133,20 +148,58 @@ function indentStyle(depth: number) {
 
 .json-diff-path {
   grid-column: 2;
-  padding: 2px var(--spacing-sm) 2px 0;
+  display: flex;
+  align-items: center;
   border-right: 1px solid var(--color-hairline);
   background: var(--color-surface-soft);
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.json-diff-tag-cell {
+  flex-shrink: 0;
+  width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0;
+}
+
+.json-diff-tree-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 2px var(--spacing-sm) 2px 0;
+}
+
+.json-diff-tree-indent {
+  display: inline-block;
+  width: 16px;
+  flex-shrink: 0;
+  position: relative;
+  height: 100%;
+  min-height: 20px;
+}
+
+.json-diff-tree-line {
+  border-left: 1px solid var(--color-hairline);
+}
+
+.json-diff-connector {
+  color: var(--color-text-3);
+  user-select: none;
+  margin-right: 4px;
+  flex-shrink: 0;
 }
 
 .json-diff-tag {
-  margin-right: 4px;
+  margin-right: 0;
 }
 
 .json-diff-label {
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .json-diff-label-dim {

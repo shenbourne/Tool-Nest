@@ -14,6 +14,14 @@ export interface JsonDiffRow {
   depth: number;
   /** Last path segment shown in the tree column (e.g. `name`, `[0]`). */
   label: string;
+  /** True when this node is the last child of its parent (renders └─). */
+  isLast: boolean;
+  /**
+   * For each ancestor depth from 1 to depth-1, whether that ancestor is the
+   * last child of its parent. Used to draw the tree guide lines: a `true`
+   * entry means no vertical line at that level, `false` means draw one.
+   */
+  ancestorLast: boolean[];
   type: JsonDiffRowType;
   leftValue?: string;
   rightValue?: string;
@@ -34,17 +42,19 @@ function formatContainer(v: unknown): string {
   return Array.isArray(v) ? `[${(v as unknown[]).length}]` : `{${Object.keys(v as object).length}}`;
 }
 
-function scalarRow(depth: number, label: string, type: JsonDiffRowType, a: unknown, b: unknown): JsonDiffRow {
+function scalarRow(depth: number, label: string, isLast: boolean, ancestorLast: boolean[], type: JsonDiffRowType, a: unknown, b: unknown): JsonDiffRow {
   return {
     depth,
     label,
+    isLast,
+    ancestorLast,
     type,
     leftValue: type === 'added' ? undefined : formatScalar(a),
     rightValue: type === 'removed' ? undefined : formatScalar(b),
   };
 }
 
-function walk(a: unknown, b: unknown, depth: number, label: string, out: JsonDiffRow[]): void {
+function walk(a: unknown, b: unknown, depth: number, label: string, isLast: boolean, ancestorLast: boolean[], out: JsonDiffRow[]): void {
   const aObj = isPlainObject(a);
   const bObj = isPlainObject(b);
   const aArr = Array.isArray(a);
@@ -52,27 +62,31 @@ function walk(a: unknown, b: unknown, depth: number, label: string, out: JsonDif
 
   if (aObj && bObj) {
     const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])];
-    out.push({ depth, label, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b) });
-    for (const key of keys) {
+    out.push({ depth, label, isLast, ancestorLast, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b) });
+    keys.forEach((key, idx) => {
+      const last = idx === keys.length - 1;
+      const childAncestors = [...ancestorLast, isLast];
       const hasA = key in a;
       const hasB = key in b;
-      if (hasA && hasB) walk(a[key], b[key], depth + 1, key, out);
-      else if (hasA) emitAll(a[key], depth + 1, key, 'removed', out);
-      else emitAll(b[key], depth + 1, key, 'added', out);
-    }
+      if (hasA && hasB) walk(a[key], b[key], depth + 1, key, last, childAncestors, out);
+      else if (hasA) emitAll(a[key], depth + 1, key, last, childAncestors, 'removed', out);
+      else emitAll(b[key], depth + 1, key, last, childAncestors, 'added', out);
+    });
     return;
   }
 
   if (aArr && bArr) {
     const max = Math.max(a.length, b.length);
-    out.push({ depth, label, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b) });
+    out.push({ depth, label, isLast, ancestorLast, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b) });
     for (let i = 0; i < max; i++) {
       const itemLabel = `[${i}]`;
+      const last = i === max - 1;
+      const childAncestors = [...ancestorLast, isLast];
       const hasA = i < a.length;
       const hasB = i < b.length;
-      if (hasA && hasB) walk(a[i], b[i], depth + 1, itemLabel, out);
-      else if (hasA) emitAll(a[i], depth + 1, itemLabel, 'removed', out);
-      else emitAll(b[i], depth + 1, itemLabel, 'added', out);
+      if (hasA && hasB) walk(a[i], b[i], depth + 1, itemLabel, last, childAncestors, out);
+      else if (hasA) emitAll(a[i], depth + 1, itemLabel, last, childAncestors, 'removed', out);
+      else emitAll(b[i], depth + 1, itemLabel, last, childAncestors, 'added', out);
     }
     return;
   }
@@ -82,6 +96,8 @@ function walk(a: unknown, b: unknown, depth: number, label: string, out: JsonDif
     out.push({
       depth,
       label,
+      isLast,
+      ancestorLast,
       type: 'changed',
       leftValue: formatScalar(a),
       rightValue: formatScalar(b),
@@ -89,21 +105,23 @@ function walk(a: unknown, b: unknown, depth: number, label: string, out: JsonDif
     return;
   }
 
-  out.push(scalarRow(depth, label, a === b ? 'same' : 'changed', a, b));
+  out.push(scalarRow(depth, label, isLast, ancestorLast, a === b ? 'same' : 'changed', a, b));
 }
 
-function emitAll(v: unknown, depth: number, label: string, type: 'added' | 'removed', out: JsonDiffRow[]): void {
-  out.push({ depth, label, type, leftValue: type === 'added' ? undefined : formatScalar(v), rightValue: type === 'removed' ? undefined : formatScalar(v) });
+function emitAll(v: unknown, depth: number, label: string, isLast: boolean, ancestorLast: boolean[], type: 'added' | 'removed', out: JsonDiffRow[]): void {
+  out.push({ depth, label, isLast, ancestorLast, type, leftValue: type === 'added' ? undefined : formatScalar(v), rightValue: type === 'removed' ? undefined : formatScalar(v) });
+  const childAncestors = [...ancestorLast, isLast];
   if (isPlainObject(v)) {
-    for (const key of Object.keys(v)) emitAll(v[key], depth + 1, key, type, out);
+    const keys = Object.keys(v);
+    keys.forEach((key, idx) => emitAll(v[key], depth + 1, key, idx === keys.length - 1, childAncestors, type, out));
   } else if (Array.isArray(v)) {
-    for (let i = 0; i < v.length; i++) emitAll(v[i], depth + 1, `[${i}]`, type, out);
+    for (let i = 0; i < v.length; i++) emitAll(v[i], depth + 1, `[${i}]`, i === v.length - 1, childAncestors, type, out);
   }
 }
 
 export function diffJsonTree(a: unknown, b: unknown): JsonDiffRow[] {
   const out: JsonDiffRow[] = [];
-  walk(a, b, 0, '(root)', out);
+  walk(a, b, 0, '(root)', true, [], out);
   return out;
 }
 
