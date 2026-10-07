@@ -141,6 +141,8 @@
     "pasteFile": "粘贴文件",
     "importFailed": "读取文件失败",
     "pasteFailed": "读取剪贴板失败",
+    "collapse": "折叠",
+    "expand": "展开",
     "fileUpload": {
       "choose": "点击、拖拽或粘贴文件到此处",
       "accepted": "支持格式：{types}",

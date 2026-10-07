@@ -141,6 +141,8 @@
     "pasteFile": "Paste file",
     "importFailed": "Failed to read the file",
     "pasteFailed": "Failed to read the clipboard",
+    "collapse": "Collapse",
+    "expand": "Expand",
     "fileUpload": {
       "choose": "Click, drop, or paste a file here",
       "accepted": "Accepted: {types}",
