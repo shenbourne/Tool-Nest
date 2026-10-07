@@ -1,16 +1,16 @@
 # Engineering verification
 
-- Commit/branch: `0a48348` / `feature/phase-17-jetbrains-diff-viewer`（worktree `.worktrees/phase-17-jetbrains-diff-viewer`，基于 master `7b7eb00`）
+- Commit/branch: `3b7df53` / `feature/phase-17-jetbrains-diff-viewer`（worktree `.worktrees/phase-17-jetbrains-diff-viewer`，基于 master `7b7eb00`）
 - Date: 2026-10-07
-- Review: 自查发现 JsonDiff 用 `:nth-child(3)` 定位左值列，改为显式 `.json-diff-value-left` 类（`cdcf46e`）。残留：无。text-diff/json-diff 被 `tool-text-panels.test.ts` 明确列为 ToolTextPanel 豁免项，本次保持其 NCard+NInput 输入结构未动；JsonDiff.vue 存在 9 个基线 lint 错误（改动前后持平）
+- Review: 自查发现 JsonDiff 用 `:nth-child(3)` 定位左值列，改为显式 `.json-diff-value-left` 类（`cdcf46e`）。残留：无。json-diff 引擎从扁平 DiffEntry 重写为递归树状对比（`json-tree-diff.ts`），JsonDiff.vue 基线 lint 错误从 9 降至 3（差分 -6，0 added）
 - Codebase health: not triggered（两个工具页内呈现改造，无跨模块结构变化）
 
 | Check | Command | Result | Evidence / limitation |
 | --- | --- | --- | --- |
-| Tests | `pnpm test` | PASS | 273 web（含 13 个 line-diff + 4 个 tool-text-panels）+ 52 server，全绿 |
-| Lint | `node .scratch/phase-17-evidence/differential-lint.mjs 7b7eb00` | PASS（差分） | 10 个变更文件 0 added / 0 removed；全量 `pnpm lint` 在基线即失败（231 错误/88 文件），按仓库惯例差分 |
+| Tests | `pnpm test` | PASS | 284 web（含 13 line-diff + 11 json-tree-diff + 4 tool-text-panels）+ 52 server，全绿 |
+| Lint | `node .scratch/phase-17-evidence/differential-lint.mjs 7b7eb00` | PASS（差分） | 12 个变更文件 0 added / 6 removed（JsonDiff.vue 重写消除 6 个基线错误）；全量 `pnpm lint` 在基线即失败（231 错误/88 文件），按仓库惯例差分 |
 | Typecheck | `pnpm type-check` | PASS | vue-tsc + tsc 无错误 |
-| Build | `pnpm build` | PASS | web 38.27 s（vite build 能暴露 SFC 结构错误） |
+| Build | `pnpm build` | PASS | web 27.09 s（vite build 能暴露 SFC 结构错误） |
 | Integration | Chrome DevTools MCP 驱动 `http://localhost:3017` | PASS | 见 ACCEPTANCE.md 的 DOM/计算样式证据 |
 
 Record failures, skipped checks, environment limitations, and reruns. Acceptance evidence belongs in `ACCEPTANCE.md`.

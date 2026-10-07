@@ -22,5 +22,10 @@
 | 输入面板：文件导入 | 选择文件后内容读入对应栏 | DataTransfer 模拟 `.txt` 文件触发左栏 change 事件，textarea 值变为文件内容 `line one\nline two\nline three`（28 字符） | PASS |
 | 输入面板：json-diff accept | json-diff 文件选择限定 .json | 两个 file input 的 accept 均为 `.json,application/json`；text-diff 无 accept（任意文件） | PASS |
 | 输入面板：暗色 | 面板在暗色下背景正确 | dark 下 `.tool-text-pair-panel__column` 背景 `rgb(37,37,37)`，diff 单元格 `rgb(32,32,32)`（等 ≥800ms 避开全局背景过渡） | PASS |
+| JSON 树状对比：递归展开 | 对象/数组子块逐键对比，非整坨塞入 | 嵌套对象 `address` 展开为 postcode/city 子行；数组 `courses` 展开为 `[0]`/`[1]`/`[2]` 子行，每个含 id/title/credits 叶子 | PASS |
+| JSON 树状对比：未修改值展示 | 无差异的键也列出，灰色无标签 | 26 行中 12 行 same（name/address 容器/city/gpa 等），`.json-diff-label-dim` 颜色 `rgb(151,149,143)`，无差异标签 | PASS |
+| JSON 树状对比：数组下标对齐 | 数组按下标配对，多余项标新增/删除 | hobbies `[0]`/`[1]` changed、`[2]` same、`[3]` added；courses `[2]` added；缩进 40px（depth 2） | PASS |
+| JSON 树状对比：三列铺满 | 三列等宽占满容器，右侧不留白 | `lastCellRight == gridRight == 1252`，`grid-template-columns: 8px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)`，无横向滚动条 | PASS |
+| JSON 树状对比：暗色 | 树状布局暗色背景正确 | dark 下 changed `rgba(224,49,49,0.16)`、路径列 `rgb(37,37,37)`、画布 `rgb(25,25,25)`（等 ≥800ms） | PASS |
 
 Status values: `PENDING`, `PASS`, `FAIL`, or `BLOCKED`. An untested criterion remains `PENDING`. Record who performed manual checks and when.

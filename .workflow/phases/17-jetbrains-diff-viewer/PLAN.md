@@ -22,5 +22,8 @@
 | 9 | `ToolTextPairPanel.vue` + i18n `tool.collapse/expand` | type-check PASS（修图标名 + emit 联合类型） | da8dddc + 0a48348 | Done |
 | 10 | text-diff/json-diff 接入 + 测试更新 | 273+52 PASS、差分 0/0 | 69a22c6 | Done |
 | 11 | 浏览器验收（折叠/导入/软换行/暗色）+ 文档 | 7 项新验收全 PASS | docs commit | Done |
+| 12 | `json-tree-diff.ts` 递归树状引擎 + 单测 | vitest 11/11 GREEN | cf648c0 | Done |
+| 13 | JsonDiff.vue 树状模板（缩进/三列铺满/未修改行） | 浏览器：26 行/三列铺满/暗色 | 3b7df53 | Done |
+| 14 | 门禁 + 浏览器验收 + 文档 | 284+52 PASS、差分 0 added/6 removed | docs commit | Done |
 
 Update this plan when discoveries change the implementation. Record scope changes rather than silently replacing them.
