@@ -25,5 +25,7 @@
 | 12 | `json-tree-diff.ts` 递归树状引擎 + 单测 | vitest 11/11 GREEN | cf648c0 | Done |
 | 13 | JsonDiff.vue 树状模板（缩进/三列铺满/未修改行） | 浏览器：26 行/三列铺满/暗色 | 3b7df53 | Done |
 | 14 | 门禁 + 浏览器验收 + 文档 | 284+52 PASS、差分 0 added/6 removed | docs commit | Done |
+| 15 | 引擎加 `isLast` + `ancestorLast` 字段 | vitest 11/11 GREEN | 0a9ca82 | Done |
+| 16 | 标签固定列 + key 树形龙骨线模板 | 浏览器：标签 left=420 固定、key left=472、├─/└─ 正确 | 0a9ca82 | Done |
 
 Update this plan when discoveries change the implementation. Record scope changes rather than silently replacing them.

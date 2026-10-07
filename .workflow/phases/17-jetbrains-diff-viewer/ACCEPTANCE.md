@@ -27,5 +27,7 @@
 | JSON 树状对比：数组下标对齐 | 数组按下标配对，多余项标新增/删除 | hobbies `[0]`/`[1]` changed、`[2]` same、`[3]` added；courses `[2]` added；缩进 40px（depth 2） | PASS |
 | JSON 树状对比：三列铺满 | 三列等宽占满容器，右侧不留白 | `lastCellRight == gridRight == 1252`，`grid-template-columns: 8px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)`，无横向滚动条 | PASS |
 | JSON 树状对比：暗色 | 树状布局暗色背景正确 | dark 下 changed `rgba(224,49,49,0.16)`、路径列 `rgb(37,37,37)`、画布 `rgb(25,25,25)`（等 ≥800ms） | PASS |
+| JSON 树状对比：标签最左对齐 | 差异标签固定不缩进，key 在标签右侧树形排布 | 标签列 `width: 52px` 固定，所有行 `tagCell.left == 420`；key 树 `treeCell.left == 472` 在标签右侧；未修改行无标签但占位 52px | PASS |
+| JSON 树状对比：龙骨线 | 树形连接线 ├─/└─ 正确渲染 | 连接符序列 `└─,├─,├─,├─,...` 正确；12 条竖线 `.json-diff-tree-line` 在祖先非末位时绘制 | PASS |
 
 Status values: `PENDING`, `PASS`, `FAIL`, or `BLOCKED`. An untested criterion remains `PENDING`. Record who performed manual checks and when.
