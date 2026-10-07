@@ -87,6 +87,8 @@ function rightBgClass(type: DiffRow['type']): string {
 .diff-grid {
   display: grid;
   grid-template-columns: 8px 44px minmax(160px, max-content) 44px minmax(160px, max-content);
+  width: max-content;
+  min-width: 100%;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-code);
   line-height: 20px;
