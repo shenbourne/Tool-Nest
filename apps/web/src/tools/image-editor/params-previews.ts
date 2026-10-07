@@ -53,14 +53,22 @@ function arrowHead(style: ArrowStyle): VNodeChild {
   }
 }
 
-export function arrowStylePreview(style: ArrowStyle): VNodeChild {
-  return svg({ class: 'param-preview' }, [
+/**
+ * Arrow sample. The end arrow (default) points right; the start arrow is the
+ * same art mirrored horizontally so it points left, matching the canvas.
+ */
+export function arrowStylePreview(style: ArrowStyle, direction: 'start' | 'end' = 'end'): VNodeChild {
+  const art: VNodeChild[] = [
     h('line', {
       x1: 4, y1: 10, x2: 52, y2: 10,
       stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round',
     }),
     arrowHead(style),
-  ]);
+  ];
+  const children = direction === 'start'
+    ? [h('g', { transform: 'translate(64,0) scale(-1,1)' }, art)]
+    : art;
+  return svg({ class: 'param-preview' }, children);
 }
 
 export function numberFormatPreview(format: NumberFormat): VNodeChild {

@@ -1657,7 +1657,16 @@ function previewRenderTag(preview: PreviewFn) {
 }
 
 const strokeRender = { label: previewRenderLabel(strokeStylePreview as PreviewFn), tag: previewRenderTag(strokeStylePreview as PreviewFn) };
-const arrowRender = { label: previewRenderLabel(arrowStylePreview as PreviewFn), tag: previewRenderTag(arrowStylePreview as PreviewFn) };
+// The start and end arrow samples face opposite ways, so they need separate
+// render pairs rather than one shared arrowRender.
+const startArrowRender = {
+  label: previewRenderLabel(((v: ArrowStyle) => arrowStylePreview(v, 'start')) as PreviewFn),
+  tag: previewRenderTag(((v: ArrowStyle) => arrowStylePreview(v, 'start')) as PreviewFn),
+};
+const endArrowRender = {
+  label: previewRenderLabel(((v: ArrowStyle) => arrowStylePreview(v, 'end')) as PreviewFn),
+  tag: previewRenderTag(((v: ArrowStyle) => arrowStylePreview(v, 'end')) as PreviewFn),
+};
 const numberFormatRender = { label: previewRenderLabel(numberFormatPreview as PreviewFn), tag: previewRenderTag(numberFormatPreview as PreviewFn) };
 const eraserModeRender = { label: previewRenderLabel(modePreview as PreviewFn), tag: previewRenderTag(modePreview as PreviewFn) };
 const mosaicEffectRender = { label: previewRenderLabel(mosaicEffectPreview as PreviewFn), tag: previewRenderTag(mosaicEffectPreview as PreviewFn) };
@@ -2453,8 +2462,8 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                         class="param-select"
                         :value="arrowStyleValue(editingLine?.startArrow ?? lineDefaults.startArrow)"
                         :options="arrowStyleOptions"
-                        :render-label="arrowRender.label"
-                        :render-tag="arrowRender.tag"
+                        :render-label="startArrowRender.label"
+                        :render-tag="startArrowRender.tag"
                         @update:value="(v: string) => updateStartArrow(v as ArrowStyle)"
                       />
                     </template>
@@ -2476,8 +2485,8 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                         class="param-select"
                         :value="arrowStyleValue(editingLine?.endArrow ?? lineDefaults.endArrow)"
                         :options="arrowStyleOptions"
-                        :render-label="arrowRender.label"
-                        :render-tag="arrowRender.tag"
+                        :render-label="endArrowRender.label"
+                        :render-tag="endArrowRender.tag"
                         @update:value="(v: string) => updateEndArrow(v as ArrowStyle)"
                       />
                     </template>
