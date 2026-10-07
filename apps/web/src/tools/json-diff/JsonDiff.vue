@@ -1,63 +1,25 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NSpace, NButton, NInput, NTag, NAlert, NCard } from 'naive-ui';
+import { NSpace, NInput, NTag, NAlert, NCard } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPairPanel from '@/components/ToolTextPairPanel.vue';
+import { diffJsonTree, summarizeJsonTree, type JsonDiffRow } from '@/utils/json-tree-diff';
 import { tool } from './index';
 
 const { t } = useI18n();
-
-interface DiffEntry {
-  path: string;
-  type: 'added' | 'removed' | 'changed';
-  oldValue?: any;
-  newValue?: any;
-}
 
 const leftJson = ref('');
 const rightJson = ref('');
 const errorMsg = ref('');
 
-function diff(a: any, b: any, path = ''): DiffEntry[] {
-  const entries: DiffEntry[] = [];
-  if (a === b) return entries;
-  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) || Array.isArray(b)) {
-    if (a !== b) {
-      entries.push({ path: path || '(root)', type: 'changed', oldValue: a, newValue: b });
-    }
-    return entries;
-  }
-  const allKeys = new Set([...Object.keys(a), ...Object.keys(b)]);
-  for (const key of allKeys) {
-    const childPath = path ? `${path}.${key}` : key;
-    if (!(key in a)) {
-      entries.push({ path: childPath, type: 'added', newValue: b[key] });
-    }
-    else if (!(key in b)) {
-      entries.push({ path: childPath, type: 'removed', oldValue: a[key] });
-    }
-    else {
-      entries.push(...diff(a[key], b[key], childPath));
-    }
-  }
-  return entries;
-}
-
-const diffResult = computed<DiffEntry[]>(() => {
+const diffResult = computed<JsonDiffRow[]>(() => {
   errorMsg.value = '';
   if (!leftJson.value.trim() && !rightJson.value.trim()) return [];
   try {
-    // Empty sides use undefined (not null) so a literal JSON `null` on one
-    // side is never mistaken for an untouched textbox on the other.
     const a = leftJson.value.trim() === '' ? undefined : JSON.parse(leftJson.value);
     const b = rightJson.value.trim() === '' ? undefined : JSON.parse(rightJson.value);
-    if (a === undefined || b === undefined) {
-      return a === undefined
-        ? [{ path: '(root)', type: 'added', newValue: b }]
-        : [{ path: '(root)', type: 'removed', oldValue: a }];
-    }
-    return diff(a, b);
+    return diffJsonTree(a, b);
   }
   catch (e: any) {
     errorMsg.value = e?.message || t('common.invalidJson');
@@ -65,15 +27,17 @@ const diffResult = computed<DiffEntry[]>(() => {
   }
 });
 
-const stats = computed(() => {
-  const s = { added: 0, removed: 0, changed: 0 };
-  diffResult.value.forEach(d => s[d.type]++);
-  return s;
-});
+const stats = computed(() => summarizeJsonTree(diffResult.value));
 
-function formatVal(v: any): string {
-  if (v === undefined) return '';
-  return typeof v === 'object' ? JSON.stringify(v, null, 2) : String(v);
+function tagType(type: JsonDiffRow['type']): 'success' | 'error' | 'warning' | 'default' {
+  if (type === 'added') return 'success';
+  if (type === 'removed') return 'error';
+  if (type === 'changed') return 'warning';
+  return 'default';
+}
+
+function indentStyle(depth: number) {
+  return { paddingLeft: `${depth * 16 + 8}px` };
 }
 </script>
 <template>
@@ -99,22 +63,23 @@ function formatVal(v: any): string {
         <div class="json-diff-viewer">
           <div class="json-diff-scroll">
             <div class="json-diff-grid">
-              <div v-for="(d, i) in diffResult" :key="i" class="json-diff-row">
-                <div class="json-diff-stripe" :class="'json-diff-stripe-' + d.type" />
-                <div class="json-diff-path">
+              <div v-for="(row, i) in diffResult" :key="i" class="json-diff-row" :class="'json-diff-row-' + row.type">
+                <div class="json-diff-stripe" :class="'json-diff-stripe-' + row.type" />
+                <div class="json-diff-path" :style="indentStyle(row.depth)">
                   <NTag
-                    :type="d.type==='added'?'success':d.type==='removed'?'error':'warning'"
+                    v-if="row.type !== 'same'"
+                    :type="tagType(row.type)"
                     size="small"
                     :bordered="false"
-                    style="margin-right:8px;"
-                  >{{ t(`tools.jsonDiff.${d.type}`) }}</NTag>
-                  <strong>{{ d.path }}</strong>
+                    class="json-diff-tag"
+                  >{{ t(`tools.jsonDiff.${row.type}`) }}</NTag>
+                  <span class="json-diff-label" :class="{ 'json-diff-label-dim': row.type === 'same' }">{{ row.label }}</span>
                 </div>
-                <div class="json-diff-value json-diff-value-left" :class="d.type==='added' ? '' : 'json-diff-left-fill'">
-                  <template v-if="d.type !== 'added'">{{ formatVal(d.oldValue) }}</template>
+                <div class="json-diff-value json-diff-value-left" :class="row.type === 'added' ? '' : 'json-diff-left-fill'">
+                  <template v-if="row.type !== 'added'">{{ row.leftValue }}</template>
                 </div>
-                <div class="json-diff-value" :class="d.type==='removed' ? '' : 'json-diff-right-fill'">
-                  <template v-if="d.type !== 'removed'">{{ formatVal(d.newValue) }}</template>
+                <div class="json-diff-value" :class="row.type === 'removed' ? '' : 'json-diff-right-fill'">
+                  <template v-if="row.type !== 'removed'">{{ row.rightValue }}</template>
                 </div>
               </div>
             </div>
@@ -134,13 +99,13 @@ function formatVal(v: any): string {
 }
 
 .json-diff-scroll {
-  overflow: auto;
+  overflow-y: auto;
   max-height: 520px;
 }
 
 .json-diff-grid {
   display: grid;
-  grid-template-columns: 8px minmax(140px, max-content) minmax(160px, max-content) minmax(160px, max-content);
+  grid-template-columns: 8px minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-code);
   line-height: 20px;
@@ -168,16 +133,31 @@ function formatVal(v: any): string {
 
 .json-diff-path {
   grid-column: 2;
-  padding: 2px var(--spacing-sm);
+  padding: 2px var(--spacing-sm) 2px 0;
   border-right: 1px solid var(--color-hairline);
   background: var(--color-surface-soft);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.json-diff-tag {
+  margin-right: 4px;
+}
+
+.json-diff-label {
+  font-weight: 600;
+}
+
+.json-diff-label-dim {
+  color: var(--color-text-3);
+  font-weight: 400;
 }
 
 .json-diff-value {
   padding: 2px var(--spacing-sm);
   white-space: pre-wrap;
-  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 .json-diff-value-left {
