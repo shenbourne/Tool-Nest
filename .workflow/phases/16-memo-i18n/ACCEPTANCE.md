@@ -8,3 +8,7 @@
 | R-002 | 英文模式下两工具保持纯英文，无中文残留、无格式回退 | 实测 en 态：15 个标题全部纯英文、82 条说明 0 处 CJK、表头 Syntax/Meaning；控制台无错误 | PASS |
 
 Status values: `PENDING`, `PASS`, `FAIL`, or `BLOCKED`. Manual checks performed by the agent via Chrome DevTools MCP on 2026-10-07.
+
+## 合并后状态
+
+用户于 2026-10-07 授权合并；`feature/phase-16-memo-i18n` 已以合并提交 `d429a00` 进入 `master`。合并树内 `/git-memo` 与 `/regex-memo` 的组件与测试文件与已验收的分支 tip `c793026` 逐字节一致，locale 文件为 master 侧（crontab/chmod 键）与本阶段键的无损并集，故上述四条界面验收结论在 `master` 上继续成立。`master` 未推送。

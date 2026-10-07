@@ -22,3 +22,30 @@
 - `/regex-memo` zh：7 个分节标题全部双语；表头「语法 / 含义」；47 行条目含义全部中文；量词行 `{0,}` `{1,}` `{0,1}` 经转义后字面渲染正常
 - `/regex-memo` en：7 个标题纯英文、表头 Syntax/Meaning、47 行含义纯英文、0 处中文残留
 - 两页面控制台均无错误/警告
+
+## 合并到 master（2026-10-07，用户授权「合并到master」）
+
+基点已前进：分支从本地 `master` `5049bb3` 切出，合并时 `master` 已到 `5d861af`（其间 `7b7eb00` chmod 双向输入、`ab3468f` crontab 五列网格两个提交也改了 `locales/*.json`），因此不是快进合并。
+
+合并机制（主工作区有并行会话未提交改动，全程不触碰）：
+
+1. `git worktree add --detach .worktrees/phase-16-merge master` → 在隔离树内 `merge --no-ff --no-commit feature/phase-16-memo-i18n`
+2. 唯一冲突：`.workflow/STATE.md`（按惯例解为 master 侧较新框架文字 + 本阶段记录）；`apps/web/src/locales/*.json` 自动合并
+3. 合并提交 `d429a00` `chore(merge): integrate phase 16 memo localization`
+4. 主工作区（正在 `master` 上）`git merge --ff-only d429a00` 推进，未切换分支、未 stash、对方 WIP（`AGENTS.md`、`apps/web/vite.config.ts`、`package.json`、`apps/web/src/components.d.ts`）全程未被写入
+5. `git worktree remove .worktrees/phase-16-merge`
+
+完整性验证（命令与结果）：
+
+| 检查 | 命令 | 结果 |
+| --- | --- | --- |
+| 祖先关系 | `git merge-base --is-ancestor {c793026,5d861af} HEAD` | 两条均成立（分支线 + master 线都在合并结果内） |
+| 业务代码字节一致 | `git diff c793026 HEAD -- apps/web/src/tools/git-memo apps/web/src/tools/regex-memo apps/web/src/tools/memo-tools-i18n.test.ts` | 空输出 |
+| locale 键并集 | Node 脚本比对 master / 分支 / 合并后三方的叶子键集合 | en、zh 各：丢失 0、意外新增 0；相对分支仅 `tools.crontabGenerator.syntaxDiagram` 取值改为 master 侧更新后的值（转义 `|` 的复数修复），相对 master 零改动 |
+| 合并后门禁（主工作树） | `npx vitest run` | PASS 271 tests / 38 files |
+| 合并后门禁 | `npx vue-tsc --noEmit` | PASS（exit 0，无输出） |
+| 合并后门禁 | `npx vite build` | PASS 32.93 s |
+
+未重跑项与理由：差分 lint 不再重跑——合并只新增 master 侧自身已验证的内容，phase 16 的 5 个文件与分支 tip 逐字节相同，而分支上已测 +0/−4；浏览器验收同理，页面代码与已在两个路由、两种 locale 实测通过的分支 tip 完全一致，locale 差异仅为双方键的并集。master 侧 `chmod`/`crontab` 文件在合并中未被改动（`git diff` 相对分支 tip 显示的是 master 自身的差异）。
+
+推送状态：`master` 现领先 `origin/master` 27 个提交，本地未推送；`feature/phase-16-memo-i18n` 与其 worktree 按惯例保留。
