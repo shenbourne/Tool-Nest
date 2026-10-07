@@ -23,6 +23,8 @@ export interface JsonDiffRow {
    */
   ancestorLast: boolean[];
   type: JsonDiffRowType;
+  /** True when this row displays a container count ({N}/[N]) rather than a scalar value. */
+  isContainer: boolean;
   leftValue?: string;
   rightValue?: string;
 }
@@ -51,6 +53,7 @@ function scalarRow(depth: number, label: string, isLast: boolean, ancestorLast: 
     type,
     leftValue: type === 'added' ? undefined : formatScalar(a),
     rightValue: type === 'removed' ? undefined : formatScalar(b),
+    isContainer: false,
   };
 }
 
@@ -62,7 +65,7 @@ function walk(a: unknown, b: unknown, depth: number, label: string, isLast: bool
 
   if (aObj && bObj) {
     const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])];
-    out.push({ depth, label, isLast, ancestorLast, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b) });
+    out.push({ depth, label, isLast, ancestorLast, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b), isContainer: true });
     keys.forEach((key, idx) => {
       const last = idx === keys.length - 1;
       const childAncestors = [...ancestorLast, isLast];
@@ -77,7 +80,7 @@ function walk(a: unknown, b: unknown, depth: number, label: string, isLast: bool
 
   if (aArr && bArr) {
     const max = Math.max(a.length, b.length);
-    out.push({ depth, label, isLast, ancestorLast, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b) });
+    out.push({ depth, label, isLast, ancestorLast, type: 'same', leftValue: formatContainer(a), rightValue: formatContainer(b), isContainer: true });
     for (let i = 0; i < max; i++) {
       const itemLabel = `[${i}]`;
       const last = i === max - 1;
@@ -101,6 +104,7 @@ function walk(a: unknown, b: unknown, depth: number, label: string, isLast: bool
       type: 'changed',
       leftValue: formatScalar(a),
       rightValue: formatScalar(b),
+      isContainer: false,
     });
     return;
   }
@@ -109,7 +113,18 @@ function walk(a: unknown, b: unknown, depth: number, label: string, isLast: bool
 }
 
 function emitAll(v: unknown, depth: number, label: string, isLast: boolean, ancestorLast: boolean[], type: 'added' | 'removed', out: JsonDiffRow[]): void {
-  out.push({ depth, label, isLast, ancestorLast, type, leftValue: type === 'added' ? undefined : formatScalar(v), rightValue: type === 'removed' ? undefined : formatScalar(v) });
+  const isCont = isPlainObject(v) || Array.isArray(v);
+  const formatted = isCont ? formatContainer(v) : formatScalar(v);
+  out.push({
+    depth,
+    label,
+    isLast,
+    ancestorLast,
+    type,
+    isContainer: isCont,
+    leftValue: type === 'added' ? undefined : formatted,
+    rightValue: type === 'removed' ? undefined : formatted,
+  });
   const childAncestors = [...ancestorLast, isLast];
   if (isPlainObject(v)) {
     const keys = Object.keys(v);

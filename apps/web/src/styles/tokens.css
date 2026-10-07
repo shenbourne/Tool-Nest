@@ -23,6 +23,7 @@
   --diff-gutter-added: rgba(26, 174, 57, 0.55);
   --diff-gutter-removed: rgba(224, 49, 49, 0.55);
   --diff-gutter-changed: rgba(0, 117, 222, 0.55);
+  --diff-container-bg: rgba(0, 0, 0, 0.04);
 
   /* Neutral — warm gray ramp (Notion stone) */
   --color-canvas: #ffffff;
@@ -120,6 +121,7 @@ html.dark {
   --diff-gutter-added: rgba(35, 165, 91, 0.7);
   --diff-gutter-removed: rgba(224, 49, 49, 0.7);
   --diff-gutter-changed: rgba(75, 163, 245, 0.7);
+  --diff-container-bg: rgba(255, 255, 255, 0.06);
 
   /* Neutral — warm dark ramp */
   --color-canvas: #191919;

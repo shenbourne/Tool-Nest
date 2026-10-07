@@ -28,5 +28,7 @@
 | 15 | 引擎加 `isLast` + `ancestorLast` 字段 | vitest 11/11 GREEN | 0a9ca82 | Done |
 | 16 | 标签固定列 + key 树形龙骨线模板 | 浏览器：标签 left=420 固定、key left=472、├─/└─ 正确 | 0a9ca82 | Done |
 | 17 | 行底色修正（same 透明/changed 蓝/removed 左红/added 右绿） | 浏览器：计算样式逐行验证 | de4d16b | Done |
+| 18 | 修改标签改蓝色（info） | 浏览器：标签 color rgb(0,117,222) | 4d23fb6 | Done |
+| 19 | 容器行灰底 + emitAll 容器仅显示数量 | vitest 11/11 GREEN、浏览器：容器行 rgba(0,0,0,0.04)、added 容器右值 `{3}` | 待提交 | Done |
 
 Update this plan when discoveries change the implementation. Record scope changes rather than silently replacing them.

@@ -44,15 +44,17 @@ function ancestorLine(row: JsonDiffRow, ancestorIdx: number): boolean {
   return !row.ancestorLast[ancestorIdx];
 }
 
-function leftFillClass(type: JsonDiffRow['type']): string {
-  if (type === 'removed') return 'json-diff-left-fill';
-  if (type === 'changed') return 'json-diff-changed-fill';
+function leftFillClass(row: JsonDiffRow): string {
+  if (row.isContainer) return 'json-diff-container-fill';
+  if (row.type === 'removed') return 'json-diff-left-fill';
+  if (row.type === 'changed') return 'json-diff-changed-fill';
   return '';
 }
 
-function rightFillClass(type: JsonDiffRow['type']): string {
-  if (type === 'added') return 'json-diff-right-fill';
-  if (type === 'changed') return 'json-diff-changed-fill';
+function rightFillClass(row: JsonDiffRow): string {
+  if (row.isContainer) return 'json-diff-container-fill';
+  if (row.type === 'added') return 'json-diff-right-fill';
+  if (row.type === 'changed') return 'json-diff-changed-fill';
   return '';
 }
 </script>
@@ -102,10 +104,10 @@ function rightFillClass(type: JsonDiffRow['type']): string {
                     <span class="json-diff-label" :class="{ 'json-diff-label-dim': row.type === 'same' }">{{ row.label }}</span>
                   </div>
                 </div>
-                <div class="json-diff-value json-diff-value-left" :class="leftFillClass(row.type)">
+                <div class="json-diff-value json-diff-value-left" :class="leftFillClass(row)">
                   <template v-if="row.type !== 'added'">{{ row.leftValue }}</template>
                 </div>
-                <div class="json-diff-value" :class="rightFillClass(row.type)">
+                <div class="json-diff-value" :class="rightFillClass(row)">
                   <template v-if="row.type !== 'removed'">{{ row.rightValue }}</template>
                 </div>
               </div>
@@ -239,5 +241,9 @@ function rightFillClass(type: JsonDiffRow['type']): string {
 
 .json-diff-changed-fill {
   background: var(--diff-changed-bg);
+}
+
+.json-diff-container-fill {
+  background: var(--diff-container-bg);
 }
 </style>
