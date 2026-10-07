@@ -1,35 +1,45 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch, type Component } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, type Component, type VNodeChild } from 'vue';
 import {
   NButton,
   NCard,
   NColorPicker,
   NIcon,
-  NInput,
-  NInputNumber,
   NPopconfirm,
   NSelect,
-  NSwitch,
   NTooltip,
 } from 'naive-ui';
 import {
   ArrowBackUp,
   ArrowForwardUp,
+  BorderStyle,
+  Circle as CircleIcon,
   Click as SelectIcon,
   CloudUpload,
   Eraser,
   GridDots,
+  Highlight,
   Line,
   ListNumbers,
+  Paint,
   Pencil,
   Rectangle,
   Trash,
   Typography,
+  Vector,
 } from '@vicons/tabler';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import SizeField from './SizeField.vue';
+import {
+  arrowStylePreview,
+  modePreview,
+  mosaicEffectPreview,
+  numberFormatPreview,
+  strokeStylePreview,
+} from './params-previews';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useCopy } from '@/composables/useCopy';
 import { usePreferencesStore } from '@/stores/preferences.store';
@@ -606,6 +616,76 @@ const DBLCLICK_MS = 300;
 const DBLCLICK_DIST = 5;
 let lastClick: { x: number; y: number; time: number } | null = null;
 
+// --- inline text editing -----------------------------------------------------
+// Text is typed straight onto the canvas: a click in text mode (or a double
+// click on an existing text) opens a floating textarea at that point, and the
+// annotation is created/updated only when the user commits with Enter or blur.
+// Esc discards. The box lives in stage coordinates inside a relative wrapper.
+
+interface TextEditState {
+  x: number;
+  y: number;
+  text: string;
+  /** Null when creating a new annotation; otherwise the id being re-edited. */
+  annotationId: number | null;
+}
+
+const textEdit = ref<TextEditState | null>(null);
+const textEditInput = ref<HTMLTextAreaElement | null>(null);
+
+watch(textEdit, (state) => {
+  if (state) {
+    requestAnimationFrame(() => textEditInput.value?.focus());
+  }
+});
+
+function openTextEdit(x: number, y: number, annotationId: number | null, initial = '') {
+  textEdit.value = { x, y, text: initial, annotationId };
+}
+
+function commitTextEdit() {
+  const edit = textEdit.value;
+  if (!edit) return;
+  textEdit.value = null;
+  const content = edit.text.trim();
+  if (!content) return;
+  if (edit.annotationId === null) {
+    const d = textDefaults.value;
+    annotations.value = [
+      ...annotations.value,
+      {
+        id: nextId++,
+        type: 'text',
+        x: edit.x,
+        y: edit.y,
+        text: content,
+        fontSize: d.fontSize,
+        color: d.color,
+        fontFamily: d.fontFamily,
+        rotation: 0,
+        stroke: { ...d.stroke },
+        background: { ...d.background },
+      },
+    ];
+    pushHistory();
+  } else {
+    const target = annotations.value.find((a) => a.id === edit.annotationId);
+    if (target && target.type === 'text' && target.text !== content) {
+      replaceAnnotation(target.id, { ...target, text: content });
+      scheduleCommit();
+    }
+  }
+}
+
+function cancelTextEdit() {
+  textEdit.value = null;
+}
+
+function onTextDblClick(annotation: TextAnnotation) {
+  if (activeTool.value !== 'select') return;
+  openTextEdit(annotation.x, annotation.y, annotation.id, annotation.text);
+}
+
 function onStageClick(e: KonvaPointerEvent) {
   if (activeTool.value === 'line' && lineDefaults.value.kind === 'polyline') {
     const pointer = pointerPosition(e);
@@ -630,27 +710,12 @@ function onStageClick(e: KonvaPointerEvent) {
   if (activeTool.value === 'text') {
     // Annotation clicks stop bubbling (see onAnnotationClick), so reaching
     // here means the background — which is covered by the base image, not
-    // the stage node itself.
+    // the stage node itself. Open an inline editor at the click point; the
+    // annotation is only created once the user commits (Enter/blur).
     const pointer = pointerPosition(e);
     if (!pointer) return;
-    const d = textDefaults.value;
-    annotations.value = [
-      ...annotations.value,
-      {
-        id: nextId++,
-        type: 'text',
-        x: pointer.x,
-        y: pointer.y,
-        text: d.text || t('tools.imageEditor.defaultText'),
-        fontSize: d.fontSize,
-        color: d.color,
-        fontFamily: d.fontFamily,
-        rotation: 0,
-        stroke: { ...d.stroke },
-        background: { ...d.background },
-      },
-    ];
-    pushHistory();
+    openTextEdit(pointer.x, pointer.y, null);
+    return;
   }
 }
 
@@ -1564,6 +1629,28 @@ const mosaicEffectOptions = computed(() => [
   { label: t('tools.imageEditor.blurEffect'), value: 'blur' },
 ]);
 
+// --- params toolbar previews -------------------------------------------------
+// NSelect options render as SVG samples (not names) via render-label, and the
+// selected tag shows the same sample via render-tag. Each picker picks its
+// preview fn; the label stays on the option for accessibility/tooltip.
+
+type PreviewFn = (value: never) => VNodeChild;
+type SelectOptionLike = { value?: string | number };
+
+function previewRenderLabel(preview: PreviewFn) {
+  return (option: SelectOptionLike) => preview(option.value as never);
+}
+
+function previewRenderTag(preview: PreviewFn) {
+  return ({ option }: { option: SelectOptionLike }) => preview(option.value as never);
+}
+
+const strokeRender = { label: previewRenderLabel(strokeStylePreview as PreviewFn), tag: previewRenderTag(strokeStylePreview as PreviewFn) };
+const arrowRender = { label: previewRenderLabel(arrowStylePreview as PreviewFn), tag: previewRenderTag(arrowStylePreview as PreviewFn) };
+const numberFormatRender = { label: previewRenderLabel(numberFormatPreview as PreviewFn), tag: previewRenderTag(numberFormatPreview as PreviewFn) };
+const eraserModeRender = { label: previewRenderLabel(modePreview as PreviewFn), tag: previewRenderTag(modePreview as PreviewFn) };
+const mosaicEffectRender = { label: previewRenderLabel(mosaicEffectPreview as PreviewFn), tag: previewRenderTag(mosaicEffectPreview as PreviewFn) };
+
 function updateShape(patch: Partial<ShapeAnnotation>) {
   const target = editingShape.value;
   if (target) {
@@ -1802,6 +1889,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
         </div>
         <img v-if="imageUrl" :src="imageUrl" style="display:none" @load="onImageLoad" />
         <div v-if="imageUrl" class="canvas-wrapper" @wheel="onStageWheel">
+          <div class="image-editor__stage-wrap">
           <v-stage
             ref="stageRef"
             :config="{ width: stageWidth, height: stageHeight }"
@@ -1926,6 +2014,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     }"
                     @click="onAnnotationClick(ann, $event)"
                     @dragend="onTextDragEnd(ann, $event)"
+                    @dblclick="onTextDblClick(ann)"
                   />
                 </template>
                 <template v-else-if="ann.type === 'number'">
@@ -2159,6 +2248,23 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
               />
             </v-layer>
           </v-stage>
+          <div
+            v-if="textEdit"
+            class="image-editor__text-edit"
+            :style="{ left: `${textEdit.x}px`, top: `${textEdit.y}px` }"
+          >
+            <textarea
+              ref="textEditInput"
+              v-model="textEdit.text"
+              class="image-editor__text-input"
+              rows="1"
+              :placeholder="t('tools.imageEditor.textPlaceholder')"
+              @keydown.enter.prevent="commitTextEdit"
+              @keydown.esc.prevent="cancelTextEdit"
+              @blur="commitTextEdit"
+            />
+          </div>
+          </div>
         </div>
         <button v-else type="button" class="image-editor__empty" @click="fileUpload?.triggerSelect()">
           <NIcon :size="26" :component="CloudUpload" class="image-editor__empty-icon" />
@@ -2187,145 +2293,186 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                 {{ t(button.labelKey) }}
               </NTooltip>
             </div>
-
-            <div class="image-editor__rows">
+            <div class="image-editor__params-row">
               <!-- Shape params -->
               <template v-if="activeTool === 'shape'">
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.toolShape') }}</span>
-                  <NSelect
-                    :value="editingShape?.kind ?? shapeDefaults.kind"
-                    :options="shapeKindOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateShape({ kind: v as ShapeAnnotation['kind'] })"
-                  />
+                <div class="param-group" role="radiogroup" :aria-label="t('tools.imageEditor.toolShape')">
+                  <button
+                    v-for="opt in shapeKindOptions"
+                    :key="opt.value"
+                    type="button"
+                    class="param-chip"
+                    :class="{ 'param-chip--active': (editingShape?.kind ?? shapeDefaults.kind) === opt.value }"
+                    :aria-pressed="(editingShape?.kind ?? shapeDefaults.kind) === opt.value"
+                    :aria-label="opt.label"
+                    @click="updateShape({ kind: opt.value as ShapeAnnotation['kind'] })"
+                  >
+                    <NIcon :size="18" :component="opt.value === 'rect' ? Rectangle : CircleIcon" />
+                  </button>
                 </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
-                  <NColorPicker
-                    :value="editingShape?.stroke ?? shapeDefaults.stroke"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateShape({ stroke: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.width') }}</span>
-                  <NInputNumber
-                    :value="editingShape?.strokeWidth ?? shapeDefaults.strokeWidth"
-                    :min="1"
-                    :max="50"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => updateShape({ strokeWidth: v ?? 1 })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
-                  <NSelect
-                    :value="editingShape?.strokeStyle ?? shapeDefaults.strokeStyle"
-                    :options="strokeStyleOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateShape({ strokeStyle: v as StrokeStyle })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.fill') }}</span>
-                  <NSwitch
-                    :value="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
-                    @update:value="(v: boolean) => updateShape({ fillEnabled: v })"
-                  />
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NColorPicker
+                      class="param-color"
+                      :value="editingShape?.stroke ?? shapeDefaults.stroke"
+                      :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
+                      @update:value="(v: string) => updateShape({ stroke: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.colour') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="editingShape?.strokeWidth ?? shapeDefaults.strokeWidth"
+                      :min="1" :max="50" :step="1"
+                      :label-key="t('tools.imageEditor.width')"
+                      @update:value="(v: number) => updateShape({ strokeWidth: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.width') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select"
+                      :value="editingShape?.strokeStyle ?? shapeDefaults.strokeStyle"
+                      :options="strokeStyleOptions"
+                      :render-label="strokeRender.label"
+                      :render-tag="strokeRender.tag"
+                      @update:value="(v: string) => updateShape({ strokeStyle: v as StrokeStyle })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.stroke') }}
+                </NTooltip>
+                <div class="param-group">
+                  <NTooltip placement="bottom">
+                    <template #trigger>
+                      <button
+                        type="button"
+                        class="param-chip"
+                        :class="{ 'param-chip--active': editingShape?.fillEnabled ?? shapeDefaults.fillEnabled }"
+                        :aria-pressed="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
+                        :aria-label="t('tools.imageEditor.fill')"
+                        @click="updateShape({ fillEnabled: !(editingShape?.fillEnabled ?? shapeDefaults.fillEnabled) })"
+                      >
+                        <NIcon :size="18" :component="Paint" />
+                      </button>
+                    </template>
+                    {{ t('tools.imageEditor.fill') }}
+                  </NTooltip>
                   <NColorPicker
                     v-if="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
+                    class="param-color"
                     :value="editingShape?.fill ?? shapeDefaults.fill"
-                    style="width: 120px;"
                     @update:value="(v: string) => updateShape({ fill: v })"
                   />
                 </div>
-                <div v-if="(editingShape?.kind ?? shapeDefaults.kind) === 'rect'" class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.cornerRadius') }}</span>
-                  <NInputNumber
-                    :value="editingShape?.cornerRadius ?? shapeDefaults.cornerRadius"
-                    :min="0"
-                    :max="100"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => updateShape({ cornerRadius: v ?? 0 })"
-                  />
-                </div>
+                <NTooltip v-if="(editingShape?.kind ?? shapeDefaults.kind) === 'rect'" placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="editingShape?.cornerRadius ?? shapeDefaults.cornerRadius"
+                      :min="0" :max="100" :step="1"
+                      :label-key="t('tools.imageEditor.cornerRadius')"
+                      @update:value="(v: number) => updateShape({ cornerRadius: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.cornerRadius') }}
+                </NTooltip>
               </template>
 
               <!-- Line params -->
               <template v-if="activeTool === 'line'">
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.toolLine') }}</span>
-                  <NSelect
-                    :value="editingLine?.kind ?? lineDefaults.kind"
-                    :options="lineKindOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateLine({ kind: v as LineAnnotation['kind'] })"
-                  />
+                <div class="param-group" role="radiogroup" :aria-label="t('tools.imageEditor.toolLine')">
+                  <button
+                    v-for="opt in lineKindOptions"
+                    :key="opt.value"
+                    type="button"
+                    class="param-chip"
+                    :class="{ 'param-chip--active': (editingLine?.kind ?? lineDefaults.kind) === opt.value }"
+                    :aria-pressed="(editingLine?.kind ?? lineDefaults.kind) === opt.value"
+                    :aria-label="opt.label"
+                    @click="updateLine({ kind: opt.value as LineAnnotation['kind'] })"
+                  >
+                    <NIcon :size="18" :component="opt.value === 'straight' ? Line : Vector" />
+                  </button>
                 </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
-                  <NColorPicker
-                    :value="editingLine?.stroke ?? lineDefaults.stroke"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateLine({ stroke: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.width') }}</span>
-                  <NInputNumber
-                    :value="editingLine?.strokeWidth ?? lineDefaults.strokeWidth"
-                    :min="1"
-                    :max="50"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => updateLine({ strokeWidth: v ?? 1 })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
-                  <NSelect
-                    :value="editingLine?.strokeStyle ?? lineDefaults.strokeStyle"
-                    :options="strokeStyleOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateLine({ strokeStyle: v as StrokeStyle })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.startArrow') }}</span>
-                  <NSelect
-                    :value="arrowStyleValue(editingLine?.startArrow ?? lineDefaults.startArrow)"
-                    :options="arrowStyleOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateStartArrow(v as ArrowStyle)"
-                  />
-                  <NInputNumber
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NColorPicker
+                      class="param-color"
+                      :value="editingLine?.stroke ?? lineDefaults.stroke"
+                      :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
+                      @update:value="(v: string) => updateLine({ stroke: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.colour') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="editingLine?.strokeWidth ?? lineDefaults.strokeWidth"
+                      :min="1" :max="50" :step="1"
+                      :label-key="t('tools.imageEditor.width')"
+                      @update:value="(v: number) => updateLine({ strokeWidth: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.width') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select"
+                      :value="editingLine?.strokeStyle ?? lineDefaults.strokeStyle"
+                      :options="strokeStyleOptions"
+                      :render-label="strokeRender.label"
+                      :render-tag="strokeRender.tag"
+                      @update:value="(v: string) => updateLine({ strokeStyle: v as StrokeStyle })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.stroke') }}
+                </NTooltip>
+                <div class="param-group">
+                  <NTooltip placement="bottom">
+                    <template #trigger>
+                      <NSelect
+                        class="param-select"
+                        :value="arrowStyleValue(editingLine?.startArrow ?? lineDefaults.startArrow)"
+                        :options="arrowStyleOptions"
+                        :render-label="arrowRender.label"
+                        :render-tag="arrowRender.tag"
+                        @update:value="(v: string) => updateStartArrow(v as ArrowStyle)"
+                      />
+                    </template>
+                    {{ t('tools.imageEditor.startArrow') }}
+                  </NTooltip>
+                  <SizeField
                     v-if="arrowStyleValue(editingLine?.startArrow ?? lineDefaults.startArrow) !== 'none'"
                     :value="(editingLine?.startArrow ?? lineDefaults.startArrow)?.size ?? 12"
-                    :min="4"
-                    :max="40"
-                    :step="1"
-                    style="width: 100px;"
+                    :min="4" :max="40" :step="1"
+                    :label-key="t('tools.imageEditor.startArrow')"
                     @update:value="updateStartArrowSize"
                   />
                 </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.endArrow') }}</span>
-                  <NSelect
-                    :value="arrowStyleValue(editingLine?.endArrow ?? lineDefaults.endArrow)"
-                    :options="arrowStyleOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateEndArrow(v as ArrowStyle)"
-                  />
-                  <NInputNumber
+                <div class="param-group">
+                  <NTooltip placement="bottom">
+                    <template #trigger>
+                      <NSelect
+                        class="param-select"
+                        :value="arrowStyleValue(editingLine?.endArrow ?? lineDefaults.endArrow)"
+                        :options="arrowStyleOptions"
+                        :render-label="arrowRender.label"
+                        :render-tag="arrowRender.tag"
+                        @update:value="(v: string) => updateEndArrow(v as ArrowStyle)"
+                      />
+                    </template>
+                    {{ t('tools.imageEditor.endArrow') }}
+                  </NTooltip>
+                  <SizeField
                     v-if="arrowStyleValue(editingLine?.endArrow ?? lineDefaults.endArrow) !== 'none'"
                     :value="(editingLine?.endArrow ?? lineDefaults.endArrow)?.size ?? 12"
-                    :min="4"
-                    :max="40"
-                    :step="1"
-                    style="width: 100px;"
+                    :min="4" :max="40" :step="1"
+                    :label-key="t('tools.imageEditor.endArrow')"
                     @update:value="updateEndArrowSize"
                   />
                 </div>
@@ -2333,116 +2480,135 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
               <!-- Pen params -->
               <template v-if="activeTool === 'pen'">
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
-                  <NColorPicker
-                    :value="editingPen?.stroke ?? penDefaults.stroke"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updatePen({ stroke: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.width') }}</span>
-                  <NInputNumber
-                    :value="editingPen?.strokeWidth ?? penDefaults.strokeWidth"
-                    :min="1"
-                    :max="30"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => updatePen({ strokeWidth: v ?? 1 })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
-                  <NSelect
-                    :value="editingPen?.strokeStyle ?? penDefaults.strokeStyle"
-                    :options="strokeStyleOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updatePen({ strokeStyle: v as StrokeStyle })"
-                  />
-                </div>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NColorPicker
+                      class="param-color"
+                      :value="editingPen?.stroke ?? penDefaults.stroke"
+                      :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
+                      @update:value="(v: string) => updatePen({ stroke: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.colour') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="editingPen?.strokeWidth ?? penDefaults.strokeWidth"
+                      :min="1" :max="30" :step="1"
+                      :label-key="t('tools.imageEditor.width')"
+                      @update:value="(v: number) => updatePen({ strokeWidth: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.width') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select"
+                      :value="editingPen?.strokeStyle ?? penDefaults.strokeStyle"
+                      :options="strokeStyleOptions"
+                      :render-label="strokeRender.label"
+                      :render-tag="strokeRender.tag"
+                      @update:value="(v: string) => updatePen({ strokeStyle: v as StrokeStyle })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.stroke') }}
+                </NTooltip>
               </template>
 
               <!-- Text params -->
               <template v-if="activeTool === 'text'">
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.content') }}</span>
-                  <NInput
-                    :value="editingText?.text ?? textDefaults.text"
-                    :placeholder="t('tools.imageEditor.textPlaceholder')"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateText({ text: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
-                  <NColorPicker
-                    :value="editingText?.color ?? textDefaults.color"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateText({ color: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
-                  <NInputNumber
-                    :value="editingText?.fontSize ?? textDefaults.fontSize"
-                    :min="8"
-                    :max="120"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => updateText({ fontSize: v ?? 24 })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.fontFamily') }}</span>
-                  <NSelect
-                    :value="editingText?.fontFamily ?? textDefaults.fontFamily"
-                    :options="fontFamilyOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateText({ fontFamily: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.stroke') }}</span>
-                  <NSwitch
-                    :value="textStrokeOf(editingText).enabled"
-                    @update:value="(v: boolean) => updateTextStroke({ enabled: v })"
-                  />
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NColorPicker
+                      class="param-color"
+                      :value="editingText?.color ?? textDefaults.color"
+                      :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
+                      @update:value="(v: string) => updateText({ color: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.colour') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="editingText?.fontSize ?? textDefaults.fontSize"
+                      :min="8" :max="120" :step="1"
+                      :label-key="t('tools.imageEditor.size')"
+                      @update:value="(v: number) => updateText({ fontSize: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.size') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select param-select--text"
+                      :value="editingText?.fontFamily ?? textDefaults.fontFamily"
+                      :options="fontFamilyOptions"
+                      @update:value="(v: string) => updateText({ fontFamily: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.fontFamily') }}
+                </NTooltip>
+                <div class="param-group">
+                  <NTooltip placement="bottom">
+                    <template #trigger>
+                      <button
+                        type="button"
+                        class="param-chip"
+                        :class="{ 'param-chip--active': textStrokeOf(editingText).enabled }"
+                        :aria-pressed="textStrokeOf(editingText).enabled"
+                        :aria-label="t('tools.imageEditor.stroke')"
+                        @click="updateTextStroke({ enabled: !textStrokeOf(editingText).enabled })"
+                      >
+                        <NIcon :size="18" :component="BorderStyle" />
+                      </button>
+                    </template>
+                    {{ t('tools.imageEditor.stroke') }}
+                  </NTooltip>
                   <template v-if="textStrokeOf(editingText).enabled">
                     <NColorPicker
+                      class="param-color"
                       :value="textStrokeOf(editingText).color"
-                      style="width: 120px;"
                       @update:value="(v: string) => updateTextStroke({ color: v })"
                     />
-                    <NInputNumber
+                    <SizeField
                       :value="textStrokeOf(editingText).width"
-                      :min="1"
-                      :max="20"
-                      :step="1"
-                      style="width: 100px;"
-                      @update:value="(v: number | null) => updateTextStroke({ width: v ?? 1 })"
+                      :min="1" :max="20" :step="1"
+                      :label-key="t('tools.imageEditor.stroke')"
+                      @update:value="(v: number) => updateTextStroke({ width: v })"
                     />
                   </template>
                 </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.background') }}</span>
-                  <NSwitch
-                    :value="textBackgroundOf(editingText).enabled"
-                    @update:value="(v: boolean) => updateTextBackground({ enabled: v })"
-                  />
+                <div class="param-group">
+                  <NTooltip placement="bottom">
+                    <template #trigger>
+                      <button
+                        type="button"
+                        class="param-chip"
+                        :class="{ 'param-chip--active': textBackgroundOf(editingText).enabled }"
+                        :aria-pressed="textBackgroundOf(editingText).enabled"
+                        :aria-label="t('tools.imageEditor.background')"
+                        @click="updateTextBackground({ enabled: !textBackgroundOf(editingText).enabled })"
+                      >
+                        <NIcon :size="18" :component="Highlight" />
+                      </button>
+                    </template>
+                    {{ t('tools.imageEditor.background') }}
+                  </NTooltip>
                   <template v-if="textBackgroundOf(editingText).enabled">
                     <NColorPicker
+                      class="param-color"
                       :value="textBackgroundOf(editingText).color"
-                      style="width: 120px;"
                       @update:value="(v: string) => updateTextBackground({ color: v })"
                     />
-                    <NInputNumber
+                    <SizeField
                       :value="textBackgroundOf(editingText).opacity"
-                      :min="0"
-                      :max="1"
-                      :step="0.1"
-                      style="width: 100px;"
-                      @update:value="(v: number | null) => updateTextBackground({ opacity: v ?? 0.8 })"
+                      :min="0" :max="1" :step="0.1"
+                      :label-key="t('tools.imageEditor.background')"
+                      @update:value="(v: number) => updateTextBackground({ opacity: v })"
                     />
                   </template>
                 </div>
@@ -2450,140 +2616,165 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
               <!-- Number params -->
               <template v-if="activeTool === 'number'">
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.numberFormat') }}</span>
-                  <NSelect
-                    :value="editingNumber?.format ?? numberDefaults.format"
-                    :options="numberFormatOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateNumber({ format: v as NumberFormat })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.colour') }}</span>
-                  <NColorPicker
-                    :value="editingNumber?.color ?? numberDefaults.color"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateNumber({ color: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
-                  <NInputNumber
-                    :value="editingNumber?.size ?? numberDefaults.size"
-                    :min="10"
-                    :max="80"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => updateNumber({ size: v ?? 24 })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.fontFamily') }}</span>
-                  <NSelect
-                    :value="editingNumber?.fontFamily ?? numberDefaults.fontFamily"
-                    :options="fontFamilyOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateNumber({ fontFamily: v })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.leaderLine') }}</span>
-                  <NSwitch
-                    :value="numberLeaderOf(editingNumber).enabled"
-                    @update:value="(v: boolean) => updateNumberLeader({ enabled: v })"
-                  />
-                </div>
-                <template v-if="numberLeaderOf(editingNumber).enabled">
-                  <div class="image-editor__row">
-                    <span class="image-editor__row-label">{{ t('tools.imageEditor.leaderWidth') }}</span>
-                    <NInputNumber
-                      :value="numberLeaderOf(editingNumber).strokeWidth"
-                      :min="1"
-                      :max="20"
-                      :step="1"
-                      style="width: 160px;"
-                      @update:value="(v: number | null) => updateNumberLeader({ strokeWidth: v ?? 2 })"
-                    />
-                  </div>
-                  <div class="image-editor__row">
-                    <span class="image-editor__row-label">{{ t('tools.imageEditor.leaderStroke') }}</span>
+                <NTooltip placement="bottom">
+                  <template #trigger>
                     <NSelect
+                      class="param-select param-select--text"
+                      :value="editingNumber?.format ?? numberDefaults.format"
+                      :options="numberFormatOptions"
+                      :render-label="numberFormatRender.label"
+                      :render-tag="numberFormatRender.tag"
+                      @update:value="(v: string) => updateNumber({ format: v as NumberFormat })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.numberFormat') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NColorPicker
+                      class="param-color"
+                      :value="editingNumber?.color ?? numberDefaults.color"
+                      :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
+                      @update:value="(v: string) => updateNumber({ color: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.colour') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="editingNumber?.size ?? numberDefaults.size"
+                      :min="10" :max="80" :step="1"
+                      :label-key="t('tools.imageEditor.size')"
+                      @update:value="(v: number) => updateNumber({ size: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.size') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select param-select--text"
+                      :value="editingNumber?.fontFamily ?? numberDefaults.fontFamily"
+                      :options="fontFamilyOptions"
+                      @update:value="(v: string) => updateNumber({ fontFamily: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.fontFamily') }}
+                </NTooltip>
+                <div class="param-group">
+                  <NTooltip placement="bottom">
+                    <template #trigger>
+                      <button
+                        type="button"
+                        class="param-chip"
+                        :class="{ 'param-chip--active': numberLeaderOf(editingNumber).enabled }"
+                        :aria-pressed="numberLeaderOf(editingNumber).enabled"
+                        :aria-label="t('tools.imageEditor.leaderLine')"
+                        @click="updateNumberLeader({ enabled: !numberLeaderOf(editingNumber).enabled })"
+                      >
+                        <NIcon :size="18" :component="Vector" />
+                      </button>
+                    </template>
+                    {{ t('tools.imageEditor.leaderLine') }}
+                  </NTooltip>
+                  <template v-if="numberLeaderOf(editingNumber).enabled">
+                    <SizeField
+                      :value="numberLeaderOf(editingNumber).strokeWidth"
+                      :min="1" :max="20" :step="1"
+                      :label-key="t('tools.imageEditor.leaderWidth')"
+                      @update:value="(v: number) => updateNumberLeader({ strokeWidth: v })"
+                    />
+                    <NSelect
+                      class="param-select"
                       :value="numberLeaderOf(editingNumber).strokeStyle"
                       :options="strokeStyleOptions"
-                      style="width: 160px;"
+                      :render-label="strokeRender.label"
+                      :render-tag="strokeRender.tag"
                       @update:value="(v: string) => updateNumberLeader({ strokeStyle: v as StrokeStyle })"
                     />
-                  </div>
-                </template>
+                  </template>
+                </div>
               </template>
 
               <!-- Eraser params -->
               <template v-if="activeTool === 'eraser'">
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.mode') }}</span>
-                  <NSelect
-                    :value="eraserDefaults.mode"
-                    :options="eraserModeOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => { eraserDefaults.mode = v as 'rect' | 'brush'; }"
-                  />
-                </div>
-                <div v-if="eraserDefaults.mode === 'brush'" class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
-                  <NInputNumber
-                    :value="eraserDefaults.brushSize"
-                    :min="4"
-                    :max="100"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => { eraserDefaults.brushSize = v ?? 20; }"
-                  />
-                </div>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select"
+                      :value="eraserDefaults.mode"
+                      :options="eraserModeOptions"
+                      :render-label="eraserModeRender.label"
+                      :render-tag="eraserModeRender.tag"
+                      @update:value="(v: string) => { eraserDefaults.mode = v as 'rect' | 'brush'; }"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.mode') }}
+                </NTooltip>
+                <NTooltip v-if="eraserDefaults.mode === 'brush'" placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="eraserDefaults.brushSize"
+                      :min="4" :max="100" :step="1"
+                      :label-key="t('tools.imageEditor.size')"
+                      @update:value="(v: number) => { eraserDefaults.brushSize = v; }"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.size') }}
+                </NTooltip>
               </template>
 
               <!-- Mosaic params -->
               <template v-if="activeTool === 'mosaic'">
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.mode') }}</span>
-                  <NSelect
-                    :value="mosaicDefaults.mode"
-                    :options="eraserModeOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => { mosaicDefaults.mode = v as 'rect' | 'brush'; }"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.effect') }}</span>
-                  <NSelect
-                    :value="editingMosaic?.effect ?? mosaicDefaults.effect"
-                    :options="mosaicEffectOptions"
-                    style="width: 160px;"
-                    @update:value="(v: string) => updateMosaic({ effect: v as 'mosaic' | 'blur' })"
-                  />
-                </div>
-                <div class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.strength') }}</span>
-                  <NInputNumber
-                    :value="editingMosaic?.strength ?? mosaicDefaults.strength"
-                    :min="1"
-                    :max="50"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => updateMosaic({ strength: v ?? 8 })"
-                  />
-                </div>
-                <div v-if="mosaicDefaults.mode === 'brush'" class="image-editor__row">
-                  <span class="image-editor__row-label">{{ t('tools.imageEditor.size') }}</span>
-                  <NInputNumber
-                    :value="mosaicDefaults.brushSize"
-                    :min="4"
-                    :max="100"
-                    :step="1"
-                    style="width: 160px;"
-                    @update:value="(v: number | null) => { mosaicDefaults.brushSize = v ?? 30; }"
-                  />
-                </div>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select"
+                      :value="mosaicDefaults.mode"
+                      :options="eraserModeOptions"
+                      :render-label="eraserModeRender.label"
+                      :render-tag="eraserModeRender.tag"
+                      @update:value="(v: string) => { mosaicDefaults.mode = v as 'rect' | 'brush'; }"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.mode') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <NSelect
+                      class="param-select"
+                      :value="editingMosaic?.effect ?? mosaicDefaults.effect"
+                      :options="mosaicEffectOptions"
+                      :render-label="mosaicEffectRender.label"
+                      :render-tag="mosaicEffectRender.tag"
+                      @update:value="(v: string) => updateMosaic({ effect: v as 'mosaic' | 'blur' })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.effect') }}
+                </NTooltip>
+                <NTooltip placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="editingMosaic?.strength ?? mosaicDefaults.strength"
+                      :min="1" :max="50" :step="1"
+                      :label-key="t('tools.imageEditor.strength')"
+                      @update:value="(v: number) => updateMosaic({ strength: v })"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.strength') }}
+                </NTooltip>
+                <NTooltip v-if="mosaicDefaults.mode === 'brush'" placement="bottom">
+                  <template #trigger>
+                    <SizeField
+                      :value="mosaicDefaults.brushSize"
+                      :min="4" :max="100" :step="1"
+                      :label-key="t('tools.imageEditor.size')"
+                      @update:value="(v: number) => { mosaicDefaults.brushSize = v; }"
+                    />
+                  </template>
+                  {{ t('tools.imageEditor.size') }}
+                </NTooltip>
               </template>
             </div>
 
@@ -2646,6 +2837,32 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+/* The stage and the inline text editor share this coordinate space, so the
+   editor positions a textarea at stage coordinates with a plain absolute offset. */
+.image-editor__stage-wrap {
+  position: relative;
+}
+
+.image-editor__text-edit {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.image-editor__text-input {
+  min-width: 120px;
+  max-width: 320px;
+  padding: 4px 6px;
+  border: 1px dashed var(--color-primary);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: var(--font-size-body-md);
+  resize: none;
+  outline: none;
+  box-shadow: var(--shadow-pop);
 }
 
 .image-editor__hidden {
@@ -2737,25 +2954,76 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   cursor: not-allowed;
 }
 
-.image-editor__rows {
+/* The params strip lays its controls out horizontally and wraps, replacing the
+   old one-parameter-per-row stack. Each control is an icon chip, a colour
+   swatch, a preview select, or a SizeField; a param-group clusters a toggle
+   with its dependent controls. */
+.image-editor__params-row {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-/* One parameter per row, description left of its control, so a row can never
-   wrap its label above the control at a narrow width. */
-.image-editor__row {
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-xs);
 }
 
-.image-editor__row-label {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  font-size: var(--font-size-body-sm);
+.param-group {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xxs);
+}
+
+.param-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
   color: var(--color-text-2);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--motion-ease),
+    color var(--motion-fast) var(--motion-ease);
+}
+
+.param-chip:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.param-chip--active {
+  background: var(--color-primary);
+  color: var(--color-primary-text, #fff);
+}
+
+.param-color {
+  width: 32px;
+}
+
+.param-color :deep(.n-color-picker-trigger) {
+  width: 32px;
+  height: 32px;
+}
+
+.param-select {
+  width: 72px;
+}
+
+.param-select--text {
+  width: 110px;
+}
+
+/* SVG samples inside dropdown options and the selected tag. */
+.param-preview {
+  display: block;
+  color: var(--color-ink);
+}
+
+.param-preview--text {
+  font-size: var(--font-size-body-sm);
+  line-height: 20px;
+  padding: 0 var(--spacing-xxs);
 }
 
 .image-editor__footer {
