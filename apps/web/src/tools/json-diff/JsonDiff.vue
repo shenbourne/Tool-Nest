@@ -43,6 +43,18 @@ function connector(row: JsonDiffRow): string {
 function ancestorLine(row: JsonDiffRow, ancestorIdx: number): boolean {
   return !row.ancestorLast[ancestorIdx];
 }
+
+function leftFillClass(type: JsonDiffRow['type']): string {
+  if (type === 'removed') return 'json-diff-left-fill';
+  if (type === 'changed') return 'json-diff-changed-fill';
+  return '';
+}
+
+function rightFillClass(type: JsonDiffRow['type']): string {
+  if (type === 'added') return 'json-diff-right-fill';
+  if (type === 'changed') return 'json-diff-changed-fill';
+  return '';
+}
 </script>
 <template>
   <ToolLayout :tool="tool">
@@ -90,10 +102,10 @@ function ancestorLine(row: JsonDiffRow, ancestorIdx: number): boolean {
                     <span class="json-diff-label" :class="{ 'json-diff-label-dim': row.type === 'same' }">{{ row.label }}</span>
                   </div>
                 </div>
-                <div class="json-diff-value json-diff-value-left" :class="row.type === 'added' ? '' : 'json-diff-left-fill'">
+                <div class="json-diff-value json-diff-value-left" :class="leftFillClass(row.type)">
                   <template v-if="row.type !== 'added'">{{ row.leftValue }}</template>
                 </div>
-                <div class="json-diff-value" :class="row.type === 'removed' ? '' : 'json-diff-right-fill'">
+                <div class="json-diff-value" :class="rightFillClass(row.type)">
                   <template v-if="row.type !== 'removed'">{{ row.rightValue }}</template>
                 </div>
               </div>
@@ -223,5 +235,9 @@ function ancestorLine(row: JsonDiffRow, ancestorIdx: number): boolean {
 
 .json-diff-right-fill {
   background: var(--diff-added-bg);
+}
+
+.json-diff-changed-fill {
+  background: var(--diff-changed-bg);
 }
 </style>
