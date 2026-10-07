@@ -1,0 +1,22 @@
+# Phase 19 Acceptance Criteria
+
+Evidence for each check goes into `VERIFICATION.md`.
+
+## Defect fixes
+
+- [x] AC-1 With shape fill enabled, both colour pickers render as 32 px squares side by side (no 850 px / 6 px blow-up).
+- [x] AC-2 Hovering a SizeField opens the slider; moving the pointer from the box into the slider does not close it; the slider adjusts by drag and by wheel.
+- [x] AC-3 The closed start/end-arrow select shows the full SVG sample including the arrowhead (not clipped at 34 px).
+- [x] AC-4 The stroke-style select is wide enough to read the dash pattern (96 px).
+
+## Presentation + interaction
+
+- [x] AC-5 The number-format dropdown options read as sequences: `1, 2, 3` / `a, b, c` / `A, B, C` / `i, ii, iii` / `I, II, III`.
+- [x] AC-6 Sequence-number leader: a plain click places a badge with no leader; press-drag-release attaches the leader.
+- [x] AC-7 Creating a text annotation selects it and switches to the select tool.
+- [x] AC-8 Clicking an existing annotation from any tool mode selects it and switches to the select tool.
+- [x] AC-9 Every SizeField shows a small leading icon hinting its parameter.
+
+## Non-regression
+
+- [x] AC-10 `pnpm --filter @toolnest/web test`, `type-check`, `build` pass; changed-file lint clean.
