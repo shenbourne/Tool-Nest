@@ -1798,7 +1798,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
              filter and the programmatic picker; the canvas is the only thing
              the box shows. -->
         <div class="image-editor__hidden">
-          <ToolFileUpload ref="fileUpload" accept="image/*" compact @change="onFileChange" />
+          <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFileChange" />
         </div>
         <img v-if="imageUrl" :src="imageUrl" style="display:none" @load="onImageLoad" />
         <div v-if="imageUrl" class="canvas-wrapper" @wheel="onStageWheel">
