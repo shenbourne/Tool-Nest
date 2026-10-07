@@ -9,7 +9,9 @@ import { formatNumber } from './image-editor.service';
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 function svg(attrs: Record<string, string | number>, children: VNodeChild[]) {
-  return h('svg', { xmlns: SVG_NS, viewBox: '0 0 64 20', width: 64, height: 20, ...attrs }, children);
+  // No fixed width/height attributes: CSS sizes the sample so it scales down
+  // inside the narrow closed-select tag instead of being clipped.
+  return h('svg', { xmlns: SVG_NS, viewBox: '0 0 64 20', ...attrs }, children);
 }
 
 /** dasharray values mirror strokeDash() at width 2 so the sample matches the canvas. */
@@ -62,7 +64,10 @@ export function arrowStylePreview(style: ArrowStyle): VNodeChild {
 }
 
 export function numberFormatPreview(format: NumberFormat): VNodeChild {
-  return h('span', { class: 'param-preview param-preview--text' }, formatNumber(1, format));
+  // Show the first three values so the sample reads as a sequence (1, 2, 3 /
+  // a, b, c / i, ii, iii), not a single glyph.
+  const samples = [1, 2, 3].map((n) => formatNumber(n, format)).join(', ');
+  return h('span', { class: 'param-preview param-preview--text' }, samples);
 }
 
 /** Shape kind: an unfilled rect or ellipse outline sample. */

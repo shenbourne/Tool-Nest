@@ -12,7 +12,10 @@ import {
 import {
   ArrowBackUp,
   ArrowForwardUp,
+  ArrowLeft,
+  ArrowRight,
   BorderStyle,
+  Brush,
   Circle as CircleIcon,
   Click as SelectIcon,
   CloudUpload,
@@ -21,8 +24,10 @@ import {
   Highlight,
   Line,
   ListNumbers,
+  Minus,
   Paint,
   Pencil,
+  RadiusBottomLeft,
   Rectangle,
   Trash,
   Typography,
@@ -651,23 +656,25 @@ function commitTextEdit() {
   if (!content) return;
   if (edit.annotationId === null) {
     const d = textDefaults.value;
-    annotations.value = [
-      ...annotations.value,
-      {
-        id: nextId++,
-        type: 'text',
-        x: edit.x,
-        y: edit.y,
-        text: content,
-        fontSize: d.fontSize,
-        color: d.color,
-        fontFamily: d.fontFamily,
-        rotation: 0,
-        stroke: { ...d.stroke },
-        background: { ...d.background },
-      },
-    ];
+    const annotation: TextAnnotation = {
+      id: nextId++,
+      type: 'text',
+      x: edit.x,
+      y: edit.y,
+      text: content,
+      fontSize: d.fontSize,
+      color: d.color,
+      fontFamily: d.fontFamily,
+      rotation: 0,
+      stroke: { ...d.stroke },
+      background: { ...d.background },
+    };
+    annotations.value = [...annotations.value, annotation];
     pushHistory();
+    // Select the new text and switch to the select tool so it can be dragged
+    // or rotated immediately without a second click.
+    selectedId.value = annotation.id;
+    activeTool.value = 'select';
   } else {
     const target = annotations.value.find((a) => a.id === edit.annotationId);
     if (target && target.type === 'text' && target.text !== content) {
@@ -1045,11 +1052,15 @@ function onStageMouseUp() {
   }
 }
 
-/** Clicks on an annotation must not reach the stage, which would draw a new one. */
+/**
+ * Clicks on an annotation must not reach the stage, which would draw a new one.
+ * Every tool mode selects the clicked annotation and hops to the select tool,
+ * so an existing annotation can be adjusted without first switching manually.
+ */
 function onAnnotationClick(annotation: Annotation, e: KonvaPointerEvent) {
   e.cancelBubble = true;
-  if (activeTool.value !== 'select') return;
   selectedId.value = annotation.id;
+  activeTool.value = 'select';
 }
 
 /** Selection and dragging are the select tool's job, so drawing modes stay inert. */
@@ -2327,6 +2338,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingShape?.strokeWidth ?? shapeDefaults.strokeWidth"
                       :min="1" :max="50" :step="1"
                       :label-key="t('tools.imageEditor.width')"
+                      :icon="Minus"
                       @update:value="(v: number) => updateShape({ strokeWidth: v })"
                     />
                   </template>
@@ -2374,6 +2386,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingShape?.cornerRadius ?? shapeDefaults.cornerRadius"
                       :min="0" :max="100" :step="1"
                       :label-key="t('tools.imageEditor.cornerRadius')"
+                      :icon="RadiusBottomLeft"
                       @update:value="(v: number) => updateShape({ cornerRadius: v })"
                     />
                   </template>
@@ -2414,6 +2427,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingLine?.strokeWidth ?? lineDefaults.strokeWidth"
                       :min="1" :max="50" :step="1"
                       :label-key="t('tools.imageEditor.width')"
+                      :icon="Minus"
                       @update:value="(v: number) => updateLine({ strokeWidth: v })"
                     />
                   </template>
@@ -2451,6 +2465,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     :value="(editingLine?.startArrow ?? lineDefaults.startArrow)?.size ?? 12"
                     :min="4" :max="40" :step="1"
                     :label-key="t('tools.imageEditor.startArrow')"
+                    :icon="ArrowLeft"
                     @update:value="updateStartArrowSize"
                   />
                 </div>
@@ -2473,6 +2488,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     :value="(editingLine?.endArrow ?? lineDefaults.endArrow)?.size ?? 12"
                     :min="4" :max="40" :step="1"
                     :label-key="t('tools.imageEditor.endArrow')"
+                    :icon="ArrowRight"
                     @update:value="updateEndArrowSize"
                   />
                 </div>
@@ -2497,6 +2513,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingPen?.strokeWidth ?? penDefaults.strokeWidth"
                       :min="1" :max="30" :step="1"
                       :label-key="t('tools.imageEditor.width')"
+                      :icon="Minus"
                       @update:value="(v: number) => updatePen({ strokeWidth: v })"
                     />
                   </template>
@@ -2536,6 +2553,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingText?.fontSize ?? textDefaults.fontSize"
                       :min="8" :max="120" :step="1"
                       :label-key="t('tools.imageEditor.size')"
+                      :icon="Typography"
                       @update:value="(v: number) => updateText({ fontSize: v })"
                     />
                   </template>
@@ -2578,6 +2596,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="textStrokeOf(editingText).width"
                       :min="1" :max="20" :step="1"
                       :label-key="t('tools.imageEditor.stroke')"
+                      :icon="BorderStyle"
                       @update:value="(v: number) => updateTextStroke({ width: v })"
                     />
                   </template>
@@ -2608,6 +2627,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="textBackgroundOf(editingText).opacity"
                       :min="0" :max="1" :step="0.1"
                       :label-key="t('tools.imageEditor.background')"
+                      :icon="Highlight"
                       @update:value="(v: number) => updateTextBackground({ opacity: v })"
                     />
                   </template>
@@ -2646,6 +2666,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingNumber?.size ?? numberDefaults.size"
                       :min="10" :max="80" :step="1"
                       :label-key="t('tools.imageEditor.size')"
+                      :icon="Typography"
                       @update:value="(v: number) => updateNumber({ size: v })"
                     />
                   </template>
@@ -2683,6 +2704,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="numberLeaderOf(editingNumber).strokeWidth"
                       :min="1" :max="20" :step="1"
                       :label-key="t('tools.imageEditor.leaderWidth')"
+                      :icon="Minus"
                       @update:value="(v: number) => updateNumberLeader({ strokeWidth: v })"
                     />
                     <NSelect
@@ -2718,6 +2740,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="eraserDefaults.brushSize"
                       :min="4" :max="100" :step="1"
                       :label-key="t('tools.imageEditor.size')"
+                      :icon="Brush"
                       @update:value="(v: number) => { eraserDefaults.brushSize = v; }"
                     />
                   </template>
@@ -2759,6 +2782,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingMosaic?.strength ?? mosaicDefaults.strength"
                       :min="1" :max="50" :step="1"
                       :label-key="t('tools.imageEditor.strength')"
+                      :icon="GridDots"
                       @update:value="(v: number) => updateMosaic({ strength: v })"
                     />
                   </template>
@@ -2770,6 +2794,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="mosaicDefaults.brushSize"
                       :min="4" :max="100" :step="1"
                       :label-key="t('tools.imageEditor.size')"
+                      :icon="Brush"
                       @update:value="(v: number) => { mosaicDefaults.brushSize = v; }"
                     />
                   </template>
@@ -2997,33 +3022,26 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   color: var(--color-primary-text, #fff);
 }
 
-.param-color {
+/* NColorPicker sits inside NTooltip's trigger slot, so the scoped data-v attr
+   never reaches its root element; only a :deep() selector can size it. Without
+   this the root is width:100% and the two colour blocks blow up the strip. */
+:deep(.param-color) {
   width: 32px;
 }
 
-.param-color :deep(.n-color-picker-trigger) {
+:deep(.param-color .n-color-picker-trigger) {
   width: 32px;
   height: 32px;
 }
 
+/* Wide enough that the 64px SVG sample is not clipped by the selection
+   content box (its overflow:hidden would cut off arrowheads / dash tails). */
 .param-select {
-  width: 72px;
+  width: 96px;
 }
 
 .param-select--text {
   width: 110px;
-}
-
-/* SVG samples inside dropdown options and the selected tag. */
-.param-preview {
-  display: block;
-  color: var(--color-ink);
-}
-
-.param-preview--text {
-  font-size: var(--font-size-body-sm);
-  line-height: 20px;
-  padding: 0 var(--spacing-xxs);
 }
 
 .image-editor__footer {
@@ -3031,5 +3049,25 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-xs);
+}
+</style>
+
+<!-- NSelect teleports its options and tag to <body>, outside this component's
+     scoped-attribute reach, so the SVG sample styles must live in a global block. -->
+<style>
+/* SVG samples inside dropdown options and the selected tag. Width fills the
+   container so the closed tag shows the whole sample (no clipped arrowhead). */
+.param-preview {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 64 / 20;
+  color: var(--color-ink);
+}
+
+.param-preview--text {
+  font-size: var(--font-size-body-sm);
+  line-height: 20px;
+  padding: 0 var(--spacing-xxs);
 }
 </style>

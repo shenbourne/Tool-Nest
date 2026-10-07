@@ -1,31 +1,52 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { NPopover, NSlider } from 'naive-ui';
+import { ref, type Component } from 'vue';
+import { NIcon, NPopover, NSlider } from 'naive-ui';
 
 // A square numeric field for the image-editor params toolbar. The box shows the
 // current value; hovering/focusing it pops up a slider that adjusts by drag or
-// scroll wheel. Square (not a wide input) so the toolbar stays compact.
+// scroll wheel. Square (not a wide input) so the toolbar stays compact. An
+// optional leading icon hints what the number controls (width, radius, size…).
 const props = withDefaults(defineProps<{
   value: number;
   min?: number;
   max?: number;
   step?: number;
   labelKey?: string;
+  icon?: Component | null;
 }>(), {
   min: 1,
   max: 50,
   step: 1,
   labelKey: '',
+  icon: null,
 });
 
 const emit = defineEmits<{ 'update:value': [value: number] }>();
 
 const show = ref(false);
 const sliderValue = ref(props.value);
+let closeTimer: ReturnType<typeof setTimeout> | null = null;
+
+function cancelClose() {
+  if (closeTimer) {
+    clearTimeout(closeTimer);
+    closeTimer = null;
+  }
+}
 
 function open() {
+  cancelClose();
   sliderValue.value = props.value;
   show.value = true;
+}
+
+// Delayed close so the pointer can travel from the box into the popover
+// without the popover vanishing underneath it.
+function scheduleClose() {
+  cancelClose();
+  closeTimer = setTimeout(() => {
+    show.value = false;
+  }, 150);
 }
 
 function commit(v: number | null) {
@@ -58,19 +79,26 @@ function onWheel(event: WheelEvent) {
     @clickoutside="show = false"
   >
     <template #trigger>
-      <button
-        type="button"
-        class="size-field"
-        :aria-label="labelKey"
-        @mouseenter="open"
-        @focus="open"
-        @mouseleave="show = false"
-        @wheel="onWheel"
-      >
-        <span class="size-field__value">{{ value }}</span>
-      </button>
+      <span class="size-field__group">
+        <NIcon v-if="icon" :size="14" :component="icon" class="size-field__icon" />
+        <button
+          type="button"
+          class="size-field"
+          :aria-label="labelKey"
+          @mouseenter="open"
+          @focus="open"
+          @mouseleave="scheduleClose"
+          @wheel="onWheel"
+        >
+          <span class="size-field__value">{{ value }}</span>
+        </button>
+      </span>
     </template>
-    <div class="size-field__popover" @mouseleave="show = false">
+    <div
+      class="size-field__popover"
+      @mouseenter="cancelClose"
+      @mouseleave="scheduleClose"
+    >
       <NSlider
         :value="sliderValue"
         :min="min"
@@ -84,6 +112,17 @@ function onWheel(event: WheelEvent) {
 </template>
 
 <style scoped>
+.size-field__group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.size-field__icon {
+  color: var(--color-text-3);
+  flex: none;
+}
+
 .size-field {
   box-sizing: border-box;
   width: 32px;
