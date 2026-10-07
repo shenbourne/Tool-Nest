@@ -3024,14 +3024,23 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
 /* NColorPicker sits inside NTooltip's trigger slot, so the scoped data-v attr
    never reaches its root element; only a :deep() selector can size it. Without
-   this the root is width:100% and the two colour blocks blow up the strip. */
+   this the root is width:100% and the two colour blocks blow up the strip.
+   Fixed 32×32 square, and the hex label inside the fill is hidden — a 32 px
+   block cannot show "#rrggbb", so the block stays a pure colour swatch. */
 :deep(.param-color) {
   width: 32px;
+  height: 32px;
+  --n-height: 32px;
 }
 
-:deep(.param-color .n-color-picker-trigger) {
-  width: 32px;
-  height: 32px;
+:deep(.param-color .n-color-picker__fill) {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+:deep(.param-color .n-color-picker__value) {
+  display: none;
 }
 
 /* Wide enough that the 64px SVG sample is not clipped by the selection
