@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NSpace, NButton, NInput, NTag, NAlert } from 'naive-ui';
+import { NSpace, NButton, NInput, NTag, NAlert, NCard } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPairPanel from '@/components/ToolTextPairPanel.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -78,10 +79,16 @@ function formatVal(v: any): string {
 <template>
   <ToolLayout :tool="tool">
     <NSpace vertical :size="16">
-      <div style="display:flex;gap:12px;">
-        <NCard :title="t('tools.jsonDiff.leftJson')" style="flex:1;"><NInput v-model:value="leftJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.leftPlaceholder')"  :input-props="{ id: 'jsonDiffField0' }"/></NCard>
-        <NCard :title="t('tools.jsonDiff.rightJson')" style="flex:1;"><NInput v-model:value="rightJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.rightPlaceholder')"  :input-props="{ id: 'jsonDiffField1' }"/></NCard>
-      </div>
+      <ToolTextPairPanel
+        v-model:left-text="leftJson"
+        v-model:right-text="rightJson"
+        :left-title="t('tools.jsonDiff.leftJson')"
+        :right-title="t('tools.jsonDiff.rightJson')"
+        accept=".json,application/json"
+      >
+        <template #left><NInput v-model:value="leftJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.leftPlaceholder')" :input-props="{ id: 'jsonDiffField0' }" /></template>
+        <template #right><NInput v-model:value="rightJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.rightPlaceholder')" :input-props="{ id: 'jsonDiffField1' }" /></template>
+      </ToolTextPairPanel>
       <NAlert v-if="errorMsg" type="error" :title="errorMsg" />
       <NSpace v-if="diffResult.length">
         <NTag type="success">{{ t('tools.jsonDiff.added') }}: {{ stats.added }}</NTag>

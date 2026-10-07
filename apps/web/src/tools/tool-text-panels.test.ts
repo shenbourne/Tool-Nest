@@ -112,7 +112,8 @@ const EXCLUDED: string[] = [
   'rsa-key-pair-generator/RsaKeyPair.vue',
   'bip39-generator/Bip39Generator.vue',
   // two-input comparators: both textareas are inputs and the result is a
-  // structured diff card, so the input/output action split does not apply
+  // structured diff card, so the input/output action split does not apply;
+  // they render ToolTextPairPanel instead (phase 17)
   'json-diff/JsonDiff.vue',
   'text-diff/TextDiff.vue',
 ];
@@ -143,6 +144,15 @@ describe('tool text panels', () => {
 
   it('keeps excluded tools off ToolTextPanel', () => {
     const offenders = EXCLUDED.filter((name) => source(name).includes('<ToolTextPanel'));
+    expect(offenders).toEqual([]);
+  });
+
+  it('renders ToolTextPairPanel in the two-input diff comparators', () => {
+    const comparators = [
+      'json-diff/JsonDiff.vue',
+      'text-diff/TextDiff.vue',
+    ];
+    const offenders = comparators.filter((name) => !source(name).includes('<ToolTextPairPanel'));
     expect(offenders).toEqual([]);
   });
 
