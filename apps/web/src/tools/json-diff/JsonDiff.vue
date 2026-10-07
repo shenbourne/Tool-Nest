@@ -29,10 +29,10 @@ const diffResult = computed<JsonDiffRow[]>(() => {
 
 const stats = computed(() => summarizeJsonTree(diffResult.value));
 
-function tagType(type: JsonDiffRow['type']): 'success' | 'error' | 'warning' | 'default' {
+function tagType(type: JsonDiffRow['type']): 'success' | 'error' | 'warning' | 'default' | 'info' {
   if (type === 'added') return 'success';
   if (type === 'removed') return 'error';
-  if (type === 'changed') return 'warning';
+  if (type === 'changed') return 'info';
   return 'default';
 }
 
