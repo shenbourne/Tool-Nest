@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import {
   ChevronDown,
   ChevronRight,
-  ClipboardPaste,
+  Clipboard,
   FileImport,
 } from '@vicons/tabler';
 import { readClipboardText } from '@/utils/clipboard';
@@ -16,7 +16,7 @@ import { collectClipboardFiles } from '@/utils/clipboard-files';
 // shared collapse toggle — clicking either arrow collapses or expands both
 // columns together. The tool keeps owning its NInput bindings through the
 // left/right slots; the panel owns the file/clipboard actions and collapse.
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   leftTitle?: string;
   rightTitle?: string;
   leftText: string;
@@ -46,7 +46,8 @@ function toggleCollapsed() {
 }
 
 function setText(side: 'left' | 'right', text: string) {
-  emit(side === 'left' ? 'update:leftText' : 'update:rightText', text);
+  if (side === 'left') emit('update:leftText', text);
+  else emit('update:rightText', text);
 }
 
 async function importFile(side: 'left' | 'right', file: File) {
@@ -133,7 +134,7 @@ onBeforeUnmount(() => document.removeEventListener('paste', onPagePaste));
             <NTooltip>
               <template #trigger>
                 <NButton quaternary circle size="small" :aria-label="t('tool.pasteFile')" @click="pasteInto(side)">
-                  <NIcon><ClipboardPaste /></NIcon>
+                  <NIcon><Clipboard /></NIcon>
                 </NButton>
               </template>
               {{ t('tool.pasteFile') }}
