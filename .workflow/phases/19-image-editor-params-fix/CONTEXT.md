@@ -17,6 +17,11 @@ User review of the phase 17 params-panel redesign (2026-10-07/08), with a screen
 
 Also from the same review: every `SizeField` gained a small leading icon (line width = `Minus`, corner radius = `RadiusBottomLeft`, font/number size = `Typography`, arrow sizes = `ArrowLeft`/`ArrowRight`, stroke width = `BorderStyle`, background opacity = `Highlight`, brush sizes = `Brush`, mosaic strength = `GridDots`).
 
+## Follow-up findings from the same review (second pass)
+
+9. **Colour swatch text overflowed** (defect). The phase-19 fix set `.param-color { width:32px }` but no height and did not hide the picker's hex label; the root kept naive-ui's default `--n-height:42px` and the `.n-color-picker__value` label (`#ff0000`) spilled out of the 32 px block. Fixed: `.param-color` is a fixed 32×32 square (`--n-height` overridden) with `.n-color-picker__value { display:none }`, so the block is a pure colour swatch like the phase-17 stroke block.
+10. **Start-arrow preview pointed the wrong way** (defect). `arrowStylePreview` always drew a right-pointing arrowhead, so the start-arrow select showed a right arrow. Fixed by adding a `direction` parameter (`'end'` default, `'start'` mirrors the art with `translate(64,0) scale(-1,1)`), and splitting the shared `arrowRender` into `startArrowRender` / `endArrowRender`.
+
 ## Boundary
 
 - In scope: `apps/web/src/tools/image-editor/` (`ImageEditor.vue`, `SizeField.vue`, `params-previews.ts`), phase records.

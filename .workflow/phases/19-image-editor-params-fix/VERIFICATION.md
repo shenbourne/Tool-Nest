@@ -25,6 +25,13 @@ Date: 2026-10-08. Branch: `feature/phase-14-image-editor-annotations` (worktree)
 | AC-8 | cross-tool select | shape tool + click existing text → `activeTool:"select"`, `selectedId:1` |
 | AC-9 | SizeField icons | shape strip shows 2 `.size-field__icon` for 2 SizeFields; icons assigned per parameter across all tools |
 
+## Follow-up verification (second review pass)
+
+| AC | Check | Evidence |
+|----|-------|----------|
+| AC-11 | colour swatches 32×32, label hidden | shape tool + fill on → both `.param-color` measure 32×32 px; `.n-color-picker__value` computed `display:none` |
+| AC-12 | start arrow points left | line tool → start-arrow select SVG contains `<g transform="translate(64,0) scale(-1,1)">`, end-arrow select has no such group; all 4 start-arrow dropdown options mirrored |
+
 ## Acceptance check-off
 
-All AC-1 … AC-10 pass. See ACCEPTANCE.md.
+All AC-1 … AC-12 pass. See ACCEPTANCE.md.

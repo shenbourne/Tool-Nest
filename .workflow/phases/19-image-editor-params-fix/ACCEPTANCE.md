@@ -17,6 +17,11 @@ Evidence for each check goes into `VERIFICATION.md`.
 - [x] AC-8 Clicking an existing annotation from any tool mode selects it and switches to the select tool.
 - [x] AC-9 Every SizeField shows a small leading icon hinting its parameter.
 
+## Follow-up fixes (second review pass)
+
+- [x] AC-11 Both colour blocks (stroke + fill) render as pure 32×32 swatches with the hex label hidden.
+- [x] AC-12 The start-arrow select shows a left-pointing arrow (in the closed tag and every dropdown option); the end-arrow select stays right-pointing.
+
 ## Non-regression
 
 - [x] AC-10 `pnpm --filter @toolnest/web test`, `type-check`, `build` pass; changed-file lint clean.
