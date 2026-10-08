@@ -3043,19 +3043,20 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   height: 32px;
   --n-height: 32px;
   padding: 0;
-  border: 2px solid transparent;
-  border-radius: 4px;
+  border: 3px solid transparent;
+  border-radius: 6px;
   background: linear-gradient(white, white) padding-box,
               linear-gradient(135deg, #e03131, #1971c2, #2f9e44, #f08c00, #343a40) border-box;
+  box-shadow: 0 0 0 2px white inset;
 }
 
 :deep(.param-color .n-color-picker__fill) {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 2px;
+  top: 2px;
+  left: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  border-radius: 3px;
 }
 
 :deep(.param-color .n-color-picker__value) {
