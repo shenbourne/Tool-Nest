@@ -337,7 +337,6 @@ const numberDefaults = ref({
   color: '#ff0000',
   size: 24,
   fontFamily: 'sans-serif',
-  leaderEnabled: false,
   leaderStrokeWidth: 2,
   leaderStrokeStyle: 'solid' as StrokeStyle,
   leaderArrow: { style: 'triangle' as ArrowStyle, size: 10 },
@@ -789,9 +788,7 @@ function placeNumber(x: number, y: number) {
   nextNumber.value += 1;
   selectedId.value = annotation.id;
   pushHistory();
-  if (d.leaderEnabled) {
-    leaderDraft.value = [x, y, x, y];
-  }
+  leaderDraft.value = [x, y, x, y];
 }
 
 function onStageMouseDown(e: KonvaPointerEvent) {
@@ -1763,7 +1760,7 @@ function updateNumber(patch: Partial<NumberAnnotation>) {
 /** The leader-line model the params row edits (never null while toggling). */
 function numberLeaderOf(source: NumberAnnotation | null): NonNullable<NumberAnnotation['leaderLine']> {
   return source?.leaderLine ?? {
-    enabled: numberDefaults.value.leaderEnabled,
+    enabled: true,
     points: [0, 0, 0, 0],
     strokeWidth: numberDefaults.value.leaderStrokeWidth,
     strokeStyle: numberDefaults.value.leaderStrokeStyle,
@@ -1779,7 +1776,6 @@ function updateNumberLeader(patch: Partial<NonNullable<NumberAnnotation['leaderL
     replaceAnnotation(target.id, { ...target, leaderLine: next });
     scheduleCommit();
   } else {
-    numberDefaults.value.leaderEnabled = next.enabled;
     numberDefaults.value.leaderStrokeWidth = next.strokeWidth;
     numberDefaults.value.leaderStrokeStyle = next.strokeStyle;
     numberDefaults.value.leaderArrow = { ...next.arrow };
@@ -2693,38 +2689,22 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   {{ t('tools.imageEditor.fontFamily') }}
                 </NTooltip>
                 <div class="param-group">
-                  <NTooltip placement="bottom">
-                    <template #trigger>
-                      <button
-                        type="button"
-                        class="param-chip"
-                        :class="{ 'param-chip--active': numberLeaderOf(editingNumber).enabled }"
-                        :aria-pressed="numberLeaderOf(editingNumber).enabled"
-                        :aria-label="t('tools.imageEditor.leaderLine')"
-                        @click="updateNumberLeader({ enabled: !numberLeaderOf(editingNumber).enabled })"
-                      >
-                        <NIcon :size="18" :component="Vector" />
-                      </button>
-                    </template>
-                    {{ t('tools.imageEditor.leaderLine') }}
-                  </NTooltip>
-                  <template v-if="numberLeaderOf(editingNumber).enabled">
-                    <SizeField
-                      :value="numberLeaderOf(editingNumber).strokeWidth"
-                      :min="1" :max="20" :step="1"
-                      :label-key="t('tools.imageEditor.leaderWidth')"
-                      :icon="lineWeightIcon"
-                      @update:value="(v: number) => updateNumberLeader({ strokeWidth: v })"
-                    />
-                    <NSelect
-                      class="param-select"
-                      :value="numberLeaderOf(editingNumber).strokeStyle"
-                      :options="strokeStyleOptions"
-                      :render-label="strokeRender.label"
-                      :render-tag="strokeRender.tag"
-                      @update:value="(v: string) => updateNumberLeader({ strokeStyle: v as StrokeStyle })"
-                    />
-                  </template>
+                  <span class="param-label">| {{ t('tools.imageEditor.leaderLine') }}</span>
+                  <SizeField
+                    :value="numberLeaderOf(editingNumber).strokeWidth"
+                    :min="1" :max="20" :step="1"
+                    :label-key="t('tools.imageEditor.leaderWidth')"
+                    :icon="lineWeightIcon"
+                    @update:value="(v: number) => updateNumberLeader({ strokeWidth: v })"
+                  />
+                  <NSelect
+                    class="param-select"
+                    :value="numberLeaderOf(editingNumber).strokeStyle"
+                    :options="strokeStyleOptions"
+                    :render-label="strokeRender.label"
+                    :render-tag="strokeRender.tag"
+                    @update:value="(v: string) => updateNumberLeader({ strokeStyle: v as StrokeStyle })"
+                  />
                 </div>
               </template>
 
@@ -3003,6 +2983,13 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xxs);
+}
+
+.param-label {
+  color: var(--color-text-2);
+  font-size: var(--font-size-caption);
+  white-space: nowrap;
+  user-select: none;
 }
 
 .param-chip {
