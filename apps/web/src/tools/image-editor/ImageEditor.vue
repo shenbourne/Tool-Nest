@@ -3046,7 +3046,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   border: 3px solid transparent;
   border-radius: 6px;
   background: linear-gradient(white, white) padding-box,
-              linear-gradient(135deg, #e03131, #1971c2, #2f9e44, #f08c00, #343a40) border-box;
+              linear-gradient(135deg, #ff6b6b, #4dabf7, #51cf66, #ffd43b, #cc5de8) border-box;
   box-shadow: 0 0 0 2px white inset;
 }
 
