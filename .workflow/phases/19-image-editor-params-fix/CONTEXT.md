@@ -28,6 +28,10 @@ Also from the same review: every `SizeField` gained a small leading icon (line w
 12. **Colour picker fill rendered offset** (defect). The NColorPicker's internal `.n-color-picker__fill` element was not constrained by the parent 32×32 container, causing the colour swatch to appear shifted to the bottom-right. Fixed by adding `position: relative; overflow: hidden` to `.param-color` and absolutely positioning the fill element (`top: 0; left: 0; width: 100%; height: 100%`).
 13. **Colour picker needs colourful border to indicate clickability** (improvement). The plain 32×32 swatch did not visually suggest it was a colour picker. Added a 3 px gradient border using the CSS `background: linear-gradient(white, white) padding-box, linear-gradient(135deg, …) border-box` technique with a 2 px white inset `box-shadow` to separate the fill from the border. Initial colours were too dark (`#e03131, #1971c2, #2f9e44, #f08c00, #343a40`); replaced with brighter variants (`#ff6b6b, #4dabf7, #51cf66, #ffd43b, #cc5de8`) for better visibility.
 
+## Follow-up findings from the same review (fourth pass — leader line params)
+
+14. **Leader line params should be permanent** (improvement). The leader line toggle button (Vector icon chip) and conditional `v-if` made the width/style controls disappear when leader was disabled. User requested the params always be visible with a text label. Removed the toggle button and `v-if`, replaced with a `| 引导线：` text label (`<span class="param-label">`) followed by the SizeField and stroke-style select. Leader line is now always enabled by default (`enabled: true` in `numberLeaderOf`), and `leaderDraft` always initializes on number creation (removed the `if (d.leaderEnabled)` guard). Removed `leaderEnabled` from `numberDefaults` since it is no longer toggled.
+
 ## Boundary
 
 - In scope: `apps/web/src/tools/image-editor/` (`ImageEditor.vue`, `SizeField.vue`, `params-previews.ts`), phase records.

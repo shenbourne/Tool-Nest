@@ -23,6 +23,7 @@ Evidence for each check goes into `VERIFICATION.md`.
 - [x] AC-12 The start-arrow select shows a left-pointing arrow (in the closed tag and every dropdown option); the end-arrow select stays right-pointing.
 - [x] AC-13 The line-weight SizeField icon shows three stacked horizontal lines of increasing thickness (thin → medium → thick), replacing the previous Minus icon.
 - [x] AC-14 Both colour pickers (stroke + fill) render as 32×32 swatches with a bright gradient border (red → blue → green → yellow → purple) and a white inset gap separating the fill from the border.
+- [x] AC-15 Leader line params are always visible: the toggle button is replaced with a `| 引导线：` text label, followed by the width SizeField and stroke-style select. Leader line is always enabled by default.
 
 ## Non-regression
 
