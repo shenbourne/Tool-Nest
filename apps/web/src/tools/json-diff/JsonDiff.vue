@@ -45,14 +45,14 @@ function ancestorLine(row: JsonDiffRow, ancestorIdx: number): boolean {
 }
 
 function leftFillClass(row: JsonDiffRow): string {
-  if (row.isContainer) return 'json-diff-container-fill';
+  if (row.isContainer) return 'json-diff-container-fill json-diff-container-text';
   if (row.type === 'removed') return 'json-diff-left-fill';
   if (row.type === 'changed') return 'json-diff-changed-fill';
   return '';
 }
 
 function rightFillClass(row: JsonDiffRow): string {
-  if (row.isContainer) return 'json-diff-container-fill';
+  if (row.isContainer) return 'json-diff-container-fill json-diff-container-text';
   if (row.type === 'added') return 'json-diff-right-fill';
   if (row.type === 'changed') return 'json-diff-changed-fill';
   return '';
@@ -245,5 +245,9 @@ function rightFillClass(row: JsonDiffRow): string {
 
 .json-diff-container-fill {
   background: var(--diff-container-bg);
+}
+
+.json-diff-container-text {
+  color: var(--color-text-3);
 }
 </style>
