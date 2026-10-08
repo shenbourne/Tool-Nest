@@ -2995,11 +2995,12 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
 .param-divider {
   display: inline-block;
-  width: 1px;
-  height: 24px;
-  background: var(--color-hairline);
+  width: 2px;
+  height: 32px;
+  background: var(--color-border);
   flex-shrink: 0;
   align-self: center;
+  margin: 0 8px;
 }
 
 .param-chip {
