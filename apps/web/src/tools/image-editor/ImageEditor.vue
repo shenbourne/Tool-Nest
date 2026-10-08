@@ -2689,7 +2689,8 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   {{ t('tools.imageEditor.fontFamily') }}
                 </NTooltip>
                 <div class="param-group">
-                  <span class="param-label">| {{ t('tools.imageEditor.leaderLine') }}</span>
+                  <span class="param-divider"></span>
+                  <span class="param-label">{{ t('tools.imageEditor.leaderLine') }}</span>
                   <SizeField
                     :value="numberLeaderOf(editingNumber).strokeWidth"
                     :min="1" :max="20" :step="1"
@@ -2990,6 +2991,15 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   font-size: var(--font-size-caption);
   white-space: nowrap;
   user-select: none;
+}
+
+.param-divider {
+  display: inline-block;
+  width: 1px;
+  height: 24px;
+  background: var(--color-hairline);
+  flex-shrink: 0;
+  align-self: center;
 }
 
 .param-chip {
