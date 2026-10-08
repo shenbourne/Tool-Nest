@@ -22,6 +22,7 @@ Evidence for each check goes into `VERIFICATION.md`.
 - [x] AC-11 Both colour blocks (stroke + fill) render as pure 32×32 swatches with the hex label hidden.
 - [x] AC-12 The start-arrow select shows a left-pointing arrow (in the closed tag and every dropdown option); the end-arrow select stays right-pointing.
 - [x] AC-13 The line-weight SizeField icon shows three stacked horizontal lines of increasing thickness (thin → medium → thick), replacing the previous Minus icon.
+- [x] AC-14 Both colour pickers (stroke + fill) render as 32×32 swatches with a bright gradient border (red → blue → green → yellow → purple) and a white inset gap separating the fill from the border.
 
 ## Non-regression
 

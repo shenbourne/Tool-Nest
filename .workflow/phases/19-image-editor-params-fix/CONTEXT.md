@@ -23,6 +23,11 @@ Also from the same review: every `SizeField` gained a small leading icon (line w
 10. **Start-arrow preview pointed the wrong way** (defect). `arrowStylePreview` always drew a right-pointing arrowhead, so the start-arrow select showed a right arrow. Fixed by adding a `direction` parameter (`'end'` default, `'start'` mirrors the art with `translate(64,0) scale(-1,1)`), and splitting the shared `arrowRender` into `startArrowRender` / `endArrowRender`.
 11. **Line-weight icon was a plain minus sign** (improvement). The four line-weight SizeFields (shape stroke, line stroke, pen stroke, leader stroke) used the `Minus` icon from @vicons/tabler, which is a single horizontal line. Replaced with a custom `lineWeightIcon` component that renders three stacked horizontal lines of increasing thickness (stroke-width 1.5 / 3 / 4.5), matching the conventional line-weight symbol found in drawing applications.
 
+## Follow-up findings from the same review (third pass — colour picker appearance)
+
+12. **Colour picker fill rendered offset** (defect). The NColorPicker's internal `.n-color-picker__fill` element was not constrained by the parent 32×32 container, causing the colour swatch to appear shifted to the bottom-right. Fixed by adding `position: relative; overflow: hidden` to `.param-color` and absolutely positioning the fill element (`top: 0; left: 0; width: 100%; height: 100%`).
+13. **Colour picker needs colourful border to indicate clickability** (improvement). The plain 32×32 swatch did not visually suggest it was a colour picker. Added a 3 px gradient border using the CSS `background: linear-gradient(white, white) padding-box, linear-gradient(135deg, …) border-box` technique with a 2 px white inset `box-shadow` to separate the fill from the border. Initial colours were too dark (`#e03131, #1971c2, #2f9e44, #f08c00, #343a40`); replaced with brighter variants (`#ff6b6b, #4dabf7, #51cf66, #ffd43b, #cc5de8`) for better visibility.
+
 ## Boundary
 
 - In scope: `apps/web/src/tools/image-editor/` (`ImageEditor.vue`, `SizeField.vue`, `params-previews.ts`), phase records.
