@@ -3042,12 +3042,20 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   width: 32px;
   height: 32px;
   --n-height: 32px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #e03131, #1971c2, #2f9e44, #f08c00, #343a40) border-box;
 }
 
 :deep(.param-color .n-color-picker__fill) {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  border-radius: 2px;
 }
 
 :deep(.param-color .n-color-picker__value) {
