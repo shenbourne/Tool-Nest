@@ -3037,6 +3037,8 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
    Fixed 32×32 square, and the hex label inside the fill is hidden — a 32 px
    block cannot show "#rrggbb", so the block stays a pure colour swatch. */
 :deep(.param-color) {
+  position: relative;
+  overflow: hidden;
   width: 32px;
   height: 32px;
   --n-height: 32px;
