@@ -1,4 +1,4 @@
-import { h, type VNodeChild } from 'vue';
+import { defineComponent, h, type VNodeChild } from 'vue';
 import type { ArrowStyle, NumberFormat, StrokeStyle } from './image-editor.service';
 import { formatNumber } from './image-editor.service';
 
@@ -120,3 +120,22 @@ export function mosaicEffectPreview(effect: 'mosaic' | 'blur'): VNodeChild {
     h('circle', { cx: 32, cy: 10, r: 2.5, fill: 'currentColor' }),
   ]);
 }
+
+/**
+ * Line-weight icon for the numeric "width" SizeFields: three stacked lines of
+ * increasing thickness (thin / medium / thick), the conventional weight symbol.
+ * A component so it can be passed to NIcon's `component` prop.
+ */
+export const lineWeightIcon = defineComponent({
+  name: 'LineWeightIcon',
+  setup() {
+    return () => h('svg', {
+      xmlns: SVG_NS, viewBox: '0 0 24 24', width: '1em', height: '1em',
+      fill: 'none', stroke: 'currentColor', 'stroke-linecap': 'round',
+    }, [
+      h('line', { x1: 3, y1: 6, x2: 21, y2: 6, 'stroke-width': 1.5 }),
+      h('line', { x1: 3, y1: 12, x2: 21, y2: 12, 'stroke-width': 3 }),
+      h('line', { x1: 3, y1: 18, x2: 21, y2: 18, 'stroke-width': 4.5 }),
+    ]);
+  },
+});

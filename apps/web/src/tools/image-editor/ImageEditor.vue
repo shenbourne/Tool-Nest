@@ -24,7 +24,6 @@ import {
   Highlight,
   Line,
   ListNumbers,
-  Minus,
   Paint,
   Pencil,
   RadiusBottomLeft,
@@ -40,6 +39,7 @@ import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import SizeField from './SizeField.vue';
 import {
   arrowStylePreview,
+  lineWeightIcon,
   modePreview,
   mosaicEffectPreview,
   numberFormatPreview,
@@ -2347,7 +2347,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingShape?.strokeWidth ?? shapeDefaults.strokeWidth"
                       :min="1" :max="50" :step="1"
                       :label-key="t('tools.imageEditor.width')"
-                      :icon="Minus"
+                      :icon="lineWeightIcon"
                       @update:value="(v: number) => updateShape({ strokeWidth: v })"
                     />
                   </template>
@@ -2436,7 +2436,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingLine?.strokeWidth ?? lineDefaults.strokeWidth"
                       :min="1" :max="50" :step="1"
                       :label-key="t('tools.imageEditor.width')"
-                      :icon="Minus"
+                      :icon="lineWeightIcon"
                       @update:value="(v: number) => updateLine({ strokeWidth: v })"
                     />
                   </template>
@@ -2522,7 +2522,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="editingPen?.strokeWidth ?? penDefaults.strokeWidth"
                       :min="1" :max="30" :step="1"
                       :label-key="t('tools.imageEditor.width')"
-                      :icon="Minus"
+                      :icon="lineWeightIcon"
                       @update:value="(v: number) => updatePen({ strokeWidth: v })"
                     />
                   </template>
@@ -2713,7 +2713,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                       :value="numberLeaderOf(editingNumber).strokeWidth"
                       :min="1" :max="20" :step="1"
                       :label-key="t('tools.imageEditor.leaderWidth')"
-                      :icon="Minus"
+                      :icon="lineWeightIcon"
                       @update:value="(v: number) => updateNumberLeader({ strokeWidth: v })"
                     />
                     <NSelect
