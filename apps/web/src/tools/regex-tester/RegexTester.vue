@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NCheckbox, NCheckboxGroup, NButton, NAlert, NDataTable, NTag } from 'naive-ui';
+import { NInput, NCheckbox, NAlert, NDataTable, NTag, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { testRegex } from './regex-tester.service';
 
@@ -82,8 +83,16 @@ const matchTableData = computed(() =>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.regexTester.patternTitle')">
+    <ToolTextPanel v-model:input-text="text" :output-text="''" :input-title="t('tools.regexTester.textTitle')" hide-output>
+      <template #input>
+        <NInput
+          v-model:value="text"
+          type="textarea"
+          :placeholder="t('tools.regexTester.textPlaceholder')"
+          :autosize="{ minRows: 3, maxRows: 10 }"
+         :input-props="{ id: 'regexTesterField1' }"/>
+      </template>
+      <template #params>
         <NInput
           v-model:value="pattern"
           :placeholder="t('tools.regexTester.patternPlaceholder')"
@@ -97,18 +106,6 @@ const matchTableData = computed(() =>
           <NCheckbox v-model:checked="dotAll">{{ t('tools.regexTester.dotAll') }} (s)</NCheckbox>
           <NCheckbox v-model:checked="unicode">{{ t('tools.regexTester.unicode') }} (u)</NCheckbox>
         </NSpace>
-      </NCard>
-
-      <NCard :title="t('tools.regexTester.textTitle')">
-        <NInput
-          v-model:value="text"
-          type="textarea"
-          :placeholder="t('tools.regexTester.textPlaceholder')"
-          :autosize="{ minRows: 3, maxRows: 10 }"
-         :input-props="{ id: 'regexTesterField1' }"/>
-      </NCard>
-
-      <NCard :title="t('tools.regexTester.resultsTitle')">
         <NAlert v-if="result.error" type="error" style="margin-bottom: 12px;">
           {{ result.error }}
         </NAlert>
@@ -121,9 +118,7 @@ const matchTableData = computed(() =>
             </NTag>
             <NTag type="default" size="small">{{ t('tools.regexTester.flags') }}: {{ flags || t('tools.regexTester.none') }}</NTag>
           </NSpace>
-
           <div v-if="text" style="margin-bottom: 12px; padding: 8px; background: var(--color-surface-2); border-radius: 4px; font-family: monospace; white-space: pre-wrap; word-break: break-all;" v-html="highlightedHtml" />
-
           <NDataTable
             v-if="result.matches.length > 0"
             :columns="matchColumns"
@@ -135,7 +130,7 @@ const matchTableData = computed(() =>
             {{ t('tools.regexTester.noMatches') }}
           </NAlert>
         </template>
-      </NCard>
-    </NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

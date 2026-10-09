@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NStatistic } from 'naive-ui';
+import { NInput, NStatistic } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
 const text = ref('');
@@ -16,17 +17,21 @@ const readingTime = computed(() => t('tools.textStats.readingTimeValue', { count
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard><NInput v-model:value="text" type="textarea" :rows="8" :placeholder="t('tools.textStats.inputPlaceholder')"  :input-props="{ id: 'textStatisticsField0' }"/></NCard>
-      <NCard><div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px;">
-        <NStatistic :label="t('tools.textStats.characters')" :value="chars" />
-        <NStatistic :label="t('tools.textStats.charactersNoSpaces')" :value="charsNoSpace" />
-        <NStatistic :label="t('tools.textStats.words')" :value="words" />
-        <NStatistic :label="t('tools.textStats.lines')" :value="lines" />
-        <NStatistic :label="t('tools.textStats.sentences')" :value="sentences" />
-        <NStatistic :label="t('tools.textStats.paragraphs')" :value="paragraphs" />
-        <NStatistic :label="t('tools.textStats.readingTime')" :value="readingTime" />
-      </div></NCard>
-    </NSpace>
+    <ToolTextPanel v-model:input-text="text" :output-text="''" :input-title="t('common.input')" hide-output>
+      <template #input>
+        <NInput v-model:value="text" type="textarea" :rows="8" :placeholder="t('tools.textStats.inputPlaceholder')"  :input-props="{ id: 'textStatisticsField0' }"/>
+      </template>
+      <template #params>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px;">
+          <NStatistic :label="t('tools.textStats.characters')" :value="chars" />
+          <NStatistic :label="t('tools.textStats.charactersNoSpaces')" :value="charsNoSpace" />
+          <NStatistic :label="t('tools.textStats.words')" :value="words" />
+          <NStatistic :label="t('tools.textStats.lines')" :value="lines" />
+          <NStatistic :label="t('tools.textStats.sentences')" :value="sentences" />
+          <NStatistic :label="t('tools.textStats.paragraphs')" :value="paragraphs" />
+          <NStatistic :label="t('tools.textStats.readingTime')" :value="readingTime" />
+        </div>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

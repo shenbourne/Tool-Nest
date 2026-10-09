@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { NCard, NInput, NSpace, NButton, NDescriptions, NDescriptionsItem } from 'naive-ui';
+import { NInput, NDescriptions, NDescriptionsItem } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { parseUserAgent } from './user-agent-parser.service';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const uaString = ref('');
 const parsed = computed(() => parseUserAgent(uaString.value));
-
-function copyUa() {
-  if (uaString.value) {
-    copyToClipboard(uaString.value);
-  }
-}
 
 onMounted(() => {
   uaString.value = navigator.userAgent;
@@ -27,53 +20,26 @@ onMounted(() => {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.userAgentParser.uaString')">
-        <NSpace vertical :size="12">
-          <NInput
-            v-model:value="uaString"
-            type="textarea"
-            :autosize="{ minRows: 3, maxRows: 6 }"
-            :placeholder="t('tools.userAgentParser.inputPlaceholder')"
-           :input-props="{ id: 'userAgentParserField0' }"/>
-          <NButton @click="copyUa">{{ t('tool.copy') }}</NButton>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('tools.userAgentParser.browser')">
+    <ToolTextPanel v-model:input-text="uaString" :output-text="''" :input-title="t('tools.userAgentParser.uaString')" hide-output>
+      <template #input>
+        <NInput
+          v-model:value="uaString"
+          type="textarea"
+          :autosize="{ minRows: 3, maxRows: 6 }"
+          :placeholder="t('tools.userAgentParser.inputPlaceholder')"
+         :input-props="{ id: 'userAgentParserField0' }"/>
+      </template>
+      <template #params>
         <NDescriptions label-placement="left" bordered :column="2" size="small">
-          <NDescriptionsItem :label="t('common.name')">{{ parsed.browser.name }}</NDescriptionsItem>
-          <NDescriptionsItem :label="t('common.version')">{{ parsed.browser.version }}</NDescriptionsItem>
-        </NDescriptions>
-      </NCard>
-
-      <NCard :title="t('tools.userAgentParser.operatingSystem')">
-        <NDescriptions label-placement="left" bordered :column="2" size="small">
-          <NDescriptionsItem :label="t('common.name')">{{ parsed.os.name }}</NDescriptionsItem>
-          <NDescriptionsItem :label="t('common.version')">{{ parsed.os.version }}</NDescriptionsItem>
-        </NDescriptions>
-      </NCard>
-
-      <NCard :title="t('tools.userAgentParser.device')">
-        <NDescriptions label-placement="left" bordered :column="3" size="small">
+          <NDescriptionsItem :label="t('tools.userAgentParser.browser')">{{ parsed.browser.name }} {{ parsed.browser.version }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('tools.userAgentParser.operatingSystem')">{{ parsed.os.name }} {{ parsed.os.version }}</NDescriptionsItem>
           <NDescriptionsItem :label="t('tools.userAgentParser.deviceType')">{{ parsed.device.type }}</NDescriptionsItem>
           <NDescriptionsItem :label="t('tools.userAgentParser.vendor')">{{ parsed.device.vendor }}</NDescriptionsItem>
           <NDescriptionsItem :label="t('tools.userAgentParser.model')">{{ parsed.device.model }}</NDescriptionsItem>
+          <NDescriptionsItem :label="t('tools.userAgentParser.engine')">{{ parsed.engine.name }} {{ parsed.engine.version }}</NDescriptionsItem>
+          <NDescriptionsItem label="CPU">{{ parsed.cpu.architecture }}</NDescriptionsItem>
         </NDescriptions>
-      </NCard>
-
-      <NCard :title="t('tools.userAgentParser.engine')">
-        <NDescriptions label-placement="left" bordered :column="2" size="small">
-          <NDescriptionsItem :label="t('common.name')">{{ parsed.engine.name }}</NDescriptionsItem>
-          <NDescriptionsItem :label="t('common.version')">{{ parsed.engine.version }}</NDescriptionsItem>
-        </NDescriptions>
-      </NCard>
-
-      <NCard title="CPU">
-        <NDescriptions label-placement="left" bordered :column="1" size="small">
-          <NDescriptionsItem :label="t('tools.userAgentParser.architecture')">{{ parsed.cpu.architecture }}</NDescriptionsItem>
-        </NDescriptions>
-      </NCard>
-    </NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
