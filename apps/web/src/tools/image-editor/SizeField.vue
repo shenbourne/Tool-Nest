@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, type Component } from 'vue';
 import { NIcon, NPopover, NSlider } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // A square numeric field for the image-editor params toolbar. The box shows the
 // current value; hovering/focusing it pops up a slider that adjusts by drag or
@@ -99,6 +102,7 @@ function onWheel(event: WheelEvent) {
       @mouseenter="cancelClose"
       @mouseleave="scheduleClose"
     >
+      <span v-if="labelKey" class="size-field__label">{{ t(labelKey) }}</span>
       <NSlider
         :value="sliderValue"
         :min="min"
@@ -149,10 +153,19 @@ function onWheel(event: WheelEvent) {
 }
 
 .size-field__popover {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: var(--spacing-xs) var(--spacing-sm);
   background: var(--color-surface);
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-pop);
+}
+
+.size-field__label {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-2);
+  white-space: nowrap;
 }
 </style>
