@@ -48,7 +48,6 @@ const EXPECTED: string[] = [
   'sql-prettify/SqlPrettify.vue',
   // data/dev converters
   'base64-encoder/Base64Encoder.vue',
-  'docker-compose-to-1panel/DockerComposeTo1panel.vue',
   'docker-run-to-compose/DockerRunToCompose.vue',
   'email-extractor/EmailExtractor.vue',
   'email-normalizer/EmailNormalizer.vue',
@@ -111,6 +110,9 @@ const EXCLUDED: string[] = [
   'meta-tag-generator/MetaTagGenerator.vue',
   'rsa-key-pair-generator/RsaKeyPair.vue',
   'bip39-generator/Bip39Generator.vue',
+  // phase 16: generates a whole 1Panel app directory (metadata form + file
+  // tree + editable file cards + zip export), not an input->output text pair
+  'docker-compose-to-1panel/DockerComposeTo1panel.vue',
   // two-input comparators: both textareas are inputs and the result is a
   // structured diff card, so the input/output action split does not apply;
   // they render ToolTextPairPanel instead (phase 17)
