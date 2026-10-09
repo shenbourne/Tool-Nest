@@ -16,10 +16,14 @@ const props = withDefaults(defineProps<{
   inputText: string;
   outputText: string;
   exportName?: string;
+  hideInput?: boolean;
+  hideOutput?: boolean;
 }>(), {
   inputTitle: '',
   outputTitle: '',
   exportName: 'output.txt',
+  hideInput: false,
+  hideOutput: false,
 });
 
 const emit = defineEmits<{
@@ -74,8 +78,8 @@ function exportOutput() {
 
 <template>
   <div class="tool-text-panel">
-    <div class="tool-text-panel__columns">
-      <section class="tool-text-panel__column">
+    <div class="tool-text-panel__columns" :class="{ 'tool-text-panel__columns--single': hideInput || hideOutput }">
+      <section v-if="!hideInput" class="tool-text-panel__column">
         <div v-if="inputTitle" class="tool-text-panel__title">{{ inputTitle }}</div>
         <div class="tool-text-panel__textarea"><slot name="input" /></div>
         <div class="tool-text-panel__actions">
@@ -83,7 +87,7 @@ function exportOutput() {
           <NButton @click="pasteFromClipboard">{{ t('tool.pasteFile') }}</NButton>
         </div>
       </section>
-      <section class="tool-text-panel__column">
+      <section v-if="!hideOutput" class="tool-text-panel__column">
         <div v-if="outputTitle" class="tool-text-panel__title">{{ outputTitle }}</div>
         <div class="tool-text-panel__textarea"><slot name="output" /></div>
         <div class="tool-text-panel__actions tool-text-panel__actions--right">
@@ -111,6 +115,10 @@ function exportOutput() {
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-md);
   align-items: stretch;
+}
+
+.tool-text-panel__columns--single {
+  grid-template-columns: 1fr;
 }
 
 .tool-text-panel__column {

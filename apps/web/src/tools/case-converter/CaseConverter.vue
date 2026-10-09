@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace } from 'naive-ui';
+import { NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 
@@ -40,14 +41,16 @@ function copyText(text: string) { copyToClipboard(text); }
 
 <template>
   <ToolLayout :tool="tool">
-    <NCard>
-      <NSpace vertical :size="12">
+    <ToolTextPanel v-model:input-text="input" :output-text="camelCase" :input-title="t('common.input')" hide-output>
+      <template #input>
         <NInput v-model:value="input" :placeholder="t('tools.caseConverter.inputPlaceholder')"  :input-props="{ id: 'caseConverterField0' }"/>
+      </template>
+      <template #params>
         <div v-for="r in results" :key="r.label" style="display: flex; align-items: center; gap: 12px;">
           <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ r.label }}</span>
           <NInput :value="r.value.value" readonly style="flex: 1;" @click="copyText(r.value.value)"  :input-props="{ id: 'caseConverterField1' }"/>
         </div>
-      </NSpace>
-    </NCard>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
