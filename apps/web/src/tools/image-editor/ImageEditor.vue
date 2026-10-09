@@ -2995,9 +2995,9 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
 .param-divider {
   display: inline-block;
-  width: 2px;
+  width: 1px;
   height: 32px;
-  background: var(--color-border);
+  background: var(--color-hairline-strong);
   flex-shrink: 0;
   align-self: center;
   margin: 0 8px;
@@ -3061,14 +3061,53 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   display: none;
 }
 
-/* Wide enough that the 64px SVG sample is not clipped by the selection
-   content box (its overflow:hidden would cut off arrowheads / dash tails). */
+/* Force NSelect to be compact (32px) to match other controls. */
 .param-select {
   width: 96px;
+  height: 32px !important;
 }
 
 .param-select--text {
   width: 110px;
+  height: 32px !important;
+}
+
+:deep(.param-select),
+:deep(.param-select--text) {
+  height: 32px !important;
+}
+
+:deep(.param-select .n-base-selection),
+:deep(.param-select--text .n-base-selection) {
+  height: 32px !important;
+  min-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+:deep(.param-select .n-base-selection-input),
+:deep(.param-select--text .n-base-selection-input) {
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 8px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+:deep(.param-select .n-base-selection-label),
+:deep(.param-select--text .n-base-selection-label) {
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+:deep(.param-select .n-base-selection__arrow),
+:deep(.param-select--text .n-base-selection__arrow) {
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .image-editor__footer {
