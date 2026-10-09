@@ -6,9 +6,12 @@ withDefaults(defineProps<{
   gap?: number;
   /** Set when the tool's result box can hold more than one file. */
   outputMultiple?: boolean;
+  /** 2 = input/output boxes side by side; 1 = a single full-width box (canvas tools). */
+  columns?: 1 | 2;
 }>(), {
   gap: 16,
   outputMultiple: false,
+  columns: 2,
 });
 
 const emit = defineEmits<{
@@ -21,16 +24,25 @@ const { t } = useI18n();
 
 <template>
   <div class="tool-file-panel">
-    <!-- Two-column: input files (left) / output files (right) -->
-    <div class="tool-file-panel__columns">
-      <div class="tool-file-panel__column tool-file-panel__input">
-        <slot name="input-files" />
-      </div>
-      <div
-        class="tool-file-panel__column tool-file-panel__output"
-        :class="{ 'tool-file-panel__output--multi': outputMultiple }"
-      >
-        <slot name="output-files" />
+    <!-- Two-column: input files (left) / output files (right); single-column: one full-width box -->
+    <div
+      class="tool-file-panel__columns"
+      :class="{ 'tool-file-panel__columns--single': columns === 1 }"
+    >
+      <template v-if="columns === 2">
+        <div class="tool-file-panel__column tool-file-panel__input">
+          <slot name="input-files" />
+        </div>
+        <div
+          class="tool-file-panel__column tool-file-panel__output"
+          :class="{ 'tool-file-panel__output--multi': outputMultiple }"
+        >
+          <slot name="output-files" />
+        </div>
+      </template>
+      <!-- Single-column tools (canvas editors) put their only box in the default slot -->
+      <div v-else class="tool-file-panel__column tool-file-panel__single">
+        <slot />
       </div>
     </div>
 
@@ -65,6 +77,10 @@ const { t } = useI18n();
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-md);
   align-items: stretch;
+}
+
+.tool-file-panel__columns--single {
+  grid-template-columns: 1fr;
 }
 
 .tool-file-panel__column {
