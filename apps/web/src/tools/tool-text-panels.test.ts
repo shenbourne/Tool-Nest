@@ -107,9 +107,6 @@ const EXPECTED: string[] = [
 // generators, or no input->output text pair.
 const EXCLUDED: string[] = [
   'base64-file-converter/Base64FileConverter.vue',
-  'meta-tag-generator/MetaTagGenerator.vue',
-  'rsa-key-pair-generator/RsaKeyPair.vue',
-  'bip39-generator/Bip39Generator.vue',
   // phase 16: generates a whole 1Panel app directory (metadata form + file
   // tree + editable file cards + zip export), not an input->output text pair
   'docker-compose-to-1panel/DockerComposeTo1panel.vue',
@@ -123,6 +120,15 @@ const EXCLUDED: string[] = [
 // Tools converted so far. Grows batch by batch; the last batch of the phase
 // sets this to EXPECTED so the first test covers the whole scope.
 const MIGRATED: string[] = EXPECTED;
+
+// Phase 20 additions: tools migrated to ToolTextPanel with hideInput or
+// hideOutput (single-column mode). They have a textarea but only one column,
+// so they are not in the two-textarea EXPECTED list above.
+const PHASE20_MIGRATED: string[] = [
+  'bip39-generator/Bip39Generator.vue',
+  'meta-tag-generator/MetaTagGenerator.vue',
+  'rsa-key-pair-generator/RsaKeyPair.vue',
+];
 
 function componentPaths(): string[] {
   const paths: string[] = [];
@@ -149,6 +155,11 @@ describe('tool text panels', () => {
     expect(offenders).toEqual([]);
   });
 
+  it('renders ToolTextPanel in every phase-20 migrated tool', () => {
+    const offenders = PHASE20_MIGRATED.filter((name) => !source(name).includes('<ToolTextPanel'));
+    expect(offenders).toEqual([]);
+  });
+
   it('renders ToolTextPairPanel in the two-input diff comparators', () => {
     const comparators = [
       'json-diff/JsonDiff.vue',
@@ -159,7 +170,7 @@ describe('tool text panels', () => {
   });
 
   it('accounts for every two-textarea tool', () => {
-    const accounted = new Set([...EXPECTED, ...EXCLUDED]);
+    const accounted = new Set([...EXPECTED, ...EXCLUDED, ...PHASE20_MIGRATED]);
     const decided = componentPaths().filter((name) => {
       const count = (source(name).match(/type="textarea"/g) ?? []).length;
       return count >= 2;
