@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { NCard, NInput, NSpace, NButton, NColorPicker, NSelect, NAlert } from 'naive-ui';
+import { ref, watch } from 'vue';
+import { NInput, NButton, NColorPicker, NSelect, NAlert, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { useQrCode, downloadDataUrl } from './qr-code-generator.service';
 import { useCopy } from '@/composables/useCopy';
@@ -61,33 +62,30 @@ function copyImage() {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('common.input')">
-        <NSpace vertical :size="12">
-          <NInput
-            v-model:value="text"
-            type="textarea"
-            :placeholder="t('tools.qrCodeGenerator.inputPlaceholder')"
-            :autosize="{ minRows: 2, maxRows: 6 }"
-           :input-props="{ id: 'qrCodeGeneratorField0' }"/>
-          <NSpace :size="12">
-            <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.foreground') }}</div>
-              <NColorPicker v-model:value="foreground" :show-alpha="false" size="small" style="width: 100px;" />
-            </div>
-            <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.background') }}</div>
-              <NColorPicker v-model:value="background" :show-alpha="false" size="small" style="width: 100px;" />
-            </div>
-            <div>
-              <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.qrCodeGenerator.errorCorrection') }}</div>
-              <NSelect v-model:value="errorCorrectionLevel" :options="eclOptions" style="width: 140px;" size="small" />
-            </div>
-          </NSpace>
+    <ToolTextPanel v-model:input-text="text" :output-text="dataUrl || ''" :input-title="t('common.input')" :output-title="t('common.qrCode')" hide-output>
+      <template #input>
+        <NInput
+          v-model:value="text"
+          type="textarea"
+          :placeholder="t('tools.qrCodeGenerator.inputPlaceholder')"
+          :autosize="{ minRows: 2, maxRows: 6 }"
+         :input-props="{ id: 'qrCodeGeneratorField0' }"/>
+      </template>
+      <template #params>
+        <NSpace :size="12">
+          <div>
+            <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.foreground') }}</div>
+            <NColorPicker v-model:value="foreground" :show-alpha="false" size="small" style="width: 100px;" />
+          </div>
+          <div>
+            <div style="margin-bottom: 4px; font-size: 13px;">{{ t('common.background') }}</div>
+            <NColorPicker v-model:value="background" :show-alpha="false" size="small" style="width: 100px;" />
+          </div>
+          <div>
+            <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.qrCodeGenerator.errorCorrection') }}</div>
+            <NSelect v-model:value="errorCorrectionLevel" :options="eclOptions" style="width: 140px;" size="small" />
+          </div>
         </NSpace>
-      </NCard>
-
-      <NCard :title="t('common.qrCode')">
         <NAlert v-if="qrError" type="error" :title="t('tools.qrCodeGenerator.generationFailed')" />
         <FileCard v-else-if="resultFile" name="qrcode.png" :file="resultFile" file-type="image/png" />
         <div v-else style="text-align: center; color: var(--color-text-3); padding: 40px 0;">
@@ -97,7 +95,7 @@ function copyImage() {
           <NButton @click="download">{{ t('tool.download') }}</NButton>
           <NButton @click="copyImage">{{ t('tool.copy') }}</NButton>
         </NSpace>
-      </NCard>
-    </NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

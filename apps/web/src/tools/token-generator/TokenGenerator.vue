@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NSwitch, NSlider, NInput, NButton, NFormItem, NSpace } from 'naive-ui';
+import { NSwitch, NSlider, NInput, NButton, NFormItem } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { createToken, tool } from './index';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 
 const length = ref(64);
 const withUppercase = ref(true);
@@ -22,13 +21,15 @@ const token = computed(() => {
 });
 
 function refresh() { nonce.value++; }
-function copy() { copyToClipboard(token.value); }
 </script>
 
 <template>
   <ToolLayout :tool="tool">
-    <NCard>
-      <NSpace vertical :size="16">
+    <ToolTextPanel :input-text="''" :output-text="token" :output-title="t('common.output')" export-name="token.txt" hide-input>
+      <template #output>
+        <NInput :value="token" type="textarea" readonly :rows="3" style="text-align: center; font-family: monospace;"  :input-props="{ id: 'tokenGeneratorField0' }"/>
+      </template>
+      <template #params>
         <div style="display: flex; justify-content: center; gap: 32px;">
           <div>
             <NFormItem :label="t('common.uppercase')" label-placement="left">
@@ -47,18 +48,11 @@ function copy() { copyToClipboard(token.value); }
             </NFormItem>
           </div>
         </div>
-
         <NFormItem :label="`${t('common.length')} (${length})`" label-placement="left">
           <NSlider v-model:value="length" :step="1" :min="1" :max="512" />
         </NFormItem>
-
-        <NInput :value="token" type="textarea" readonly :rows="3" style="text-align: center; font-family: monospace;"  :input-props="{ id: 'tokenGeneratorField0' }"/>
-
-        <div style="display: flex; justify-content: center; gap: 12px;">
-          <NButton @click="copy" :disabled="!token">{{ t('tool.copy') }}</NButton>
-          <NButton @click="refresh">{{ t('common.retry') }}</NButton>
-        </div>
-      </NSpace>
-    </NCard>
+        <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

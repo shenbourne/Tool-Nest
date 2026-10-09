@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton, NInputNumber, NColorPicker } from 'naive-ui';
+import { ref, computed, watch } from 'vue';
+import { NInput, NButton, NInputNumber, NColorPicker, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCopy } from '@/composables/useCopy';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import FileCard from '@/components/FileCard.vue';
@@ -40,10 +41,6 @@ watch(dataUrl, async (url) => {
   resultFile.value = new File([blob], `placeholder-${width.value}x${height.value}.svg`, { type: 'image/svg+xml' });
 });
 
-function copySvg() {
-  copyToClipboard(svgCode.value);
-}
-
 function download() {
   downloadSvg(svgCode.value, `placeholder-${width.value}x${height.value}.svg`);
 }
@@ -57,8 +54,17 @@ async function copySvgFile() {
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('common.settings')">
+    <ToolTextPanel :input-text="''" :output-text="svgCode" :output-title="t('tools.svgPlaceholderGenerator.svgCode')" export-name="placeholder.svg" hide-input>
+      <template #output>
+        <NInput
+          :value="svgCode"
+          type="textarea"
+          readonly
+          :autosize="{ minRows: 4, maxRows: 10 }"
+          style="font-family: monospace;"
+         :input-props="{ id: 'svgPlaceholderGeneratorField4' }"/>
+      </template>
+      <template #params>
         <NSpace vertical :size="12">
           <NSpace :size="12">
             <div>
@@ -88,29 +94,13 @@ async function copySvgFile() {
             <div style="margin-bottom: 4px; font-size: 13px;">{{ t('tools.svgPlaceholderGenerator.customText') }}</div>
             <NInput v-model:value="customText" :placeholder="t('tools.svgPlaceholderGenerator.customTextPlaceholder')" clearable  :input-props="{ id: 'svgPlaceholderGeneratorField3' }"/>
           </div>
+          <FileCard v-if="resultFile" :name="`placeholder-${width}x${height}.svg`" :file="resultFile" file-type="image/svg+xml" />
+          <NSpace>
+            <NButton @click="download">{{ t('tools.svgPlaceholderGenerator.downloadSvg') }}</NButton>
+            <NButton @click="copySvgFile">{{ t('tool.copyFile') }}</NButton>
+          </NSpace>
         </NSpace>
-      </NCard>
-
-      <NCard :title="t('common.preview')">
-        <FileCard v-if="resultFile" :name="`placeholder-${width}x${height}.svg`" :file="resultFile" file-type="image/svg+xml" />
-        <NSpace style="margin-top: 8px;">
-          <NButton @click="download">{{ t('tools.svgPlaceholderGenerator.downloadSvg') }}</NButton>
-          <NButton @click="copySvgFile">{{ t('tool.copyFile') }}</NButton>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('tools.svgPlaceholderGenerator.svgCode')">
-        <NInput
-          :value="svgCode"
-          type="textarea"
-          readonly
-          :autosize="{ minRows: 4, maxRows: 10 }"
-          style="font-family: monospace;"
-         :input-props="{ id: 'svgPlaceholderGeneratorField4' }"/>
-        <NButton @click="copySvg" style="margin-top: 8px;">
-          {{ t('tool.copy') }}
-        </NButton>
-      </NCard>
-    </NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
