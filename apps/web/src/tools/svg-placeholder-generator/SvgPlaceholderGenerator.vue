@@ -10,7 +10,7 @@ import FileCard from '@/components/FileCard.vue';
 import { generateSvgPlaceholder, svgToDataUrl, downloadSvg } from './svg-placeholder-generator.service';
 
 const { t } = useI18n();
-const { copyToClipboard, copyFileToClipboard } = useCopy();
+const { copyFileToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const width = ref(300);
