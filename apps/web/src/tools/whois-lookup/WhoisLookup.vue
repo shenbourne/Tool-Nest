@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
+import { NButton, NInput, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
@@ -34,10 +35,14 @@ async function lookup() {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NSpace><NInput v-model:value="domain" :placeholder="t('common.domainNamePlaceholder')" style="width:220px" @keyup.enter="lookup"  :input-props="{ id: 'whoisLookupField0' }"/></NSpace>
-      <NButton type="primary" :loading="loading" @click="lookup">{{ t('tools.whoisLookup.lookup') }}</NButton>
-      <NInput v-if="result" :value="result" type="textarea" :rows="10" readonly  :input-props="{ id: 'whoisLookupField1' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel v-model:input-text="domain" :output-text="result" :input-title="t('common.domainNamePlaceholder')" :output-title="t('common.output')" export-name="whois-result.txt" hide-input>
+      <template #output>
+        <NInput v-if="result" :value="result" type="textarea" :rows="10" readonly  :input-props="{ id: 'whoisLookupField1' }"/>
+      </template>
+      <template #params>
+        <NSpace><NInput v-model:value="domain" :placeholder="t('common.domainNamePlaceholder')" style="width:220px" @keyup.enter="lookup"  :input-props="{ id: 'whoisLookupField0' }"/></NSpace>
+        <NButton type="primary" :loading="loading" @click="lookup">{{ t('tools.whoisLookup.lookup') }}</NButton>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
