@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSelect, NSpace } from 'naive-ui';
+import { NInput, NSelect, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const title = ref('');
@@ -89,16 +88,21 @@ function escapeHtml(str: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 }
-
-function copyMetaTags() {
-  copyToClipboard(metaTags.value);
-}
 </script>
 
 <template>
   <ToolLayout v-if="tool" :tool="tool">
-    <NSpace vertical :size="16">
-      <NCard :title="t('tools.metaTagGenerator.general')">
+    <ToolTextPanel :input-text="''" :output-text="metaTags" :output-title="t('tools.metaTagGenerator.output')" export-name="meta-tags.html" hide-input>
+      <template #output>
+        <NInput
+          :value="metaTags"
+          type="textarea"
+          readonly
+          :rows="10"
+          style="font-family: monospace;"
+         :input-props="{ id: 'metaTagGeneratorField9' }"/>
+      </template>
+      <template #params>
         <NSpace vertical :size="12">
           <NInput
             v-model:value="title"
@@ -114,11 +118,6 @@ function copyMetaTags() {
             v-model:value="keywords"
             :placeholder="t('tools.metaTagGenerator.keywordsPlaceholder')"
            :input-props="{ id: 'metaTagGeneratorField2' }"/>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('tools.metaTagGenerator.openGraph')">
-        <NSpace vertical :size="12">
           <NInput
             v-model:value="ogTitle"
             :placeholder="t('tools.metaTagGenerator.ogTitlePlaceholder')"
@@ -137,11 +136,6 @@ function copyMetaTags() {
             v-model:value="ogUrl"
             :placeholder="t('tools.metaTagGenerator.ogUrlPlaceholder')"
            :input-props="{ id: 'metaTagGeneratorField6' }"/>
-        </NSpace>
-      </NCard>
-
-      <NCard :title="t('tools.metaTagGenerator.twitter')">
-        <NSpace vertical :size="12">
           <NSelect
             v-model:value="twitterCard"
             :options="twitterCardOptions"
@@ -156,24 +150,7 @@ function copyMetaTags() {
             :placeholder="t('tools.metaTagGenerator.twitterCreatorPlaceholder')"
            :input-props="{ id: 'metaTagGeneratorField8' }"/>
         </NSpace>
-      </NCard>
-
-      <NCard :title="t('tools.metaTagGenerator.output')">
-        <NInput
-          :value="metaTags"
-          type="textarea"
-          readonly
-          :rows="10"
-          style="font-family: monospace;"
-         :input-props="{ id: 'metaTagGeneratorField9' }"/>
-        <NButton
-          style="margin-top: 12px;"
-          :disabled="!metaTags"
-          @click="copyMetaTags"
-        >
-          {{ t('tool.copy') }}
-        </NButton>
-      </NCard>
-    </NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NAlert } from 'naive-ui';
+import { NInput, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
 
@@ -33,10 +34,16 @@ const output = computed(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" placeholder="YYYY-MM-DDTHH:mm"  :input-props="{ id: 'discordTimestampField0' }"/>
-      <NAlert v-if="dateError" type="error" :title="dateError" />
-      <NInput :value="output" type="textarea" :rows="8" readonly  :input-props="{ id: 'discordTimestampField1' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="discord-timestamps.txt">
+      <template #input>
+        <NInput v-model:value="input" placeholder="YYYY-MM-DDTHH:mm"  :input-props="{ id: 'discordTimestampField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="8" readonly  :input-props="{ id: 'discordTimestampField1' }"/>
+      </template>
+      <template #params>
+        <NAlert v-if="dateError" type="error" :title="dateError" />
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace } from 'naive-ui';
+import { NInput, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
 const date1 = ref(new Date().toISOString().slice(0,16));
@@ -20,9 +21,13 @@ const output = computed(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NSpace vertical :size="12">
-      <NSpace><NInput v-model:value="date1" :placeholder="t('tools.timeBetweenDates.startPlaceholder')" style="width:220px"  :input-props="{ id: 'timeBetweenDatesField0' }"/><NInput v-model:value="date2" :placeholder="t('tools.timeBetweenDates.endPlaceholder')" style="width:220px"  :input-props="{ id: 'timeBetweenDatesField1' }"/></NSpace>
-      <NInput :value="output" type="textarea" :rows="3" readonly  :input-props="{ id: 'timeBetweenDatesField2' }"/>
-    </NSpace></NCard>
+    <ToolTextPanel :input-text="''" :output-text="output" :output-title="t('common.output')" export-name="time-diff.txt" hide-input>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="3" readonly  :input-props="{ id: 'timeBetweenDatesField2' }"/>
+      </template>
+      <template #params>
+        <NSpace><NInput v-model:value="date1" :placeholder="t('tools.timeBetweenDates.startPlaceholder')" style="width:220px"  :input-props="{ id: 'timeBetweenDatesField0' }"/><NInput v-model:value="date2" :placeholder="t('tools.timeBetweenDates.endPlaceholder')" style="width:220px"  :input-props="{ id: 'timeBetweenDatesField1' }"/></NSpace>
+      </template>
+    </ToolTextPanel>
   </ToolLayout>
 </template>
