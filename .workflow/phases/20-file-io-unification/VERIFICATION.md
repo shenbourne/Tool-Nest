@@ -31,3 +31,12 @@
 - `pnpm install` was needed to resolve `jszip` (pre-existing missing dependency from phase 16 merge, not caused by this phase).
 - The `tool-text-panels.test.ts` was updated to account for phase-20 single-column migrations: `bip39-generator`, `meta-tag-generator`, `rsa-key-pair-generator` moved from EXCLUDED to a new PHASE20_MIGRATED list (they now use ToolTextPanel with hideInput).
 - `benchmark-builder` was evaluated and left as-is: its multi-suite code editor layout doesn't fit ToolTextPanel's input/output model. It has no file IO need (code snippets are typed, not imported).
+
+## 2026-10-10 centered file titles maintenance
+
+- Review PASS: only upload/output left-align overrides removed; shared FileCard center alignment now applies. Ellipsis, tooltip, previews, removal and file IO unchanged.
+- `pnpm --filter @toolnest/web exec eslint src/components/ToolFileUpload.vue src/components/ToolFilePanel.vue`: PASS, exit 0.
+- `pnpm --filter @toolnest/web test`: PASS, 335 tests / 44 files.
+- `pnpm --filter @toolnest/web build`: PASS, includes vue-tsc typecheck; Vite completed in 30.46s. Dependency externalization/eval and large-chunk warnings remain.
+- `git diff --check`: PASS. Used equivalent scoped checks instead of scripts/verify; server checks skipped for CSS-only web change. Browser comparison NOT RUN.
+- Remote: private fetch succeeded before and after change; master ahead 1 / behind 0. Local pre-existing commit preserved. Existing STATE.md conflict markers predate this task and were left untouched.

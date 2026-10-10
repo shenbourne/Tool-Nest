@@ -73,3 +73,10 @@ The branch is **not merged**. Instead, this phase migrates the remaining 22 tool
 - Not merging `tool-file-io-enhancement` branch
 - Not changing tools already on shared panels
 - Not adding file IO to tools that don't need it (e.g., camera-recorder, emoji-picker)
+
+## 2026-10-10 maintenance — centered file titles
+
+- Request: center filenames below the upload and output previews shown in the supplied screenshot.
+- Plan: remove the two single-file `text-align: left` overrides in ToolFileUpload.vue and ToolFilePanel.vue; retain FileCard.vue's shared center alignment and ellipsis.
+- Scope: two CSS deletions; no API, dependency, or runtime logic changes. No ADR, new phase, codebase-health review, or new tests warranted for this reversible style adjustment.
+- Branch: feature/file-title-center, from local master 4c192eb. Fetch private succeeded on retry; private/master was one commit behind local master, zero ahead. Existing local commit and unrelated working files preserved.

@@ -108,10 +108,6 @@ const { t } = useI18n();
   align-content: start;
 }
 
-.tool-file-panel__output:not(.tool-file-panel__output--multi) :deep(.file-card__name) {
-  text-align: left;
-}
-
 .tool-file-panel__params {
   border-top: 1px solid var(--color-hairline);
   padding-top: var(--spacing-sm);

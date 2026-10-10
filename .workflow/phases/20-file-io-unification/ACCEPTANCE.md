@@ -70,3 +70,9 @@ Pending user review. Representative routes to verify:
 - `/uuid-generator` — hideInput, copy/export
 - `/text-statistics` — hideOutput, import/paste
 - `/url-encoder` — two-column with decode in params
+
+## 2026-10-10 maintenance — centered file titles
+
+- PASS (source review): upload and output cards both inherit FileCard.vue `.file-card__name { width: 100%; text-align: center; }`; left-alignment overrides removed.
+- PASS (source review): long filenames retain overflow clipping, ellipsis, nowrap, and full-name title tooltip.
+- Browser screenshot comparison: NOT RUN; acceptance evidence is CSS cascade inspection.

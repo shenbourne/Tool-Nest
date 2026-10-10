@@ -71,3 +71,11 @@ Keep this short and factual so another agent can resume without chat history.
 - On a dev server you can `await import('/src/composables/useFFmpeg.ts')` inside `evaluate_script` and get the **same** module instance the component uses, so `runFFmpegTask`/`exec` can run a deliberately old command shape against the already-loaded core. That is how phase 04 captured the pre-fix behaviour in the same browser session as the post-fix behaviour instead of needing a code revert.
 - The web dev server's configured port is `3000` (`apps/web/vite.config.ts`), but a stale process can hold it and Vite silently moves on (`:3002`/`:3003`, and `:3411` in phase 03's session) — read the startup log rather than assuming the port.
 - Keep a single `evaluate_script` call under roughly 20 s of work; long polling loops make the MCP call fail with "tool invocation did not complete".
+
+## 2026-10-10 file title alignment maintenance
+
+- Upload/output file titles now use shared centered FileCard styling on feature/file-title-center.
+- Verification: 335 web tests, scoped lint, typecheck and build PASS; browser visual check not run.
+- Unrelated components.d.ts and untracked files preserved. Pre-existing conflict-marker sections in this file not reconciled by this CSS task.
+- Next: review/merge feature/file-title-center separately; no merge authorized. Publication target private/feature/file-title-center.
+- Publication blocked: automatic approval review rejected push to private because destination ownership is unverified; explicit destination approval required. Local commit retained.
