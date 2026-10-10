@@ -117,3 +117,4 @@ Keep this short and factual so another agent can resume without chat history.
 - Isolated worktree .worktrees/phase-21-numeric-labels, branch feature/phase-21-numeric-labels, from refreshed private/master 62f9ddd. Shared checkout was concurrently switched/committed by phase 22; existing work preserved.
 - Added persistent bilingual labels to 23 numeric inputs in 14 tools. Web tests 335/335, typecheck/build PASS; differential lint zero added (10 existing). Browser visual/click-focus review NOT RUN.
 - Next: manual UI review and authorized merge; no merge performed.
+- Published to private/feature/phase-21-numeric-labels at 12cb022; independent ls-remote SHA verification PASS.

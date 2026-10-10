@@ -9,3 +9,5 @@
 - Browser visual / click-focus verification: NOT RUN; narrow-screen wrap and label association reviewed in source, pending manual review. Server checks skipped: no server/contracts changed.
 - Concurrent session switched shared checkout to phase 22; restored phase 21 and excluded their ToolTextPanel, NumberSum, pasteText translations, generated declarations and phase documents.
 - Final private fetch PASS; remote base advanced by documentation-only 62f9ddd. Created isolated worktree from 62f9ddd after concurrent commits prevented fast-forward; no runtime integration changes.
+
+Publication: PASS, private/feature/phase-21-numeric-labels at 12cb022, confirmed by independent git ls-remote. Isolated worktree clean after implementation commit. Build/test evidence was collected in shared checkout before isolation; transferred runtime patch is identical, with phase 22 changes excluded. Browser acceptance still pending.
