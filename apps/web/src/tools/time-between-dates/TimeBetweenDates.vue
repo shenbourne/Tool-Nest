@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NDatePicker, NInput, NSpace } from 'naive-ui';
+import { NDatePicker, NFormItem } from 'naive-ui';
 import { format } from 'date-fns';
 import { useI18n } from 'vue-i18n';
+import TimeToolPanel from '../date-time/TimeToolPanel.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
 const date1 = ref(format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"));
@@ -19,25 +19,14 @@ const output = computed(() => {
   const secs = Math.floor((diff % 60000) / 1000);
   return days + ' ' + t('common.days') + ', ' + hours + ' ' + t('common.hours') + ', ' + mins + ' ' + t('common.minutes') + ', ' + secs + ' ' + t('common.seconds') + '\n' + t('tools.timeBetweenDates.total') + ' ' + (diff/1000).toFixed(0) + ' ' + t('common.seconds');
 });
+const results = computed(() => output.value === t('common.invalidDates') ? [] : output.value.split('\n').map((value, i) => ({ label: i ? t('tools.timeBetweenDates.total') : t('tools.timeBetweenDates.name'), value: i ? value.slice(t('tools.timeBetweenDates.total').length).trim() : value })));
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <ToolTextPanel :input-text="''" :output-text="output" :output-title="t('common.output')" export-name="time-diff.txt" hide-input>
-      <template #output>
-        <NInput :value="output" type="textarea" :rows="3" readonly  :input-props="{ id: 'timeBetweenDatesField2' }"/>
-      </template>
-      <template #params>
-        <NSpace>
-          <label style="display: grid; gap: 6px;">
-            <span>{{ t('tools.timeBetweenDates.startPlaceholder') }}</span>
-            <NDatePicker v-model:formatted-value="date1" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" :placeholder="t('tools.timeBetweenDates.startPlaceholder')" style="width: 100%; min-width: 220px;" />
-          </label>
-          <label style="display: grid; gap: 6px;">
-            <span>{{ t('tools.timeBetweenDates.endPlaceholder') }}</span>
-            <NDatePicker v-model:formatted-value="date2" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" :placeholder="t('tools.timeBetweenDates.endPlaceholder')" style="width: 100%; min-width: 220px;" />
-          </label>
-        </NSpace>
-      </template>
-    </ToolTextPanel>
+    <TimeToolPanel :results="results">
+      <NFormItem :show-feedback="false" :label="t('tools.timeBetweenDates.startPlaceholder')"><NDatePicker v-model:formatted-value="date1" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" :clearable="false" style="width: 100%;" /></NFormItem>
+      <NFormItem :show-feedback="false" :label="t('tools.timeBetweenDates.endPlaceholder')"><NDatePicker v-model:formatted-value="date2" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" :clearable="false" style="width: 100%;" /></NFormItem>
+      <template #feedback><small>{{ t('tools.dateTime.localTime') }}</small></template>
+    </TimeToolPanel>
   </ToolLayout>
 </template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NInput, NAlert } from 'naive-ui';
+import { NTimePicker, NFormItem, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
+import TimeToolPanel from '../date-time/TimeToolPanel.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
-const input = ref('');
+const input = ref('12:34:56');
 const error = computed(() => {
   const v = input.value.trim();
   if (!v) return '';
@@ -23,19 +23,13 @@ const output = computed(() => {
     String(h).padStart(2,'0') + ':00:00 ' + t('tools.truncateClockTime.toHour'),
   ].join('\n');
 });
+const results = computed(() => output.value ? output.value.split('\n').map((line, i) => ({ label: t('tools.truncateClockTime.' + ['original', 'toMinute', 'toHour'][i]), value: line.split(' ')[0] })) : []);
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
-      <template #input>
-        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')"  :input-props="{ id: 'truncateClockTimeField0' }"/>
-      </template>
-      <template #output>
-        <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'truncateClockTimeField1' }"/>
-      </template>
-      <template #params>
-        <NAlert v-if="error" type="error" :title="error" />
-      </template>
-    </ToolTextPanel>
+    <TimeToolPanel :results="results">
+      <NFormItem :show-feedback="false" :label="t('tools.dateTime.clockInput')"><NTimePicker v-model:formatted-value="input" format="HH:mm:ss" value-format="HH:mm:ss" :clearable="false" style="width: 100%;" /></NFormItem>
+      <template #feedback><NAlert v-if="error" type="error">{{ error }}</NAlert></template>
+    </TimeToolPanel>
   </ToolLayout>
 </template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { NAlert, NInput, NSelect, NTabPane, NTabs } from 'naive-ui';
+import { NAlert, NFormItem, NInput, NSelect, NTabPane, NTabs } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import EmbeddedPanel from './EmbeddedPanel.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
-import ToolTextPanel from '@/components/ToolTextPanel.vue';
+import TimeToolPanel from './TimeToolPanel.vue';
 import Weekday from '../date-weekday-calculator/DateWeekdayCalculator.vue';
 import Interval from '../time-between-dates/TimeBetweenDates.vue';
 import Discord from '../discord-timestamp/DiscordTimestamp.vue';
@@ -32,19 +32,22 @@ const output = computed(() => {
     Math.floor(s / 86400) + ' ' + t('common.days') + ' ' + durationClock(s % 86400),
   ].join('\n');
 });
+const results = computed(() => {
+  if (!output.value) return [];
+  const values = output.value.split('\n');
+  const labels = [...(['days', 'hours', 'minutes', 'seconds'] as const).map(key => t('common.' + key)), t('tools.dateTime.resultsClock'), t('tools.dateTime.remainder')];
+  return labels.map((label, i) => ({ label, value: i < 4 ? values[i].split(' ')[0] : values[i] }));
+});
 </script>
 <template>
   <ToolLayout :tool="tool">
     <NTabs type="line" animated>
       <NTabPane name="duration" :tab="t('tools.dateTime.duration')" display-directive="show:lazy">
-        <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('tools.dateTime.amount')" :output-title="t('common.output')" :file-actions="false">
-          <template #params>
-            <label class="unit-field"><span>{{ t('tools.dateTime.unit') }}</span><NSelect v-model:value="unit" :options="options" /></label>
-            <NAlert v-if="input.trim() && seconds === null" type="error">{{ t('tools.dateTime.invalid') }}</NAlert>
-          </template>
-          <template #input><NInput v-model:value="input" :placeholder="unit === 'clock' ? 'HH:MM:SS' : '0'" /></template>
-          <template #output><NInput :value="output" type="textarea" :rows="6" readonly /></template>
-        </ToolTextPanel>
+        <TimeToolPanel :results="results">
+          <NFormItem :show-feedback="false" :label="t('tools.dateTime.amount')"><NInput v-model:value="input" :input-props="{ 'aria-label': t('tools.dateTime.amount'), inputmode: unit === 'clock' ? 'text' : 'decimal' }" :placeholder="unit === 'clock' ? 'HH:MM:SS' : '0'" /></NFormItem>
+          <NFormItem :show-feedback="false" :label="t('tools.dateTime.unit')"><NSelect v-model:value="unit" :options="options" :aria-label="t('tools.dateTime.unit')" /></NFormItem>
+          <template #feedback><NAlert v-if="input.trim() && seconds === null" type="error">{{ t('tools.dateTime.invalid') }}</NAlert></template>
+        </TimeToolPanel>
       </NTabPane>
       <NTabPane name="weekday" :tab="t('tools.dateWeekdayCalculator.name')" display-directive="show:lazy"><EmbeddedPanel><Weekday /></EmbeddedPanel></NTabPane>
       <NTabPane name="interval" :tab="t('tools.timeBetweenDates.name')" display-directive="show:lazy"><EmbeddedPanel><Interval /></EmbeddedPanel></NTabPane>
@@ -53,6 +56,3 @@ const output = computed(() => {
     </NTabs>
   </ToolLayout>
 </template>
-<style scoped>
-.unit-field { display: grid; gap: 6px; width: min(100%, 280px); }
-</style>

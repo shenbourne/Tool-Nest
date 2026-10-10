@@ -2145,7 +2145,17 @@
       "unit": "输入单位",
       "clock": "时分秒（HH:MM:SS）",
       "amount": "输入时长",
-      "invalid": "请输入非负有限数值，时分秒中的分和秒必须小于 60"
+      "invalid": "请输入非负有限数值，时分秒中的分和秒必须小于 60",
+      "results": "计算结果",
+      "copyAll": "复制全部",
+      "copyResult": "复制{label}",
+      "empty": "请输入有效值以查看结果",
+      "date": "日期",
+      "dateTime": "日期与时间",
+      "clockInput": "时间",
+      "remainder": "天数与剩余时间",
+      "localTime": "日期和时间按本地时区计算",
+      "resultsClock": "时分秒"
     }
   }
 }

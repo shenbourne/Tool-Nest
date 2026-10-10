@@ -106,6 +106,8 @@ const EXPECTED: string[] = [
 // phase 11 CONTEXT.md: file-based (has ToolFileUpload already), form
 // generators, or no input->output text pair.
 const EXCLUDED: string[] = [
+  // Phase 24: clock picker and structured result rows replace the text/file pair.
+  'truncate-clock-time/TruncateClockTime.vue',
   'base64-file-converter/Base64FileConverter.vue',
   // phase 16: generates a whole 1Panel app directory (metadata form + file
   // tree + editable file cards + zip export), not an input->output text pair

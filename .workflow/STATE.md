@@ -186,3 +186,8 @@ Keep this short and factual so another agent can resume without chat history.
 - User authorized master -> feature/phase-24-unified-time. Merged local master 2db3618 at 9a906fa; master ahead 5/behind 0 private/master. Only STATE/ROADMAP conflicted, both records retained.
 - Typecheck, 342 web tests, scoped lint, diff whitespace and production build PASS. Browser acceptance still NOT RUN. Generated declarations retained unstaged; pre-merge stash retained as backup after automatic restore refused a generated-file overlap; original publication record restored explicitly.
 - Publishing feature branch only; master unchanged.
+
+## 2026-10-10 phase 24 conventional UI
+- Unified time tools now use compact form-first layouts and labelled result rows with per-row/all copy; duration input/unit adjacent, interval start/end before result, truncation uses clock picker.
+- 342 tests, typecheck, scoped lint and build PASS. Desktop browser tab/visual and copy-feedback checks PASS; mobile/English/full keyboard checks NOT RUN. Preview http://127.0.0.1:3424/date-time; screenshot .scratch/time-ui.png.
+- Feature branch only; primary checkout preserved, generated declarations excluded. Final fetch initially TLS EOF; retry before publication.

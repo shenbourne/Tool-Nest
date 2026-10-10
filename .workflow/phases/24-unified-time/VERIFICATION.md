@@ -15,3 +15,9 @@
 - Merge 9a906fa includes local master 2db3618 (calendar pickers and stopwatch spacing); conflicts only in STATE/ROADMAP, resolved preserving both.
 - pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; scoped eslint PASS; build PASS 18.23s with existing warnings; git diff --check PASS.
 - Browser acceptance remains NOT RUN. Primary checkout untouched; generated declarations unstaged, backup stash retained.
+
+## Conventional UI follow-up
+- Shared TimeToolPanel presents form inputs before labelled result rows, per-row copying and Copy all; calendar/clock tools no longer display text-file import/export controls. Native text paste remains available for duration.
+- pnpm --filter @toolnest/web type-check PASS; web test PASS 342/342; scoped eslint PASS; production build PASS (final 18.38s, existing warnings). Final whitespace check rerun after removing blank EOF.
+- Browser: inspected all five tabs in Chinese, duration screenshot at .scratch/time-ui.png, correct weekday and truncation results, labelled start/end calendar fields, seven Discord formats. Discord single-row copy produced success feedback. Screenshot confirmed amount/unit side by side and aligned result rows. Mobile viewport, English, keyboard navigation and actual picker selection not exhaustively tested.
+- Focused health review: shared presentation panel depends only on UI and existing copy composable, calculations remain owned by individual tools. Text-panel inventory updated for clock-specific form; no new dependency/ADR. No implementation-mirroring tests added for this presentation-only follow-up.

@@ -2145,7 +2145,17 @@
       "unit": "Input unit",
       "clock": "Time (HH:MM:SS)",
       "amount": "Duration",
-      "invalid": "Enter a finite nonnegative value; clock minutes and seconds must be below 60"
+      "invalid": "Enter a finite nonnegative value; clock minutes and seconds must be below 60",
+      "results": "Results",
+      "copyAll": "Copy all",
+      "copyResult": "Copy {label}",
+      "empty": "Enter a valid value to see results",
+      "date": "Date",
+      "dateTime": "Date and time",
+      "clockInput": "Time",
+      "remainder": "Days and remaining time",
+      "localTime": "Dates and times use your local time zone",
+      "resultsClock": "Hours, minutes, seconds"
     }
   }
 }
