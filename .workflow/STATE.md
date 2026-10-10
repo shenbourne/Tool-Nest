@@ -161,3 +161,4 @@ Keep this short and factual so another agent can resume without chat history.
 - feature/phase-24-unified-time in .worktrees/phase-24-unified-time from fetched private/master 2927b8b. Nine screenshot tools consolidated into /date-time; old URLs redirect, duration outputs share one input and remaining operations are tabs.
 - Tests, typecheck, scoped lint and build PASS. Browser visual acceptance NOT RUN; phase awaits UI acceptance. Unrelated primary-checkout changes preserved.
 - Next: review UI and authorize merge separately. Feature publication recorded below.
+- Local implementation commit 7b5072c. First push failed with TLS unexpected EOF; retrying publication. Build-generated declaration edits remain unstaged in this isolated worktree.
