@@ -107,3 +107,8 @@ Keep this short and factual so another agent can resume without chat history.
 - File tool pages widened to 934px for three 128px tiles per column with existing gaps; columns stack <=640px.
 - Branch feature/file-panel-three-tiles; lint, 335 tests, typecheck/build PASS. Browser visual verification NOT RUN; next action: visual review and authorized merge.
 - Concurrent session switched checkout to master during checks; preserved its commits and isolated this patch. Private fetch PASS; base 1a0144e ahead 7 / behind 0 private/master. Existing components.d.ts/untracked changes excluded.
+
+## 2026-10-10 authorized file panel merge
+- User requested submission to master. Fast-forwarded master 1a0144e -> bcae33d in isolated worktree, preserving active phase 21 uncommitted work.
+- Integration runtime tree equals verified file-panel-three-tiles tip: scoped lint, 335 tests and typecheck/build PASS; browser visual check remains NOT RUN.
+- Private fetch PASS, master was ahead 7 / behind 0 before integration. Publishing master to private; public mirror excluded.
