@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NAlert } from 'naive-ui';
+import { NCard, NDatePicker, NInput, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
@@ -26,7 +26,7 @@ const output = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInput v-model:value="input" placeholder="YYYY-MM-DD"  :input-props="{ id: 'dateWeekdayCalculatorField0' }"/>
+      <NDatePicker v-model:formatted-value="input" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%;" />
       <NAlert v-if="dateError" type="error" :title="dateError" />
       <NInput :value="output" readonly  :input-props="{ id: 'dateWeekdayCalculatorField1' }"/>
     </NSpace></NCard>

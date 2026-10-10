@@ -126,3 +126,9 @@ Keep this short and factual so another agent can resume without chat history.
 - User requested submission to master. Fast-forwarded master 1a0144e -> bcae33d in isolated worktree, preserving active phase 21 uncommitted work.
 - Integration runtime tree equals verified file-panel-three-tiles tip: scoped lint, 335 tests and typecheck/build PASS; browser visual check remains NOT RUN.
 - Private fetch PASS, master was ahead 7 / behind 0 before integration. Publishing master to private; public mirror excluded.
+
+## 2026-10-10 phase 23 — date/time pickers
+
+- Branch feature/phase-23-date-time-pickers. Weekday, Discord, date interval, date converter now provide calendar/clock selection; interval defaults use local time.
+- Typecheck, 335 tests, build, scoped lint PASS. Browser verification NOT RUN; phase awaits UI acceptance.
+- Initial private/master synchronized by documented merge; final remote d062f31 adds concurrent leap-year edits overlapping unrelated dirty work. Preserve those edits; integrate in isolation before publishing. Feature not pushed, no merge to master.

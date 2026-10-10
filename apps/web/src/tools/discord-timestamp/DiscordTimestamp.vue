@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NInput, NAlert } from 'naive-ui';
+import { NDatePicker, NInput, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
@@ -12,7 +12,7 @@ const { t } = useI18n();
 // timestamp by one timezone. Build the local equivalent instead.
 function toLocalDateTimeInput(d: Date): string {
   const p = (n: number) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
 }
 const input = ref(toLocalDateTimeInput(new Date()));
 const FORMATS = computed(() => [
@@ -36,7 +36,7 @@ const output = computed(() => {
   <ToolLayout :tool="tool">
     <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="discord-timestamps.txt">
       <template #input>
-        <NInput v-model:value="input" placeholder="YYYY-MM-DDTHH:mm"  :input-props="{ id: 'discordTimestampField0' }"/>
+        <NDatePicker v-model:formatted-value="input" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" style="width: 100%;" />
       </template>
       <template #output>
         <NInput :value="output" type="textarea" :rows="8" readonly  :input-props="{ id: 'discordTimestampField1' }"/>

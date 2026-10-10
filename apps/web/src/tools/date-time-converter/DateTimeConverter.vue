@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NButton, NAlert, NSelect } from 'naive-ui';
+import { NCard, NDatePicker, NInput, NSpace, NButton, NAlert, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
@@ -23,6 +23,14 @@ const inputFormatOptions = computed<{ label: string; value: InputFormat }[]>(() 
 const input = ref('');
 const inputFormat = ref<InputFormat>('auto');
 const customFormat = ref('');
+const selectedDate = ref<number | null>(null);
+
+function selectDate(value: number | null) {
+  selectedDate.value = value;
+  if (value === null) return;
+  input.value = new Date(value).toISOString();
+  inputFormat.value = 'iso8601';
+}
 
 function setNow() {
   input.value = String(Math.floor(Date.now() / 1000));
@@ -48,6 +56,7 @@ function copyText(text: string) {
             <NSelect v-model:value="inputFormat" :options="inputFormatOptions" style="width: 200px;" />
             <NButton @click="setNow" size="medium">{{ t('tools.dateTimeConverter.now') }}</NButton>
           </div>
+          <NDatePicker :value="selectedDate" type="datetime" format="yyyy-MM-dd HH:mm:ss" :placeholder="t('tools.dateTimeConverter.inputPlaceholder')" clearable style="width: 100%;" @update:value="selectDate" />
           <div v-if="inputFormat === 'custom'" style="display: flex; gap: 12px; align-items: center;">
             <NInput v-model:value="customFormat" :placeholder="t('tools.dateTimeConverter.customFormatPlaceholder')" clearable style="flex: 1;"  :input-props="{ id: 'dateTimeConverterField1' }"/>
           </div>
