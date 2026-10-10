@@ -79,3 +79,9 @@ Keep this short and factual so another agent can resume without chat history.
 - Unrelated components.d.ts and untracked files preserved. Pre-existing conflict-marker sections in this file not reconciled by this CSS task.
 - Next: review/merge feature/file-title-center separately; no merge authorized. Publication target private/feature/file-title-center.
 - Publication blocked: automatic approval review rejected push to private because destination ownership is unverified; explicit destination approval required. Local commit retained.
+
+## 2026-10-10 PDF editor parameter layout maintenance
+
+- Position, font size and color now share one horizontal grid row in PdfEditor.vue on feature/file-title-center.
+- Relevant tests 4/4 and build/typecheck PASS; differential lint zero added (2 existing errors). Browser visual verification not run.
+- Next: review the local UI commits; private push remains blocked by earlier automatic approval rejection pending explicit destination approval. No merge performed.

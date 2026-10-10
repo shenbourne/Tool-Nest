@@ -146,11 +146,11 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
         <template #params>
           <NSpace vertical :size="12">
             <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')" :input-props="{ id: 'pdfEditorField0' }" />
-            <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" style="min-width: 160px" />
-            <NSpace>
-              <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" style="width: 150px;" :input-props="{ id: 'pdfEditorField1' }" />
-              <NColorPicker v-model:value="color" style="width: 100px;" />
-            </NSpace>
+            <div class="pdf-editor__text-options">
+              <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
+              <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" :input-props="{ id: 'pdfEditorField1' }" />
+              <NColorPicker v-model:value="color" />
+            </div>
             <NButton type="primary" :loading="processing" @click="apply" :disabled="!file || !text" block>
               {{ t('common.apply') }}
             </NButton>
@@ -163,4 +163,15 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
 </template>
 
 <style scoped>
+.pdf-editor__text-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 150px) 100px;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdf-editor__text-options > * {
+  min-width: 0;
+  width: 100%;
+}
 </style>

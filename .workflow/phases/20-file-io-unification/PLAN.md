@@ -80,3 +80,10 @@ The branch is **not merged**. Instead, this phase migrates the remaining 22 tool
 - Plan: remove the two single-file `text-align: left` overrides in ToolFileUpload.vue and ToolFilePanel.vue; retain FileCard.vue's shared center alignment and ellipsis.
 - Scope: two CSS deletions; no API, dependency, or runtime logic changes. No ADR, new phase, codebase-health review, or new tests warranted for this reversible style adjustment.
 - Branch: feature/file-title-center, from local master 4c192eb. Fetch private succeeded on retry; private/master was one commit behind local master, zero ahead. Existing local commit and unrelated working files preserved.
+
+## 2026-10-10 maintenance — PDF text options row
+
+- Request: arrange position, font size and color in one horizontal row.
+- Plan: put the three controls in one scoped three-column grid in PdfEditor.vue; keep text entry and Apply on separate rows; preserve bindings and limits.
+- Scope: low-impact single-component markup/CSS. No new phase, ADR, structural review or new implementation-mirroring tests warranted. Continue on feature/file-title-center to retain the preceding requested UI adjustment.
+- Remote before work: private fetch PASS, master ahead 1 / behind 0; prior commit preserved. Push remains blocked by previous automatic approval rejection pending explicit destination authorization.

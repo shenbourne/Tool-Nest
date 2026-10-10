@@ -40,3 +40,12 @@
 - `pnpm --filter @toolnest/web build`: PASS, includes vue-tsc typecheck; Vite completed in 30.46s. Dependency externalization/eval and large-chunk warnings remain.
 - `git diff --check`: PASS. Used equivalent scoped checks instead of scripts/verify; server checks skipped for CSS-only web change. Browser comparison NOT RUN.
 - Remote: private fetch succeeded before and after change; master ahead 1 / behind 0. Local pre-existing commit preserved. Existing STATE.md conflict markers predate this task and were left untouched.
+
+## 2026-10-10 PDF text options row maintenance
+
+- Review PASS: one scoped grid groups position/size/color; v-model, PDF drawing and text/apply rows unchanged.
+- Relevant file-input contracts: `pnpm --filter @toolnest/web exec vitest run src/tools/tool-file-import-controls.test.ts` PASS, 4/4.
+- `pnpm --filter @toolnest/web build`: PASS, includes typecheck, Vite 22.34s; existing dependency/chunk warnings.
+- Scoped eslint FAIL: existing no-explicit-any (125) and no-undef onUnmounted (130). Baseline checked with `git show HEAD:apps/web/src/tools/pdf-editor/PdfEditor.vue | pnpm --filter @toolnest/web exec eslint --stdin --stdin-filename src/tools/pdf-editor/PdfEditor.vue`: identical 2 errors; zero added.
+- `git diff --check` PASS. Equivalent scoped verification used; server checks and new tests skipped for markup/CSS only. Browser visual check NOT RUN.
+- private fetch before/after PASS; master ahead 1 / behind 0. Push not retried: previous auto-review rejection remains pending destination authorization.

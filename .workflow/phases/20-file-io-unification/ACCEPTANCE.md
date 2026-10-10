@@ -76,3 +76,9 @@ Pending user review. Representative routes to verify:
 - PASS (source review): upload and output cards both inherit FileCard.vue `.file-card__name { width: 100%; text-align: center; }`; left-alignment overrides removed.
 - PASS (source review): long filenames retain overflow clipping, ellipsis, nowrap, and full-name title tooltip.
 - Browser screenshot comparison: NOT RUN; acceptance evidence is CSS cascade inspection.
+
+## 2026-10-10 maintenance — PDF text options row
+
+- PASS (source review): position, font size and color share one grid row, in that order; tracks are flexible position / up to 150px size / 100px color.
+- PASS (source review): parameter bindings, size limits 8–120 and PDF generation logic unchanged.
+- Browser visual verification NOT RUN.
