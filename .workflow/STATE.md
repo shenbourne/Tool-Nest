@@ -169,3 +169,8 @@ Keep this short and factual so another agent can resume without chat history.
 - Only ROADMAP/STATE conflicted; retained both records. Four date tool files are byte-identical to feature tip 1096447.
 - Merged-master typecheck PASS, web tests 338/338 PASS, production build PASS (25.77s). Browser click/visual acceptance still NOT RUN.
 - Local merge complete; master not pushed by this task. Build-generated declarations and dependency cache retained in verification worktree and excluded from commits.
+
+## 2026-10-10 stopwatch lap spacing
+- User requested 24px separation between lap labels and times, then authorized local master integration. Dev preview session stopped.
+- Source review and pnpm --filter @toolnest/web type-check PASS; diff whitespace PASS. Browser visual verification NOT RUN. CSS-only change: full build/tests and separate phase/ADR/health review not applicable.
+- Isolated feature/stopwatch-lap-spacing from master 7462c75; private fetch PASS, master ahead 4 / behind 0. Preserve all unrelated dirty files. Next: fast-forward local master; master publication not requested.
