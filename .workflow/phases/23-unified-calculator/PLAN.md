@@ -1,2 +1,3 @@
 1. Add parser regression tests for factorial, parentheses, finite results; observe failure. 2. Consolidate parser and registry with legacy redirect. 3. Build responsive keypad/live preview/equals history with bilingual accessible controls. 4. Run tests/typecheck/build/lint, review module consolidation, record acceptance and push feature branch.
 All implementation and desktop acceptance tasks completed; final remote integration verification and publication finish the phase.
+Follow-up: change backspace to outlined SVG icon after power/remainder. Share keypad sizing and 6px row spacing. Reversible presentation change: browser checks rather than new implementation-mirroring tests.

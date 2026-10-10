@@ -71,10 +71,15 @@ function clear() { expression.value = ''; committed.value = false; }
             <span class="calculator-error" role="status" :title="preview.error">{{ preview.error }}</span>
             <output class="calculator-result" aria-live="polite">{{ preview.result || '—' }}</output>
           </div>
-          <div class="calculator-actions">
+          <div class="calculator-keypad calculator-actions">
             <NButton @click="clear">{{ t('tools.genericCalculator.clear') }}</NButton>
-            <NButton @click="press('backspace')">{{ t('tools.genericCalculator.backspace') }}</NButton>
             <NButton @click="press('^')">xʸ</NButton><NButton @click="press('%')">%</NButton>
+            <NButton :aria-label="t('tools.genericCalculator.backspace')" :title="t('tools.genericCalculator.backspace')" @click="press('backspace')">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 5h11a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-7-7 7-7Z" />
+                <path d="m12 9 6 6m0-6-6 6" />
+              </svg>
+            </NButton>
           </div>
           <div class="calculator-keypad">
             <NButton v-for="[label, value] in keys" :key="value" :type="value === '=' ? 'primary' : 'default'"
@@ -108,6 +113,8 @@ function clear() { expression.value = ''; committed.value = false; }
 .calculator-result { display: block; max-width: 65%; text-align: right; font-size: 32px; font-weight: 600; overflow-x: auto; white-space: nowrap; }
 .calculator-keypad, .calculator-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .calculator-keypad :deep(.n-button) { height: 62px; font-size: 24px; }
+.calculator-actions { margin-bottom: -8px; }
+.calculator-actions :deep(.n-button:first-child) { font-size: 16px; }
 .calculator-hint { opacity: .65; font-size: 13px; margin: 0 0 12px; }
 .calculator-history { list-style: none; padding: 0; margin: 0; max-height: 480px; overflow-y: auto; }
 .calculator-history button { width: 100%; display: flex; flex-direction: column; gap: 6px; padding: 14px 8px; background: transparent; color: inherit; border: 0; border-bottom: 1px solid #8883; cursor: pointer; text-align: left; overflow-wrap: anywhere; }

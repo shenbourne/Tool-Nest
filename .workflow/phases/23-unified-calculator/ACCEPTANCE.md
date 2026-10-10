@@ -6,3 +6,4 @@
 - Error left of result; buttons remain stationary: PASS valid/error button top both 363.890625 px. Screenshot calculator-preview.png.
 - Bilingual labels: Chinese and English browser PASS. Desktop acceptance PASS. Supplemental narrow viewport test: global app sidebar squeezes content at 390px; recorded limitation outside calculator scope.
 
+- Backspace icon after power/remainder; uniform button sizes and spacing: PASS browser measurement backspace and 7 both 103x62px; backspace 123 -> 12 PASS, screenshot keypad-preview.png.
