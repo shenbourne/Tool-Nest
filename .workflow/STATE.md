@@ -118,3 +118,8 @@ Keep this short and factual so another agent can resume without chat history.
 - Added persistent bilingual labels to 23 numeric inputs in 14 tools. Web tests 335/335, typecheck/build PASS; differential lint zero added (10 existing). Browser visual/click-focus review NOT RUN.
 - Next: manual UI review and authorized merge; no merge performed.
 - Published to private/feature/phase-21-numeric-labels at 12cb022; independent ls-remote SHA verification PASS.
+
+## 2026-10-10 authorized phase 21 merge
+- User authorized merge and publication to master. Fast-forwarded master from 62f9ddd to 23b6885 in the isolated phase 21 worktree; no conflicts and merged tree equals verified feature tip.
+- Existing 335 passing tests, typecheck/build and differential lint evidence remains applicable; no runtime edits during merge. Browser visual acceptance remains NOT RUN.
+- Next: publish private/master and verify remote SHA. Other sessions and public mirror untouched.
