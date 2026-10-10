@@ -23,8 +23,10 @@ const output = computed(() => {
       <template #output>
         <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'textRotateField2' }"/>
       </template>
-      <template #params>
-        <NInputNumber v-model:value="positions" :placeholder="t('common.positions')" style="width:150px"  :input-props="{ id: 'textRotateField1' }"/>
+      <template #params>        <div class="tool-numeric-param">
+          <label for="textRotateField1">{{ t('numericParams.rotatePositions') }}:</label>
+          <NInputNumber v-model:value="positions" :placeholder="t('common.positions')" style="width:150px"  :input-props="{ id: 'textRotateField1' }"/>
+        </div>
       </template>
     </ToolTextPanel>
   </ToolLayout>

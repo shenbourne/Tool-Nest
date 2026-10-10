@@ -31,8 +31,16 @@ const output = computed(() => {
       <template #output>
         <NInput :value="output" type="textarea" :rows="5" readonly  :input-props="{ id: 'csvSwapColumnsField3' }"/>
       </template>
-      <template #params>
-        <NSpace><NInputNumber v-model:value="colA" :min="0" :placeholder="t('tools.csvSwapColumns.columnA')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField1' }"/><NInputNumber v-model:value="colB" :min="0" :placeholder="t('tools.csvSwapColumns.columnB')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField2' }"/></NSpace>
+      <template #params>        <NSpace>
+        <div class="tool-numeric-param">
+          <label for="csvSwapColumnsField1">{{ t('numericParams.columnA') }}:</label>
+          <NInputNumber v-model:value="colA" :min="0" :placeholder="t('tools.csvSwapColumns.columnA')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField1' }"/>
+        </div>
+        <div class="tool-numeric-param">
+          <label for="csvSwapColumnsField2">{{ t('numericParams.columnB') }}:</label>
+          <NInputNumber v-model:value="colB" :min="0" :placeholder="t('tools.csvSwapColumns.columnB')" style="width:120px"  :input-props="{ id: 'csvSwapColumnsField2' }"/>
+        </div>
+        </NSpace>
       </template>
     </ToolTextPanel>
   </ToolLayout>

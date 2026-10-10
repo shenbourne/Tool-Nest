@@ -72,8 +72,10 @@ async function process() {
           <NButton :disabled="!resultFile" @click="download">{{ t('tool.download') }}</NButton>
         </template>
         <template #params>
-          <NSpace vertical :size="12">
-            <NInputNumber v-model:value="quality" :min="0.1" :max="1" :step="0.1" :placeholder="t('tools.imageCompress.quality')" style="width:140px"  :input-props="{ id: 'imageCompressField0' }"/>
+          <NSpace vertical :size="12">            <div class="tool-numeric-param">
+              <label for="imageCompressField0">{{ t('numericParams.quality') }}:</label>
+              <NInputNumber v-model:value="quality" :min="0.1" :max="1" :step="0.1" :placeholder="t('tools.imageCompress.quality')" style="width:140px"  :input-props="{ id: 'imageCompressField0' }"/>
+            </div>
             <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
               {{ t('tools.imageCompress.compress') }}
             </NButton>

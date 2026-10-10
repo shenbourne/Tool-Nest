@@ -112,3 +112,8 @@ Keep this short and factual so another agent can resume without chat history.
 - User requested submission to master. Fast-forwarded master 1a0144e -> bcae33d in isolated worktree, preserving active phase 21 uncommitted work.
 - Integration runtime tree equals verified file-panel-three-tiles tip: scoped lint, 335 tests and typecheck/build PASS; browser visual check remains NOT RUN.
 - Private fetch PASS, master was ahead 7 / behind 0 before integration. Publishing master to private; public mirror excluded.
+
+## 2026-10-10 phase 21 — numeric parameter labels
+- Isolated worktree .worktrees/phase-21-numeric-labels, branch feature/phase-21-numeric-labels, from refreshed private/master 62f9ddd. Shared checkout was concurrently switched/committed by phase 22; existing work preserved.
+- Added persistent bilingual labels to 23 numeric inputs in 14 tools. Web tests 335/335, typecheck/build PASS; differential lint zero added (10 existing). Browser visual/click-focus review NOT RUN.
+- Next: manual UI review and authorized merge; no merge performed.
