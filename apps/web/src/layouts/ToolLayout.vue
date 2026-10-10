@@ -98,6 +98,12 @@ function goCategory() {
 </template>
 
 <style scoped>
+/* Three 128px tiles, two 12px gaps and 26px column chrome per side,
+   plus the 16px column gap and 50px outer card chrome: 934px total. */
+.page-container:has(.tool-file-panel) {
+  max-width: 934px;
+}
+
 .tool-header {
   display: flex;
   justify-content: space-between;

@@ -60,3 +60,9 @@
 - Verification: pnpm --filter @toolnest/web type-check PASS; pnpm --filter @toolnest/web exec eslint src/tools/bip39-generator/Bip39Generator.vue PASS; pnpm --filter @toolnest/web test PASS (335 tests). Build pending.
 - Review: only template grouping and scoped CSS changed; mnemonic generation, retry and validation bindings preserved.
 - Final build: pnpm --filter @toolnest/web build PASS (existing dependency/chunk warnings). Final private fetch PASS; master ahead 1 / behind 0, remote base unchanged.
+
+## 2026-10-10 file panel width maintenance
+- Scoped eslint PASS (exit 0), web vitest PASS 44 files / 335 tests, vue-tsc + vite build PASS (exit 0). Existing browser externalization/eval/chunk warnings remain.
+- CSS dimension/source review PASS; browser visual check NOT RUN. No server checks: CSS-only change. No TDD: reversible styling.
+- Shared session switched checkout to master and committed its state during validation. Isolated this patch on feature/file-panel-three-tiles from current master 1a0144e; initial private fetch PASS, final fetch PASS, master ahead 7 / behind 0. No remote code divergence; existing local merged work preserved.
+- Review: only file-page width and file panel shrink/stack rules changed; no dependency/API/behavior change. No structural health audit needed.

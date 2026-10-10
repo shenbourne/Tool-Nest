@@ -87,3 +87,9 @@ The branch is **not merged**. Instead, this phase migrates the remaining 22 tool
 - Plan: put the three controls in one scoped three-column grid in PdfEditor.vue; keep text entry and Apply on separate rows; preserve bindings and limits.
 - Scope: low-impact single-component markup/CSS. No new phase, ADR, structural review or new implementation-mirroring tests warranted. Continue on feature/file-title-center to retain the preceding requested UI adjustment.
 - Remote before work: private fetch PASS, master ahead 1 / behind 0; prior commit preserved. Push remains blocked by previous automatic approval rejection pending explicit destination authorization.
+
+## 2026-10-10 file panel width maintenance
+- Widen only tool pages containing ToolFilePanel from 900px to 934px, retaining 128px file tiles and 12px gaps.
+- Keep equal shrinkable columns; stack at 640px. Single-column canvas mode retained.
+- Verify scoped lint, web tests, typecheck/build and review CSS dimensions. Low-impact CSS: no implementation-mirroring test added; no ADR or structural health audit needed.
+- Continue existing maintenance branch feature/file-title-center; fetched private, base master ahead 1 / behind 0, feature upstream 0 / 0. Preserve existing dirty STATE.md/components.d.ts and untracked files.

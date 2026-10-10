@@ -82,3 +82,8 @@ Pending user review. Representative routes to verify:
 - PASS (source review): position, font size and color share one grid row, in that order; tracks are flexible position / up to 150px size / 100px color.
 - PASS (source review): parameter bindings, size limits 8–120 and PDF generation logic unchanged.
 - Browser visual verification NOT RUN.
+
+## 2026-10-10 file panel width maintenance
+- PASS (CSS dimension review): file pages cap at 934px; after 50px NCard chrome, 16px column gap and 26px per-column chrome, each grid has 408px = 3 x 128px + 2 x 12px. Fourth tile wraps.
+- PASS (source review): equal shrinkable columns stack at viewport <=640px; single-column mode preserved.
+- Browser screenshot acceptance: NOT RUN; manual visual review remains.

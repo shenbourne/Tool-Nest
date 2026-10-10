@@ -102,3 +102,8 @@ Keep this short and factual so another agent can resume without chat history.
 - Merged tree equals verified feature tip; no runtime changes during integration, so existing passing typecheck, scoped lint, 335 web tests and build remain applicable.
 - Preserved pre-existing components.d.ts modification and all untracked files. Remote refresh PASS; feature/upstream ahead 0 / behind 0 before merge.
 - Local master only; no master push requested. Next: push private/master when authorized.
+
+## 2026-10-10 file panel three-tile width
+- File tool pages widened to 934px for three 128px tiles per column with existing gaps; columns stack <=640px.
+- Branch feature/file-panel-three-tiles; lint, 335 tests, typecheck/build PASS. Browser visual verification NOT RUN; next action: visual review and authorized merge.
+- Concurrent session switched checkout to master during checks; preserved its commits and isolated this patch. Private fetch PASS; base 1a0144e ahead 7 / behind 0 private/master. Existing components.d.ts/untracked changes excluded.
