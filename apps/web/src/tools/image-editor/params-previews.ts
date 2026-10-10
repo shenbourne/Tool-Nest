@@ -1,0 +1,141 @@
+import { defineComponent, h, type VNodeChild } from 'vue';
+import type { ArrowStyle, NumberFormat, StrokeStyle } from './image-editor.service';
+import { formatNumber } from './image-editor.service';
+
+// SVG previews for the image-editor params panel. NSelect dropdown options and
+// the selected tag render these instead of plain text so the picker reads as a
+// visual sample (line dash, arrowhead, number glyph) rather than a name.
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function svg(attrs: Record<string, string | number>, children: VNodeChild[]) {
+  // No fixed width/height attributes: CSS sizes the sample so it scales down
+  // inside the narrow closed-select tag instead of being clipped.
+  return h('svg', { xmlns: SVG_NS, viewBox: '0 0 64 20', ...attrs }, children);
+}
+
+/** dasharray values mirror strokeDash() at width 2 so the sample matches the canvas. */
+const STROKE_DASH_PREVIEW: Record<StrokeStyle, string> = {
+  solid: '',
+  'dash-long': '16,8',
+  'dash-short': '8,8',
+  'dash-dot': '16,8,2,8',
+  'dash-dot-dot': '16,8,2,8,2,8',
+};
+
+export function strokeStylePreview(style: StrokeStyle): VNodeChild {
+  return svg({ class: 'param-preview' }, [
+    h('line', {
+      x1: 4, y1: 10, x2: 60, y2: 10,
+      stroke: 'currentColor', 'stroke-width': 2,
+      'stroke-dasharray': STROKE_DASH_PREVIEW[style] || undefined,
+      'stroke-linecap': 'round',
+    }),
+  ]);
+}
+
+function arrowHead(style: ArrowStyle): VNodeChild {
+  // Arrowhead sits at the right end (x=52) of a 4..52 line, centred on y=10.
+  switch (style) {
+    case 'none':
+      return null;
+    case 'triangle':
+      return h('polygon', {
+        points: '52,5 52,15 60,10', fill: 'currentColor',
+      });
+    case 'open':
+      return h('polyline', {
+        points: '53,5 60,10 53,15',
+        fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round',
+      });
+    case 'circle':
+      return h('circle', { cx: 56, cy: 10, r: 4, fill: 'currentColor' });
+  }
+}
+
+/**
+ * Arrow sample. The end arrow (default) points right; the start arrow is the
+ * same art mirrored horizontally so it points left, matching the canvas.
+ */
+export function arrowStylePreview(style: ArrowStyle, direction: 'start' | 'end' = 'end'): VNodeChild {
+  const art: VNodeChild[] = [
+    h('line', {
+      x1: 4, y1: 10, x2: 52, y2: 10,
+      stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round',
+    }),
+    arrowHead(style),
+  ];
+  const children = direction === 'start'
+    ? [h('g', { transform: 'translate(64,0) scale(-1,1)' }, art)]
+    : art;
+  return svg({ class: 'param-preview' }, children);
+}
+
+export function numberFormatPreview(format: NumberFormat): VNodeChild {
+  // Show the first three values so the sample reads as a sequence (1, 2, 3 /
+  // a, b, c / i, ii, iii), not a single glyph.
+  const samples = [1, 2, 3].map((n) => formatNumber(n, format)).join(', ');
+  return h('span', { class: 'param-preview param-preview--text' }, samples);
+}
+
+/** Shape kind: an unfilled rect or ellipse outline sample. */
+export function shapeKindPreview(kind: 'rect' | 'ellipse'): VNodeChild {
+  const shape = kind === 'rect'
+    ? h('rect', { x: 14, y: 3, width: 36, height: 14, rx: 2, fill: 'none', stroke: 'currentColor', 'stroke-width': 2 })
+    : h('ellipse', { cx: 32, cy: 10, rx: 20, ry: 8, fill: 'none', stroke: 'currentColor', 'stroke-width': 2 });
+  return svg({ class: 'param-preview' }, [shape]);
+}
+
+/** Line kind: a single straight segment or a two-segment polyline sample. */
+export function lineKindPreview(kind: 'straight' | 'polyline'): VNodeChild {
+  const segment = kind === 'straight'
+    ? h('line', { x1: 6, y1: 16, x2: 58, y2: 4, stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round' })
+    : h('polyline', { points: '6,16 32,4 58,16', fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+  return svg({ class: 'param-preview' }, [segment]);
+}
+
+/** Eraser/mosaic mode: a rect outline or a brush stroke sample. */
+export function modePreview(mode: 'rect' | 'brush'): VNodeChild {
+  const sample = mode === 'rect'
+    ? h('rect', { x: 16, y: 3, width: 32, height: 14, rx: 1, fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-dasharray': '4,3' })
+    : h('line', { x1: 10, y1: 15, x2: 54, y2: 5, stroke: 'currentColor', 'stroke-width': 3, 'stroke-linecap': 'round' });
+  return svg({ class: 'param-preview' }, [sample]);
+}
+
+/** Mosaic effect: a pixelated block sample or a blurred-edge sample. */
+export function mosaicEffectPreview(effect: 'mosaic' | 'blur'): VNodeChild {
+  if (effect === 'mosaic') {
+    return svg({ class: 'param-preview' }, [
+      h('rect', { x: 18, y: 3, width: 7, height: 7, fill: 'currentColor', opacity: 0.9 }),
+      h('rect', { x: 25, y: 3, width: 7, height: 7, fill: 'currentColor', opacity: 0.5 }),
+      h('rect', { x: 32, y: 3, width: 7, height: 7, fill: 'currentColor', opacity: 0.9 }),
+      h('rect', { x: 18, y: 10, width: 7, height: 7, fill: 'currentColor', opacity: 0.5 }),
+      h('rect', { x: 25, y: 10, width: 7, height: 7, fill: 'currentColor', opacity: 0.9 }),
+      h('rect', { x: 32, y: 10, width: 7, height: 7, fill: 'currentColor', opacity: 0.5 }),
+    ]);
+  }
+  return svg({ class: 'param-preview' }, [
+    h('circle', { cx: 32, cy: 10, r: 8, fill: 'currentColor', opacity: 0.35 }),
+    h('circle', { cx: 32, cy: 10, r: 5, fill: 'currentColor', opacity: 0.6 }),
+    h('circle', { cx: 32, cy: 10, r: 2.5, fill: 'currentColor' }),
+  ]);
+}
+
+/**
+ * Line-weight icon for the numeric "width" SizeFields: three stacked lines of
+ * increasing thickness (thin / medium / thick), the conventional weight symbol.
+ * A component so it can be passed to NIcon's `component` prop.
+ */
+export const lineWeightIcon = defineComponent({
+  name: 'LineWeightIcon',
+  setup() {
+    return () => h('svg', {
+      xmlns: SVG_NS, viewBox: '0 0 24 24', width: '1em', height: '1em',
+      fill: 'none', stroke: 'currentColor', 'stroke-linecap': 'round',
+    }, [
+      h('line', { x1: 3, y1: 6, x2: 21, y2: 6, 'stroke-width': 1.5 }),
+      h('line', { x1: 3, y1: 12, x2: 21, y2: 12, 'stroke-width': 3 }),
+      h('line', { x1: 3, y1: 18, x2: 21, y2: 18, 'stroke-width': 4.5 }),
+    ]);
+  },
+});

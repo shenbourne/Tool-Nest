@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -u
+
+fail=0
+
+run_check() {
+  local label="$1" command="$2"
+  printf 'RUN  %s: %s\n' "$label" "$command"
+  if bash -o pipefail -c "$command"; then
+    printf 'PASS %s\n' "$label"
+  else
+    printf 'FAIL %s\n' "$label"
+    fail=1
+  fi
+}
+
+run_check tests "${ADP_TEST_CMD:-pnpm test}"
+run_check lint "${ADP_LINT_CMD:-pnpm lint}"
+run_check typecheck "${ADP_TYPECHECK_CMD:-pnpm type-check}"
+run_check build "${ADP_BUILD_CMD:-pnpm build}"
+
+exit "$fail"

@@ -1,0 +1,2113 @@
+{
+  "app": {
+    "title": "ToolNest",
+    "subtitle": "Developer Tools"
+  },
+  "nav": {
+    "home": "Home",
+    "categories": "Categories",
+    "favorites": "Favorites",
+    "settings": "Settings",
+    "search": "Search tools...",
+    "allCategories": "All Categories"
+  },
+  "home": {
+    "searchPlaceholder": "Search tools by name, category, or tag...",
+    "allTools": "All Tools",
+    "recentTools": "Recently Used",
+    "favoriteTools": "Favorites",
+    "noResults": "No tools found",
+    "welcome": "Welcome to ToolNest",
+    "welcomeDesc": "Your unified developer toolbox",
+    "browseCategories": "Browse Categories",
+    "toolCount": "{count} tools",
+    "noToolsInstalled": "No tools installed yet"
+  },
+  "category": {
+    "crypto": {
+      "name": "Crypto",
+      "desc": "Encryption, hashing, and security tools"
+    },
+    "converter": {
+      "name": "Converters",
+      "desc": "Format and unit conversion tools"
+    },
+    "web": {
+      "name": "Web",
+      "desc": "Web development and URL tools"
+    },
+    "developer": {
+      "name": "Developer",
+      "desc": "Development and DevOps tools"
+    },
+    "network": {
+      "name": "Network",
+      "desc": "Network calculation and analysis tools"
+    },
+    "text": {
+      "name": "Text",
+      "desc": "Text processing and analysis tools"
+    },
+    "data": {
+      "name": "Data",
+      "desc": "Data format and validation tools"
+    },
+    "image": {
+      "name": "Image",
+      "desc": "Image processing tools"
+    },
+    "video": {
+      "name": "Video",
+      "desc": "Video editing tools"
+    },
+    "audio": {
+      "name": "Audio",
+      "desc": "Audio processing tools"
+    },
+    "pdf": {
+      "name": "PDF",
+      "desc": "PDF manipulation tools"
+    },
+    "math": {
+      "name": "Math",
+      "desc": "Mathematical calculation tools"
+    },
+    "measurement": {
+      "name": "Measurement",
+      "desc": "Measurement and timing tools"
+    },
+    "generator": {
+      "name": "Generators",
+      "desc": "Content generation tools"
+    },
+    "network-test": {
+      "name": "Network Tests",
+      "desc": "Network testing and diagnostics"
+    },
+    "platform": {
+      "name": "Platform",
+      "desc": "Platform and utility tools"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "data": "Data Management",
+    "sidebarMode": "Category Click Behavior",
+    "sidebarModeAnchor": "Scroll on Page",
+    "sidebarModeNavigate": "Navigate to Page",
+    "layoutMode": "Layout Mode",
+    "favoritesCount": "{count} favorite tools",
+    "recentCount": "{count} recently used tools",
+    "clearData": "Clear All Data"
+  },
+  "share": {
+    "button": "Share",
+    "title": "Share Report",
+    "titlePlaceholder": "Report title (optional)",
+    "warning": "Privacy Notice",
+    "warningDesc": "Shared reports are publicly accessible via the generated link. Do not include sensitive information.",
+    "create": "Create Share Link",
+    "created": "Link created successfully",
+    "error": "Failed to create share link"
+  },
+  "report": {
+    "title": "Shared Report",
+    "expired": "This report has expired or does not exist",
+    "createdAt": "Created at"
+  },
+  "tool": {
+    "favorite": "Favorite",
+    "unfavorite": "Remove from favorites",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyFailed": "Failed to copy to clipboard",
+    "copyImageFailed": "Failed to copy the image to clipboard",
+    "clear": "Clear",
+    "download": "Download",
+    "upload": "Upload",
+    "processing": "Processing...",
+    "loadFfmpeg": "Load FFmpeg",
+    "downloadGif": "Download GIF",
+    "downloadPng": "Download PNG",
+    "copyFile": "Copy file",
+    "copyFileFailed": "Failed to copy file to clipboard",
+    "importFile": "Import file",
+    "exportFile": "Export file",
+    "pasteFile": "Paste file",
+    "importFailed": "Failed to read the file",
+    "pasteFailed": "Failed to read the clipboard",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "fileUpload": {
+      "choose": "Click, drop, or paste a file here",
+      "accepted": "Accepted: {types}",
+      "rejected": "The pasted content is not a supported file type"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "reset": "Reset",
+    "input": "Input",
+    "output": "Output",
+    "inputPlaceholder": "Input...",
+    "outputPlaceholder": "Output...",
+    "preview": "Preview",
+    "apply": "Apply",
+    "refresh": "Refresh",
+    "start": "Start",
+    "stop": "Stop",
+    "options": "Options",
+    "results": "Results",
+    "about": "About",
+    "name": "Name",
+    "version": "Version",
+    "width": "Width",
+    "height": "Height",
+    "count": "Count",
+    "prefix": "Prefix",
+    "suffix": "Suffix",
+    "positions": "Positions",
+    "length": "Length",
+    "quantity": "Quantity",
+    "indent": "Indent",
+    "tolerance": "Tolerance",
+    "background": "Background",
+    "foreground": "Foreground",
+    "lowercase": "Lowercase",
+    "uppercase": "Uppercase",
+    "encode": "Encode",
+    "decode": "Decode",
+    "encrypt": "Encrypt",
+    "decrypt": "Decrypt",
+    "settings": "Settings",
+    "select": "Select",
+    "generate": "Generate",
+    "convert": "Convert",
+    "compare": "Compare",
+    "add": "Add",
+    "pageNotFound": "Page not found",
+    "goHome": "Go Home",
+    "swap": "Swap",
+    "separator": "Separator",
+    "format": "Format",
+    "invalidJson": "Invalid JSON",
+    "inputJson": "Input JSON",
+    "processingFailed": "Processing failed",
+    "compress": "Compress",
+    "resize": "Resize",
+    "rotate": "Rotate",
+    "flip": "Flip",
+    "crop": "Crop",
+    "trim": "Trim",
+    "merge": "Merge",
+    "loop": "Loop",
+    "horizontal": "Horizontal",
+    "vertical": "Vertical",
+    "min": "Min",
+    "max": "Max",
+    "numbers": "Numbers",
+    "symbols": "Symbols",
+    "qrCode": "QR Code",
+    "password": "Password",
+    "end": "End",
+    "regex": "Regex",
+    "csvInputPlaceholder": "CSV input...",
+    "listItemsPlaceholder": "List items...",
+    "none": "None",
+    "secretKeyPlaceholder": "Secret key...",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "invalidDate": "Invalid date",
+    "invalidNumber": "Please enter a valid number",
+    "invalidTime": "Enter a valid time (HH:MM:SS)",
+    "invalidDates": "Invalid dates",
+    "enterTimeAsHhMmSs": "Enter time as HH:MM:SS",
+    "page": "Page {n}",
+    "requestFailed": "Request failed",
+    "target": "Target",
+    "status": "Status",
+    "latency": "Latency",
+    "domain": "Domain",
+    "enterDomain": "Enter domain...",
+    "enterDomainOrIp": "Enter domain or IP...",
+    "domainNamePlaceholder": "Domain name...",
+    "calculate": "Calculate",
+    "sum": "Sum: {value}",
+    "notAvailable": "N/A"
+  },
+  "search": {
+    "placeholder": "Search tools...",
+    "noResults": "No tools found matching your search",
+    "resultCount": "{count} tools found"
+  },
+  "tags": {
+    "filter": "Filter by tags",
+    "clearAll": "Clear all",
+    "selected": "{count} selected"
+  },
+  "commandPalette": {
+    "placeholder": "Search tools, actions...",
+    "noResults": "No results found",
+    "hint": "↑↓ Navigate · Enter Select · Esc Close"
+  },
+  "tools": {
+    "helloWorld": {
+      "name": "Hello World",
+      "description": "A sample tool to verify the registration system",
+      "welcome": "This is a sample tool to verify the registration and routing system works correctly."
+    },
+    "jsonPrettify": {
+      "name": "JSON Prettify",
+      "description": "Format and beautify JSON strings",
+      "input": "Input JSON",
+      "output": "Formatted Output"
+    },
+    "base64Encoder": {
+      "name": "Base64 Encoder/Decoder",
+      "description": "Encode or decode Base64 strings",
+      "encodePlaceholder": "Enter text to encode...",
+      "decodePlaceholder": "Enter Base64 to decode...",
+      "nothingToSwap": "Nothing to swap: the output is empty"
+    },
+    "tokenGenerator": {
+      "name": "Token Generator",
+      "description": "Generate random alphanumeric tokens with custom length and character sets"
+    },
+    "hashText": {
+      "name": "Hash Text",
+      "description": "Hash text using MD5, SHA1, SHA256, SHA512 and other algorithms",
+      "inputPlaceholder": "Text to hash..."
+    },
+    "uuidGenerator": {
+      "name": "UUID Generator",
+      "description": "Generate UUID v4 unique identifiers in bulk"
+    },
+    "ulidGenerator": {
+      "name": "ULID Generator",
+      "description": "Generate Universally Unique Lexicographically Sortable Identifiers"
+    },
+    "bcrypt": {
+      "name": "Bcrypt",
+      "description": "Hash and compare strings using bcrypt algorithm",
+      "hash": "Hash",
+      "inputPlaceholder": "Your string to bcrypt...",
+      "saltRounds": "Salt rounds:",
+      "compareTitle": "Compare string with hash",
+      "compareStringPlaceholder": "Your string...",
+      "compareHashPlaceholder": "Your hash...",
+      "match": "Match ✓",
+      "noMatch": "No match ✗",
+      "invalidHash": "This does not look like a bcrypt hash"
+    },
+    "encryption": {
+      "name": "Text Encryption",
+      "description": "Encrypt and decrypt text using AES, TripleDES, Rabbit, or RC4",
+      "encryptPlaceholder": "Text to encrypt...",
+      "decryptPlaceholder": "Encrypted text...",
+      "decryptFailed": "Unable to decrypt your text"
+    },
+    "hmacGenerator": {
+      "name": "HMAC Generator",
+      "description": "Generate Hash-based Message Authentication Code (HMAC)",
+      "inputPlaceholder": "Plain text to compute HMAC...",
+      "hashFunction": "Hash function",
+      "encoding": "Encoding"
+    },
+    "bip39Generator": {
+      "name": "BIP39 Mnemonic Generator",
+      "description": "Generate and validate BIP39 mnemonic passphrases for crypto wallets",
+      "generateMnemonic": "Generate Mnemonic",
+      "validateMnemonic": "Validate Mnemonic",
+      "validatePlaceholder": "Enter mnemonic to validate...",
+      "wordCount": "{n} words",
+      "validMnemonic": "Valid mnemonic ✓",
+      "invalidMnemonic": "Invalid mnemonic ✗"
+    },
+    "rsaKeyPair": {
+      "name": "RSA Key Pair Generator",
+      "description": "Generate RSA public/private key pairs in PEM format",
+      "keySize": "Key size (bits)",
+      "generateKeyPair": "Generate Key Pair",
+      "generateFailed": "Failed to generate key pair",
+      "publicKey": "Public Key",
+      "privateKey": "Private Key"
+    },
+    "passwordStrength": {
+      "name": "Password Strength Analyser",
+      "description": "Analyze password strength with entropy estimation and crack time",
+      "inputPlaceholder": "Enter a password to analyze...",
+      "score": "Score: {score}",
+      "crackTime": "Estimated crack time:",
+      "suggestions": "Suggestions",
+      "labelNone": "None",
+      "labelVeryWeak": "Very Weak",
+      "labelWeak": "Weak",
+      "labelFair": "Fair",
+      "labelStrong": "Strong",
+      "labelVeryStrong": "Very Strong",
+      "crackInstant": "Instant",
+      "crackSeconds": "{n} seconds",
+      "crackMinutes": "{n} minutes",
+      "crackHours": "{n} hours",
+      "crackDays": "{n} days",
+      "crackYears": "{n} years",
+      "crackCenturies": "Centuries",
+      "suggestLength": "Use at least 8 characters",
+      "suggestVariety": "Add more character types (uppercase, numbers, symbols)",
+      "suggestAddNumbersSymbols": "Add numbers and symbols",
+      "suggestAvoidOnlyNumbers": "Avoid using only numbers",
+      "suggestAvoidRepeats": "Avoid repeated characters",
+      "suggestAvoidCommon": "Avoid common patterns"
+    },
+    "baseConverter": {
+      "name": "Base Converter",
+      "description": "Convert numbers between binary, octal, decimal, and hexadecimal",
+      "inputBase": "Input base",
+      "outputBase": "Output base",
+      "inputPlaceholder": "Enter number...",
+      "resultPlaceholder": "Result...",
+      "invalidInput": "Invalid input",
+      "binary": "Binary (2)",
+      "octal": "Octal (8)",
+      "decimal": "Decimal (10)",
+      "hexadecimal": "Hexadecimal (16)",
+      "base32": "Base32",
+      "base36": "Base36"
+    },
+    "colorConverter": {
+      "name": "Color Converter",
+      "description": "Convert colors between HEX, RGB, and HSL formats",
+      "invalidHex": "Enter a valid hex color (#RGB or #RRGGBB)"
+    },
+    "urlEncoder": {
+      "name": "URL Encoder/Decoder",
+      "description": "Encode or decode URL-encoded strings",
+      "inputPlaceholder": "Text to encode/decode...",
+      "encoded": "Encoded",
+      "decoded": "Decoded",
+      "copyEncoded": "Copy Encoded",
+      "copyDecoded": "Copy Decoded",
+      "invalidEncoding": "Invalid percent-encoding"
+    },
+    "caseConverter": {
+      "name": "Case Converter",
+      "description": "Convert text between camelCase, snake_case, kebab-case, and more",
+      "inputPlaceholder": "Enter text to convert..."
+    },
+    "slugify": {
+      "name": "Slugify",
+      "description": "Convert text to URL-friendly slug format",
+      "inputPlaceholder": "Enter text to slugify...",
+      "outputPlaceholder": "Slug..."
+    },
+    "htmlEntities": {
+      "name": "HTML Entities",
+      "description": "Escape and unescape HTML entities",
+      "escaped": "Escaped",
+      "unescaped": "Unescaped"
+    },
+    "jwtParser": {
+      "name": "JWT Parser",
+      "description": "Decode and inspect JSON Web Tokens (JWT)",
+      "inputPlaceholder": "Paste JWT token here...",
+      "invalidFormat": "Invalid JWT format",
+      "header": "Header",
+      "payload": "Payload"
+    },
+    "urlParser": {
+      "name": "URL Parser",
+      "description": "Parse URL into its components: protocol, host, path, query, etc.",
+      "inputPlaceholder": "Enter URL to parse...",
+      "invalidUrl": "Invalid URL",
+      "urlParts": "URL Parts",
+      "queryParameters": "Query Parameters",
+      "protocol": "Protocol",
+      "host": "Host",
+      "hostname": "Hostname",
+      "port": "Port",
+      "pathname": "Pathname",
+      "search": "Search",
+      "hash": "Hash",
+      "defaultPort": "(default)"
+    },
+    "httpStatus": {
+      "name": "HTTP Status Codes",
+      "description": "Browse and search HTTP status codes with descriptions",
+      "searchPlaceholder": "Search status codes...",
+      "code": "Code",
+      "class": "Class",
+      "descriptionColumn": "Description"
+    },
+    "mathEvaluator": {
+      "name": "Math Evaluator",
+      "description": "Evaluate mathematical expressions with operators and grouping",
+      "expressionPlaceholder": "Enter math expression...",
+      "supportedOperators": "Supported operators",
+      "operatorsList": "+, -, *, /, ^ (power), % (modulo), () (grouping)",
+      "divisionByZero": "Division by zero",
+      "missingClosingParenthesis": "Missing closing parenthesis",
+      "unexpectedCharacter": "Unexpected character: {char}",
+      "endOfInput": "end of input",
+      "errorPrefix": "Error: {message}"
+    },
+    "textStats": {
+      "name": "Text Statistics",
+      "description": "Count characters, words, lines, sentences, and estimate reading time",
+      "inputPlaceholder": "Paste or type text here...",
+      "characters": "Characters",
+      "charactersNoSpaces": "Characters (no spaces)",
+      "words": "Words",
+      "lines": "Lines",
+      "sentences": "Sentences",
+      "paragraphs": "Paragraphs",
+      "readingTime": "Reading time",
+      "readingTimeValue": "{count} min"
+    },
+    "loremIpsum": {
+      "name": "Lorem Ipsum Generator",
+      "description": "Generate placeholder text in paragraphs, sentences, or words"
+    },
+    "chronometer": {
+      "name": "Chronometer",
+      "description": "Stopwatch with lap time recording",
+      "lap": "Lap",
+      "lapN": "Lap {n}"
+    },
+    "temperature": {
+      "name": "Temperature Converter",
+      "description": "Convert between Celsius, Fahrenheit, and Kelvin",
+      "celsius": "Celsius (°C)",
+      "fahrenheit": "Fahrenheit (°F)",
+      "kelvin": "Kelvin (K)"
+    },
+    "textDiff": {
+      "name": "Text Diff",
+      "description": "Compare two texts and highlight differences",
+      "original": "Original",
+      "modified": "Modified",
+      "diff": "Diff",
+      "same": "Same: {count}",
+      "changed": "Changed: {count}",
+      "removed": "Removed: {count}",
+      "added": "Added: {count}"
+    },
+    "emojiPicker": {
+      "name": "Emoji Picker",
+      "description": "Browse and copy popular emojis",
+      "searchPlaceholder": "Search emoji..."
+    },
+    "stringObfuscator": {
+      "name": "String Obfuscator",
+      "description": "Mask, redact, or partially hide sensitive strings",
+      "inputPlaceholder": "String to obfuscate...",
+      "maskAll": "Mask all",
+      "redact": "Redact",
+      "partial": "Partial (keep edges)",
+      "keepCharacters": "Keep characters"
+    },
+    "percentageCalc": {
+      "name": "Percentage Calculator",
+      "description": "Calculate percentages, proportions, and percent change",
+      "whatIsPercentOf": "What is X% of Y?",
+      "isWhatPercentOf": "X is what % of Y?",
+      "percentChangeFromTo": "% change from X to Y",
+      "percentOf": "% of",
+      "is": "is"
+    },
+    "rot13": {
+      "name": "ROT13 Cipher",
+      "description": "Encode and decode text using ROT13 substitution cipher"
+    },
+    "morseCode": {
+      "name": "Morse Code Converter",
+      "description": "Convert text to Morse code and back",
+      "unmappable": "These characters cannot be encoded: {chars}"
+    },
+    "textCensor": {
+      "name": "Text Censor",
+      "description": "Filter and mask profanity or sensitive words"
+    },
+    "createPalindrome": {
+      "name": "Create Palindrome",
+      "description": "Create a palindrome by appending reversed text"
+    },
+    "palindromeChecker": {
+      "name": "Palindrome Checker",
+      "description": "Check if text is a palindrome",
+      "isPalindrome": "✅ Yes! This is a palindrome.",
+      "notPalindrome": "❌ Not a palindrome."
+    },
+    "emailExtractor": {
+      "name": "Email Extractor",
+      "description": "Extract email addresses from text using regex",
+      "noEmailsFound": "No emails found."
+    },
+    "extractSubstring": {
+      "name": "Extract Substring",
+      "description": "Extract a portion of text by position range",
+      "inputPlaceholder": "Input text..."
+    },
+    "hiddenCharDetector": {
+      "name": "Hidden Character Detector",
+      "description": "Detect invisible and special Unicode characters",
+      "noneDetected": "No hidden characters detected."
+    },
+    "textJoin": {
+      "name": "Text Join",
+      "description": "Join multiple lines with a custom separator"
+    },
+    "quoteGenerator": {
+      "name": "Quote Generator",
+      "description": "Browse and display random programming quotes",
+      "nextQuote": "Next Quote"
+    },
+    "removeDuplicateLines": {
+      "name": "Remove Duplicate Lines",
+      "description": "Remove duplicate lines from text"
+    },
+    "textRepeat": {
+      "name": "Text Repeat",
+      "description": "Repeat text a specified number of times",
+      "inputPlaceholder": "Text to repeat..."
+    },
+    "textReverse": {
+      "name": "Text Reverse",
+      "description": "Reverse the characters in text"
+    },
+    "textRotate": {
+      "name": "Text Rotate",
+      "description": "Rotate text lines by N positions",
+      "inputPlaceholder": "Input lines..."
+    },
+    "textSplit": {
+      "name": "Text Split",
+      "description": "Split text by delimiters into separate lines"
+    },
+    "textReplacer": {
+      "name": "Text Replacer",
+      "description": "Find and replace text with regex support",
+      "inputPlaceholder": "Input text...",
+      "findPlaceholder": "Find...",
+      "replacePlaceholder": "Replace...",
+      "invalidRegex": "Invalid regex"
+    },
+    "textTruncate": {
+      "name": "Text Truncate",
+      "description": "Truncate text by characters, words, or lines",
+      "inputPlaceholder": "Input text...",
+      "characters": "Characters",
+      "words": "Words",
+      "lines": "Lines"
+    },
+    "passwordGenerator": {
+      "name": "Password Generator",
+      "description": "Generate secure random passwords with custom options",
+      "selectOneOption": "Select at least one option",
+      "excludePlaceholder": "Exclude characters...",
+      "generatePassword": "Generate Password",
+      "outputPlaceholder": "Click generate..."
+    },
+    "byteConverter": {
+      "name": "Byte Converter",
+      "description": "Convert between bytes, KB, MB, GB, TB, and bits",
+      "unit": "Unit",
+      "value": "Value",
+      "inputPlaceholder": "Enter bytes..."
+    },
+    "numberToWords": {
+      "name": "Number to Words",
+      "description": "Convert numbers to English words"
+    },
+    "arithmeticSequence": {
+      "name": "Arithmetic Sequence",
+      "description": "Generate arithmetic sequences and find terms",
+      "firstTerm": "First term",
+      "difference": "Difference",
+      "sequence": "Sequence: {value}",
+      "nthTerm": "n-th term: {value}"
+    },
+    "genericCalculator": {
+      "name": "Generic Calculator",
+      "description": "Simple calculator for basic math expressions",
+      "expressionPlaceholder": "Expression: {example}",
+      "resultPlaceholder": "Result...",
+      "history": "History:",
+      "unexpected": "Unexpected: {char}",
+      "endOfInput": "end of input",
+      "errorPrefix": "Error: {message}",
+      "notFinite": "result is not a finite number"
+    },
+    "randomNumberGenerator": {
+      "name": "Random Number Generator",
+      "description": "Generate random numbers with custom range",
+      "rangeTooSmall": "Range too small for unique numbers",
+      "invalidRange": "Minimum must be less than or equal to maximum",
+      "uniqueOnly": "Unique only"
+    },
+    "numberSum": {
+      "name": "Number Sum",
+      "description": "Calculate sum, average, min, max, and median of numbers",
+      "average": "Average",
+      "median": "Median"
+    },
+    "numberGenerator": {
+      "name": "Number Generator",
+      "description": "Generate number sequences: Fibonacci, primes, even, odd",
+      "usageHint": "Line 1: type (fibonacci/primes/even/odd)\nLine 2: count"
+    },
+    "csvToJson": {
+      "name": "CSV to JSON",
+      "description": "Convert CSV data to JSON array format",
+      "duplicateHeaders": "Duplicate column headers detected; renamed to keep all data",
+      "extraColumns": "Some rows have more columns than the header; extra data was dropped",
+      "duplicateAndExtraColumns": "Duplicate headers and extra columns detected; headers renamed, extra data dropped"
+    },
+    "csvToTsv": {
+      "name": "CSV to TSV",
+      "description": "Convert CSV to tab-separated values"
+    },
+    "csvToXml": {
+      "name": "CSV to XML",
+      "description": "Convert CSV data to XML format"
+    },
+    "csvToYaml": {
+      "name": "CSV to YAML",
+      "description": "Convert CSV data to YAML format"
+    },
+    "tsvToJson": {
+      "name": "TSV to JSON",
+      "description": "Convert tab-separated values to JSON"
+    },
+    "csvChangeSeparator": {
+      "name": "CSV Change Separator",
+      "description": "Change the delimiter used in CSV data",
+      "semicolon": "Semicolon (;)",
+      "pipe": "Pipe (|)",
+      "tab": "Tab",
+      "comma": "Comma (,)"
+    },
+    "csvRowsToColumns": {
+      "name": "CSV Rows to Columns",
+      "description": "Transpose CSV rows into columns"
+    },
+    "csvFindIncomplete": {
+      "name": "Find Incomplete CSV Records",
+      "description": "Find CSV rows with fewer columns than expected",
+      "incompleteRow": "Line {line}: {cols} columns (expected {expected})",
+      "allRowsValid": "All rows have {expected} columns."
+    },
+    "csvInsertColumns": {
+      "name": "Insert CSV Columns",
+      "description": "Insert a new column into CSV data",
+      "position": "Position",
+      "headerName": "Header name",
+      "defaultValue": "Default value"
+    },
+    "csvSwapColumns": {
+      "name": "Swap CSV Columns",
+      "description": "Swap two columns in CSV data",
+      "columnA": "Column A",
+      "columnB": "Column B"
+    },
+    "csvTranspose": {
+      "name": "Transpose CSV",
+      "description": "Transpose CSV data (rows become columns)"
+    },
+    "listDuplicate": {
+      "name": "List Duplicate",
+      "description": "Duplicate each item in a list"
+    },
+    "listFindPopular": {
+      "name": "List Find Most Popular",
+      "description": "Find the most frequent items in a list"
+    },
+    "listFindUnique": {
+      "name": "List Find Unique",
+      "description": "Extract unique items from a list"
+    },
+    "listGroup": {
+      "name": "List Group",
+      "description": "Group list items into chunks of N",
+      "inputPlaceholder": "List items (one per line)...",
+      "groupSize": "Group size",
+      "groupLabel": "--- Group {number} ---"
+    },
+    "listReverse": {
+      "name": "List Reverse",
+      "description": "Reverse the order of list items"
+    },
+    "listRotate": {
+      "name": "List Rotate",
+      "description": "Rotate list items by N positions"
+    },
+    "listShuffle": {
+      "name": "List Shuffle",
+      "description": "Randomly shuffle list items"
+    },
+    "listSort": {
+      "name": "List Sort",
+      "description": "Sort list items alphabetically or numerically"
+    },
+    "listTruncate": {
+      "name": "List Truncate",
+      "description": "Keep only the first N items of a list"
+    },
+    "listUnwrap": {
+      "name": "List Unwrap",
+      "description": "Remove wrapping characters from list items"
+    },
+    "listWrap": {
+      "name": "List Wrap",
+      "description": "Wrap each list item with prefix and suffix"
+    },
+    "jsonEscape": {
+      "name": "JSON Escape",
+      "description": "Escape and unescape JSON strings",
+      "toggle": "Escape / Unescape",
+      "escapePlaceholder": "Text to escape...",
+      "unescapePlaceholder": "JSON string to unescape...",
+      "invalidInput": "Invalid input"
+    },
+    "jsonStringify": {
+      "name": "JSON Stringify",
+      "description": "Format and serialize JSON with options"
+    },
+    "jsonSort": {
+      "name": "JSON Sort",
+      "description": "Sort JSON object keys alphabetically"
+    },
+    "jsonValidate": {
+      "name": "JSON Validate",
+      "description": "Validate JSON syntax and show errors",
+      "valid": "Valid JSON"
+    },
+    "xmlValidator": {
+      "name": "XML Validator",
+      "description": "Validate XML syntax and show errors",
+      "validXml": "Valid XML",
+      "invalidXml": "Invalid XML"
+    },
+    "checkLeapYears": {
+      "name": "Check Leap Years",
+      "description": "Check if years are leap years",
+      "prompt": "Enter years (one per line or space-separated)",
+      "isLeap": "✅ Leap year",
+      "notLeap": "❌ Not a leap year",
+      "ignored": "Ignored non-numeric entries: {tokens}"
+    },
+    "daysToHours": {
+      "name": "Days to Hours",
+      "description": "Convert days to hours, minutes, and seconds",
+      "invalidInput": "Please enter a single number"
+    },
+    "hoursToDays": {
+      "name": "Hours to Days",
+      "description": "Convert hours to days and remaining hours"
+    },
+    "secondsToTime": {
+      "name": "Seconds to Time",
+      "description": "Convert seconds to HH:MM:SS format"
+    },
+    "timeToDecimal": {
+      "name": "Time to Decimal",
+      "description": "Convert time to decimal hours"
+    },
+    "timeToSeconds": {
+      "name": "Time to Seconds",
+      "description": "Convert time to total seconds"
+    },
+    "dateWeekdayCalculator": {
+      "name": "Date Weekday Calculator",
+      "description": "Find the day of the week for any date",
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "discordTimestamp": {
+      "name": "Discord Timestamp",
+      "description": "Generate Discord markdown timestamps",
+      "shortTime": "Short Time",
+      "longTime": "Long Time",
+      "shortDate": "Short Date",
+      "longDate": "Long Date",
+      "shortDateTime": "Short Date/Time",
+      "longDateTime": "Long Date/Time",
+      "relative": "Relative"
+    },
+    "timeBetweenDates": {
+      "name": "Time Between Dates",
+      "description": "Calculate duration between two dates",
+      "startPlaceholder": "Start date/time",
+      "endPlaceholder": "End date/time",
+      "total": "Total:"
+    },
+    "truncateClockTime": {
+      "name": "Truncate Clock Time",
+      "description": "Truncate time to minute or hour precision",
+      "original": "(original)",
+      "toMinute": "(to minute)",
+      "toHour": "(to hour)"
+    },
+    "imageResize": {
+      "name": "Image Resize",
+      "description": "Resize images to custom dimensions",
+      "resize": "Resize"
+    },
+    "imageRotate": {
+      "name": "Image Rotate",
+      "description": "Rotate images by any angle",
+      "degrees": "Degrees",
+      "rotate": "Rotate"
+    },
+    "imageFlip": {
+      "name": "Image Flip",
+      "description": "Flip images horizontally or vertically",
+      "horizontal": "Horizontal",
+      "vertical": "Vertical",
+      "flip": "Flip"
+    },
+    "imageCompress": {
+      "name": "Image Compress",
+      "description": "Compress images to reduce file size",
+      "quality": "Quality",
+      "compress": "Compress",
+      "sizeInfo": "Original: {orig} KB → New: {next} KB"
+    },
+    "imageWatermark": {
+      "name": "Image Watermark",
+      "description": "Add text watermark to images",
+      "watermarkPlaceholder": "Watermark text...",
+      "addWatermark": "Add Watermark"
+    },
+    "convertToJpg": {
+      "name": "Convert to JPG",
+      "description": "Convert images to JPEG format",
+      "convert": "Convert to JPG",
+      "downloadJpg": "Download JPG"
+    },
+    "convertToWebp": {
+      "name": "Convert to WebP",
+      "description": "Convert images to WebP format",
+      "convert": "Convert to WebP",
+      "downloadWebp": "Download WebP"
+    },
+    "imageChangeOpacity": {
+      "name": "Image Change Opacity",
+      "description": "Adjust image transparency and opacity",
+      "downloadPng": "Download PNG"
+    },
+    "imageChangeColors": {
+      "name": "Image Change Colors",
+      "description": "Adjust hue, saturation, brightness and contrast of images",
+      "hueRotate": "Hue Rotate (0-360): ",
+      "saturate": "Saturate (0-200): ",
+      "brightness": "Brightness (0-200): ",
+      "contrast": "Contrast (0-200): "
+    },
+    "imageCreateTransparent": {
+      "name": "Image Create Transparent",
+      "description": "Remove a color from an image to make it transparent",
+      "targetColor": "Target Color: ",
+      "toleranceRange": "Tolerance (0-100): "
+    },
+    "imageSplit": {
+      "name": "Image Split",
+      "description": "Split an image into a grid of tiles",
+      "rows": "Rows (1-10): ",
+      "columns": "Columns (1-10): ",
+      "split": "Split",
+      "tiles": "Tiles",
+      "downloadAll": "Download All"
+    },
+    "imageCrop": {
+      "name": "Image Crop",
+      "description": "Crop images by selecting a region",
+      "cropAndDownload": "Crop & Download"
+    },
+    "imageEditor": {
+      "name": "Image Editor",
+      "description": "Add text and drawings to images",
+      "addText": "Add Text",
+      "drawLine": "Draw Line",
+      "clearAll": "Clear All",
+      "color": "Color: ",
+      "lineWidth": "Line Width: ",
+      "fontSize": "Font Size: ",
+      "text": "Text: ",
+      "textPlaceholder": "Enter text...",
+      "defaultText": "Text",
+      "confirmClearAll": "Clear all annotations?",
+      "undo": "Undo",
+      "redo": "Redo",
+      "deleteSelected": "Delete selected",
+      "toolSelect": "Select",
+      "toolShape": "Shape",
+      "toolLine": "Line",
+      "toolNumber": "Number",
+      "toolPen": "Pen",
+      "toolText": "Text",
+      "toolEraser": "Eraser",
+      "toolMosaic": "Mosaic",
+      "strokeSolid": "Solid",
+      "strokeDashLong": "Long dash",
+      "strokeDashShort": "Short dash",
+      "strokeDashDot": "Dash dot",
+      "strokeDashDotDot": "Dash dot dot",
+      "arrowNone": "None",
+      "arrowTriangle": "Triangle",
+      "arrowOpen": "Open",
+      "arrowCircle": "Circle",
+      "formatNumber": "Number",
+      "formatLowerAlpha": "Lower alpha",
+      "formatUpperAlpha": "Upper alpha",
+      "formatLowerRoman": "Lower roman",
+      "formatUpperRoman": "Upper roman",
+      "shapeRect": "Rectangle",
+      "shapeEllipse": "Ellipse",
+      "lineStraight": "Straight",
+      "linePolyline": "Polyline",
+      "mosaicEffect": "Mosaic",
+      "blurEffect": "Blur",
+      "modeRect": "Marquee",
+      "modeBrush": "Brush",
+      "colour": "Color: ",
+      "width": "Width: ",
+      "size": "Size: ",
+      "fontFamily": "Font: ",
+      "fill": "Fill: ",
+      "cornerRadius": "Corner radius: ",
+      "content": "Content: ",
+      "stroke": "Stroke: ",
+      "background": "Background: ",
+      "opacity": "Opacity: ",
+      "effect": "Effect: ",
+      "strength": "Strength: ",
+      "mode": "Mode: ",
+      "startArrow": "Start arrow: ",
+      "endArrow": "End arrow: ",
+      "numberFormat": "Number format: ",
+      "leaderLine": "Leader line: ",
+      "leaderWidth": "Leader width: ",
+      "leaderStroke": "Leader stroke: "
+    },
+    "imageRemoveBackground": {
+      "name": "Image Remove Background",
+      "description": "Remove background color from images",
+      "backgroundColor": "Background Color: ",
+      "toleranceRange": "Tolerance (0-100): "
+    },
+    "jpgToPng": {
+      "name": "JPG to PNG",
+      "description": "Convert JPG images to PNG format",
+      "downloadAsPng": "Download as PNG"
+    },
+    "pdfMerge": {
+      "name": "PDF Merge",
+      "description": "Merge multiple PDF files into one",
+      "selectAtLeastTwo": "Select at least 2 PDF files",
+      "filesSelected": "{count} files selected",
+      "merge": "Merge PDFs",
+      "downloadMerged": "Download Merged PDF"
+    },
+    "pdfRotate": {
+      "name": "PDF Rotate",
+      "description": "Rotate all pages in a PDF document",
+      "rotate": "Rotate PDF"
+    },
+    "pdfSplit": {
+      "name": "PDF Split",
+      "description": "Extract specific pages from a PDF",
+      "pagesPlaceholder": "Page numbers: 1 3 5",
+      "extractPages": "Extract Pages",
+      "noValidPages": "No valid page numbers selected",
+      "invalidPages": "Invalid page numbers: {pages}"
+    },
+    "pdfProtect": {
+      "name": "PDF Protect",
+      "description": "Add protection to PDF documents",
+      "note": "Note: this only re-saves the PDF and updates metadata. It does NOT encrypt or password-protect the file.",
+      "process": "Process PDF"
+    },
+    "convertToPdf": {
+      "name": "Convert to PDF",
+      "description": "Convert images to PDF format",
+      "info": "Converts images (JPG, PNG, WebP) to PDF",
+      "convert": "Convert to PDF",
+      "downloadPdf": "Download PDF"
+    },
+    "compressPdf": {
+      "name": "Compress PDF",
+      "description": "Reduce PDF file size",
+      "compress": "Compress PDF",
+      "sizeResult": "Original: {orig} KB → New: {next} KB"
+    },
+    "pdfSignatureChecker": {
+      "name": "PDF Signature Checker",
+      "description": "Check if a PDF contains digital signatures",
+      "check": "Check Signatures",
+      "failed": "Failed to check signatures",
+      "signaturesFound": "Signatures Found",
+      "noSignatures": "No Signatures",
+      "signatureFields": "Signature fields: {count}"
+    },
+    "pdfEditor": {
+      "name": "PDF Editor",
+      "description": "Add text annotations and watermarks to PDF",
+      "textPlaceholder": "Enter text to add",
+      "positionPlaceholder": "Select position",
+      "fontSize": "Font size",
+      "failed": "Failed to edit PDF",
+      "downloadEditedPdf": "Download Edited PDF",
+      "position": {
+        "topLeft": "Top Left",
+        "topCenter": "Top Center",
+        "topRight": "Top Right",
+        "center": "Center",
+        "bottomLeft": "Bottom Left",
+        "bottomCenter": "Bottom Center",
+        "bottomRight": "Bottom Right"
+      }
+    },
+    "pdfExtractImages": {
+      "name": "PDF Extract Images",
+      "description": "Extract page images from a PDF file",
+      "extract": "Extract Images",
+      "failed": "Failed to extract images",
+      "progress": "Rendering page {current} of {total}"
+    },
+    "pdfToEpub": {
+      "name": "PDF to Text",
+      "description": "Extract text content from PDF",
+      "failed": "Failed to extract text",
+      "previewTitle": "Extracted Text Preview",
+      "downloadText": "Download Text File"
+    },
+    "pdfToPng": {
+      "name": "PDF to PNG",
+      "description": "Convert PDF pages to PNG images",
+      "scale": "Scale:",
+      "convert": "Convert to PNG",
+      "failed": "Failed to convert PDF to PNG"
+    },
+    "connectivityCheck": {
+      "name": "Connectivity Check",
+      "description": "Test internet connectivity to multiple targets",
+      "testConnectivity": "Test Connectivity",
+      "online": "✅ Online",
+      "offline": "❌ Offline"
+    },
+    "webrtcDetection": {
+      "name": "WebRTC Detection",
+      "description": "Detect IP address leaks via WebRTC",
+      "detect": "Detect IPs",
+      "warning": "WebRTC can leak your real IP address even behind VPN",
+      "detected": "Detected IPs:",
+      "noIps": "No IPs detected - your browser may block WebRTC leaks",
+      "error": "Error: {message}"
+    },
+    "browserFingerprint": {
+      "name": "Browser Fingerprint",
+      "description": "View detailed browser and device information"
+    },
+    "speedTest": {
+      "name": "Speed Test",
+      "description": "Test download speed and network latency",
+      "start": "Start Speed Test",
+      "latencyValue": "Latency: {n} ms",
+      "downloadValue": "Download: {n} Mbps",
+      "testFailed": "Speed test failed, please try again"
+    },
+    "securityChecklist": {
+      "name": "Security Checklist",
+      "description": "Check browser security features and privacy settings"
+    },
+    "ipInfo": {
+      "name": "IP Information",
+      "description": "View your IP address, location, and ISP details",
+      "property": "Property",
+      "value": "Value",
+      "ipAddress": "IP Address",
+      "city": "City",
+      "region": "Region",
+      "country": "Country",
+      "countryCode": "Country Code",
+      "postal": "Postal",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "timezone": "Timezone"
+    },
+    "dnsResolver": {
+      "name": "DNS Resolver",
+      "description": "Resolve DNS records for any domain",
+      "resolve": "Resolve",
+      "type": "Type",
+      "data": "Data",
+      "noRecords": "No records found",
+      "resolveFailed": "Resolution failed"
+    },
+    "macLookup": {
+      "name": "MAC Address Lookup",
+      "description": "Find the vendor for a MAC address",
+      "inputPlaceholder": "MAC address (e.g. 00:1A:2B:3C:4D:5E)",
+      "lookup": "Lookup Vendor",
+      "invalidMac": "Enter a valid MAC address",
+      "found": "Found",
+      "notFound": "Not found",
+      "vendorResult": "Vendor: {vendor}"
+    },
+    "serviceStatus": {
+      "name": "Service Status",
+      "description": "Check if a website or service is online",
+      "checkStatus": "Check Status",
+      "inputPlaceholder": "URL to check...",
+      "httpRequest": "HTTP Request",
+      "responseTime": "Response Time",
+      "sslTls": "SSL/TLS",
+      "reachable": "✅ Reachable",
+      "fast": "✅ Fast",
+      "moderate": "⚠️ Moderate",
+      "slow": "❌ Slow",
+      "httpOnly": "❌ HTTP only",
+      "unreachable": "❌ Unreachable",
+      "errorStatus": "❌ HTTP error {code}",
+      "statusUnknown": "⚠️ Reachable, but the HTTP status is unreadable (CORS-blocked)",
+      "checkColumn": "Check",
+      "timeColumn": "Time"
+    },
+    "whoisLookup": {
+      "name": "Whois Lookup",
+      "description": "Look up domain registration information",
+      "lookup": "Whois Lookup",
+      "domainLine": "Domain: {value}",
+      "registrarLine": "Registrar: {value}",
+      "statusLine": "Status: {value}",
+      "events": "Events:",
+      "unknown": "Unknown",
+      "error": "Error: {message}",
+      "notFound": "Domain not found: {domain}"
+    },
+    "romanNumeralConverter": {
+      "name": "Roman Numeral Converter",
+      "description": "Convert between Arabic and Roman numerals",
+      "arabicToRoman": "Arabic → Roman",
+      "romanToArabic": "Roman → Arabic",
+      "romanPlaceholder": "e.g. XLII",
+      "invalidRoman": "Invalid roman numeral"
+    },
+    "textToNatoAlphabet": {
+      "name": "Text to NATO Alphabet",
+      "description": "Convert text to NATO phonetic alphabet",
+      "inputPlaceholder": "Enter text to convert to NATO phonetic alphabet...",
+      "natoAlphabet": "NATO Phonetic Alphabet",
+      "outputPlaceholder": "NATO output will appear here..."
+    },
+    "textToBinary": {
+      "name": "Text to Binary",
+      "description": "Convert text to ASCII binary and back",
+      "textToAsciiBinary": "Text → ASCII Binary",
+      "asciiBinaryToText": "ASCII Binary → Text",
+      "inputPlaceholder": "e.g. 'Hello world'",
+      "binaryOutputPlaceholder": "Binary output...",
+      "binaryInputPlaceholder": "e.g. '01001000 01100101 01101100 01101100 01101111'",
+      "textOutputPlaceholder": "Text output...",
+      "invalidBinary": "Invalid binary input"
+    },
+    "numeronymGenerator": {
+      "name": "Numeronym Generator",
+      "description": "Generate numeronyms (e.g., i18n, a11y) from words",
+      "inputPlaceholder": "Enter a word, e.g. 'internationalization'"
+    },
+    "basicAuthGenerator": {
+      "name": "Basic Auth Generator",
+      "description": "Generate Basic Auth authorization headers",
+      "usernamePlaceholder": "Your username...",
+      "passwordPlaceholder": "Your password...",
+      "authorizationHeader": "Authorization header"
+    },
+    "metaTagGenerator": {
+      "name": "Meta Tag Generator",
+      "description": "Generate HTML meta tags for SEO and social media",
+      "general": "General",
+      "titlePlaceholder": "Page title",
+      "descriptionPlaceholder": "Page description",
+      "keywordsPlaceholder": "Keywords (comma separated)",
+      "openGraph": "Open Graph",
+      "ogTitlePlaceholder": "OG title (defaults to page title)",
+      "ogDescriptionPlaceholder": "OG description (defaults to page description)",
+      "ogImagePlaceholder": "OG image URL",
+      "ogUrlPlaceholder": "OG page URL",
+      "twitter": "Twitter Card",
+      "twitterCardPlaceholder": "Twitter card type",
+      "twitterSitePlaceholder": "Twitter site handle (e.g. @example)",
+      "twitterCreatorPlaceholder": "Twitter creator handle (e.g. @author)",
+      "output": "Generated Meta Tags"
+    },
+    "mimeTypes": {
+      "name": "MIME Types",
+      "description": "Look up MIME types by file extension",
+      "extensionLookup": "Extension to MIME Type",
+      "extensionLookupDesc": "Find the MIME type associated with a file extension",
+      "extension": "Extension",
+      "extensionPlaceholder": "e.g. pdf, jpg, png",
+      "mimeTypeLookup": "MIME Type to Extensions",
+      "mimeTypeLookupDesc": "Find file extensions associated with a MIME type",
+      "mimeType": "MIME Type",
+      "mimeTypePlaceholder": "e.g. application/pdf, image/jpeg",
+      "allTypes": "All MIME Types",
+      "searchPlaceholder": "Search by MIME type or extension...",
+      "mimeTypeColumn": "MIME Type",
+      "extensionsColumn": "Extensions"
+    },
+    "keycodeInfo": {
+      "name": "Keyboard Info",
+      "description": "Display keyboard event properties",
+      "currentKey": "Current Key",
+      "fields": "Event Properties",
+      "history": "Key History",
+      "noHistory": "No keys pressed yet",
+      "key": "Key:",
+      "keyCode": "Key Code:",
+      "code": "Code:",
+      "location": "Location:",
+      "modifiers": "Modifiers:",
+      "pressKeyHint": "Press any key on your keyboard"
+    },
+    "safelinkDecoder": {
+      "name": "Safelink Decoder",
+      "description": "Decode Outlook safelink URLs to original URLs",
+      "inputPlaceholder": "Paste Outlook SafeLink URL here...",
+      "output": "Decoded URL",
+      "invalidUrl": "Invalid SafeLinks URL: must contain .safelinks.protection.outlook.com",
+      "noUrlParam": "No 'url' parameter found in the SafeLink URL"
+    },
+    "gitMemo": {
+      "name": "Git Memo",
+      "description": "Quick reference for common Git commands",
+      "sections": {
+        "configuration": "Configuration",
+        "getStarted": "Get Started",
+        "snapshot": "Snapshot",
+        "branchMerge": "Branch & Merge",
+        "remote": "Remote",
+        "undo": "Undo",
+        "stash": "Stash",
+        "logHistory": "Log & History"
+      },
+      "commands": {
+        "configUserName": "Set the name associated with your commits",
+        "configUserEmail": "Set the email associated with your commits",
+        "init": "Create a git repository",
+        "clone": "Clone an existing git repository",
+        "status": "Show the status of files in the working directory and staging area",
+        "addFile": "Stage a file for commit",
+        "addAll": "Stage all changes for commit",
+        "commitAll": "Commit all staged changes with a message",
+        "diff": "Show unstaged changes",
+        "diffStaged": "Show staged changes",
+        "branchList": "List all local branches",
+        "branchCreate": "Create a new branch",
+        "checkout": "Switch to a branch",
+        "checkoutNew": "Create and switch to a new branch",
+        "merge": "Merge a branch into the current branch",
+        "branchDelete": "Delete a branch",
+        "branchRename": "Rename the local master branch to main",
+        "remoteAdd": "Add a remote repository",
+        "fetch": "Fetch from a remote",
+        "pull": "Pull from a remote branch",
+        "push": "Push to a remote branch",
+        "amendMessage": "Change last commit message",
+        "amendNoEdit": "Add modifications to last commit without changing message",
+        "resetLast": "Undo most recent commit and keep changes",
+        "resetN": "Undo the N most recent commits and keep changes",
+        "resetLastHard": "Undo most recent commit and discard changes",
+        "resetToRemote": "Reset branch to remote state",
+        "revert": "Create a new commit that undoes a previous commit",
+        "stash": "Temporarily save uncommitted changes",
+        "stashPop": "Restore the most recently stashed changes",
+        "stashList": "List all stashed changes",
+        "stashDrop": "Discard the most recently stashed changes",
+        "log": "View commit history",
+        "logOneline": "View compact commit history",
+        "logGraph": "View commit history as a graph"
+      }
+    },
+    "regexMemo": {
+      "name": "Regex Memo",
+      "description": "Quick reference for regular expression syntax",
+      "sections": {
+        "characterClasses": "Character Classes",
+        "whitespaceCharacters": "Whitespace Characters",
+        "characterSets": "Character Sets",
+        "quantifiers": "Quantifiers",
+        "boundaries": "Boundaries",
+        "groupsLookaround": "Groups & Lookaround",
+        "specialCharacters": "Special Characters (need escaping)"
+      },
+      "syntaxColumn": "Syntax",
+      "meaningColumn": "Meaning",
+      "anyChar": "Any character except newline",
+      "alphabet": "Alphabet",
+      "lowercaseAlphabet": "Lowercase alphabet",
+      "uppercaseAlphabet": "Uppercase alphabet",
+      "anyDigit": "Any digit",
+      "nonDigit": "Non-digit character",
+      "wordChar": "Word character (alphanumeric + underscore)",
+      "nonWordChar": "Non-word character",
+      "whitespace": "Whitespace (space, tab, newline)",
+      "nonWhitespace": "Non-whitespace character",
+      "space": "Space",
+      "tab": "Tab",
+      "newline": "Newline",
+      "carriageReturn": "Carriage return",
+      "anyWhitespace": "Space, tab, newline or carriage return",
+      "either": "Either x, y or z",
+      "neither": "Neither x, y nor z",
+      "range": "Range: 1, 2 or 3",
+      "negatedRange": "Not 1, 2 nor 3",
+      "exactlyN": "Exactly n occurrences",
+      "atLeastN": "At least n occurrences",
+      "betweenNandM": "Between n and m occurrences",
+      "zeroOrMore": "0 or more (same as {'{'}0,{'}'})",
+      "oneOrMore": "1 or more (same as {'{'}1,{'}'})",
+      "zeroOrOne": "0 or 1 (same as {'{'}0,1{'}'})",
+      "startOfString": "Start of string",
+      "endOfString": "End of string",
+      "wordBoundary": "Word boundary",
+      "nonWordBoundary": "Non-word boundary",
+      "capturingGroup": "Capturing group",
+      "nonCapturingGroup": "Non-capturing group",
+      "alternation": "Alternation: match foo or bar",
+      "positiveLookahead": "Positive lookahead: foo followed by bar",
+      "negativeLookahead": "Negative lookahead: foo not followed by bar",
+      "positiveLookbehind": "Positive lookbehind: foo preceded by bar",
+      "negativeLookbehind": "Negative lookbehind: foo not preceded by bar",
+      "literalPeriod": "Literal period",
+      "literalCaret": "Literal caret",
+      "literalDollar": "Literal dollar sign",
+      "literalPipe": "Literal pipe",
+      "literalBackslash": "Literal backslash",
+      "literalOpenParen": "Literal opening parenthesis",
+      "literalCloseParen": "Literal closing parenthesis",
+      "literalOpenBracket": "Literal opening square bracket",
+      "literalCloseBracket": "Literal closing square bracket",
+      "literalOpenBrace": "Literal opening curly bracket",
+      "literalCloseBrace": "Literal closing curly bracket"
+    },
+    "randomPortGenerator": {
+      "name": "Random Port Generator",
+      "description": "Generate random port numbers"
+    },
+    "chmodCalculator": {
+      "name": "Chmod Calculator",
+      "description": "Calculate file permissions numerically and symbolically",
+      "owner": "Owner (u)",
+      "group": "Group (g)",
+      "public": "Public (o)",
+      "read": "Read (4)",
+      "write": "Write (2)",
+      "execute": "Execute (1)",
+      "octal": "Octal",
+      "symbolic": "Symbolic"
+    },
+    "jsonViewer": {
+      "name": "JSON Viewer",
+      "description": "Format and validate JSON data",
+      "inputPlaceholder": "Paste your JSON here...",
+      "outputTitle": "Formatted Output"
+    },
+    "dockerRunToCompose": {
+      "name": "Docker Run to Compose",
+      "description": "Convert docker run commands to docker-compose YAML",
+      "inputTitle": "Docker Run Command",
+      "inputPlaceholder": "Paste your docker run command here...",
+      "outputTitle": "Docker Compose YAML",
+      "warnings": "Warnings",
+      "errorNoImage": "No image specified in docker run command",
+      "errorParseFailed": "Failed to parse docker run command",
+      "warnLogOpt": "--log-opt is not directly translatable to docker-compose service level",
+      "warnUnsupportedFlag": "Flag {flag} is not supported in this converter"
+    },
+    "xmlFormatter": {
+      "name": "XML Formatter",
+      "description": "Format and minify XML documents",
+      "inputTitle": "Input XML",
+      "inputPlaceholder": "Paste your XML here...",
+      "minify": "Minify",
+      "spaces": "{n} spaces",
+      "errorInvalidXml": "Invalid XML",
+      "errorParseFailed": "Failed to parse XML"
+    },
+    "emailNormalizer": {
+      "name": "Email Normalizer",
+      "description": "Normalize email addresses by removing aliases and formatting",
+      "inputTitle": "Input Email Addresses",
+      "inputPlaceholder": "Enter email addresses (one per line)...",
+      "outputTitle": "Normalized Output",
+      "original": "Original",
+      "normalized": "Normalized",
+      "status": "Status",
+      "ok": "OK",
+      "errorMissingAt": "Invalid email format: missing @"
+    },
+    "regexTester": {
+      "name": "Regex Tester",
+      "description": "Test regular expressions with real-time matching",
+      "patternTitle": "Regular Expression",
+      "patternPlaceholder": "Enter regex pattern...",
+      "global": "Global",
+      "ignoreCase": "Ignore Case",
+      "multiline": "Multiline",
+      "dotAll": "DotAll",
+      "unicode": "Unicode",
+      "textTitle": "Test Text",
+      "textPlaceholder": "Enter text to match against...",
+      "resultsTitle": "Match Results",
+      "colIndex": "Index",
+      "colMatch": "Match",
+      "colGroups": "Groups",
+      "matchCountSingle": "{count} match",
+      "matchCountPlural": "{count} matches",
+      "flags": "Flags",
+      "none": "none",
+      "noMatches": "No matches found",
+      "errorInvalidPattern": "Invalid regex pattern"
+    },
+    "ipv4SubnetCalculator": {
+      "name": "IPv4 Subnet Calculator",
+      "description": "Parse CIDR notation and calculate subnet properties",
+      "ipv4CidrAddress": "IPv4 CIDR Address",
+      "cidrPlaceholder": "e.g. 192.168.1.0/24",
+      "invalidCidr": "Invalid IPv4 CIDR address. Use format like 192.168.1.0/24",
+      "subnetDetails": "Subnet Details",
+      "networkAddress": "Network Address",
+      "broadcastAddress": "Broadcast Address",
+      "subnetMask": "Subnet Mask",
+      "wildcardMask": "Wildcard Mask",
+      "cidrPrefix": "CIDR Prefix",
+      "maskBinary": "Mask (Binary)",
+      "firstHost": "First Host",
+      "lastHost": "Last Host",
+      "totalHosts": "Total Hosts",
+      "usableHosts": "Usable Hosts",
+      "ipClass": "IP Class",
+      "property": "Property",
+      "value": "Value"
+    },
+    "ipv4AddressConverter": {
+      "name": "IPv4 Address Converter",
+      "description": "Convert IPv4 addresses between decimal, binary, hex, and octal"
+    },
+    "ipv4RangeExpander": {
+      "name": "IPv4 Range Expander",
+      "description": "Calculate minimal CIDR blocks covering an IP range",
+      "ipRange": "IP Range",
+      "startIpPlaceholder": "Start IPv4 address...",
+      "endIpPlaceholder": "End IPv4 address...",
+      "invalidIpv4": "Invalid IPv4 address",
+      "startAddress": "Start Address",
+      "endAddress": "End Address",
+      "addressesInRange": "Addresses in Range",
+      "property": "Property",
+      "oldValue": "Old Value",
+      "newValue": "New Value",
+      "cidrResult": "CIDR Result",
+      "invalidCombination": "Invalid address combination",
+      "reversedError": "The end IPv4 address is lower than the start IPv4 address.",
+      "swapStartEnd": "Switch start and end"
+    },
+    "macAddressGenerator": {
+      "name": "MAC Address Generator",
+      "description": "Generate random MAC addresses with custom prefix",
+      "prefixOui": "Prefix (OUI)",
+      "prefixPlaceholder": "e.g. 64:16:7F",
+      "invalidMacPrefix": "Invalid MAC prefix. Use hex pairs separated by : or -",
+      "caseLabel": "Case",
+      "generatedMacAddresses": "Generated MAC Addresses"
+    },
+    "ipv6UlaGenerator": {
+      "name": "IPv6 ULA Generator",
+      "description": "Generate IPv6 Unique Local Addresses per RFC 4193"
+    },
+    "crontabGenerator": {
+      "name": "Crontab Generator",
+      "description": "Generate cron expressions with human-readable descriptions",
+      "cronFields": "Cron Fields",
+      "fieldMinute": "Minute",
+      "fieldHour": "Hour",
+      "fieldDayOfMonth": "Day of month",
+      "fieldMonth": "Month",
+      "fieldDayOfWeek": "Day of week",
+      "cronExpression": "Cron Expression",
+      "invalidCronExpression": "Invalid cron expression",
+      "nextExecutionTimes": "Next Execution Times",
+      "nextExecution": "Next Execution",
+      "syntaxReference": "Syntax Reference",
+      "anyValue": "Any value",
+      "rangeOfValues": "Range of values",
+      "listOfValues": "List of values",
+      "stepValues": "Step values",
+      "syntaxDiagram": "┌──────────── minute (0 - 59)\n│ ┌────────── hour (0 - 23)\n│ │ ┌──────── day of month (1 - 31)\n│ │ │ ┌────── month (1 - 12)\n│ │ │ │ ┌──── day of week (0 - 6, Sunday = 0)\n│ │ │ │ │\n* * * * *"
+    },
+    "dockerComposeTo1panel": {
+      "name": "Docker Compose to 1Panel",
+      "description": "Convert docker-compose YAML into a 1Panel app directory and zip bundle",
+      "composeTitle": "Docker Compose YAML (click title to collapse)",
+      "inputPlaceholder": "Paste docker-compose YAML here...",
+      "infoTitle": "App info",
+      "fieldKey": "App key",
+      "fieldKeyPlaceholder": "Lowercase letters and hyphens only; used as the folder name",
+      "fieldName": "App name",
+      "fieldDescZh": "Chinese description",
+      "fieldDescEn": "English description",
+      "fieldTags": "Tags",
+      "fieldType": "App type",
+      "fieldVersion": "Version",
+      "fieldArch": "Architectures",
+      "logoTitle": "App logo (logo.png)",
+      "logoHint": "Optional, 200x200 PNG recommended; the zip omits logo.png when none is uploaded",
+      "dirTitle": "App directory",
+      "editableNote": "Click a file in the tree to edit it on the right; manual edits take precedence over the generated content and can be restored with \"Reset\".",
+      "badgeAuto": "Generated",
+      "badgeEdited": "Edited",
+      "resetFile": "Reset to generated",
+      "downloadZip": "Download {name}",
+      "aboutIntro": "This tool converts a standard docker-compose YAML into a 1Panel appstore-style app directory and packs it as a zip:",
+      "addsVersionField": "Adding the {field} field if missing (defaults to 3.8)",
+      "addsAppNameLabels": "Adding {field} labels",
+      "setsRestartPolicy": "Setting {field} if not specified",
+      "convertsNetworks": "Converting network arrays to map format",
+      "addsNetworkNames": "Adding explicit network names and volume drivers",
+      "parametrizesPorts": "Parametrizing host ports as 1Panel variables such as {field} and emitting matching form fields in the version data.yml",
+      "errorInvalidYaml": "Invalid YAML: not an object",
+      "errorUnknown": "Unknown error",
+      "errorYamlParse": "YAML parse error: {message}"
+    },
+    "cameraRecorder": {
+      "name": "Camera Recorder",
+      "description": "Record video from your camera",
+      "unsupportedBrowser": "Your browser does not support camera recording. Please use a modern browser with WebRTC support.",
+      "permissionTitle": "Camera Permission",
+      "permissionHint": "You need to grant permission to use your camera and microphone.",
+      "permissionDenied": "Permission denied",
+      "grantPermission": "Grant Permission",
+      "failedToStart": "Failed to start camera",
+      "cameraPreview": "Camera Preview",
+      "selectCamera": "Select camera",
+      "selectMicrophone": "Select microphone",
+      "cameraLabel": "Camera {n}",
+      "microphoneLabel": "Microphone {n}",
+      "startRecording": "Start Recording",
+      "pause": "Pause",
+      "resume": "Resume",
+      "recordingUnsupported": "Video recording is not supported in your browser",
+      "recordings": "Recordings",
+      "confirmDelete": "Delete this recording?"
+    },
+    "etaCalculator": {
+      "name": "ETA Calculator",
+      "description": "Calculate estimated time of completion",
+      "taskParameters": "Task Parameters",
+      "totalTasks": "Total Tasks",
+      "completedTasks": "Completed Tasks",
+      "startTime": "Start Time",
+      "progress": "Progress",
+      "remainingTasks": "Remaining Tasks",
+      "elapsedTime": "Elapsed Time",
+      "timeRemaining": "Time Remaining",
+      "estimatedEnd": "Estimated End",
+      "example": "Example",
+      "exampleText": "If you wash 5 plates in 3 minutes and you have 500 plates to wash, it will take you approximately 5 hours to wash them all. Enter the total task count, how many are completed, and when you started to see the estimated completion time.",
+      "durationDays": "{n}d",
+      "durationHours": "{n}h",
+      "durationMinutes": "{n}m",
+      "durationSeconds": "{n}s"
+    },
+    "benchmarkBuilder": {
+      "name": "Benchmark Builder",
+      "description": "Run JavaScript benchmarks and measure performance",
+      "suite": "Suite {n}",
+      "suiteColumn": "Suite",
+      "suitesTitle": "Benchmark Suites",
+      "suiteNamePlaceholder": "Suite name",
+      "codePlaceholder": "// JavaScript code to benchmark",
+      "addSuite": "+ Add Suite",
+      "iterations": "Iterations",
+      "run": "Run Benchmark",
+      "noResults": "No suites produced results. Check your code for errors.",
+      "suiteTimedOut": "Timed out (possible infinite loop)",
+      "failed": "Benchmark failed",
+      "avgMs": "Avg (ms)",
+      "minMs": "Min (ms)",
+      "maxMs": "Max (ms)",
+      "opsPerSec": "Ops/sec",
+      "aboutText": "Write JavaScript code in each suite and run benchmarks to compare execution speed. Results show average, min, max execution time and operations per second across all iterations. Code runs via {code} with a warmup pass before measured iterations."
+    },
+    "infoMasking": {
+      "name": "Info Masking",
+      "description": "Mask sensitive information in text",
+      "inputText": "Input Text",
+      "pasteSensitivePlaceholder": "Paste text containing sensitive information...",
+      "detected": "Detected:",
+      "maskCharacter": "Mask character:",
+      "preserveFirst": "Preserve first:",
+      "preserveLast": "Preserve last:",
+      "patternsToMask": "Patterns to mask:",
+      "maskedOutput": "Masked Output",
+      "comparison": "Before / After Comparison",
+      "before": "Before",
+      "after": "After",
+      "patternEmail": "Email",
+      "patternPhone": "Phone",
+      "patternIp": "IPv4 Address",
+      "patternCreditCard": "Credit Card"
+    },
+    "textToUnicode": {
+      "name": "Text to Unicode",
+      "description": "Convert text to Unicode entities and back",
+      "textToUnicodeEntities": "Text → Unicode Entities",
+      "unicodeEntitiesToText": "Unicode Entities → Text",
+      "inputPlaceholder": "Enter text to convert to Unicode entities...",
+      "unicodeOutputPlaceholder": "Unicode entities output...",
+      "unicodeInputPlaceholder": "e.g. &#72;&#101;&#108;&#108;&#111;",
+      "textOutputPlaceholder": "Text output..."
+    },
+    "jsonMinify": {
+      "name": "JSON Minify",
+      "description": "Minify JSON by removing whitespace",
+      "inputPlaceholder": "Paste JSON to minify...",
+      "outputTitle": "Minified Output",
+      "outputPlaceholder": "Minified JSON output..."
+    },
+    "markdownToHtml": {
+      "name": "Markdown to HTML",
+      "description": "Convert Markdown to HTML and preview the result",
+      "markdownInput": "Markdown Input",
+      "htmlOutput": "HTML Output",
+      "inputPlaceholder": "Enter Markdown here...",
+      "outputPlaceholder": "HTML output...",
+      "copyHtml": "Copy HTML",
+      "print": "Print"
+    },
+    "base64FileConverter": {
+      "name": "Base64 File Converter",
+      "description": "Convert files to Base64 and back",
+      "base64ToFile": "Base64 → File",
+      "fileToBase64": "File → Base64",
+      "inputPlaceholder": "Paste Base64 string or data URL...",
+      "outputPlaceholder": "Base64 output will appear here...",
+      "filenameLabel": "Filename:",
+      "invalidBase64": "Invalid Base64 input"
+    },
+    "yamlToJson": {
+      "name": "YAML to JSON",
+      "description": "Convert YAML to JSON",
+      "input": "Input YAML",
+      "output": "Output JSON"
+    },
+    "jsonToYaml": {
+      "name": "JSON to YAML",
+      "description": "Convert JSON to YAML",
+      "input": "Input JSON",
+      "output": "Output YAML"
+    },
+    "yamlToToml": {
+      "name": "YAML to TOML",
+      "description": "Convert YAML to TOML",
+      "input": "Input YAML",
+      "output": "Output TOML"
+    },
+    "yamlViewer": {
+      "name": "YAML Viewer",
+      "description": "Format and validate YAML",
+      "inputTitle": "Input YAML",
+      "outputTitle": "Output YAML",
+      "indentSize": "Indent size",
+      "sortKeys": "Sort keys"
+    },
+    "tomlToJson": {
+      "name": "TOML to JSON",
+      "description": "Convert TOML to JSON",
+      "input": "Input TOML",
+      "output": "Output JSON"
+    },
+    "tomlToYaml": {
+      "name": "TOML to YAML",
+      "description": "Convert TOML to YAML",
+      "input": "Input TOML",
+      "output": "Output YAML"
+    },
+    "jsonToToml": {
+      "name": "JSON to TOML",
+      "description": "Convert JSON to TOML",
+      "input": "Input JSON",
+      "output": "Output TOML"
+    },
+    "jsonToCsv": {
+      "name": "JSON to CSV",
+      "description": "Convert JSON array to CSV",
+      "outputTitle": "Output CSV",
+      "errorNotArray": "Input must be a JSON array of objects",
+      "errorItemNotObject": "Each item in the array must be a JSON object"
+    },
+    "xmlToJson": {
+      "name": "XML to JSON",
+      "description": "Convert XML to JSON",
+      "input": "Input XML",
+      "output": "Output JSON"
+    },
+    "jsonToXml": {
+      "name": "JSON to XML",
+      "description": "Convert JSON to XML",
+      "input": "Input JSON",
+      "output": "Output XML"
+    },
+    "sqlPrettify": {
+      "name": "SQL Prettify",
+      "description": "Format and prettify SQL queries",
+      "dialect": "SQL Dialect",
+      "keywordCase": "Keyword Case",
+      "preserve": "Preserve",
+      "inputTitle": "Input SQL",
+      "outputTitle": "Output SQL",
+      "outputPlaceholder": "Formatted SQL will appear here..."
+    },
+    "dateTimeConverter": {
+      "name": "Date-Time Converter",
+      "description": "Convert between date-time formats including Unix timestamps",
+      "autoDetect": "Auto-detect",
+      "unixSeconds": "Unix Timestamp (s)",
+      "unixMilliseconds": "Unix Timestamp (ms)",
+      "utcString": "UTC String",
+      "custom": "Custom",
+      "inputPlaceholder": "Enter date string or timestamp...",
+      "now": "Now",
+      "customFormatPlaceholder": "Custom format (e.g. YYYY/MM/DD HH:mm)",
+      "errorInvalidUnixSeconds": "Invalid Unix timestamp (seconds)",
+      "errorInvalidUnixMs": "Invalid Unix timestamp (ms)",
+      "errorInvalidIso": "Invalid ISO 8601 date",
+      "errorInvalidRfc": "Invalid RFC 3339 date",
+      "errorInvalidUtc": "Invalid UTC string",
+      "errorCustomFormatRequired": "Custom format string required",
+      "errorFormatMismatch": "Input does not match format \"{format}\"",
+      "errorInvalidDate": "Invalid date input",
+      "labelUnixSeconds": "Unix Timestamp (s)",
+      "labelUnixMilliseconds": "Unix Timestamp (ms)",
+      "labelUtcString": "UTC String",
+      "labelLocalDateTime": "Local Date Time",
+      "labelRelative": "Relative"
+    },
+    "listConverter": {
+      "name": "List Converter",
+      "description": "Transform lists with sort, deduplicate, prefix/suffix options",
+      "inputPlaceholder": "Enter list items...",
+      "comma": "Comma (,)",
+      "semicolon": "Semicolon (;)",
+      "newline": "Newline",
+      "tab": "Tab",
+      "pipe": "Pipe (|)",
+      "space": "Space",
+      "none": "None",
+      "ascending": "Ascending",
+      "descending": "Descending",
+      "sortOrder": "Sort Order",
+      "trimItems": "Trim Items",
+      "removeEmpty": "Remove Empty",
+      "removeDuplicates": "Remove Duplicates",
+      "itemPrefix": "Item Prefix",
+      "itemSuffix": "Item Suffix"
+    },
+    "qrCodeGenerator": {
+      "name": "QR Code Generator",
+      "description": "Generate QR codes from text or URLs",
+      "inputPlaceholder": "Enter text or URL...",
+      "errorCorrection": "Error Correction",
+      "emptyHint": "Enter text above to generate QR code",
+      "generationFailed": "QR code generation failed, the input may be too long"
+    },
+    "wifiQrCodeGenerator": {
+      "name": "WiFi QR Code Generator",
+      "description": "Generate QR codes for WiFi network credentials",
+      "settingsTitle": "WiFi Settings",
+      "encryption": "Encryption",
+      "ssid": "SSID (Network Name)",
+      "ssidPlaceholder": "Enter WiFi network name",
+      "passwordPlaceholder": "Enter password",
+      "hiddenNetwork": "Hidden network",
+      "noPassword": "No Password",
+      "qrCodeAlt": "WiFi QR Code",
+      "emptyHint": "Enter WiFi details above to generate QR code"
+    },
+    "svgPlaceholderGenerator": {
+      "name": "SVG Placeholder Generator",
+      "description": "Generate SVG placeholder images with custom dimensions",
+      "fontSize": "Font Size",
+      "auto": "Auto",
+      "textColor": "Text Color",
+      "customText": "Custom Text",
+      "customTextPlaceholder": "Default: width x height",
+      "alt": "SVG Placeholder",
+      "downloadSvg": "Download SVG",
+      "svgCode": "SVG Code"
+    },
+    "otpGenerator": {
+      "name": "OTP Generator",
+      "description": "Generate and validate TOTP one-time passwords",
+      "secretKey": "Secret Key",
+      "generateNewSecret": "Generate new secret",
+      "currentToken": "Current TOTP Token",
+      "refreshesIn": "Refreshes in {n}s",
+      "copyToken": "Copy Token",
+      "verifyToken": "Verify Token",
+      "verifyPlaceholder": "Enter token to verify",
+      "verify": "Verify",
+      "pleaseEnterToken": "Please enter a token",
+      "tokenValid": "Token is valid",
+      "tokenInvalid": "Token is invalid",
+      "qrCodeTitle": "QR Code for Authenticator Apps",
+      "qrCodeAlt": "OTP QR Code",
+      "noQrCode": "No QR code available",
+      "issuer": "Issuer",
+      "account": "Account"
+    },
+    "imageToTextOcr": {
+      "name": "Image to Text (OCR)",
+      "description": "Extract text from images using OCR",
+      "imageUpload": "Image Upload",
+      "extractText": "Extract Text",
+      "extractedText": "Extracted Text"
+    },
+    "htmlWysiwygEditor": {
+      "name": "HTML WYSIWYG Editor",
+      "description": "Edit HTML with a visual WYSIWYG editor",
+      "editor": "Editor",
+      "link": "Link",
+      "htmlOutput": "HTML Output",
+      "enterUrl": "Enter URL:",
+      "startTyping": "Start typing here..."
+    },
+    "userAgentParser": {
+      "name": "User-Agent Parser",
+      "description": "Parse user-agent strings to extract browser, OS and device info",
+      "uaString": "User-Agent String",
+      "inputPlaceholder": "Enter a user-agent string...",
+      "browser": "Browser",
+      "operatingSystem": "Operating System",
+      "device": "Device",
+      "engine": "Engine",
+      "deviceType": "Type",
+      "vendor": "Vendor",
+      "model": "Model",
+      "architecture": "Architecture"
+    },
+    "videoCompress": {
+      "name": "Video Compress",
+      "description": "Compress video files to reduce file size",
+      "selectQuality": "Select quality",
+      "qualityLow": "Low (smaller file)",
+      "qualityMedium": "Medium (balanced)",
+      "qualityHigh": "High (better quality)"
+    },
+    "videoTrim": {
+      "name": "Video Trim",
+      "description": "Trim video by selecting start and end times",
+      "startTime": "Start (s)",
+      "endTime": "End (s)"
+    },
+    "videoResize": {
+      "name": "Video Resize",
+      "description": "Resize video dimensions",
+      "keepAspectRatio": "Keep aspect ratio"
+    },
+    "videoRotate": {
+      "name": "Video Rotate",
+      "description": "Rotate video by 90 or 180 degrees",
+      "selectRotation": "Select rotation",
+      "rotation90cw": "90° Clockwise",
+      "rotation90ccw": "90° Counter-clockwise",
+      "rotation180": "180°"
+    },
+    "videoFlip": {
+      "name": "Video Flip",
+      "description": "Flip video horizontally or vertically",
+      "selectDirection": "Select direction"
+    },
+    "videoCrop": {
+      "name": "Video Crop",
+      "description": "Crop video to a custom region"
+    },
+    "videoChangeSpeed": {
+      "name": "Video Speed Change",
+      "description": "Change video playback speed",
+      "selectSpeed": "Select speed",
+      "changeSpeed": "Change Speed",
+      "speedVerySlow": "0.25x (very slow)",
+      "speedSlow": "0.5x (slow)",
+      "speedNormal": "1x (normal)",
+      "speedFast": "1.5x (fast)",
+      "speedFaster": "2x (faster)",
+      "speedVeryFast": "4x (very fast)"
+    },
+    "videoLoop": {
+      "name": "Video Loop",
+      "description": "Loop video a specified number of times",
+      "loopCount": "Loop count"
+    },
+    "videoMerge": {
+      "name": "Video Merge",
+      "description": "Merge multiple videos into one"
+    },
+    "videoAddAudio": {
+      "name": "Video Add Audio",
+      "description": "Add or replace audio track in a video",
+      "videoFile": "Video file",
+      "audioFile": "Audio file",
+      "addAudio": "Add Audio"
+    },
+    "videoToGif": {
+      "name": "Video to GIF",
+      "description": "Convert video to animated GIF",
+      "duration": "Duration (s)",
+      "convertToGif": "Convert to GIF"
+    },
+    "gifChangeSpeed": {
+      "name": "GIF Speed Change",
+      "description": "Change GIF animation speed",
+      "selectSpeed": "Select speed",
+      "changeSpeed": "Change Speed",
+      "speedVerySlow": "0.25x (very slow)",
+      "speedSlow": "0.5x (slow)",
+      "speedNormal": "1x (normal)",
+      "speedFast": "1.5x (fast)",
+      "speedFaster": "2x (faster)",
+      "speedVeryFast": "4x (very fast)"
+    },
+    "imagesToGif": {
+      "name": "Images to GIF",
+      "description": "Combine images into an animated GIF",
+      "filesSelected": "{count} file(s) selected",
+      "frameDuration": "Frame duration (s)",
+      "createGif": "Create GIF"
+    },
+    "audioConverter": {
+      "name": "Audio Converter",
+      "description": "Convert audio between formats",
+      "selectFormat": "Select format",
+      "conversionComplete": "Conversion complete! File downloaded."
+    },
+    "audioChangeSpeed": {
+      "name": "Audio Speed Change",
+      "description": "Change audio playback speed",
+      "selectSpeed": "Select speed",
+      "changeSpeed": "Change Speed",
+      "speedHalf": "0.5x (Half speed)",
+      "speedNormal": "1x (Normal)",
+      "speedDouble": "2x (Double speed)",
+      "speedChanged": "Speed changed! File downloaded."
+    },
+    "audioExtract": {
+      "name": "Audio Extract",
+      "description": "Extract audio track from video",
+      "selectOutputFormat": "Select output format",
+      "extractAudio": "Extract Audio",
+      "audioExtracted": "Audio extracted! File downloaded."
+    },
+    "audioLoop": {
+      "name": "Audio Loop",
+      "description": "Loop audio a specified number of times",
+      "loopCount": "Loop count",
+      "loopAudio": "Loop Audio",
+      "audioLooped": "Audio looped! File downloaded."
+    },
+    "audioMerge": {
+      "name": "Audio Merge",
+      "description": "Merge multiple audio files into one",
+      "mergeAudio": "Merge Audio",
+      "audioMerged": "Audio merged! File downloaded."
+    },
+    "audioTrim": {
+      "name": "Audio Trim",
+      "description": "Trim audio to a custom time range",
+      "startSeconds": "Start (seconds)",
+      "endSeconds": "End (seconds)",
+      "trimAudio": "Trim Audio",
+      "audioTrimmed": "Audio trimmed! File downloaded."
+    },
+    "dnsLeakTest": {
+      "name": "DNS Leak Test",
+      "description": "Test if your DNS is leaking information",
+      "runTest": "Run Test",
+      "resolved": "Resolved",
+      "addresses": "Addresses"
+    },
+    "pingTest": {
+      "name": "Ping Test",
+      "description": "Test network latency to a target",
+      "ping": "Ping"
+    },
+    "mtrTest": {
+      "name": "MTR Test",
+      "description": "Trace network route to a target",
+      "trace": "Trace"
+    },
+    "globalLatencyTest": {
+      "name": "Global Latency Test",
+      "description": "Test DNS latency from global locations",
+      "testLatency": "Test Latency"
+    },
+    "ruleTest": {
+      "name": "Rule Test",
+      "description": "Test DNS resolution with custom rules",
+      "test": "Test",
+      "dnsServerPlaceholder": "Custom DNS server (optional)"
+    },
+    "censorshipCheck": {
+      "name": "Censorship Check",
+      "description": "Check if websites are censored",
+      "check": "Check",
+      "inputPlaceholder": "Enter URLs (one per line)...",
+      "emptyError": "Please enter at least one URL"
+    },
+    "screenshotShare": {
+      "name": "Screenshot Share",
+      "description": "Capture and share screenshots of web pages",
+      "cssSelector": "CSS Selector",
+      "selectorPlaceholder": "Enter CSS selector (default: body)",
+      "capture": "Capture",
+      "downloadPng": "Download PNG",
+      "copyToClipboard": "Copy to Clipboard",
+      "noElementFound": "No element found for selector: {selector}",
+      "captureFailed": "Failed to capture screenshot",
+      "copyFailed": "Failed to copy to clipboard"
+    },
+    "jsonDiff": {
+      "name": "JSON Diff",
+      "description": "Compare two JSON objects and find differences",
+      "leftJson": "Left JSON",
+      "rightJson": "Right JSON",
+      "leftPlaceholder": "Paste left JSON...",
+      "rightPlaceholder": "Paste right JSON...",
+      "added": "Added",
+      "removed": "Removed",
+      "changed": "Changed",
+      "differences": "Differences"
+    }
+  }
+}

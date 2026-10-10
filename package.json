@@ -1,0 +1,24 @@
+{
+  "name": "toolnest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.11.0",
+  "description": "Unified developer tools web application",
+  "license": "GPL-3.0",
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm -r build",
+    "type-check": "pnpm -r type-check",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "dev:web": "pnpm --filter @toolnest/web dev",
+    "dev:server": "pnpm --filter @toolnest/server dev",
+    "build:web": "pnpm --filter @toolnest/web build",
+    "build:server": "pnpm --filter @toolnest/server build"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

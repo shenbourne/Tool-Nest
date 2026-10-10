@@ -1,0 +1,30 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { NInputNumber, NButton, NInput, NSwitch, NSpace } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
+import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
+import { tool } from './index';
+import { generateRandomNumbers } from './random-number-generator.service';
+const { t } = useI18n();
+const min = ref(1); const max = ref(100); const count = ref(1);
+const unique = ref(false); const result = ref('');
+function gen() {
+  const res = generateRandomNumbers(min.value, max.value, count.value, unique.value);
+  result.value = res.ok ? res.values.join(', ') : t(`tools.randomNumberGenerator.${res.error}`);
+}
+</script>
+<template>
+  <ToolLayout :tool="tool">
+    <ToolTextPanel :input-text="''" :output-text="result" :output-title="t('common.output')" export-name="random-numbers.txt" hide-input>
+      <template #output>
+        <NInput :value="result" type="textarea" :rows="4" readonly  :input-props="{ id: 'randomNumberGeneratorField3' }"/>
+      </template>
+      <template #params>
+        <NSpace><NInputNumber v-model:value="min" :placeholder="t('common.min')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField0' }"/><NInputNumber v-model:value="max" :placeholder="t('common.max')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField1' }"/><NInputNumber v-model:value="count" :min="1" :max="10000" :placeholder="t('common.count')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField2' }"/></NSpace>
+        <NSwitch v-model:value="unique">{{ t('tools.randomNumberGenerator.uniqueOnly') }}</NSwitch>
+        <NButton type="primary" @click="gen">{{ t('common.generate') }}</NButton>
+      </template>
+    </ToolTextPanel>
+  </ToolLayout>
+</template>

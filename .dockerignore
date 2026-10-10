@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+*.md
+docs/migration
+template
+scripts
+.env*
+.vscode
+.idea

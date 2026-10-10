@@ -1,0 +1,40 @@
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { NInput, NSwitch, NAlert } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
+import ToolLayout from '@/layouts/ToolLayout.vue';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
+import { tool } from './index';
+
+const { t } = useI18n();
+
+const input = ref('');
+const mode = ref<'escape'|'unescape'>('escape');
+const error = computed(() => {
+  // Escaping any text is always valid; only unescape can fail to parse.
+  if (mode.value !== 'unescape' || !input.value.trim()) return '';
+  try { JSON.parse(input.value); return ''; } catch { return t('tools.jsonEscape.invalidInput'); }
+});
+const output = computed(() => {
+  if (error.value) return '';
+  if (mode.value === 'escape') return JSON.stringify(input.value);
+  const parsed = JSON.parse(input.value);
+  return typeof parsed === 'string' ? parsed : JSON.stringify(parsed);
+});
+</script>
+<template>
+  <ToolLayout :tool="tool">
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+      <template #input>
+        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'escape' ? t('tools.jsonEscape.escapePlaceholder') : t('tools.jsonEscape.unescapePlaceholder')"  :input-props="{ id: 'jsonEscapeField0' }"/>
+      </template>
+      <template #output>
+        <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'jsonEscapeField1' }"/>
+      </template>
+      <template #params>
+        <NSwitch :value="mode === 'escape'" @update:value="mode = $event ? 'escape' : 'unescape'">{{ t('tools.jsonEscape.toggle') }}</NSwitch>
+        <NAlert v-if="error" type="error" :title="error" />
+      </template>
+    </ToolTextPanel>
+  </ToolLayout>
+</template>
