@@ -94,3 +94,11 @@ Keep this short and factual so another agent can resume without chat history.
 - Final private fetch PASS, private/master 3a767e8; master ahead 1 / behind 0. Existing branch/local work retained. Next: publish maintenance branch and review UI; no merge authorized.
 - Push succeeded to private/feature/file-title-center at b4e0a2c; independent ls-remote verification failed with TLS unexpected EOF. No merge performed; retry remote SHA check next session.
 
+
+## 2026-10-10 authorized maintenance merge
+
+- User authorized merge to master. Fast-forwarded local master from 4c192eb to feature/file-title-center at 4e96a99 without conflicts.
+- Includes centered file titles, PDF text options row and BIP39 count/retry row maintenance already on this feature branch.
+- Merged tree equals verified feature tip; no runtime changes during integration, so existing passing typecheck, scoped lint, 335 web tests and build remain applicable.
+- Preserved pre-existing components.d.ts modification and all untracked files. Remote refresh PASS; feature/upstream ahead 0 / behind 0 before merge.
+- Local master only; no master push requested. Next: push private/master when authorized.
