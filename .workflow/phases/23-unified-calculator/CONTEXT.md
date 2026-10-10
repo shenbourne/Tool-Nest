@@ -1,0 +1,1 @@
+Merge calculators: retain /generic-calculator, redirect /math-evaluator. Live preview, keypad including factorial, equals/Enter records, reusable persistent history. No dependencies or ADR needed. Base private/master 62f9ddd, fetched successfully, ahead/behind 0/0. Isolated feature/phase-23-unified-calculator.

@@ -11,3 +11,5 @@ This file indexes durable requirements. Detailed acceptance remains in `DEVELOPM
 | R-005 | Deliver a reproducible single-image Docker deployment with complete licenses and notices | Must | `DEVELOPMENT_PLAN.md` | Unassigned | In progress |
 
 Keep requirements observable. When scope changes, record the decision and update the affected phase acceptance criteria.
+
+| R-006 | Unified live calculator with keypad, equals history and stable inline errors | Must | User 2026-10-10 | 23 | Verified on feature branch |

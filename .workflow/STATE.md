@@ -112,3 +112,5 @@ Keep this short and factual so another agent can resume without chat history.
 - User requested submission to master. Fast-forwarded master 1a0144e -> bcae33d in isolated worktree, preserving active phase 21 uncommitted work.
 - Integration runtime tree equals verified file-panel-three-tiles tip: scoped lint, 335 tests and typecheck/build PASS; browser visual check remains NOT RUN.
 - Private fetch PASS, master was ahead 7 / behind 0 before integration. Publishing master to private; public mirror excluded.
+
+- Phase 23 (2026-10-10): unified calculator on feature/phase-23-unified-calculator in .worktrees/phase-23-unified-calculator. Live/keypad/equals and Enter/persistent reusable history/legacy redirect/fixed inline errors verified. Full web 337/337; final calculator/registry 16/16; lint, types, build PASS. Mobile shell sidebar limitation outside scope. Initial fetched base 62f9ddd (0/0); final fetch remote advanced 10 commits, integration pending. Next: integrate, publish feature, await authorized merge. Other sessions changes preserved.

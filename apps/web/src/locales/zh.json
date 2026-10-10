@@ -642,14 +642,24 @@
     },
     "genericCalculator": {
       "name": "通用计算器",
-      "description": "基本数学表达式的简单计算器",
+      "description": "实时计算数学表达式，使用计算器按键并回看计算记录",
       "expressionPlaceholder": "表达式: {example}",
       "resultPlaceholder": "结果...",
       "history": "历史记录:",
       "unexpected": "意外字符: {char}",
       "endOfInput": "输入末尾",
       "errorPrefix": "错误: {message}",
-      "notFinite": "结果不是有限数"
+      "notFinite": "结果不是有限数",
+      "invalidFactorial": "阶乘仅支持 0 到 170 的整数",
+      "clear": "清空输入",
+      "backspace": "退格",
+      "toggleSign": "切换正负",
+      "equals": "计算并记录",
+      "clearHistory": "清空记录",
+      "emptyHistory": "按等号或回车保存计算记录",
+      "reuse": "使用此表达式",
+      "operators": "支持 + − × ÷、取余 %、乘方 ^、括号和阶乘 !",
+      "historyHint": "记录保存在此浏览器，最多保留 100 条"
     },
     "randomNumberGenerator": {
       "name": "随机数生成器",

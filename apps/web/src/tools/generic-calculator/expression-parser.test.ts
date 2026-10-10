@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseMath } from './math-evaluator.service';
+import { evaluateExpression as parseMath } from './generic-calculator.service';
 
 describe('parseMath', () => {
   it('evaluates arithmetic with precedence and parentheses', () => {
@@ -25,3 +25,4 @@ describe('parseMath', () => {
     expect(() => parseMath('2 +')).toThrow();
   });
 });
+

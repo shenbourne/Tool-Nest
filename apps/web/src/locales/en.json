@@ -642,14 +642,24 @@
     },
     "genericCalculator": {
       "name": "Generic Calculator",
-      "description": "Simple calculator for basic math expressions",
+      "description": "Evaluate expressions live with calculator keys and reusable history",
       "expressionPlaceholder": "Expression: {example}",
       "resultPlaceholder": "Result...",
       "history": "History:",
       "unexpected": "Unexpected: {char}",
       "endOfInput": "end of input",
       "errorPrefix": "Error: {message}",
-      "notFinite": "result is not a finite number"
+      "notFinite": "result is not a finite number",
+      "invalidFactorial": "Factorial requires an integer from 0 to 170",
+      "clear": "Clear input",
+      "backspace": "Backspace",
+      "toggleSign": "Toggle sign",
+      "equals": "Calculate and record",
+      "clearHistory": "Clear history",
+      "emptyHistory": "Press equals or Enter to save a calculation",
+      "reuse": "Reuse this expression",
+      "operators": "Supports + − × ÷, remainder %, power ^, parentheses and factorial !",
+      "historyHint": "Saved in this browser, up to 100 entries"
     },
     "randomNumberGenerator": {
       "name": "Random Number Generator",

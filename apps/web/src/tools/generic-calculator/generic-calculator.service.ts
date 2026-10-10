@@ -1,51 +1,79 @@
 import { i18n } from '@/i18n';
 
 /**
- * Safe recursive-descent calculator — no eval/Function. Returns the numeric
- * value or throws with a localized message.
+ * Safe recursive-descent math expression parser — no eval/Function.
+ * Returns the numeric value or throws with a localized message.
  */
-export function evaluateExpression(source: string): number {
+export function evaluateExpression(expr: string): number {
   let pos = 0;
-  const str = source.replace(/\s+/g, '');
+  const s = expr.replace(/\s+/g, '');
 
-  function parseExpr(): number {
-    let v = parseTerm();
-    while (pos < str.length && (str[pos] === '+' || str[pos] === '-')) {
-      const op = str[pos++]; const r = parseTerm(); v = op === '+' ? v + r : v - r;
+  function parseExpression(): number {
+    let result = parseTerm();
+    while (pos < s.length) {
+      if (s[pos] === '+') { pos++; result += parseTerm(); }
+      else if (s[pos] === '-') { pos++; result -= parseTerm(); }
+      else break;
     }
-    return v;
+    return result;
   }
+
   function parseTerm(): number {
-    let v = parsePower();
-    while (pos < str.length && (str[pos] === '*' || str[pos] === '/' || str[pos] === '%')) {
-      const op = str[pos++]; const r = parsePower();
-      v = op === '*' ? v * r : op === '/' ? v / r : v % r;
+    let result = parsePower();
+    while (pos < s.length) {
+      if (s[pos] === '*') { pos++; result *= parsePower(); }
+      else if (s[pos] === '/') { pos++; const d = parsePower(); if (d === 0) throw new Error(i18n.global.t('tools.mathEvaluator.divisionByZero')); result /= d; }
+      else if (s[pos] === '%') { pos++; result %= parsePower(); }
+      else break;
     }
-    return v;
-  }
-  function parsePower(): number {
-    let v = parseUnary();
-    if (pos < str.length && str[pos] === '^') { pos++; v = Math.pow(v, parsePower()); }
-    return v;
-  }
-  function parseUnary(): number {
-    if (str[pos] === '-') { pos++; return -parseUnary(); }
-    if (str[pos] === '+') { pos++; return parseUnary(); }
-    return parsePrimary();
-  }
-  function parsePrimary(): number {
-    if (str[pos] === '(') { pos++; const v = parseExpr(); if (str[pos] === ')') pos++; return v; }
-    let num = '';
-    while (pos < str.length && (str[pos] >= '0' && str[pos] <= '9' || str[pos] === '.')) num += str[pos++];
-    if (!num) throw new Error(i18n.global.t('tools.genericCalculator.unexpected', { char: str[pos] || i18n.global.t('tools.genericCalculator.endOfInput') }));
-    // Reject malformed numbers like 1.2.3 instead of silently truncating.
-    if (!/^\d+(\.\d+)?$/.test(num) && !/^\.\d+$/.test(num)) {
-      throw new Error(i18n.global.t('tools.genericCalculator.unexpected', { char: str[pos] || i18n.global.t('tools.genericCalculator.endOfInput') }));
-    }
-    return parseFloat(num);
+    return result;
   }
 
-  const r = parseExpr();
-  if (pos < str.length) throw new Error(i18n.global.t('tools.genericCalculator.unexpected', { char: str[pos] }));
-  return r;
+  function parsePower(): number {
+    let result = parseUnary();
+    if (pos < s.length && s[pos] === '^') {
+      pos++;
+      result = Math.pow(result, parsePower()); // right-associative
+    }
+    return result;
+  }
+
+  function parseUnary(): number {
+    if (s[pos] === '-') { pos++; return -parseUnary(); }
+    if (s[pos] === '+') { pos++; return parseUnary(); }
+    let value = parsePrimary();
+    while (s[pos] === '!') {
+      pos++;
+      if (!Number.isInteger(value) || value < 0 || value > 170) throw new Error(i18n.global.t('tools.genericCalculator.invalidFactorial'));
+      let factorial = 1;
+      for (let n = 2; n <= value; n++) factorial *= n;
+      value = factorial;
+    }
+    return value;
+  }
+
+  function parsePrimary(): number {
+    if (s[pos] === '(') {
+      pos++;
+      const result = parseExpression();
+      if (s[pos] !== ')') throw new Error(i18n.global.t('tools.mathEvaluator.missingClosingParenthesis'));
+      pos++;
+      return result;
+    }
+    const start = pos;
+    while (pos < s.length && (s[pos] >= '0' && s[pos] <= '9' || s[pos] === '.')) pos++;
+    if (pos === start) throw new Error(i18n.global.t('tools.mathEvaluator.unexpectedCharacter', { char: s[pos] || i18n.global.t('tools.mathEvaluator.endOfInput') }));
+    const numStr = s.substring(start, pos);
+    // Reject malformed numbers like 1.2.3 instead of silently truncating
+    // them via parseFloat.
+    if (!/^\d+(\.\d+)?$/.test(numStr) && !/^\.\d+$/.test(numStr)) {
+      throw new Error(i18n.global.t('tools.mathEvaluator.unexpectedCharacter', { char: s[pos] || i18n.global.t('tools.mathEvaluator.endOfInput') }));
+    }
+    return parseFloat(numStr);
+  }
+
+  const result = parseExpression();
+  if (pos < s.length) throw new Error(i18n.global.t('tools.mathEvaluator.unexpectedCharacter', { char: s[pos] }));
+  if (!Number.isFinite(result)) throw new Error(i18n.global.t('tools.genericCalculator.notFinite'));
+  return result;
 }

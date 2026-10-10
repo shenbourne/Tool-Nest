@@ -5,6 +5,11 @@ import { allTools } from '@/tools/registry';
 const validCategories = new Set(TOOL_CATEGORIES.map((c) => c.name));
 
 describe('tool registry', () => {
+  it('consolidates calculator discovery and preserves the legacy URL', () => {
+    expect(allTools.filter(tool => tool.path === '/generic-calculator')).toHaveLength(1);
+    expect(allTools.some(tool => tool.path === '/math-evaluator')).toBe(false);
+    expect(allTools.find(tool => tool.path === '/generic-calculator')?.redirectFrom).toContain('/math-evaluator');
+  });
   it('loads tool modules from the filesystem', () => {
     expect(allTools.length).toBeGreaterThan(0);
   });
