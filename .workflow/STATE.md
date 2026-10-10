@@ -153,3 +153,4 @@ Keep this short and factual so another agent can resume without chat history.
 - Merged verification PASS: 335/335 web tests and production build including vue-tsc. Publication target private/master; no browser visual check. Generated declarations from build excluded.
 
 - Phase 23: refreshed private/master a8d1e31 integrated; documentation conflict resolved retaining both phase records. Final merged checks pending.
+- Phase 23 complete: merged remote base a8d1e31; 338/338 frontend tests, typecheck, scoped lint and production build PASS, desktop browser acceptance PASS. Publishing private/feature/phase-23-unified-calculator; next action is separately authorized master merge. 390px app sidebar limitation recorded.

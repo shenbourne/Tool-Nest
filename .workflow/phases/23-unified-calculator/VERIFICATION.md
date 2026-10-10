@@ -7,3 +7,5 @@ Ordinary review + codebase-health invoked because two tool modules merge: single
 Browser observed live 98 without record, equals record, keypad continuation 100, Enter record, refresh persistence, history reuse, factorial 120, legacy redirect. Fixed error-row position verified numerically and screenshot saved.
 Final targeted tests/typecheck/build rerun pending. English/narrow viewport visual acceptance pending. No merge authorization; feature branch only.
 Final targeted Vitest PASS 16/16 (includes new registry merge contract); eslint PASS; vue-tsc PASS; build PASS. English browser labels PASS. Narrow 390px check exposed existing global sidebar taking 240px and squeezing content; mobile shell fix outside scope, recorded as limitation. Desktop viewport restored.
+Remote advanced by 10 commits to a8d1e31; merged in 3f2e212. Only STATE.md conflict; both records preserved. Merged vue-tsc PASS and full Vitest 338/338 PASS; production build in progress.
+Merged production build PASS (34.05s). Phase desktop requirements complete; feature publication target private/feature/phase-23-unified-calculator. Generated declaration changes excluded.
