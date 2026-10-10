@@ -70,9 +70,13 @@ async function process() {
         </template>
         <template #params>
           <NSpace vertical :size="12">
-            <NSpace>
-              <NInputNumber v-model:value="width" :min="1" :placeholder="t('common.width')" style="width:120px" :input-props="{ id: 'imageResizeField0' }"/>
-              <NInputNumber v-model:value="height" :min="1" :placeholder="t('common.height')" style="width:120px" :input-props="{ id: 'imageResizeField1' }"/>
+            <NSpace>              <div class="tool-numeric-param">
+                <label for="imageResizeField0">{{ t('numericParams.widthPixels') }}:</label>
+                <NInputNumber v-model:value="width" :min="1" :placeholder="t('common.width')" style="width:120px" :input-props="{ id: 'imageResizeField0' }"/>
+              </div>              <div class="tool-numeric-param">
+                <label for="imageResizeField1">{{ t('numericParams.heightPixels') }}:</label>
+                <NInputNumber v-model:value="height" :min="1" :placeholder="t('common.height')" style="width:120px" :input-props="{ id: 'imageResizeField1' }"/>
+              </div>
             </NSpace>
             <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
               {{ t('tools.imageResize.resize') }}

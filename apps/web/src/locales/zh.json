@@ -1,4 +1,22 @@
 {
+  "numericParams": {
+    "widthPixels": "宽度 (px)",
+    "heightPixels": "高度 (px)",
+    "quality": "压缩质量 (0.1–1)",
+    "angle": "旋转角度 (°)",
+    "opacity": "不透明度 (0–1)",
+    "fps": "帧率 (帧/秒)",
+    "duration": "截取时长 (秒，0 为全部)",
+    "startIndex": "起始索引 (从 0 开始)",
+    "endIndex": "结束索引 (不包含)",
+    "columnPosition": "插入位置 (从 0 开始)",
+    "columnA": "列 A 索引 (从 0 开始)",
+    "columnB": "列 B 索引 (从 0 开始)",
+    "repeatCount": "重复次数",
+    "rotatePositions": "轮转行数",
+    "bytes": "字节数 (B)",
+    "keepCount": "保留数量"
+  },
   "app": {
     "title": "ToolNest",
     "subtitle": "开发者工具箱"

@@ -20,8 +20,20 @@ function gen() {
       <template #output>
         <NInput :value="result" type="textarea" :rows="4" readonly  :input-props="{ id: 'randomNumberGeneratorField3' }"/>
       </template>
-      <template #params>
-        <NSpace><NInputNumber v-model:value="min" :placeholder="t('common.min')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField0' }"/><NInputNumber v-model:value="max" :placeholder="t('common.max')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField1' }"/><NInputNumber v-model:value="count" :min="1" :max="10000" :placeholder="t('common.count')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField2' }"/></NSpace>
+      <template #params>        <NSpace>
+        <div class="tool-numeric-param">
+          <label for="randomNumberGeneratorField0">{{ t('common.min') }}:</label>
+          <NInputNumber v-model:value="min" :placeholder="t('common.min')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField0' }"/>
+        </div>
+        <div class="tool-numeric-param">
+          <label for="randomNumberGeneratorField1">{{ t('common.max') }}:</label>
+          <NInputNumber v-model:value="max" :placeholder="t('common.max')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField1' }"/>
+        </div>
+        <div class="tool-numeric-param">
+          <label for="randomNumberGeneratorField2">{{ t('common.count') }}:</label>
+          <NInputNumber v-model:value="count" :min="1" :max="10000" :placeholder="t('common.count')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField2' }"/>
+        </div>
+        </NSpace>
         <NSwitch v-model:value="unique">{{ t('tools.randomNumberGenerator.uniqueOnly') }}</NSwitch>
         <NButton type="primary" @click="gen">{{ t('common.generate') }}</NButton>
       </template>

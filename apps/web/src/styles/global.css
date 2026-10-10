@@ -43,3 +43,20 @@ body {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Persistent labels beside numeric controls, matching compact tool parameters. */
+.tool-numeric-param {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.tool-numeric-param > label {
+  color: var(--color-ink);
+}
+
+.tool-numeric-param > .n-input-number {
+  max-width: 100%;
+}

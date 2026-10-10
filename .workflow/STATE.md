@@ -139,3 +139,15 @@ Keep this short and factual so another agent can resume without chat history.
 - Includes string-only actions for NumberSum and CheckLeapYears. Runtime tree byte-identical to verified feature tip; 335 tests, typecheck/build and scoped lint PASS from feature verification. Browser visual check NOT RUN.
 - Remote refresh PASS; master and feature upstream were 0/0 before merge. Existing main-workspace edits and active phase 23 checkout preserved.
 - Publishing private/master only; no public mirror update. Next: continue other feature work independently.
+
+## 2026-10-10 phase 21 — numeric parameter labels
+- Isolated worktree .worktrees/phase-21-numeric-labels, branch feature/phase-21-numeric-labels, from refreshed private/master 62f9ddd. Shared checkout was concurrently switched/committed by phase 22; existing work preserved.
+- Added persistent bilingual labels to 23 numeric inputs in 14 tools. Web tests 335/335, typecheck/build PASS; differential lint zero added (10 existing). Browser visual/click-focus review NOT RUN.
+- Next: manual UI review and authorized merge; no merge performed.
+- Published to private/feature/phase-21-numeric-labels at 12cb022; independent ls-remote SHA verification PASS.
+
+
+## 2026-10-10 authorized phase 21 integration
+- User authorized submission to master. Initial checkout of master was blocked because phase 22 occupied it; initial push was rejected after its concurrent update. No forced update occurred.
+- Integrated phase 21 into refreshed private/master d062f31 in isolated .worktrees/phase-21-master-merge. Only STATE.md conflicted; retained both phase records. Runtime/locales merged automatically.
+- Next: run merged checks, publish to private/master and verify remote SHA.

@@ -31,8 +31,10 @@ const output = computed(() => {
       </template>
       <template #params>
         <NSpace>
-        <NSelect v-model:value="mode" :options="modeOptions" style="width:140px" />
-        <NInputNumber v-model:value="limit" :min="1" style="width:120px"  :input-props="{ id: 'textTruncateField1' }"/>
+        <NSelect v-model:value="mode" :options="modeOptions" style="width:140px" />        <div class="tool-numeric-param">
+          <label for="textTruncateField1">{{ t('numericParams.keepCount') }}:</label>
+          <NInputNumber v-model:value="limit" :min="1" style="width:120px"  :input-props="{ id: 'textTruncateField1' }"/>
+        </div>
         </NSpace>
       </template>
     </ToolTextPanel>
