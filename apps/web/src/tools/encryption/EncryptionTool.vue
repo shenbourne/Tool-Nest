@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NInput, NSelect, NButton, NSpace, NAlert } from 'naive-ui';
+import { NInput, NSelect, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { AES, RC4, Rabbit, TripleDES, enc } from 'crypto-js';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -20,25 +20,20 @@ const encryptOutput = computed(() => algos[encryptAlgo.value].encrypt(encryptInp
 const decryptInput = ref('');
 const decryptAlgo = ref<Algo>('AES');
 const decryptSecret = ref('my secret key');
-const decryptOutput = ref('');
-const decryptError = ref('');
 
-function doDecrypt() {
+// Decryption runs automatically like encryption: any change to the input,
+// algorithm or secret key recomputes the plaintext immediately.
+const decryptResult = computed(() => {
+  if (!decryptInput.value) return { output: '', error: '' };
   try {
-    decryptError.value = '';
-    decryptOutput.value = algos[decryptAlgo.value].decrypt(decryptInput.value, decryptSecret.value).toString(enc.Utf8);
+    const text = algos[decryptAlgo.value].decrypt(decryptInput.value, decryptSecret.value).toString(enc.Utf8);
+    return { output: text, error: '' };
   } catch {
-    decryptOutput.value = '';
-    decryptError.value = t('tools.encryption.decryptFailed');
+    return { output: '', error: t('tools.encryption.decryptFailed') };
   }
-}
-
-// A previously decrypted plaintext is tied to the inputs that produced it;
-// once they change, the stale result must not linger next to the new inputs.
-watch([decryptInput, decryptAlgo, decryptSecret], () => {
-  decryptOutput.value = '';
-  decryptError.value = '';
 });
+const decryptOutput = computed(() => decryptResult.value.output);
+const decryptError = computed(() => decryptResult.value.error);
 </script>
 
 <template>
@@ -54,7 +49,7 @@ watch([decryptInput, decryptAlgo, decryptSecret], () => {
         <template #params>
           <NSpace>
             <NInput v-model:value="encryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField1' }"/>
-            <NSelect v-model:value="encryptAlgo" :options="algoOptions" />
+            <NSelect v-model:value="encryptAlgo" :options="algoOptions" style="min-width: 120px" />
           </NSpace>
         </template>
       </ToolTextPanel>
@@ -69,8 +64,7 @@ watch([decryptInput, decryptAlgo, decryptSecret], () => {
         <template #params>
           <NSpace>
             <NInput v-model:value="decryptSecret" :placeholder="t('common.secretKeyPlaceholder')"  :input-props="{ id: 'encryptionField4' }"/>
-            <NSelect v-model:value="decryptAlgo" :options="algoOptions" />
-            <NButton @click="doDecrypt">{{ t('common.decrypt') }}</NButton>
+            <NSelect v-model:value="decryptAlgo" :options="algoOptions" style="min-width: 120px" />
           </NSpace>
           <NAlert v-if="decryptError" type="error">{{ decryptError }}</NAlert>
         </template>

@@ -29,7 +29,7 @@ const output = computed(() => {
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
       <NInput v-model:value="input" :placeholder="t('tools.stringObfuscator.inputPlaceholder')"  :input-props="{ id: 'stringObfuscatorField0' }"/>
-      <NSelect v-model:value="method" :options="methodOptions" />
+      <NSelect v-model:value="method" :options="methodOptions" style="min-width: 220px" />
       <NFormItem v-if="method==='partial'" :label="t('tools.stringObfuscator.keepCharacters')" label-placement="left">
         <NSlider v-model:value="keepChars" :min="1" :max="10" style="flex:1;" />
       </NFormItem>

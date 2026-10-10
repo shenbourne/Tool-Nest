@@ -140,6 +140,7 @@ function escapeHtml(str: string): string {
             v-model:value="twitterCard"
             :options="twitterCardOptions"
             :placeholder="t('tools.metaTagGenerator.twitterCardPlaceholder')"
+            style="min-width: 210px"
           />
           <NInput
             v-model:value="twitterSite"

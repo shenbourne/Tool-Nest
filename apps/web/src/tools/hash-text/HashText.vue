@@ -26,7 +26,7 @@ const algoOptions = Object.keys(hashAlgorithms).map(label => ({ label, value: la
       </template>
       <template #params>
         <NSpace>
-          <NSelect v-model:value="algorithm" :options="algoOptions" />
+          <NSelect v-model:value="algorithm" :options="algoOptions" style="min-width: 140px" />
         </NSpace>
       </template>
     </ToolTextPanel>

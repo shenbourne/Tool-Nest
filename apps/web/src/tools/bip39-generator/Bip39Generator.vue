@@ -38,7 +38,7 @@ function refresh() { nonce.value++; }
         <NInput :value="mnemonic" type="textarea" readonly :rows="4" style="font-family: monospace;"  :input-props="{ id: 'bip39GeneratorField0' }"/>
       </template>
       <template #params>
-        <NSelect v-model:value="words" :options="wordCountOptions" />
+        <NSelect v-model:value="words" :options="wordCountOptions" style="min-width: 120px" />
         <NButton @click="refresh">{{ t('common.retry') }}</NButton>
         <div>
           <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">{{ t('tools.bip39Generator.validateMnemonic') }}</div>
