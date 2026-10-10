@@ -180,3 +180,9 @@ Keep this short and factual so another agent can resume without chat history.
 - Tests, typecheck, scoped lint and build PASS. Browser visual acceptance NOT RUN; phase awaits UI acceptance. Unrelated primary-checkout changes preserved.
 - Next: review UI and authorize merge separately. Feature publication recorded below.
 - Local implementation commit 7b5072c. First push failed with TLS unexpected EOF; retrying publication. Build-generated declaration edits remain unstaged in this isolated worktree.
+- Retry push succeeded to private/feature/phase-24-unified-time at bd0cd6d; prior publication SHA verified.
+
+## 2026-10-10 master into phase 24
+- User authorized master -> feature/phase-24-unified-time. Merged local master 2db3618 at 9a906fa; master ahead 5/behind 0 private/master. Only STATE/ROADMAP conflicted, both records retained.
+- Typecheck, 342 web tests, scoped lint, diff whitespace and production build PASS. Browser acceptance still NOT RUN. Generated declarations retained unstaged; pre-merge stash retained as backup after automatic restore refused a generated-file overlap; original publication record restored explicitly.
+- Publishing feature branch only; master unchanged.

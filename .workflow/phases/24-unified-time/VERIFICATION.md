@@ -10,3 +10,8 @@
 - Focused codebase-health review invoked because consolidation crosses registry, layout and tool modules. Inspected redirect ownership, unique paths, scoped embedding and local duration calculations. No dependency change; existing calendar logic reused. Legacy source files retained for migration compatibility; excluded from discovery.
 - Browser acceptance NOT RUN. Server checks not applicable: frontend-only change, no server/contracts modification.
 - Isolation: worktree .worktrees/phase-24-unified-time from fetched private/master 2927b8b (0/0); dependencies reused through node_modules junctions. Initial missing dependency check failed, rerun successfully after linking existing dependencies.
+
+## Master integration 2026-10-10
+- Merge 9a906fa includes local master 2db3618 (calendar pickers and stopwatch spacing); conflicts only in STATE/ROADMAP, resolved preserving both.
+- pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; scoped eslint PASS; build PASS 18.23s with existing warnings; git diff --check PASS.
+- Browser acceptance remains NOT RUN. Primary checkout untouched; generated declarations unstaged, backup stash retained.
