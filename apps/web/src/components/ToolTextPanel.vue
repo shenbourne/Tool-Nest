@@ -18,12 +18,14 @@ const props = withDefaults(defineProps<{
   exportName?: string;
   hideInput?: boolean;
   hideOutput?: boolean;
+  fileActions?: boolean;
 }>(), {
   inputTitle: '',
   outputTitle: '',
   exportName: 'output.txt',
   hideInput: false,
   hideOutput: false,
+  fileActions: true,
 });
 
 const emit = defineEmits<{
@@ -83,8 +85,8 @@ function exportOutput() {
         <div v-if="inputTitle" class="tool-text-panel__title">{{ inputTitle }}</div>
         <div class="tool-text-panel__textarea"><slot name="input" /></div>
         <div class="tool-text-panel__actions">
-          <NButton @click="triggerImport">{{ t('tool.importFile') }}</NButton>
-          <NButton @click="pasteFromClipboard">{{ t('tool.pasteFile') }}</NButton>
+          <NButton v-if="fileActions" @click="triggerImport">{{ t('tool.importFile') }}</NButton>
+          <NButton @click="pasteFromClipboard">{{ t(fileActions ? 'tool.pasteFile' : 'tool.pasteText') }}</NButton>
         </div>
       </section>
       <section v-if="!hideOutput" class="tool-text-panel__column">
@@ -92,14 +94,14 @@ function exportOutput() {
         <div class="tool-text-panel__textarea"><slot name="output" /></div>
         <div class="tool-text-panel__actions tool-text-panel__actions--right">
           <NButton :disabled="!outputText" @click="copyOutput">{{ t('tool.copy') }}</NButton>
-          <NButton :disabled="!outputText" @click="exportOutput">{{ t('tool.exportFile') }}</NButton>
+          <NButton v-if="fileActions" :disabled="!outputText" @click="exportOutput">{{ t('tool.exportFile') }}</NButton>
         </div>
       </section>
     </div>
     <div v-if="$slots.params" class="tool-text-panel__params">
       <slot name="params" />
     </div>
-    <input ref="fileInput" type="file" hidden @change="onImportChange" />
+    <input v-if="fileActions" ref="fileInput" type="file" hidden @change="onImportChange" />
   </div>
 </template>
 

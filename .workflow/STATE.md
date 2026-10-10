@@ -107,3 +107,9 @@ Keep this short and factual so another agent can resume without chat history.
 - File tool pages widened to 934px for three 128px tiles per column with existing gaps; columns stack <=640px.
 - Branch feature/file-panel-three-tiles; lint, 335 tests, typecheck/build PASS. Browser visual verification NOT RUN; next action: visual review and authorized merge.
 - Concurrent session switched checkout to master during checks; preserved its commits and isolated this patch. Private fetch PASS; base 1a0144e ahead 7 / behind 0 private/master. Existing components.d.ts/untracked changes excluded.
+
+## 2026-10-10 number sum string IO
+- Phase 22 on feature/phase-22-number-sum-string-io from private/master 62f9ddd; fetched and compared 0/0 before coding and commit.
+- NumberSum disables file operations, keeps text paste/copy and statistics; other tools preserve existing default.
+- 335 tests, scoped lint, typecheck and production build PASS. Browser visual verification NOT RUN.
+- Existing phase 21 changes and untracked artifacts preserved; only phase 22 changes staged. Next: publish feature branch and review; no merge authorized.

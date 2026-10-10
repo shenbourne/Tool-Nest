@@ -139,6 +139,7 @@
     "importFile": "导入文件",
     "exportFile": "导出文件",
     "pasteFile": "粘贴文件",
+    "pasteText": "粘贴文本",
     "importFailed": "读取文件失败",
     "pasteFailed": "读取剪贴板失败",
     "collapse": "折叠",

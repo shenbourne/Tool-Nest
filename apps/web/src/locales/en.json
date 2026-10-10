@@ -139,6 +139,7 @@
     "importFile": "Import file",
     "exportFile": "Export file",
     "pasteFile": "Paste file",
+    "pasteText": "Paste text",
     "importFailed": "Failed to read the file",
     "pasteFailed": "Failed to read the clipboard",
     "collapse": "Collapse",
