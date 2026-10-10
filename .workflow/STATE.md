@@ -113,3 +113,11 @@ Keep this short and factual so another agent can resume without chat history.
 - NumberSum disables file operations, keeps text paste/copy and statistics; other tools preserve existing default.
 - 335 tests, scoped lint, typecheck and production build PASS. Browser visual verification NOT RUN.
 - Existing phase 21 changes and untracked artifacts preserved; only phase 22 changes staged. Next: publish feature branch and review; no merge authorized.
+
+## 2026-10-10 phase 21 — numeric parameter labels
+
+- Branch feature/phase-21-numeric-parameter-labels; added persistent, bilingual labels to 23 numeric inputs across 14 tools, including units and zero-based/exclusive indexing.
+- Private base refreshed and fast-forwarded to documentation-only 62f9ddd. Concurrent phase 22 changes and pre-existing generated/untracked files preserved and excluded.
+- Web tests 335/335 PASS; typecheck and build PASS; differential lint 0 added messages (10 existing); diff whitespace PASS. Browser visual/click-focus review NOT RUN.
+- Next: manual UI review and authorized merge; publication status recorded in phase 21 VERIFICATION.md. No merge authorized.
+`n- Phase 22 published: private/feature/phase-22-number-sum-string-io afdcf3c. Shared checkout switched concurrently to phase 21 during commit; local phase 22 ref corrected, accidental phase 21 upstream removed. No other working changes committed. Remote SHA verified. Next: review/authorized merge.

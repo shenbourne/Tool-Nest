@@ -7,3 +7,4 @@
 - Focused health review triggered by shared component/tool boundary. Ownership/dependencies unchanged; no findings. No harness audit warranted.
 - Browser visual verification NOT RUN; acceptance based on template/source evidence.
 - Fetch private PASS before/after; base 62f9ddd, ahead 0 / behind 0 before commit. Other session phase 21 edits excluded from staging.
+`n- Publication: private/feature/phase-22-number-sum-string-io pushed at afdcf3c. Concurrent session switched checkout to phase 21 before commit; commit contains only this task. Local phase 22 ref corrected to afdcf3c, phase 21 accidental upstream removed. Remote SHA verified with ls-remote.
