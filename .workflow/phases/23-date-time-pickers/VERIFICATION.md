@@ -10,3 +10,10 @@
 - Browser interactions: NOT RUN. No new tests mirroring component markup; existing service suite used.
 - Review/health: four tool modules reuse NDatePicker and existing locale/theme providers; no new dependency, abstraction, or service contract. Date-only parsing remains local. No backend change; server tests not applicable.
 - Remote private/master refreshed initially and reconciled documentation conflict preserving both records. Final fetch advanced to d062f31 (three commits, including CheckLeapYears with unrelated uncommitted local edits). Integration/publication deferred to preserve concurrent work; next action safely integrate remote in isolation, UI check, then publish feature branch. No merge to master authorized.
+
+## Authorized master integration
+
+- Merge e425760, date-tool source matches 1096447. Documentation conflict resolved retaining both phase records.
+- Merged tree: pnpm --filter @toolnest/web type-check PASS (0); test PASS (0), 338/338; build PASS (0), Vite 25.77s.
+- Initial checks lacked binaries; preserved .vite cache in node_modules.picker-cache and linked existing dependencies, then reran all checks successfully.
+- No master push requested/performed in this task; browser verification remains NOT RUN.
