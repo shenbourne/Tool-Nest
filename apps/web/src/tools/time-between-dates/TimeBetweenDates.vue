@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NDatePicker, NFormItem } from 'naive-ui';
+import { NFormItem } from 'naive-ui';
 import { format } from 'date-fns';
 import { useI18n } from 'vue-i18n';
 import TimeToolPanel from '../date-time/TimeToolPanel.vue';
+import DateTimePicker from '@/components/DateTimePicker.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 const { t } = useI18n();
@@ -24,8 +25,8 @@ const results = computed(() => output.value === t('common.invalidDates') ? [] : 
 <template>
   <ToolLayout :tool="tool">
     <TimeToolPanel :results="results">
-      <NFormItem :show-feedback="false" :label="t('tools.timeBetweenDates.startPlaceholder')"><NDatePicker v-model:formatted-value="date1" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" :clearable="false" style="width: 100%;" /></NFormItem>
-      <NFormItem :show-feedback="false" :label="t('tools.timeBetweenDates.endPlaceholder')"><NDatePicker v-model:formatted-value="date2" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" :clearable="false" style="width: 100%;" /></NFormItem>
+      <NFormItem :show-feedback="false" :label="t('tools.timeBetweenDates.startPlaceholder')"><DateTimePicker v-model:formatted-value="date1" /></NFormItem>
+      <NFormItem :show-feedback="false" :label="t('tools.timeBetweenDates.endPlaceholder')"><DateTimePicker v-model:formatted-value="date2" /></NFormItem>
       <template #feedback><small>{{ t('tools.dateTime.localTime') }}</small></template>
     </TimeToolPanel>
   </ToolLayout>

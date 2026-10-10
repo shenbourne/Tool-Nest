@@ -2155,7 +2155,8 @@
       "clockInput": "时间",
       "remainder": "天数与剩余时间",
       "localTime": "日期和时间按本地时区计算",
-      "resultsClock": "时分秒"
+      "resultsClock": "时分秒",
+      "confirm": "确认"
     }
   }
 }

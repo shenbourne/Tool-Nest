@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NDatePicker, NFormItem, NAlert } from 'naive-ui';
+import { NFormItem, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import TimeToolPanel from '../date-time/TimeToolPanel.vue';
+import DateTimePicker from '@/components/DateTimePicker.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 const { t } = useI18n();
@@ -40,7 +41,7 @@ const results = computed(() => {
 <template>
   <ToolLayout :tool="tool">
     <TimeToolPanel :results="results">
-      <NFormItem :show-feedback="false" :label="t('tools.dateTime.dateTime')"><NDatePicker v-model:formatted-value="input" type="datetime" value-format="yyyy-MM-dd'T'HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" :clearable="false" style="width: 100%;" /></NFormItem>
+      <NFormItem :show-feedback="false" :label="t('tools.dateTime.dateTime')"><DateTimePicker v-model:formatted-value="input" /></NFormItem>
       <template #feedback><NAlert v-if="dateError" type="error">{{ dateError }}</NAlert><small v-else>{{ t('tools.dateTime.localTime') }}</small></template>
     </TimeToolPanel>
   </ToolLayout>

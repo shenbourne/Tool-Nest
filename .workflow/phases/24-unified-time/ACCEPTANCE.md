@@ -11,3 +11,5 @@
 - PASS copy feedback: Discord row Copy reports success; copy buttons have distinct accessible labels.
 - PASS source/typecheck: date/time pickers preserved, truncation uses clock picker, Chinese/English labels and responsive grid.
 - Remaining NOT RUN: mobile, English and full keyboard/picker interactions.
+
+- Datetime popup PASS (desktop browser): left calendar/right hour-minute-second selection, vertical divider; confirmed time updates both display and calculations. Interval endpoints and date converter reuse same component (source/typecheck PASS).

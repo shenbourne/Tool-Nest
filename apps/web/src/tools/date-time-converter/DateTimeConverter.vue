@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NDatePicker, NInput, NSpace, NButton, NAlert, NSelect } from 'naive-ui';
+import { NCard, NInput, NSpace, NButton, NAlert, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
+import DateTimePicker from '@/components/DateTimePicker.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
@@ -56,7 +57,7 @@ function copyText(text: string) {
             <NSelect v-model:value="inputFormat" :options="inputFormatOptions" style="width: 200px;" />
             <NButton @click="setNow" size="medium">{{ t('tools.dateTimeConverter.now') }}</NButton>
           </div>
-          <NDatePicker :value="selectedDate" type="datetime" format="yyyy-MM-dd HH:mm:ss" :placeholder="t('tools.dateTimeConverter.inputPlaceholder')" clearable style="width: 100%;" @update:value="selectDate" />
+          <DateTimePicker :value="selectedDate" @update:value="selectDate" />
           <div v-if="inputFormat === 'custom'" style="display: flex; gap: 12px; align-items: center;">
             <NInput v-model:value="customFormat" :placeholder="t('tools.dateTimeConverter.customFormatPlaceholder')" clearable style="flex: 1;"  :input-props="{ id: 'dateTimeConverterField1' }"/>
           </div>

@@ -191,3 +191,9 @@ Keep this short and factual so another agent can resume without chat history.
 - Unified time tools now use compact form-first layouts and labelled result rows with per-row/all copy; duration input/unit adjacent, interval start/end before result, truncation uses clock picker.
 - 342 tests, typecheck, scoped lint and build PASS. Desktop browser tab/visual and copy-feedback checks PASS; mobile/English/full keyboard checks NOT RUN. Preview http://127.0.0.1:3424/date-time; screenshot .scratch/time-ui.png.
 - Feature branch only; primary checkout preserved, generated declarations excluded. Final fetch initially TLS EOF; retry before publication.
+- Publication succeeded after transient TLS/auth failures: private/feature/phase-24-unified-time 975f17d; independently verified matching remote SHA. No master merge performed. Publication record remains a local documentation update.
+
+## 2026-10-10 datetime popup layout
+- Shared side-by-side calendar/time picker applied to interval, Discord and date converter; vertical divider and unified confirmation.
+- 342 tests, typecheck, scoped lint/build PASS; desktop visual and 08:30:00 confirmation PASS. Preview at 3425, screenshot .scratch/datetime-picker.png.
+- Feature branch publication pending; master unchanged, existing dirty generated declarations excluded.

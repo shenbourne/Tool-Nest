@@ -2155,7 +2155,8 @@
       "clockInput": "Time",
       "remainder": "Days and remaining time",
       "localTime": "Dates and times use your local time zone",
-      "resultsClock": "Hours, minutes, seconds"
+      "resultsClock": "Hours, minutes, seconds",
+      "confirm": "Confirm"
     }
   }
 }

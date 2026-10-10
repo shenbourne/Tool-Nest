@@ -21,3 +21,9 @@
 - pnpm --filter @toolnest/web type-check PASS; web test PASS 342/342; scoped eslint PASS; production build PASS (final 18.38s, existing warnings). Final whitespace check rerun after removing blank EOF.
 - Browser: inspected all five tabs in Chinese, duration screenshot at .scratch/time-ui.png, correct weekday and truncation results, labelled start/end calendar fields, seven Discord formats. Discord single-row copy produced success feedback. Screenshot confirmed amount/unit side by side and aligned result rows. Mobile viewport, English, keyboard navigation and actual picker selection not exhaustively tested.
 - Focused health review: shared presentation panel depends only on UI and existing copy composable, calculations remain owned by individual tools. Text-panel inventory updated for clock-specific form; no new dependency/ADR. No implementation-mirroring tests added for this presentation-only follow-up.
+
+## Side-by-side datetime popup
+- Shared DateTimePicker uses date calendar panel plus native hour/minute/second listboxes separated by border-left, one confirmation action. Local date/time string and numeric timestamp consumers preserved.
+- type-check PASS; scoped eslint PASS; web tests 342/342 PASS; production build PASS 20.76s (existing warnings).
+- Browser visual PASS: calendar and time parallel, divider visible, no nested time popup. Selected 08:30:00 and confirmed; input and Discord results updated correctly. Screenshot .scratch/datetime-picker.png. New preview http://127.0.0.1:3425/date-time (previous preview stopped; restart chose next port). Mobile and DST selection NOT RUN.
+- Focused health review: shared control replaces all three datetime consumers, uses existing dependencies, edits draft before confirmation and discards unconfirmed draft on reopen. No ADR needed for presentation choice.
