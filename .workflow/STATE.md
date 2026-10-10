@@ -85,3 +85,4 @@ Keep this short and factual so another agent can resume without chat history.
 - Position, font size and color now share one horizontal grid row in PdfEditor.vue on feature/file-title-center.
 - Relevant tests 4/4 and build/typecheck PASS; differential lint zero added (2 existing errors). Browser visual verification not run.
 - Next: review the local UI commits; private push remains blocked by earlier automatic approval rejection pending explicit destination approval. No merge performed.
+- Final remote refresh blocked by TLS unexpected EOF (two attempts); compare again before publication.

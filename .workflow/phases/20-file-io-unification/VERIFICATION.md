@@ -49,3 +49,4 @@
 - Scoped eslint FAIL: existing no-explicit-any (125) and no-undef onUnmounted (130). Baseline checked with `git show HEAD:apps/web/src/tools/pdf-editor/PdfEditor.vue | pnpm --filter @toolnest/web exec eslint --stdin --stdin-filename src/tools/pdf-editor/PdfEditor.vue`: identical 2 errors; zero added.
 - `git diff --check` PASS. Equivalent scoped verification used; server checks and new tests skipped for markup/CSS only. Browser visual check NOT RUN.
 - private fetch before/after PASS; master ahead 1 / behind 0. Push not retried: previous auto-review rejection remains pending destination authorization.
+- Correction: final fetch FAILED twice with TLS unexpected EOF; before-work fetch passed. Ahead/behind 1/0 at completion uses cached refs, not confirmed-current remote state.
