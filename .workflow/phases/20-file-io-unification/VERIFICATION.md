@@ -50,3 +50,13 @@
 - `git diff --check` PASS. Equivalent scoped verification used; server checks and new tests skipped for markup/CSS only. Browser visual check NOT RUN.
 - private fetch before/after PASS; master ahead 1 / behind 0. Push not retried: previous auto-review rejection remains pending destination authorization.
 - Correction: final fetch FAILED twice with TLS unexpected EOF; before-work fetch passed. Ahead/behind 1/0 at completion uses cached refs, not confirmed-current remote state.
+
+## 2026-10-10 maintenance — BIP39 controls row
+
+- Plan: wrap word-count select and retry in one local flex row; bound select to 160px and allow shrinking; preserve button width and existing bindings.
+- Scope: Bip39Generator.vue only; trivial layout maintenance on existing feature branch, no new phase or ADR needed. No cross-module health review or new unit tests needed for CSS-only change.
+- Remote: private/master fetched successfully, base 3a767e8; local master ahead 1 / behind 0; existing branch contains local maintenance work and is preserved.
+- Acceptance (source inspection): select has width/flex-basis 160px and min-width 0; no-wrap flex container aligns retry alongside; validation remains below with spacing. Browser visual verification NOT RUN.
+- Verification: pnpm --filter @toolnest/web type-check PASS; pnpm --filter @toolnest/web exec eslint src/tools/bip39-generator/Bip39Generator.vue PASS; pnpm --filter @toolnest/web test PASS (335 tests). Build pending.
+- Review: only template grouping and scoped CSS changed; mnemonic generation, retry and validation bindings preserved.
+- Final build: pnpm --filter @toolnest/web build PASS (existing dependency/chunk warnings). Final private fetch PASS; master ahead 1 / behind 0, remote base unchanged.

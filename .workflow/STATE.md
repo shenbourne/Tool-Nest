@@ -86,3 +86,9 @@ Keep this short and factual so another agent can resume without chat history.
 - Relevant tests 4/4 and build/typecheck PASS; differential lint zero added (2 existing errors). Browser visual verification not run.
 - Next: review the local UI commits; private push remains blocked by earlier automatic approval rejection pending explicit destination approval. No merge performed.
 - Final remote refresh blocked by TLS unexpected EOF (two attempts); compare again before publication.
+
+## 2026-10-10 maintenance — BIP39 controls row
+
+- Implemented local 160px shrinkable word-count selector and adjacent retry button on feature/file-title-center; validation remains below.
+- Typecheck, scoped lint, 335 tests and production build PASS; browser visual verification NOT RUN. Source review supports row acceptance; manual screenshot review remains.
+- Final private fetch PASS, private/master 3a767e8; master ahead 1 / behind 0. Existing branch/local work retained. Next: publish maintenance branch and review UI; no merge authorized.

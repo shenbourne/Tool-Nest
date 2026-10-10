@@ -38,8 +38,10 @@ function refresh() { nonce.value++; }
         <NInput :value="mnemonic" type="textarea" readonly :rows="4" style="font-family: monospace;"  :input-props="{ id: 'bip39GeneratorField0' }"/>
       </template>
       <template #params>
-        <NSelect v-model:value="words" :options="wordCountOptions" style="min-width: 120px" />
-        <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+        <div class="mnemonic-actions">
+          <NSelect v-model:value="words" :options="wordCountOptions" class="mnemonic-actions__count" />
+          <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+        </div>
         <div>
           <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">{{ t('tools.bip39Generator.validateMnemonic') }}</div>
           <NInput v-model:value="inputMnemonic" type="textarea" :rows="3" :placeholder="t('tools.bip39Generator.validatePlaceholder')"  :input-props="{ id: 'bip39GeneratorField1' }"/>
@@ -51,3 +53,22 @@ function refresh() { nonce.value++; }
     </ToolTextPanel>
   </ToolLayout>
 </template>
+
+<style scoped>
+.mnemonic-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.mnemonic-actions__count {
+  width: 160px;
+  min-width: 0;
+  flex: 0 1 160px;
+}
+
+.mnemonic-actions :deep(.n-button) {
+  flex-shrink: 0;
+}
+</style>
