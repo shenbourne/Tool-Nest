@@ -157,6 +157,24 @@ Keep this short and factual so another agent can resume without chat history.
 - Phase 23 publication confirmed: private/feature/phase-23-unified-calculator at ba57e0a, verified by ls-remote equality; main checkout unrelated edits untouched. Next: user review and authorized merge.
 - Phase 23 keypad follow-up 2026-10-10: outlined backspace icon moved after power and remainder; shared 62px key height and 6px row spacing. Browser deletion/sizing PASS; lint/types/build PASS. Private fetch failed three times with TLS unexpected EOF; local commit pending publication. Next: fetch/compare/push feature branch when TLS recovers; no main merge.
 
+## 2026-10-10 phase 23 — date/time pickers
+
+- Branch feature/phase-23-date-time-pickers. Weekday, Discord, date interval, date converter now provide calendar/clock selection; interval defaults use local time.
+- Typecheck, 335 tests, build, scoped lint PASS. Browser verification NOT RUN; phase awaits UI acceptance.
+- Initial private/master synchronized by documented merge; final remote d062f31 adds concurrent leap-year edits overlapping unrelated dirty work. Preserve those edits; integrate in isolation before publishing. Feature not pushed, no merge to master.
+
+## 2026-10-10 authorized date/time picker merge
+
+- User authorized merge to master. Merged feature/phase-23-date-time-pickers into local master at e425760 in the existing isolated master worktree; preserved current master calculator/numeric-label work and all main-workspace dirty files.
+- Only ROADMAP/STATE conflicted; retained both records. Four date tool files are byte-identical to feature tip 1096447.
+- Merged-master typecheck PASS, web tests 338/338 PASS, production build PASS (25.77s). Browser click/visual acceptance still NOT RUN.
+- Local merge complete; master not pushed by this task. Build-generated declarations and dependency cache retained in verification worktree and excluded from commits.
+
+## 2026-10-10 stopwatch lap spacing
+- User requested 24px separation between lap labels and times, then authorized local master integration. Dev preview session stopped.
+- Source review and pnpm --filter @toolnest/web type-check PASS; diff whitespace PASS. Browser visual verification NOT RUN. CSS-only change: full build/tests and separate phase/ADR/health review not applicable.
+- Isolated feature/stopwatch-lap-spacing from master 7462c75; private fetch PASS, master ahead 4 / behind 0. Preserve all unrelated dirty files. Next: fast-forward local master; master publication not requested.
+
 ## 2026-10-10 phase 24 — unified date and time
 - feature/phase-24-unified-time in .worktrees/phase-24-unified-time from fetched private/master 2927b8b. Nine screenshot tools consolidated into /date-time; old URLs redirect, duration outputs share one input and remaining operations are tabs.
 - Tests, typecheck, scoped lint and build PASS. Browser visual acceptance NOT RUN; phase awaits UI acceptance. Unrelated primary-checkout changes preserved.
