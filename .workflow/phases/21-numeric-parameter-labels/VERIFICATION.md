@@ -11,3 +11,6 @@
 - Final private fetch PASS; remote base advanced by documentation-only 62f9ddd. Created isolated worktree from 62f9ddd after concurrent commits prevented fast-forward; no runtime integration changes.
 
 Publication: PASS, private/feature/phase-21-numeric-labels at 12cb022, confirmed by independent git ls-remote. Isolated worktree clean after implementation commit. Build/test evidence was collected in shared checkout before isolation; transferred runtime patch is identical, with phase 22 changes excluded. Browser acceptance still pending.
+
+## Authorized master integration
+Integrated into private/master d062f31; resolved STATE.md only, retained both phases. Re-ran pnpm --filter @toolnest/web test: 335/335 PASS. Re-ran pnpm --filter @toolnest/web build: typecheck and bundle PASS (24.19s). No runtime conflict; generated declarations excluded. Publication to private/master authorized by user.
