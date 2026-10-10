@@ -154,3 +154,4 @@ Keep this short and factual so another agent can resume without chat history.
 
 - Phase 23: refreshed private/master a8d1e31 integrated; documentation conflict resolved retaining both phase records. Final merged checks pending.
 - Phase 23 complete: merged remote base a8d1e31; 338/338 frontend tests, typecheck, scoped lint and production build PASS, desktop browser acceptance PASS. Publishing private/feature/phase-23-unified-calculator; next action is separately authorized master merge. 390px app sidebar limitation recorded.
+- Phase 23 publication confirmed: private/feature/phase-23-unified-calculator at ba57e0a, verified by ls-remote equality; main checkout unrelated edits untouched. Next: user review and authorized merge.

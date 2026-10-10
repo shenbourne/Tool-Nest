@@ -9,3 +9,4 @@ Final targeted tests/typecheck/build rerun pending. English/narrow viewport visu
 Final targeted Vitest PASS 16/16 (includes new registry merge contract); eslint PASS; vue-tsc PASS; build PASS. English browser labels PASS. Narrow 390px check exposed existing global sidebar taking 240px and squeezing content; mobile shell fix outside scope, recorded as limitation. Desktop viewport restored.
 Remote advanced by 10 commits to a8d1e31; merged in 3f2e212. Only STATE.md conflict; both records preserved. Merged vue-tsc PASS and full Vitest 338/338 PASS; production build in progress.
 Merged production build PASS (34.05s). Phase desktop requirements complete; feature publication target private/feature/phase-23-unified-calculator. Generated declaration changes excluded.
+Push PASS; ls-remote private/feature/phase-23-unified-calculator matched ba57e0ae2c0f7f283e9dc224a535ce1a5a309407. No master merge performed.
