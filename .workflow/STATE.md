@@ -121,3 +121,8 @@ Keep this short and factual so another agent can resume without chat history.
 - Web tests 335/335 PASS; typecheck and build PASS; differential lint 0 added messages (10 existing); diff whitespace PASS. Browser visual/click-focus review NOT RUN.
 - Next: manual UI review and authorized merge; publication status recorded in phase 21 VERIFICATION.md. No merge authorized.
 `n- Phase 22 published: private/feature/phase-22-number-sum-string-io afdcf3c. Shared checkout switched concurrently to phase 21 during commit; local phase 22 ref corrected, accidental phase 21 upstream removed. No other working changes committed. Remote SHA verified. Next: review/authorized merge.
+
+## 2026-10-10 authorized file panel merge
+- User requested submission to master. Fast-forwarded master 1a0144e -> bcae33d in isolated worktree, preserving active phase 21 uncommitted work.
+- Integration runtime tree equals verified file-panel-three-tiles tip: scoped lint, 335 tests and typecheck/build PASS; browser visual check remains NOT RUN.
+- Private fetch PASS, master was ahead 7 / behind 0 before integration. Publishing master to private; public mirror excluded.
