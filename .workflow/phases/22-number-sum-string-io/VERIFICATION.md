@@ -8,3 +8,11 @@
 - Browser visual verification NOT RUN; acceptance based on template/source evidence.
 - Fetch private PASS before/after; base 62f9ddd, ahead 0 / behind 0 before commit. Other session phase 21 edits excluded from staging.
 `n- Publication: private/feature/phase-22-number-sum-string-io pushed at afdcf3c. Concurrent session switched checkout to phase 21 before commit; commit contains only this task. Local phase 22 ref corrected to afdcf3c, phase 21 accidental upstream removed. Remote SHA verified with ls-remote.
+
+## Leap-year follow-up — 2026-10-10
+- pnpm --filter @toolnest/web test PASS: 335 tests / 44 files.
+- pnpm --filter @toolnest/web build PASS: vue-tsc plus Vite (37.09s).
+- pnpm --filter @toolnest/web exec eslint src/tools/check-leap-years/CheckLeapYears.vue PASS exit 0; git diff --check PASS.
+- Checks ran in main workspace with dependencies; CheckLeapYears.vue SHA256 byte-identical to isolated branch source: 331F19490E145D6B8778A3B524B59047157AF5031D0B85EB02ED6BD29B804F72.
+- Source review: only fileActions option changes; shared text clipboard mode already verified. Browser visual check NOT RUN. Server checks/extra tests not applicable to this UI-only option.
+- Remote fetch PASS; branch ahead 3 / behind 0 private/master, ahead 2 / behind 0 feature upstream before follow-up commit. Merge touched STATE only; both intents preserved.

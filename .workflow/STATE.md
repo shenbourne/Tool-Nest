@@ -127,3 +127,9 @@ Keep this short and factual so another agent can resume without chat history.
 - Integration runtime tree equals verified file-panel-three-tiles tip: scoped lint, 335 tests and typecheck/build PASS; browser visual check remains NOT RUN.
 - Private fetch PASS, master was ahead 7 / behind 0 before integration. Publishing master to private; public mirror excluded.
 
+
+## 2026-10-10 leap-year string IO follow-up
+- Phase 22 branch feature/phase-22-number-sum-string-io in .worktrees/phase-22-string-io: leap-year checker uses text paste/copy without file controls; calculation and warnings unchanged.
+- 335 tests, typecheck/build and scoped lint PASS; browser visual check NOT RUN. Main-workspace patch byte-identical to isolated branch.
+- Remote private/master integrated; documentation conflict resolved keeping both records. Unrelated changes preserved.
+- Next: review/authorized merge; no merge to master performed. Feature publication follows verification.
