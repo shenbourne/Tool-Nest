@@ -1,6 +1,11 @@
 # Remote repository synchronization
 
-Use this at the start of development and again after development, immediately before pushing completed work. Determine the intended remote (usually `origin`), remote base branch, current branch, and upstream from the repository configuration; do not assume `main` exists or choose a different remote without evidence. Never use `git pull` blindly, reset away work, or force-push.
+Use this at the start of development and again after development, immediately before pushing completed work. Determine the intended remote, remote base branch, current branch, and upstream from the repository configuration; do not assume `main` exists or choose a different remote without evidence. Never use `git pull` blindly, reset away work, or force-push.
+
+Remote layout of this repository:
+
+- `private` — https://git.shenb.net/shenbourne/tool-nest.git — the canonical remote for all development. Base branch: `master`. Feature branches are created from and pushed to this remote.
+- `origin` — https://github.com/shenbourne/tool-nest.git — the public mirror. Branch `main` is a squashed, history-less snapshot and is updated only by explicit user request (for example, re-squash and force-push after a release). Never push feature branches or internal state here.
 
 ## Before development
 
