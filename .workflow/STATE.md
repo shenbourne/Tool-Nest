@@ -133,3 +133,9 @@ Keep this short and factual so another agent can resume without chat history.
 - 335 tests, typecheck/build and scoped lint PASS; browser visual check NOT RUN. Main-workspace patch byte-identical to isolated branch.
 - Remote private/master integrated; documentation conflict resolved keeping both records. Unrelated changes preserved.
 - Next: review/authorized merge; no merge to master performed. Feature publication follows verification.
+
+## 2026-10-10 authorized string IO merge
+- User authorized submission to master. Fast-forwarded master 62f9ddd -> 529f0b0 in isolated .worktrees/phase-22-master-merge.
+- Includes string-only actions for NumberSum and CheckLeapYears. Runtime tree byte-identical to verified feature tip; 335 tests, typecheck/build and scoped lint PASS from feature verification. Browser visual check NOT RUN.
+- Remote refresh PASS; master and feature upstream were 0/0 before merge. Existing main-workspace edits and active phase 23 checkout preserved.
+- Publishing private/master only; no public mirror update. Next: continue other feature work independently.
