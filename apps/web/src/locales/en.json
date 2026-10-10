@@ -2137,6 +2137,15 @@
       "removed": "Removed",
       "changed": "Changed",
       "differences": "Differences"
+    },
+    "dateTime": {
+      "name": "Date & time",
+      "description": "Convert durations, find weekdays, compare dates, generate Discord timestamps and truncate time",
+      "duration": "Duration conversion",
+      "unit": "Input unit",
+      "clock": "Time (HH:MM:SS)",
+      "amount": "Duration",
+      "invalid": "Enter a finite nonnegative value; clock minutes and seconds must be below 60"
     }
   }
 }

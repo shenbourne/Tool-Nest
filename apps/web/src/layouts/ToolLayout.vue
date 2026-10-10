@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { NBreadcrumb, NBreadcrumbItem, NButton, NSpace, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { TOOL_CATEGORIES } from '@toolnest/shared';
 import type { ToolDefinition } from '@toolnest/shared';
 import { useToolStore } from '@/stores/tool.store';
+
+const embedded = inject('tool-layout-embedded', false);
 
 const props = defineProps<{
   tool: ToolDefinition;
@@ -40,9 +42,9 @@ function goCategory() {
 </script>
 
 <template>
-  <div class="page-container">
+  <div :class="embedded ? 'embedded-tool' : 'page-container'">
     <!-- 面包屑导航 -->
-    <NBreadcrumb style="margin-bottom: var(--spacing-md);">
+    <NBreadcrumb v-if="!embedded" style="margin-bottom: var(--spacing-md);">
       <NBreadcrumbItem @click="goHome" style="cursor: pointer;">
         {{ t('nav.home') }}
       </NBreadcrumbItem>
@@ -55,7 +57,7 @@ function goCategory() {
     </NBreadcrumb>
 
     <!-- 工具头部 -->
-    <div class="tool-header">
+    <div v-if="!embedded" class="tool-header">
       <div class="tool-header-info">
         <h1 class="tool-title">{{ t(tool.name) }}</h1>
         <p class="tool-description">{{ t(tool.description) }}</p>

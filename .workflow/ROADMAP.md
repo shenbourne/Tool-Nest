@@ -25,3 +25,5 @@ The detailed delivery sequence remains authoritative in `DEVELOPMENT_PLAN.md`. R
 | Unassigned | Existing ToolNest delivery work, to be split into the next numbered phase before new non-trivial implementation | R-001–R-005 | In progress | See `DEVELOPMENT_PLAN.md` |
 
 - Phase 23: unified calculator with live preview, keypad, persistent reusable history and fixed inline errors.
+
+| 24 — Unified date and time | Consolidate nine screenshot tools with duration conversion and in-page tabs | User request 2026-10-10; R-002 | In progress | Existing calendar tools |

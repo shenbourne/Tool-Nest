@@ -5,6 +5,15 @@ import { allTools } from '@/tools/registry';
 const validCategories = new Set(TOOL_CATEGORIES.map((c) => c.name));
 
 describe('tool registry', () => {
+  it('consolidates nine time cards and retains every old URL', () => {
+    const merged = allTools.filter(tool => tool.path === '/date-time');
+    expect(merged).toHaveLength(1);
+    const legacy = ['/date-weekday-calculator', '/days-to-hours', '/discord-timestamp', '/hours-to-days', '/seconds-to-time', '/time-between-dates', '/time-to-decimal', '/time-to-seconds', '/truncate-clock-time'];
+    for (const path of legacy) {
+      expect(allTools.some(tool => tool.path === path)).toBe(false);
+      expect(merged[0].redirectFrom).toContain(path);
+    }
+  });
   it('consolidates calculator discovery and preserves the legacy URL', () => {
     expect(allTools.filter(tool => tool.path === '/generic-calculator')).toHaveLength(1);
     expect(allTools.some(tool => tool.path === '/math-evaluator')).toBe(false);

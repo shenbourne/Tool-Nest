@@ -2137,6 +2137,15 @@
       "removed": "移除",
       "changed": "修改",
       "differences": "差异"
+    },
+    "dateTime": {
+      "name": "日期与时间",
+      "description": "统一换算时长、查询星期、计算日期间隔、生成 Discord 时间戳和截断时间",
+      "duration": "时长换算",
+      "unit": "输入单位",
+      "clock": "时分秒（HH:MM:SS）",
+      "amount": "输入时长",
+      "invalid": "请输入非负有限数值，时分秒中的分和秒必须小于 60"
     }
   }
 }
