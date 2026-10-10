@@ -74,8 +74,10 @@ async function process() {
           <NButton :disabled="!resultFile" @click="download">{{ t('tool.download') }}</NButton>
         </template>
         <template #params>
-          <NSpace vertical :size="12">
-            <NInputNumber v-model:value="angle" :min="-360" :max="360" :placeholder="t('tools.imageRotate.degrees')" style="width:140px"  :input-props="{ id: 'imageRotateField0' }"/>
+          <NSpace vertical :size="12">            <div class="tool-numeric-param">
+              <label for="imageRotateField0">{{ t('numericParams.angle') }}:</label>
+              <NInputNumber v-model:value="angle" :min="-360" :max="360" :placeholder="t('tools.imageRotate.degrees')" style="width:140px"  :input-props="{ id: 'imageRotateField0' }"/>
+            </div>
             <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
               {{ t('tools.imageRotate.rotate') }}
             </NButton>

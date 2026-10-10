@@ -20,8 +20,16 @@ const output = computed(() => input.value.slice(start.value, end.value));
       <template #output>
         <NInput :value="output" type="textarea" :rows="3" readonly  :input-props="{ id: 'extractSubstringField3' }"/>
       </template>
-      <template #params>
-        <NSpace><NInputNumber v-model:value="start" :min="0" :placeholder="t('common.start')" style="width:120px"  :input-props="{ id: 'extractSubstringField1' }"/><NInputNumber v-model:value="end" :min="0" :placeholder="t('common.end')" style="width:120px"  :input-props="{ id: 'extractSubstringField2' }"/></NSpace>
+      <template #params>        <NSpace>
+        <div class="tool-numeric-param">
+          <label for="extractSubstringField1">{{ t('numericParams.startIndex') }}:</label>
+          <NInputNumber v-model:value="start" :min="0" :placeholder="t('common.start')" style="width:120px"  :input-props="{ id: 'extractSubstringField1' }"/>
+        </div>
+        <div class="tool-numeric-param">
+          <label for="extractSubstringField2">{{ t('numericParams.endIndex') }}:</label>
+          <NInputNumber v-model:value="end" :min="0" :placeholder="t('common.end')" style="width:120px"  :input-props="{ id: 'extractSubstringField2' }"/>
+        </div>
+        </NSpace>
       </template>
     </ToolTextPanel>
   </ToolLayout>

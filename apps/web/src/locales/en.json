@@ -1,4 +1,22 @@
 {
+  "numericParams": {
+    "widthPixels": "Width (px)",
+    "heightPixels": "Height (px)",
+    "quality": "Compression quality (0.1–1)",
+    "angle": "Rotation angle (°)",
+    "opacity": "Opacity (0–1)",
+    "fps": "Frame rate (fps)",
+    "duration": "Duration (seconds, 0 = full video)",
+    "startIndex": "Start index (zero-based)",
+    "endIndex": "End index (exclusive)",
+    "columnPosition": "Insert position (zero-based)",
+    "columnA": "Column A index (zero-based)",
+    "columnB": "Column B index (zero-based)",
+    "repeatCount": "Repeat count",
+    "rotatePositions": "Lines to rotate",
+    "bytes": "Bytes (B)",
+    "keepCount": "Items to keep"
+  },
   "app": {
     "title": "ToolNest",
     "subtitle": "Developer Tools"
@@ -139,6 +157,7 @@
     "importFile": "Import file",
     "exportFile": "Export file",
     "pasteFile": "Paste file",
+    "pasteText": "Paste text",
     "importFailed": "Failed to read the file",
     "pasteFailed": "Failed to read the clipboard",
     "collapse": "Collapse",

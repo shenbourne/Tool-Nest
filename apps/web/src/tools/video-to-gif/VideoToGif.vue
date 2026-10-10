@@ -110,10 +110,16 @@ async function copy() {
         </template>
         <template #params>
           <NSpace vertical :size="12">
-            <NSpace>
-              <NInputNumber v-model:value="fps" :min="1" :max="30" placeholder="FPS" style="width: 120px"  :input-props="{ id: 'videoToGifField0' }"/>
-              <NInputNumber v-model:value="width" :min="64" :max="1920" :placeholder="t('common.width')" style="width: 120px"  :input-props="{ id: 'videoToGifField1' }"/>
-              <NInputNumber v-model:value="duration" :min="0" :max="999" :placeholder="t('tools.videoToGif.duration')" style="width: 160px"  :input-props="{ id: 'videoToGifField2' }"/>
+            <NSpace>              <div class="tool-numeric-param">
+                <label for="videoToGifField0">{{ t('numericParams.fps') }}:</label>
+                <NInputNumber v-model:value="fps" :min="1" :max="30" placeholder="FPS" style="width: 120px"  :input-props="{ id: 'videoToGifField0' }"/>
+              </div>              <div class="tool-numeric-param">
+                <label for="videoToGifField1">{{ t('numericParams.widthPixels') }}:</label>
+                <NInputNumber v-model:value="width" :min="64" :max="1920" :placeholder="t('common.width')" style="width: 120px"  :input-props="{ id: 'videoToGifField1' }"/>
+              </div>              <div class="tool-numeric-param">
+                <label for="videoToGifField2">{{ t('numericParams.duration') }}:</label>
+                <NInputNumber v-model:value="duration" :min="0" :max="999" :placeholder="t('tools.videoToGif.duration')" style="width: 160px"  :input-props="{ id: 'videoToGifField2' }"/>
+              </div>
             </NSpace>
             <NButton
               type="primary"

@@ -16,7 +16,10 @@ const cols = computed(() => [{ title: t('tools.byteConverter.unit'), key: 'unit'
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <NInputNumber v-model:value="bytes" :min="0" :placeholder="t('tools.byteConverter.inputPlaceholder')" style="width:200px"  :input-props="{ id: 'byteConverterField0' }"/>
+      <div class="tool-numeric-param">
+        <label for="byteConverterField0">{{ t('numericParams.bytes') }}:</label>
+        <NInputNumber v-model:value="bytes" :min="0" :placeholder="t('tools.byteConverter.inputPlaceholder')" style="width:200px"  :input-props="{ id: 'byteConverterField0' }"/>
+      </div>
       <NDataTable :columns="cols" :data="rows" :bordered="false" size="small" />
     </NSpace></NCard>
   </ToolLayout>

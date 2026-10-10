@@ -30,7 +30,7 @@ const output = computed(() => {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" :file-actions="false">
       <template #input>
         <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="t('common.inputPlaceholder')"  :input-props="{ id: 'numberSumField0' }"/>
       </template>

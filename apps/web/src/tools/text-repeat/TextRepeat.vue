@@ -19,8 +19,10 @@ const output = computed(() => input.value.repeat(Math.min(count.value, 1000)));
       <template #output>
         <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'textRepeatField2' }"/>
       </template>
-      <template #params>
-        <NInputNumber v-model:value="count" :min="1" :max="1000" :placeholder="t('common.count')" style="width:150px"  :input-props="{ id: 'textRepeatField1' }"/>
+      <template #params>        <div class="tool-numeric-param">
+          <label for="textRepeatField1">{{ t('numericParams.repeatCount') }}:</label>
+          <NInputNumber v-model:value="count" :min="1" :max="1000" :placeholder="t('common.count')" style="width:150px"  :input-props="{ id: 'textRepeatField1' }"/>
+        </div>
       </template>
     </ToolTextPanel>
   </ToolLayout>

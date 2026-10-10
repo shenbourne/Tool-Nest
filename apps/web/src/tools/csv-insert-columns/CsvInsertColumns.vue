@@ -32,8 +32,12 @@ const output = computed(() => {
       <template #output>
         <NInput :value="output" type="textarea" :rows="5" readonly  :input-props="{ id: 'csvInsertColumnsField4' }"/>
       </template>
-      <template #params>
-        <NSpace><NInputNumber v-model:value="pos" :min="0" :placeholder="t('tools.csvInsertColumns.position')" style="width:120px"  :input-props="{ id: 'csvInsertColumnsField1' }"/><NInput v-model:value="header" :placeholder="t('tools.csvInsertColumns.headerName')" style="width:150px"  :input-props="{ id: 'csvInsertColumnsField2' }"/><NInput v-model:value="defVal" :placeholder="t('tools.csvInsertColumns.defaultValue')" style="width:150px"  :input-props="{ id: 'csvInsertColumnsField3' }"/></NSpace>
+      <template #params>        <NSpace>
+        <div class="tool-numeric-param">
+          <label for="csvInsertColumnsField1">{{ t('numericParams.columnPosition') }}:</label>
+          <NInputNumber v-model:value="pos" :min="0" :placeholder="t('tools.csvInsertColumns.position')" style="width:120px"  :input-props="{ id: 'csvInsertColumnsField1' }"/>
+        </div>
+        <NInput v-model:value="header" :placeholder="t('tools.csvInsertColumns.headerName')" style="width:150px"  :input-props="{ id: 'csvInsertColumnsField2' }"/><NInput v-model:value="defVal" :placeholder="t('tools.csvInsertColumns.defaultValue')" style="width:150px"  :input-props="{ id: 'csvInsertColumnsField3' }"/></NSpace>
       </template>
     </ToolTextPanel>
   </ToolLayout>
