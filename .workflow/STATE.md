@@ -237,3 +237,5 @@ Publication verified: private/feature/phase-29-readme-import points to implement
 2026-10-11 phase29 expanded: existing-app ZIP import/new version supported on feature/phase-29-readme-import. Inherited editable metadata; old versions and binary/root/source assets preserved. Browser upload/edit/download and downloaded ZIP inspection PASS. Source mirrored into shared primary checkout; unrelated edits retained. Final verification/publication pending; no merge authorized.
 
 Package extension technically verified and browser accepted; ready for feature publication and separately authorized integration. Original README browser acceptance remains pending.
+
+Package extension publication verified: private/feature/phase-29-readme-import matches implementation commit 4483d36. Browser ZIP evidence .scratch/1panel-import-verified.png and D:/Users/Downloads/demo.zip. No master merge. Next: authorized integration.
