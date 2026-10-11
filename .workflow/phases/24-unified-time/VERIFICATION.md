@@ -58,3 +58,8 @@
 - pnpm --filter @toolnest/web type-check PASS; scoped eslint PASS; web test PASS; build PASS 30.32s with existing warnings; git diff --check PASS. Touch/mobile NOT RUN.
 - Focused health review triggered by multiple consumers: no calculation changes, dependencies or cycles; shared picker owns draft/confirmation, services retain calculation ownership. No ADR needed. Reversible presentation change verified in browser rather than implementation-mirroring tests.
 - private base already ancestor of HEAD (14/0); upstream initially 0/0. Feature-only publication; generated declarations/screenshots excluded.
+
+## 2026-10-11 authorized master integration
+- User authorized merge to master. Fast-forwarded local master 2db3618 -> 483b42e from private/feature/phase-24-unified-time, no conflicts; includes previously integrated date-picker/stopwatch ancestry.
+- Post-merge pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; build PASS 33.36s (existing dependency/chunk warnings); git diff --check PASS. Exact implementation already browser-verified on feature branch; no code changes during merge.
+- Existing dirty generated declarations/cache preserved and excluded. Master publication pending, next action fetch/compare and normal push to private/master.
