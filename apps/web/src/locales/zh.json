@@ -212,6 +212,7 @@
     "decrypt": "解密",
     "settings": "设置",
     "select": "选择",
+    "generationActions": {"mnemonic":"生成助记词","uuid":"生成 UUID","ulid":"生成 ULID","token":"生成令牌","randomNumbers":"生成随机数","macAddresses":"生成 MAC 地址","randomPort":"生成随机端口","ipv6Ula":"生成 IPv6 ULA 地址"},
     "generate": "生成",
     "convert": "转换",
     "compare": "比较",
