@@ -1,0 +1,11 @@
+# Verification — 2026-10-11
+- Reproduction: pnpm --filter @toolnest/web exec vitest run src/tools/json-to-toml/json-to-toml.service.test.ts: exit 1 before fix, global is not defined from create-date.js.
+- Same targeted test after fix: exit 0, 2/2 PASS; browser-like bundle executed with no Node globals and nested output verified.
+- pnpm --filter @toolnest/web type-check: exit 0.
+- pnpm --filter @toolnest/web exec eslint src/tools/json-to-toml: exit 0.
+- pnpm --filter @toolnest/web build: exit 0. Existing browser-external/eval/chunk-size warnings remain in unrelated tools.
+- pnpm --filter @toolnest/web test: exit 1, 336 PASS/1 FAIL; tool-text-panels excluded Base64 assertion conflicts with pre-existing shared Base64 edits. Not caused by this fix. Full gate remains incomplete.
+- git diff --check: exit 0 after EOF cleanup.
+- Review: only serializer import changed, same conversion/error semantics; type-only declaration follows library signature. No global shim or runtime dependency added. No applicable ADR; health audit not warranted for this local import correction.
+- Checks ran in primary shared workspace containing unrelated dirty changes; only scoped fix copied into isolated worktree based on fetched private/master 742c5e3. Isolated full build not run.
+- Actual browser click verification NOT RUN. Regression verifies module execution, not visual appearance.

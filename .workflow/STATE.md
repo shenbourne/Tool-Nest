@@ -227,3 +227,8 @@ Keep this short and factual so another agent can resume without chat history.
 - User authorized merge to master. Fast-forwarded local master 2db3618 -> 483b42e from private/feature/phase-24-unified-time, no conflicts; includes previously integrated date-picker/stopwatch ancestry.
 - Post-merge pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; build PASS 33.36s (existing dependency/chunk warnings); git diff --check PASS. Exact implementation already browser-verified on feature branch; no code changes during merge.
 - Existing dirty generated declarations/cache preserved and excluded. Master publication pending, next action fetch/compare and normal push to private/master.
+
+## 2026-10-11 JSON to TOML load fix
+- Scoped fix on feature/phase-27-json-to-toml-fix from refreshed private/master 742c5e3; primary shared edits preserved, fix mirrored into primary checkout for local use.
+- Serializer-only import avoids parser global.Date ReferenceError. Browser-like regression 2/2, typecheck/scoped lint/build PASS; full web tests 336 PASS/1 unrelated Base64 contract FAIL. Actual browser clicks NOT RUN.
+- Phase27 documents hold plan and evidence. No merge authorized. Next: resolve existing Base64 test discrepancy separately, browser acceptance, safe integration. Feature publication result recorded below.
