@@ -231,3 +231,5 @@ Keep this short and factual so another agent can resume without chat history.
 2026-10-11 phase29 README import: isolated feature/phase-29-readme-import from fetched private/master 742c5e3. Current primary workspace preserved. Implementation and verification in progress.
 
 Phase29 implementation verified: 350 web tests, typecheck, scoped lint, production build PASS. Source mirrored into primary checkout. Browser acceptance outstanding; next: UI acceptance and separately authorized merge. Feature publication pending.
+
+Publication verified: private/feature/phase-29-readme-import points to implementation 8c9f4ca (git ls-remote matched). No default-branch merge performed. Browser acceptance remains next action.
