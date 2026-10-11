@@ -22,3 +22,5 @@
 
 ## Authorized master integration 2026-10-11
 Merged latest local master 01bbdac into phase27 as b0e0fc9 with no conflicts. Integrated tree tests PASS 368/368, typecheck PASS, build PASS 50.60s; no new source modifications. Local master fast-forward follows verification; remote master publication outside this request.
+
+Concurrent master update d40c993 (HTML entities) incorporated; STATE append conflict resolved preserving both records. TOML files/config unaffected; targeted tests 6/6 and typecheck PASS after incorporation. Previous full 368 tests/build PASS remains applicable; HTML integration independently verified by its phase record.

@@ -245,3 +245,8 @@ Keep this short and factual so another agent can resume without chat history.
 - User explicitly authorized merging all four TOML fixes to local master. Integrated master 01bbdac into phase27 via b0e0fc9 with no conflicts; only TOML source/config/tests and phase27 records differ from master.
 - Post-integration pnpm exec vitest run PASS 51 files/368 tests; pnpm exec vue-tsc --noEmit PASS; pnpm exec vite build PASS 50.60s (existing externalization/eval/chunk warnings). No source edits after verification.
 - Plan: fast-forward local master to this verified phase branch in its existing worktree, preserving dirty generated files and publication note through autostash. Primary shared checkout unchanged. Remote master publication not requested; feature branch publication authorized by repository policy.
+
+## 2026-10-11 Phase 28 HTML entities
+- Layout and actions repaired on feature/phase-28-html-entities from refreshed private/master 742c5e3. Two independent conversion rows; browser acceptance PASS, 342 tests/typecheck/scoped lint/build PASS. Phase complete; master merge awaits authorization.
+- Component mirrored into primary dirty checkout for immediate review; unrelated edits preserved. No ADR or harness change needed. Publication pending final fetch/push verification.
+- Publication PASS: private/feature/phase-28-html-entities verified at 0303c1f; clean isolated worktree. Next action: authorized master integration; no merge performed.
