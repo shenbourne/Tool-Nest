@@ -11,3 +11,5 @@
 - No permanent source-shaped layout test added: browser feedback loop checks actual flex behavior; existing panel contracts cover action delegation. No instrumentation added.
 
 Publication and branch status recorded in STATE.md.
+
+Master integration: merged current local master 01bbdac into feature branch without conflicts (b6d01e8). Full frontend tests PASS 362/362 (49 files), typecheck exit 0. Production build result to follow. Shared master changes preserved; primary dirty checkout untouched.
