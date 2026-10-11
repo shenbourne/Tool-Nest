@@ -18,3 +18,16 @@
 - ADR/clarification/harness audit SKIP: localized bug, no architecture decision or ambiguous requirement, no workflow audit warranted.
 - Full browser outage UI simulation NOT RUN; outage behavior verified at actual request service seam with Response fixtures. Live upstream behavior depends on network/probe availability.
 - Shared checkout source mirrored for immediate local use; unrelated dirty work preserved. Generated declarations excluded from commit.
+
+## Output visibility follow-up
+- User requested readable Ping output. Per-probe cards now show city/country/network, connection status, average/min/max ms, loss percentage, target IP and sent/received/lost counts. Remote-probe origin is explicit; raw log/JSON remain native collapsible details.
+- pnpm --filter @toolnest/web test: PASS 349/349.
+- pnpm --filter @toolnest/web type-check: PASS.
+- pnpm --filter @toolnest/web exec eslint src/tools/ping-test/PingTest.vue: PASS.
+- pnpm --filter @toolnest/web build: PASS, existing chunk and Node-externalization warnings.
+- git diff --check: PASS.
+- Actual desktop browser baidu.com: two cards and units/data PASS; average244.64/min240.94/max251.86/loss0 and second avg169.97 correctly rounded. Native log disclosure expands PASS; raw diagnostics initially collapsed PASS. Screenshot .scratch/ping-results-cards.png in primary checkout visually inspected.
+- Narrow viewport/dark theme/English browser NOT RUN; two-column media breakpoint and translated labels source reviewed. Failed/no-stat probes display placeholders and textual state (source review).
+- New unit tests SKIP: reversible presentation change, existing request tests unchanged; actual UI/data verification covers this change. Backend test rerun SKIP: no backend edits in follow-up.
+- Review PASS: result values use escaped Vue text, logs remain accessible, status includes text and color, missing metrics avoid NaN; CSS uses existing theme tokens. Codebase health/ADR/harness SKIP: local view with no dependencies or boundary changes.
+- Source mirrored into primary checkout, preserving unrelated edits. Only view/locales/phase records staged; generated declarations excluded.

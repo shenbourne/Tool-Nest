@@ -231,3 +231,5 @@ Keep this short and factual so another agent can resume without chat history.
 2026-10-11 phase30 Ping fix: feature/phase-30-ping-fix from private/master 742c5e3. Empty proxy500 caused by missing local backend; restored. Globalping tagged locations translated to selector fields. Web349/server52 tests, typecheck/scoped lint/build and real baidu.com browser Ping PASS. Source mirrored into shared checkout preserving unrelated edits. No master merge authorized. Next: feature publication and authorized integration.
 
 Publication verified: private/feature/phase-30-ping-fix at 154f0b0. Technical and acceptance verification complete; awaiting authorized master integration. Generated declarations/build files intentionally unstaged.
+
+2026-10-11 Ping output visibility follow-up complete: probe cards with latency/loss/status and collapsed logs/JSON. Desktop real baidu.com browser PASS; web349/typecheck/scoped lint/build PASS. Existing feature/phase-30-ping-fix reused and source mirrored into primary. No merge authorized; next authorized integration.
