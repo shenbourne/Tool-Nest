@@ -82,7 +82,7 @@ p { margin: 6px 0 16px; color: var(--color-text-2); font-size: 13px; }
 .sequence-controls { display: flex; flex-wrap: wrap; align-items: start; gap: 24px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--color-hairline); }
 .count-field { display: grid; grid-template-columns: auto 150px; align-items: center; gap: 8px 16px; }
 .count-field label { font-weight: 500; }
-.count-hint { grid-column: 2; font-size: 12px; color: var(--color-text-2); }
+.count-hint { white-space: nowrap; grid-column: 2; font-size: 12px; color: var(--color-text-2); }
 .result-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .result-meta { padding: 4px 10px; border-radius: 999px; color: var(--color-primary); background: var(--color-primary-soft); font-size: 12px; }
 .sequence-result :deep(textarea) { font-family: var(--font-family-mono); line-height: 1.9; }

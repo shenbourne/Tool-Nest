@@ -711,7 +711,7 @@
       "ready": "数字以逗号分隔，可直接复制或导出。",
       "invalidCount": "请输入 1–{max} 之间的整数。",
       "startLabel": "首项下限",
-      "startHint": "从不小于此值的第一个数开始",
+      "startHint": "从不小于此值的数开始",
       "invalidStart": "首项下限须为 0–{max} 之间的整数。"
     },
     "csvToJson": {

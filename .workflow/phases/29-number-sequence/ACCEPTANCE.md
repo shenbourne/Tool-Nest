@@ -7,3 +7,4 @@
 - PASS: Fibonacci count limit shrinks with lower bound, preventing unsafe integers.
 - PASS: bilingual labels and shared copy/export retained; generation button removed per user request.
 - NOT RUN: dark/mobile visual acceptance and copy/export interaction; earlier desktop card layout verified.
+PASS follow-up: start hint displays on one line under 150px input, desktop screenshot inspected; bilingual hint shortened with unchanged lower-bound meaning.

@@ -7,3 +7,5 @@
 Follow-up: user requests live generation. Replace stored result and submit action with computed output; enable input-time updates; invalid counts clear output and show range guidance. Preserve copy/export and card design.
 
 Follow-up scope: starting value is a lower bound (user confirmed), including Fibonacci. Add service argument with zero default, safe Fibonacci term limit by start, bounded start field and real-time output. RED observed: 3 new tests failed before implementation.
+
+Follow-up: keep starting-value hint on a single line. Shorten bilingual hint to fit the existing 150px field and use nowrap. No behavior changes; new tests not applicable.

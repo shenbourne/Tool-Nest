@@ -711,7 +711,7 @@
       "ready": "Comma-separated numbers, ready to copy or export.",
       "invalidCount": "Enter a whole number between 1 and {max}.",
       "startLabel": "Starting value",
-      "startHint": "Begin at the first sequence value at or above this number",
+      "startHint": "First value ≥ start",
       "invalidStart": "Starting value must be a whole number between 0 and {max}."
     },
     "csvToJson": {

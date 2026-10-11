@@ -234,3 +234,4 @@ Branch: feature/phase-29-number-sequence, isolated worktree from private/master 
 
 Phase 29 follow-up: user requested real-time generation and starting value lower bound. Implemented computed output, input-time updates, bounded start field and safe Fibonacci remaining-count limit. 10 service tests PASS (RED observed before implementation), browser live interaction PASS. Final build pending; feature update pending publication.
 Phase 29 follow-up final: 345 web tests PASS, scoped lint PASS, production build/typecheck PASS, browser live count/start/type behavior PASS. Published update to private/feature/phase-29-number-sequence; merge remains pending. Dark/mobile visual acceptance still unverified.
+Phase 29 single-line hint: concise bilingual wording and nowrap applied; browser visual check PASS, scoped lint PASS. Feature branch updated; shared preview receives scoped edits only.
