@@ -237,3 +237,6 @@ Keep this short and factual so another agent can resume without chat history.
 - User expanded phase27 to all tools sharing the failure. Four consumers confirmed: JSON to TOML, YAML to TOML, TOML to JSON, TOML to YAML. Serializers use stringify-only import; parser global.Date/Buffer/BigInt mapped to globalThis properties via Vite define for dev/production.
 - Actual browser loading and nested conversion PASS for all four, screenshot .scratch/toml-to-json-fixed.png. Isolated feature/phase-27-json-to-toml-fix tests 348/348, typecheck/scoped lint/build PASS. Initial shared Base64 test failure excluded and isolated full gates now green.
 - Source changes mirrored into shared primary checkout; unrelated edits preserved. Isolated dependency junctions and ignored build artifacts retained for further work. No master merge. Source publication will be verified against private feature branch.
+
+- Publication verified: private/feature/phase-27-json-to-toml-fix points to source fix a938a1d (git ls-remote matched HEAD). No master merge. Phase27 verified and ready for authorized integration.
+

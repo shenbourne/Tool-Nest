@@ -18,4 +18,4 @@
 - Browser smoke applies to Chinese/light desktop load and conversion. Copy/download action execution and mobile visual checks not needed for module-load bug and not performed.
 
 - Final isolated production build: pnpm exec vite build exit 0, 21.71s. Existing externalized built-in/eval/chunk-size warnings only. Technical and browser-load/conversion acceptance gates PASS; phase verified, pending authorized integration.
-
+- Source feature publication PASS: a938a1d on private/feature/phase-27-json-to-toml-fix verified by ls-remote. Whitespace EOF cleanup recorded separately.
