@@ -29,7 +29,14 @@ export const GlobalpingService = {
     const res = await fetch(`${API_BASE}/measurements`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(params),
+      // ToolNest locations use a tagged shape; Globalping expects a named selector.
+      body: JSON.stringify({
+        ...params,
+        locations: params.locations.map(({ type, magic, limit }) => ({
+          [type]: type === 'asn' ? Number(magic.replace(/^AS/i, '')) : magic,
+          limit,
+        })),
+      }),
     });
 
     if (!res.ok) {

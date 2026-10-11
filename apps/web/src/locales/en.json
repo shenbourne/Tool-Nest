@@ -2089,7 +2089,13 @@
     "pingTest": {
       "name": "Ping Test",
       "description": "Test network latency to a target",
-      "ping": "Ping"
+      "ping": "Ping",
+      "errors": {
+        "serviceUnavailable": "Ping service is unavailable. Make sure the backend is running and try again.",
+        "invalidResponse": "Ping service returned an invalid response. Check the service configuration and try again.",
+        "rateLimited": "Too many requests. Please try again later.",
+        "requestFailed": "Ping request failed. Please try again later."
+      }
     },
     "mtrTest": {
       "name": "MTR Test",

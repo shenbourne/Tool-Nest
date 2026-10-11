@@ -2089,7 +2089,13 @@
     "pingTest": {
       "name": "Ping 测试",
       "description": "测试到目标的网络延迟",
-      "ping": "Ping"
+      "ping": "Ping",
+      "errors": {
+        "serviceUnavailable": "Ping 服务暂时不可用，请确认后端服务已启动，稍后重试。",
+        "invalidResponse": "Ping 服务返回了无效响应，请检查服务配置后重试。",
+        "rateLimited": "请求过于频繁，请稍后重试。",
+        "requestFailed": "Ping 请求失败，请稍后重试。"
+      }
     },
     "mtrTest": {
       "name": "MTR 测试",
