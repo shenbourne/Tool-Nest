@@ -35,7 +35,7 @@ function gen() {
         </div>
         </NSpace>
         <div class="tool-generation-row">
-        <NSwitch v-model:value="unique">{{ t('tools.randomNumberGenerator.uniqueOnly') }}</NSwitch>
+        <label class="tool-switch-label"><NSwitch v-model:value="unique" :aria-label="t('tools.randomNumberGenerator.uniqueOnly')" /><span>{{ t('tools.randomNumberGenerator.uniqueOnly') }}</span></label>
         <NButton type="primary" @click="gen">{{ t('common.generationActions.randomNumbers') }}</NButton>
         </div>
       </template>

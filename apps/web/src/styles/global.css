@@ -73,3 +73,23 @@ body {
 .tool-generation-row > .n-button {
   flex-shrink: 0;
 }
+
+.tool-switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 640px) {
+  .tool-generation-row > .n-form-item {
+    max-width: 100%;
+  }
+  .tool-generation-row .n-form-item-blank {
+    min-width: 0;
+  }
+  .tool-generation-row .n-input-number {
+    max-width: 100%;
+  }
+  .tool-generation-row > .n-button {
+    margin-left: auto;
+  }
+}

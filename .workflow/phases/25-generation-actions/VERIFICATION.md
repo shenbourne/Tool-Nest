@@ -11,3 +11,10 @@
 - 390x844 viewport FAIL: persistent 240px app sidebar leaves insufficient content width; clipped inputs/output actions and token switch row. Viewport override reset afterward. Responsive acceptance remains incomplete.
 - BIP39 output empty; generation catches its runtime exception. OTP route blank with console TypeError: crypto.randomBytes is not a function from otplib generateSecret. These runtime generation paths were not changed by this styling task; record as pre-existing runtime blockers, not visual PASS.
 - Random-number and password switches have missing visible labels from existing default-slot use; source labels do not render on NSwitch. Follow-up needed, not silently accepted.
+
+## Authorized findings fixes
+- OTP uses browser Web Crypto entropy, Base32 secret decoding and existing CryptoJS HMAC; RFC 6238 regression passed. BIP39 uses browser entropy and existing wordlist/SHA256 checksum; known vector and reference-library checks pass for 12/15/18/21/24 words. ADR: docs/adr/ADR-0002-browser-generators.md.
+- Sidebar auto-collapses at <=640px without changing persisted preference. Token labels move above four switches on narrow screens; group retains a single row. Mnemonic actions wrap; form inputs constrain to available width. Password/random switches have explicit visible labels.
+- Full tests PASS: 48 files, 346 tests. Typecheck/scoped lint PASS; build PASS. Health review: existing dependencies reused, service boundaries contain encoding, no global crypto patch. Throwaway script excluded.
+- Browser PASS: OTP page renders secret/TOTP; BIP39 generates and validates, regenerate produces fresh content. 390px token/RSA/random/password/BIP39/UUID/OTP and 320px token/BIP39 screenshots reviewed without earlier clipping. Desktop generation styling retained. Viewport overrides reset.
+- Final build after all responsive tweaks PASS (25.49s), scoped eslint PASS. All six RFC SHA1 time vectors PASS, including leading-zero codes and large counter values. Final remote refresh PASS; local master ahead 2/behind 0 private/master, no integration required.

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useMediaQuery } from '@vueuse/core';
 import { NSwitch, NSlider, NInput, NInputNumber, NButton, NFormItem } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -7,6 +8,7 @@ import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { createToken, tool } from './index';
 
 const { t } = useI18n();
+const narrowScreen = useMediaQuery('(max-width: 640px)');
 
 const length = ref(64);
 const withUppercase = ref(true);
@@ -35,16 +37,16 @@ function updateLength(value: number | null) {
       </template>
       <template #params>
         <div class="token-options">
-            <NFormItem :label="t('common.uppercase')" label-placement="left">
+            <NFormItem :label="t('common.uppercase')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withUppercase" />
             </NFormItem>
-            <NFormItem :label="t('common.lowercase')" label-placement="left">
+            <NFormItem :label="t('common.lowercase')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withLowercase" />
             </NFormItem>
-            <NFormItem :label="t('common.numbers')" label-placement="left">
+            <NFormItem :label="t('common.numbers')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withNumbers" />
             </NFormItem>
-            <NFormItem :label="t('common.symbols')" label-placement="left">
+            <NFormItem :label="t('common.symbols')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withSymbols" />
             </NFormItem>
         </div>
@@ -63,7 +65,7 @@ function updateLength(value: number | null) {
 <style scoped>
 .token-options {
   display: flex;
-  justify-content: center;
+  justify-content: safe center;
   gap: 32px;
   overflow-x: auto;
 }
@@ -87,5 +89,11 @@ function updateLength(value: number | null) {
 .token-length :deep(.n-slider) {
   flex: 1;
   min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .token-options {
+    gap: 16px;
+  }
 }
 </style>
