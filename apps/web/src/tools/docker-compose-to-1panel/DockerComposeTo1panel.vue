@@ -14,12 +14,14 @@ import {
   NSelect,
   NSpace,
   NTag,
+  useMessage,
 } from 'naive-ui';
 import { Download, File, Folder, Photo } from '@vicons/tabler';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
+import { readReadmeUrl } from './readme-import';
 import {
   ARCHITECTURE_OPTIONS,
   TAG_OPTIONS,
@@ -32,6 +34,14 @@ import {
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const message = useMessage();
+const readmeMode = ref('file');
+const readmeUrl = ref('');
+const importingReadme = ref(false);
+const readmeModes = computed(() => [
+  { label: t('tool.importFile'), value: 'file' },
+  { label: t('tools.dockerComposeTo1panel.readmeLink'), value: 'url' },
+]);
 
 const input = ref(`services:
   web:
@@ -155,6 +165,22 @@ function resetSelected() {
   const next = { ...overrides.value };
   delete next[selectedFile.value.path];
   overrides.value = next;
+}
+
+async function importReadme(fileList?: File[]) {
+  const file = fileList?.[0];
+  if (importingReadme.value || (fileList && !file)) return;
+  importingReadme.value = true;
+  try {
+    const content = file ? await file.text() : await readReadmeUrl(readmeUrl.value);
+    overrides.value = { ...overrides.value, 'README.md': content };
+    selectedPath.value = 'README.md';
+    message.success(t('tools.dockerComposeTo1panel.readmeImported'));
+  } catch {
+    message.error(t('tools.dockerComposeTo1panel.readmeImportFailed'));
+  } finally {
+    importingReadme.value = false;
+  }
 }
 
 const logoUrl = ref<string | null>(null);
@@ -288,6 +314,17 @@ async function downloadZip() {
                 type="textarea"
                 :autosize="{ minRows: 14, maxRows: 30 }"
                 style="font-family: monospace;"/>
+              <NSpace v-if="selectedFile.path === 'README.md'" vertical :size="12" style="margin-top: 12px;">
+                <NSelect v-model:value="readmeMode" :options="readmeModes" :disabled="importingReadme" :aria-label="t('tools.dockerComposeTo1panel.readmeImportMode')"/>
+                <ToolFileUpload v-if="readmeMode === 'file'" accept=".md,.markdown,.txt,text/plain,text/markdown" :multiple="false" @change="importReadme"/>
+                <template v-else>
+                  <NInput v-model:value="readmeUrl" :disabled="importingReadme" :placeholder="t('tools.dockerComposeTo1panel.readmeLinkPlaceholder')" :aria-label="t('tools.dockerComposeTo1panel.readmeLink')"/>
+                  <NButton :loading="importingReadme" :disabled="!readmeUrl.trim()" @click="importReadme()">
+                    {{ t('tools.dockerComposeTo1panel.readmeImportLink') }}
+                  </NButton>
+                  <div style="opacity: 0.65; font-size: 12px;">{{ t('tools.dockerComposeTo1panel.readmeLinkHint') }}</div>
+                </template>
+              </NSpace>
             </template>
             <template v-else-if="selectedIsLogo && logoUrl">
               <div class="dir-card-header">

@@ -227,3 +227,7 @@ Keep this short and factual so another agent can resume without chat history.
 - User authorized merge to master. Fast-forwarded local master 2db3618 -> 483b42e from private/feature/phase-24-unified-time, no conflicts; includes previously integrated date-picker/stopwatch ancestry.
 - Post-merge pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; build PASS 33.36s (existing dependency/chunk warnings); git diff --check PASS. Exact implementation already browser-verified on feature branch; no code changes during merge.
 - Existing dirty generated declarations/cache preserved and excluded. Master publication pending, next action fetch/compare and normal push to private/master.
+
+2026-10-11 phase29 README import: isolated feature/phase-29-readme-import from fetched private/master 742c5e3. Current primary workspace preserved. Implementation and verification in progress.
+
+Phase29 implementation verified: 350 web tests, typecheck, scoped lint, production build PASS. Source mirrored into primary checkout. Browser acceptance outstanding; next: UI acceptance and separately authorized merge. Feature publication pending.

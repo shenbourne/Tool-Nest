@@ -1596,6 +1596,13 @@
       "syntaxDiagram": "┌──────────── minute (0 - 59)\n│ ┌────────── hour (0 - 23)\n│ │ ┌──────── day of month (1 - 31)\n│ │ │ ┌────── month (1 - 12)\n│ │ │ │ ┌──── day of week (0 - 6, Sunday = 0)\n│ │ │ │ │\n* * * * *"
     },
     "dockerComposeTo1panel": {
+      "readmeLink": "File URL",
+      "readmeImportMode": "README import mode",
+      "readmeLinkPlaceholder": "Enter an HTTP(S) URL to the raw README file",
+      "readmeImportLink": "Import from URL",
+      "readmeLinkHint": "Use a raw file URL. The website must allow cross-origin requests.",
+      "readmeImported": "README imported",
+      "readmeImportFailed": "Import failed. Existing content was preserved. Check the file or use a raw file URL that allows cross-origin requests.",
       "name": "Docker Compose to 1Panel",
       "description": "Convert docker-compose YAML into a 1Panel app directory and zip bundle",
       "composeTitle": "Docker Compose YAML (click title to collapse)",

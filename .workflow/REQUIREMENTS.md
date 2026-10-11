@@ -13,3 +13,5 @@ This file indexes durable requirements. Detailed acceptance remains in `DEVELOPM
 Keep requirements observable. When scope changes, record the decision and update the affected phase acceptance criteria.
 
 | R-006 | Unified live calculator with keypad, equals history and stable inline errors | Must | User 2026-10-10 | 23 | Verified on feature branch |
+
+R-029: Docker Compose to 1Panel README supports local Markdown/text and HTTP(S) file URL imports, retaining editing/reset and ZIP output (phase29).

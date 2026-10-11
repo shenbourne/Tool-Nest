@@ -1596,6 +1596,13 @@
       "syntaxDiagram": "┌──────────── 分钟 (0 - 59)\n│ ┌────────── 小时 (0 - 23)\n│ │ ┌──────── 日 (1 - 31)\n│ │ │ ┌────── 月 (1 - 12)\n│ │ │ │ ┌──── 星期 (0 - 6，周日 = 0)\n│ │ │ │ │\n* * * * *"
     },
     "dockerComposeTo1panel": {
+      "readmeLink": "文件链接",
+      "readmeImportMode": "README 导入方式",
+      "readmeLinkPlaceholder": "输入 README 原始文件的 HTTP(S) 链接",
+      "readmeImportLink": "从链接导入",
+      "readmeLinkHint": "请使用原始文件链接，目标网站需允许跨域读取。",
+      "readmeImported": "README 导入成功",
+      "readmeImportFailed": "导入失败，原内容已保留。请检查文件或使用允许跨域读取的原始文件链接。",
       "name": "Docker Compose 转 1Panel",
       "description": "将 docker-compose YAML 转换为 1Panel 应用目录并打包",
       "composeTitle": "Docker Compose YAML（点击标题可折叠）",
