@@ -166,6 +166,9 @@ function exportOutput() {
 }
 
 .tool-text-panel__params {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
   border-top: 1px solid var(--color-hairline);
   padding-top: var(--spacing-sm);
 }
