@@ -227,3 +227,5 @@ Keep this short and factual so another agent can resume without chat history.
 - User authorized merge to master. Fast-forwarded local master 2db3618 -> 483b42e from private/feature/phase-24-unified-time, no conflicts; includes previously integrated date-picker/stopwatch ancestry.
 - Post-merge pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; build PASS 33.36s (existing dependency/chunk warnings); git diff --check PASS. Exact implementation already browser-verified on feature branch; no code changes during merge.
 - Existing dirty generated declarations/cache preserved and excluded. Master publication pending, next action fetch/compare and normal push to private/master.
+
+2026-10-11 phase33 OTP fix: verified feature/phase-33-otp-fix from private/master742c5e3; browser blank route repaired by replacing Node-only otplib preset with existing crypto-js, correcting Base32 OTP compatibility. Web352 tests/typecheck/scoped lint/build PASS, live open/verify/regenerate PASS. Source service/tests mirrored into shared tree preserving existing UI edits. No master merge. Next action: publish private feature branch.
