@@ -239,3 +239,5 @@ Publication verified: private/feature/phase-29-readme-import points to implement
 Package extension technically verified and browser accepted; ready for feature publication and separately authorized integration. Original README browser acceptance remains pending.
 
 Package extension publication verified: private/feature/phase-29-readme-import matches implementation commit 4483d36. Browser ZIP evidence .scratch/1panel-import-verified.png and D:/Users/Downloads/demo.zip. No master merge. Next: authorized integration.
+
+2026-10-11 package UI refinement verified: instruction row and exit button removed; file removal exits mode and invalidates pending imports. Typecheck/scoped lint/browser import-remove PASS. Branch feature/phase-29-readme-import; source mirrored into primary. Next: authorized integration. Remote fetch PASS: feature upstream 0/0, base unchanged; only own 4 commits ahead of private/master.

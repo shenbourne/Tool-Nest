@@ -13,3 +13,5 @@ Package extension: initial test FAILED due absent module; implementation GREEN 5
 Final affected tests PASS 5/5 after reactive-clone repair and malformed version YAML checks; vue-tsc/scoped lint/diff-check PASS. Production build after browser repair PASS (18.81s); final validation-only guard checked by targeted tests/typecheck. Full suite earlier PASS 355. Remote refresh PASS: private/master unchanged; current feature upstream 0/0. Browser-readme modes from original scope remain pending; package extension accepted.
 
 Feature push and ls-remote PASS: 4483d360312f5833d2f254e3d9480facdd0c1bf9. No default branch mutation.
+
+Refinement: vue-tsc --noEmit PASS; scoped eslint DockerComposeTo1panel.vue PASS. Browser import/remove PASS. Source review: empty selection clears import state and invalidates pending read; stale completion/error/finally guarded by monotonically increasing import id. No new tests for simple presentation change; behavior verified through browser. Full build not repeated: localized template/handler change typechecked; previous package build PASS.

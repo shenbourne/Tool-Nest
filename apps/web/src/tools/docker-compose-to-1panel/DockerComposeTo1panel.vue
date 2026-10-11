@@ -42,6 +42,7 @@ const importingReadme = ref(false);
 const importedApp = ref<ImportedAppPackage | null>(null);
 const sourceVersion = ref('');
 const importingPackage = ref(false);
+let packageImportId = 0;
 const sourceVersionOptions = computed(() => importedApp.value?.versions.map(value => ({ label: value.replace(/^versions\//, ''), value })) ?? []);
 const readmeModes = computed(() => [
   { label: t('tool.importFile'), value: 'file' },
@@ -114,11 +115,16 @@ const generated = computed(() => {
 
 async function importPackage(fileList: File[]) {
   const file = fileList[0];
-  if (!file || importingPackage.value) return;
+  if (!file) {
+    clearPackage();
+    return;
+  }
+  const importId = ++packageImportId;
   importingPackage.value = true;
   try {
     if (file.size > 50 * 1024 * 1024) throw new Error('Package exceeds 50 MB');
     const app = await importAppPackage(new Uint8Array(await file.arrayBuffer()));
+    if (importId !== packageImportId) return;
     const compose = packageText(app, `${app.versions[0]}/docker-compose.yml`);
     const logo = app.assets.find(asset => asset.path === 'logo.png');
     importedApp.value = app;
@@ -130,9 +136,9 @@ async function importPackage(fileList: File[]) {
     selectedPath.value = 'data.yml';
     message.success(t('tools.dockerComposeTo1panel.packageImported'));
   } catch {
-    message.error(t('tools.dockerComposeTo1panel.packageImportFailed'));
+    if (importId === packageImportId) message.error(t('tools.dockerComposeTo1panel.packageImportFailed'));
   } finally {
-    importingPackage.value = false;
+    if (importId === packageImportId) importingPackage.value = false;
   }
 }
 
@@ -144,6 +150,8 @@ function changeSourceVersion(value: string) {
 }
 
 function clearPackage() {
+  packageImportId++;
+  importingPackage.value = false;
   importedApp.value = null;
   sourceVersion.value = '';
   overrides.value = {};
@@ -273,11 +281,9 @@ async function downloadZip() {
           <div style="opacity: 0.65; font-size: 12px;">{{ t('tools.dockerComposeTo1panel.packageHint') }}</div>
           <NAlert v-if="importingPackage" type="info">{{ t('tools.dockerComposeTo1panel.packageLoading') }}</NAlert>
           <template v-if="importedApp">
-            <NAlert type="info">{{ t('tools.dockerComposeTo1panel.packageVersionHint') }}</NAlert>
             <NFormItem :label="t('tools.dockerComposeTo1panel.sourceVersion')">
               <NSelect :value="sourceVersion" :options="sourceVersionOptions" @update:value="changeSourceVersion"/>
             </NFormItem>
-            <NButton @click="clearPackage">{{ t('tools.dockerComposeTo1panel.clearPackage') }}</NButton>
           </template>
         </NSpace>
       </NCard>
