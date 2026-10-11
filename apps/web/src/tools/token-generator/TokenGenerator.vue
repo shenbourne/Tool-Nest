@@ -54,7 +54,7 @@ function updateLength(value: number | null) {
             <NSlider v-model:value="length" :step="1" :min="1" :max="512" />
           </div>
         </NFormItem>
-        <NButton type="primary" block @click="refresh">{{ t('common.generate') }}</NButton>
+        <NButton type="primary" block @click="refresh">{{ t('common.generationActions.token') }}</NButton>
       </template>
     </ToolTextPanel>
   </ToolLayout>

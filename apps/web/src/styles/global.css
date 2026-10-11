@@ -60,3 +60,16 @@ body {
 .tool-numeric-param > .n-input-number {
   max-width: 100%;
 }
+
+/* Parameter controls on the left, generation action on the right. */
+.tool-generation-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+.tool-generation-row > .n-button {
+  flex-shrink: 0;
+}

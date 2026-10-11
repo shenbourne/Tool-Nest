@@ -227,3 +227,8 @@ Keep this short and factual so another agent can resume without chat history.
 - User authorized merge to master. Fast-forwarded local master 2db3618 -> 483b42e from private/feature/phase-24-unified-time, no conflicts; includes previously integrated date-picker/stopwatch ancestry.
 - Post-merge pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; build PASS 33.36s (existing dependency/chunk warnings); git diff --check PASS. Exact implementation already browser-verified on feature branch; no code changes during merge.
 - Existing dirty generated declarations/cache preserved and excluded. Master publication pending, next action fetch/compare and normal push to private/master.
+
+## 2026-10-11 phase 25 generation actions
+- Isolated feature/phase-25-generation-actions from master 9b1e7d7. Explicit bilingual generation labels, primary solid buttons and left-parameter/right-action rows.
+- Scoped lint/typecheck, 342 tests and build PASS. Browser visual checks NOT RUN. Other dirty workspace changes and generated declarations excluded.
+- Publication blocked by automatic approval review: private remote trust unverified; explicit destination approval required. Next: visual review, approved publication and authorized merge; expanded task not merged.

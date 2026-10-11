@@ -40,7 +40,7 @@ function refresh() { nonce.value++; }
       <template #params>
         <div class="mnemonic-actions">
           <NSelect v-model:value="words" :options="wordCountOptions" class="mnemonic-actions__count" />
-          <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+          <NButton type="primary" @click="refresh">{{ t('common.generationActions.mnemonic') }}</NButton>
         </div>
         <div>
           <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">{{ t('tools.bip39Generator.validateMnemonic') }}</div>
@@ -58,6 +58,7 @@ function refresh() { nonce.value++; }
 .mnemonic-actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
 }
