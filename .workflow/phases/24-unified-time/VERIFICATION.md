@@ -33,3 +33,15 @@
 - Browser PASS: initial 08/30/00 centered; keyboard End selects hour 23/minute 59 and measured selected center offsets [0,0,0] px including second 00. Screenshot .scratch/centered-time-wheel.png. Touch/mobile NOT RUN.
 - Typecheck, scoped lint and build PASS (24.07s). Initial full tests 341 pass/1 failure exposed stale truncate-clock-time EXPECTED inventory also present in EXCLUDED. Removed obsolete EXPECTED entry; rerun all tests 342/342 PASS. This corrects prior follow-up test claims: inventory change had not removed the CRLF line as intended.
 - Focused review: shared wheel owns scrolling and keyboard interaction, parent owns timestamp update, no new dependency/ADR; behavioral browser geometry check covers the center requirement.
+
+## 2026-10-11 smooth scrolling and mouse drag
+- Browser PASS: upward 73px mouse drag selects 02 from 00 (scrollTop 72), smooth End observed intermediate position 74 and final 828 for 23. Screenshot .scratch/smooth-time-wheel.png. Preventing mousedown default avoids native button focus changing scroll position.
+- Pointer capture follows drag, releases/snap on up/cancel; trailing click suppressed; reduced-motion uses auto scroll. Existing touch scroll retained. Scoped review covered event cleanup, external value sync and rapid-wheel target accumulation.
+- Final typecheck/lint and 342 tests PASS; production build result recorded in state. Initial verification request not executed because automatic approval stream disconnected; normal approval retry succeeded.
+
+## Now then drag bug
+- Reproduced desktop browser: after Now hour 09, 73px upward drag unexpectedly reset hour to 00/top 0. Temporary event logs showed pointer origin 324 and correct drag end 397, excluding drag-coordinate math as root cause.
+- Root cause: outer label forwards mouse activation/focus to first option button; focused 00 scrolls into view then settle updates selection. Replaced label wrapper with neutral time-field; listbox keeps aria-label. Logs removed.
+- Also stop in-flight animation on pointer down, suspend settle while pointer held, and retain one JS snap owner rather than CSS snap competing with direct drag.
+- Identical browser regression PASS: Now 09 then 73px upward drag -> 11/top396; screenshot .scratch/now-drag-fixed.png. Smooth and drag follow-up incorporated in same commit. Touch/mobile NOT RUN.
+- Final repair verification: typecheck PASS; scoped lint PASS; 342/342 tests PASS; production build PASS 19.49s; diff whitespace PASS. No new dependencies. Browser regression provides the actual UI-boundary check.

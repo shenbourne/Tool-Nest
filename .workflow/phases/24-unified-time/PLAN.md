@@ -13,3 +13,9 @@ Replace datetime popups with shared side-by-side calendar and hour/minute/second
 
 ## Centered time wheels
 Replace native listboxes with snap-aligned wheels: symmetric padding centers endpoint values, align on mount/external updates, mouse wheel/click/keyboard selection and settled touch scrolling. Check types/lint/build and browser center geometry.
+
+## Smooth scrolling and mouse drag
+Smoothly align click/wheel/keyboard changes, follow mouse drag directly with pointer capture, snap on release and suppress the trailing click. Preserve touch scrolling and reduced-motion preference. Check types/lint/build and browser interactions.
+
+## Now then drag regression
+Reproduced hour 09 resetting to 00 after Now and 73px upward drag. Remove competing native CSS snap while retaining JS release/settle alignment; stop ongoing animation on pointer down and suspend settling during pointer interaction. Re-run identical browser sequence.

@@ -15,3 +15,7 @@
 - Datetime popup PASS (desktop browser): left calendar/right hour-minute-second selection, vertical divider; confirmed time updates both display and calculations. Interval endpoints and date converter reuse same component (source/typecheck PASS).
 
 - Centered wheel PASS desktop browser: selected initial and endpoint rows have 0px center offset, keyboard End updates selection. Fading and fixed central highlight source/visual PASS. Touch/mobile NOT RUN.
+
+- Smooth/drag PASS desktop browser: mouse drag 73px changed hour 00 to 02 with exact scrollTop 72; keyboard End produced intermediate position 74 before ending at 828 for 23. Trailing click suppressed, stable centered finish. Touch/mobile NOT RUN.
+
+- Now -> drag regression PASS desktop browser: no reset to 00; upward two-row drag advances 09 to 11 and remains centered.

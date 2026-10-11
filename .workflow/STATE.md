@@ -203,3 +203,8 @@ Keep this short and factual so another agent can resume without chat history.
 - Shared date/time picker now keeps selected hour/minute/second vertically centered, including endpoint values. Keyboard/click/wheel selection and snap settling supported.
 - Browser measured 0px center offsets for 23/59/00. Typecheck/lint/build PASS; 342/342 tests PASS after stale text-panel inventory fix. Screenshot .scratch/centered-time-wheel.png.
 - Feature publication pending; master unchanged; primary worktree and generated declarations preserved.
+
+## 2026-10-11 smooth and drag regression fix
+- Smooth scrolling/mouse dragging added; fixed Now then drag jumping to first option by removing label default activation, freezing current animation on pointer down, and centralizing snap settling.
+- Desktop regression 09 -> 11 after two-row drag PASS; typecheck, scoped lint, 342 tests and production build PASS (19.49s). Screenshot .scratch/now-drag-fixed.png. Touch/mobile NOT RUN.
+- Feature only, master unchanged; generated declarations and screenshots unstaged.

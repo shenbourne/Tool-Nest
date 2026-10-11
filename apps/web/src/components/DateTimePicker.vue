@@ -44,9 +44,9 @@ function confirm() {
       <div class="picker-columns">
         <NDatePicker :value="draft" type="date" panel :actions="[]" @update:value="setDate" />
         <div class="time-columns">
-          <label v-for="field in fields" :key="field"><span>{{ t('common.' + field) }}</span>
+          <div class="time-field" v-for="field in fields" :key="field"><span>{{ t('common.' + field) }}</span>
             <TimeWheel :value="part(field)" :count="field === 'hours' ? 24 : 60" :label="t('common.' + field)" @update:value="setTime(field, $event)" />
-          </label>
+          </div>
         </div>
       </div>
       <div class="picker-actions"><NButton size="small" @click="draft = Date.now()">{{ t('tools.dateTimeConverter.now') }}</NButton><NButton size="small" type="primary" @click="confirm">{{ t('tools.dateTime.confirm') }}</NButton></div>
@@ -57,6 +57,6 @@ function confirm() {
 .picker-columns { display: flex; align-items: stretch; overflow-x: auto; }
 .picker-columns :deep(.n-date-panel) { box-shadow: none; }
 .time-columns { display: flex; gap: 8px; padding: 12px; border-left: 1px solid var(--color-hairline); }
-.time-columns label { display: grid; gap: 8px; text-align: center; color: var(--color-text-3); }
+.time-columns .time-field { display: grid; gap: 8px; text-align: center; color: var(--color-text-3); }
 .picker-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--color-hairline); }
 </style>
