@@ -85,16 +85,20 @@ function exportOutput() {
         <div v-if="inputTitle" class="tool-text-panel__title">{{ inputTitle }}</div>
         <div class="tool-text-panel__textarea"><slot name="input" /></div>
         <div class="tool-text-panel__actions">
+          <slot name="input-actions">
           <NButton v-if="fileActions" @click="triggerImport">{{ t('tool.importFile') }}</NButton>
           <NButton @click="pasteFromClipboard">{{ t(fileActions ? 'tool.pasteFile' : 'tool.pasteText') }}</NButton>
+          </slot>
         </div>
       </section>
       <section v-if="!hideOutput" class="tool-text-panel__column">
         <div v-if="outputTitle" class="tool-text-panel__title">{{ outputTitle }}</div>
         <div class="tool-text-panel__textarea"><slot name="output" /></div>
         <div class="tool-text-panel__actions tool-text-panel__actions--right">
+          <slot name="output-actions">
           <NButton :disabled="!outputText" @click="copyOutput">{{ t('tool.copy') }}</NButton>
           <NButton v-if="fileActions" :disabled="!outputText" @click="exportOutput">{{ t('tool.exportFile') }}</NButton>
+          </slot>
         </div>
       </section>
     </div>
@@ -162,6 +166,9 @@ function exportOutput() {
 }
 
 .tool-text-panel__params {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
   border-top: 1px solid var(--color-hairline);
   padding-top: var(--spacing-sm);
 }

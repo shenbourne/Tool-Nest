@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { NInput, NSelect, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import * as bip39 from 'bip39';
+import { generateMnemonic, validateMnemonic } from './bip39-generator.service';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
@@ -19,13 +19,13 @@ const words = ref(12);
 const nonce = ref(0);
 const mnemonic = computed(() => {
   void nonce.value;
-  try { return bip39.generateMnemonic(words.value === 12 ? 128 : words.value === 15 ? 160 : words.value === 18 ? 192 : words.value === 21 ? 224 : 256); } catch { return ''; }
+  return generateMnemonic(words.value);
 });
 
 const inputMnemonic = ref('');
 const isValid = computed(() => {
   if (!inputMnemonic.value) return null;
-  try { return bip39.validateMnemonic(inputMnemonic.value); } catch { return false; }
+  return validateMnemonic(inputMnemonic.value);
 });
 
 function refresh() { nonce.value++; }
@@ -40,7 +40,7 @@ function refresh() { nonce.value++; }
       <template #params>
         <div class="mnemonic-actions">
           <NSelect v-model:value="words" :options="wordCountOptions" class="mnemonic-actions__count" />
-          <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+          <NButton type="primary" @click="refresh">{{ t('common.generationActions.mnemonic') }}</NButton>
         </div>
         <div>
           <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">{{ t('tools.bip39Generator.validateMnemonic') }}</div>
@@ -57,7 +57,9 @@ function refresh() { nonce.value++; }
 <style scoped>
 .mnemonic-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
 }
@@ -70,5 +72,6 @@ function refresh() { nonce.value++; }
 
 .mnemonic-actions :deep(.n-button) {
   flex-shrink: 0;
+  margin-left: auto;
 }
 </style>

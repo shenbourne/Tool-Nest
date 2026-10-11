@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { NButton, NCard, NSpace, NSwitch, NText } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -46,7 +46,7 @@ function copy() {
         <div class="port-display">{{ port }}</div>
         <NSpace align="center" :size="12">
           <NButton @click="copy" type="primary">{{ t('tool.copy') }}</NButton>
-          <NButton @click="refresh">{{ t('common.reset') }}</NButton>
+          <NButton type="primary" @click="refresh">{{ t('common.generationActions.randomPort') }}</NButton>
         </NSpace>
         <div class="exclude-option">
           <NSwitch v-model:value="excludeCommon" />

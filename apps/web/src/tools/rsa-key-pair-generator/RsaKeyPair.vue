@@ -39,10 +39,12 @@ function generate() {
         <NInput :value="publicKey" readonly type="textarea" :rows="6" style="font-family: monospace; font-size: 12px;"  :input-props="{ id: 'rsaKeyPairGeneratorField1' }"/>
       </template>
       <template #params>
-        <NFormItem :label="t('tools.rsaKeyPair.keySize')" label-placement="left">
+        <div class="tool-generation-row">
+        <NFormItem :label="t('tools.rsaKeyPair.keySize')" label-placement="left" :show-feedback="false">
           <NInputNumber v-model:value="keySize" :min="512" :max="4096" :step="512" style="width: 200px;"  :input-props="{ id: 'rsaKeyPairGeneratorField0' }"/>
         </NFormItem>
         <NButton type="primary" @click="generate" :loading="generating">{{ t('tools.rsaKeyPair.generateKeyPair') }}</NButton>
+        </div>
         <NAlert v-if="error" type="error">{{ error }}</NAlert>
         <template v-if="privateKey">
           <div style="font-size: 14px; font-weight: 600;">{{ t('tools.rsaKeyPair.privateKey') }}</div>

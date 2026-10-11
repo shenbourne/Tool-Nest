@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NInput, NSpace, NSelect, NSwitch } from 'naive-ui';
+import { NInput, NSelect, NSwitch } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
@@ -68,41 +68,85 @@ const output = computed(() => {
          :input-props="{ id: 'listConverterField3' }"/>
       </template>
       <template #params>
-        <NSpace vertical :size="12">
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('common.separator') }}</span>
-            <NSelect v-model:value="separator" :options="separatorOptions" style="width: 200px;" />
+        <div class="list-options">
+          <div class="list-options__fields">
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('common.separator') }}</span>
+              <NSelect v-model:value="separator" :options="separatorOptions" class="list-options__control" />
+            </div>
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('tools.listConverter.sortOrder') }}</span>
+              <NSelect v-model:value="sortItems" :options="sortOptions" class="list-options__control" />
+            </div>
           </div>
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.sortOrder') }}</span>
-            <NSelect v-model:value="sortItems" :options="sortOptions" style="width: 200px;" />
+          <div class="list-options__switches">
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('tools.listConverter.trimItems') }}</span>
+              <NSwitch v-model:value="trimItems" />
+            </div>
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('tools.listConverter.removeEmpty') }}</span>
+              <NSwitch v-model:value="removeEmpty" />
+            </div>
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('common.lowercase') }}</span>
+              <NSwitch v-model:value="lowerCase" />
+            </div>
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('tools.listConverter.removeDuplicates') }}</span>
+              <NSwitch v-model:value="removeDuplicates" />
+            </div>
           </div>
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.trimItems') }}</span>
-            <NSwitch v-model:value="trimItems" />
+          <div class="list-options__fields">
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('tools.listConverter.itemPrefix') }}</span>
+              <NInput v-model:value="itemPrefix" :placeholder="t('common.prefix')" clearable class="list-options__control"  :input-props="{ id: 'listConverterField1' }"/>
+            </div>
+            <div class="list-options__field">
+              <span class="list-options__label">{{ t('tools.listConverter.itemSuffix') }}</span>
+              <NInput v-model:value="itemSuffix" :placeholder="t('common.suffix')" clearable class="list-options__control"  :input-props="{ id: 'listConverterField2' }"/>
+            </div>
           </div>
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.removeEmpty') }}</span>
-            <NSwitch v-model:value="removeEmpty" />
-          </div>
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('common.lowercase') }}</span>
-            <NSwitch v-model:value="lowerCase" />
-          </div>
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.removeDuplicates') }}</span>
-            <NSwitch v-model:value="removeDuplicates" />
-          </div>
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.itemPrefix') }}</span>
-            <NInput v-model:value="itemPrefix" :placeholder="t('common.prefix')" clearable style="width: 200px;"  :input-props="{ id: 'listConverterField1' }"/>
-          </div>
-          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ t('tools.listConverter.itemSuffix') }}</span>
-            <NInput v-model:value="itemSuffix" :placeholder="t('common.suffix')" clearable style="width: 200px;"  :input-props="{ id: 'listConverterField2' }"/>
-          </div>
-        </NSpace>
+        </div>
       </template>
     </ToolTextPanel>
   </ToolLayout>
 </template>
+
+<style scoped>
+.list-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list-options__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 12px 24px;
+}
+
+.list-options__field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.list-options__label {
+  font-size: 13px;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.list-options__control {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-options__switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+}
+</style>
