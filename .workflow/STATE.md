@@ -229,3 +229,5 @@ Keep this short and factual so another agent can resume without chat history.
 - Existing dirty generated declarations/cache preserved and excluded. Master publication pending, next action fetch/compare and normal push to private/master.
 
 2026-10-11 phase30 Ping fix: feature/phase-30-ping-fix from private/master 742c5e3. Empty proxy500 caused by missing local backend; restored. Globalping tagged locations translated to selector fields. Web349/server52 tests, typecheck/scoped lint/build and real baidu.com browser Ping PASS. Source mirrored into shared checkout preserving unrelated edits. No master merge authorized. Next: feature publication and authorized integration.
+
+Publication verified: private/feature/phase-30-ping-fix at 154f0b0. Technical and acceptance verification complete; awaiting authorized master integration. Generated declarations/build files intentionally unstaged.
