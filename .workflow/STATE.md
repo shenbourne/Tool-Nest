@@ -232,3 +232,8 @@ Keep this short and factual so another agent can resume without chat history.
 - Scoped fix on feature/phase-27-json-to-toml-fix from refreshed private/master 742c5e3; primary shared edits preserved, fix mirrored into primary checkout for local use.
 - Serializer-only import avoids parser global.Date ReferenceError. Browser-like regression 2/2, typecheck/scoped lint/build PASS; full web tests 336 PASS/1 unrelated Base64 contract FAIL. Actual browser clicks NOT RUN.
 - Phase27 documents hold plan and evidence. No merge authorized. Next: resolve existing Base64 test discrepancy separately, browser acceptance, safe integration. Feature publication result recorded below.
+
+## 2026-10-11 all TOML converter load fixes — verified
+- User expanded phase27 to all tools sharing the failure. Four consumers confirmed: JSON to TOML, YAML to TOML, TOML to JSON, TOML to YAML. Serializers use stringify-only import; parser global.Date/Buffer/BigInt mapped to globalThis properties via Vite define for dev/production.
+- Actual browser loading and nested conversion PASS for all four, screenshot .scratch/toml-to-json-fixed.png. Isolated feature/phase-27-json-to-toml-fix tests 348/348, typecheck/scoped lint/build PASS. Initial shared Base64 test failure excluded and isolated full gates now green.
+- Source changes mirrored into shared primary checkout; unrelated edits preserved. Isolated dependency junctions and ignored build artifacts retained for further work. No master merge. Source publication will be verified against private feature branch.

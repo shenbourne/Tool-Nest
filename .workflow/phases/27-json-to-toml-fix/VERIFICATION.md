@@ -9,3 +9,13 @@
 - Review: only serializer import changed, same conversion/error semantics; type-only declaration follows library signature. No global shim or runtime dependency added. No applicable ADR; health audit not warranted for this local import correction.
 - Checks ran in primary shared workspace containing unrelated dirty changes; only scoped fix copied into isolated worktree based on fetched private/master 742c5e3. Isolated full build not run.
 - Actual browser click verification NOT RUN. Regression verifies module execution, not visual appearance.
+
+## Expanded scope and final checks
+- Library scan: all four importers covered. Additional original failures: TOML to JSON, TOML to YAML, YAML to TOML, all global is not defined. Extended regression red 3/4, green 4/4; plus serializer tests 2/2.
+- Primary shared workspace: targeted tests 6/6, typecheck/scoped lint/build exit 0. Browser actual conversion PASS for all four pages using nested title/owner/name examples. Evidence .scratch/toml-to-json-fixed.png.
+- Isolated worktree: pnpm exec vitest run exit 0, 48 files/348 tests PASS. pnpm exec vue-tsc --noEmit and pnpm exec eslint vite.config.ts src/tools/toml-browser.test.ts src/tools/json-to-toml src/tools/yaml-to-toml/yaml-to-toml.service.ts exit 0. This supersedes initial full-suite failure in shared tree; unrelated dirty Base64 work was excluded.
+- Focused health review: triggered by repeated cross-tool library failure/config boundary. Inspected all TOML services and Vite prebundle/build behavior. Existing issue: eager parser import in serializers, corrected with direct stringify imports. Existing parser Node global alias corrected by three narrow build definitions. No introduced duplicate conversion implementations, cycles or runtime shim; parser tooling requires these built-in globals. No broad refactor warranted.
+- Browser smoke applies to Chinese/light desktop load and conversion. Copy/download action execution and mobile visual checks not needed for module-load bug and not performed.
+
+- Final isolated production build: pnpm exec vite build exit 0, 21.71s. Existing externalized built-in/eval/chunk-size warnings only. Technical and browser-load/conversion acceptance gates PASS; phase verified, pending authorized integration.
+
