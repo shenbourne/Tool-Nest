@@ -237,3 +237,7 @@ Publication verified: private/feature/phase-30-ping-fix at 154f0b0. Technical an
 Active phase31 network result readability on feature/phase-31-network-results; from published phase30 de82219 due dependency. Initial fetch TLS EOF, remote freshness not confirmed. Scope eight unreadable/sparse network outputs, preserve other work. Next: implement and verify.
 
 Phase31 technical and output acceptance complete: eight views implemented, seven live browser successes, censorship fixture view PASS but existing OONI upstream error unresolved/out of scope. Final targeted6/typecheck/differential lint new0/build/diff PASS. Feature/phase-31-network-results ready for publication; no master merge authorized. Initial TLS errors recorded; final fetch exit=0. Next: verify publication and user-authorized integration.
+
+Active phase32 censorship repair on feature/phase-32-censorship-fix from8942ac2; fetched private/master742c5e3, 4ahead/0behind. User authorizes interface fix; next regression and real endpoint verification.
+
+Phase32 implementation verified (server57/web356/typecheck/scoped lint/build PASS), live www.google.com now shows localized typed OONI timeout and recovers. GET contract/normalization/evidence sample repaired. Positive live data acceptance unverified because official service inaccessible; phase awaiting connectivity. Source mirrored into primary. feature/phase-32-censorship-fix, no merge authorized. Next publish scoped fix and verify positive response when network recovers.

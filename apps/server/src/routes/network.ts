@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import { AppError } from '../middleware/error-handler.js';
 import { isPrivateHost } from '../middleware/security.js';
 import { GlobalpingService } from '../services/globalping.js';
-import { OoniService } from '../services/ooni.js';
+import { OoniService, OoniError } from '../services/ooni.js';
 import type { ApiResponse } from '@toolnest/shared';
 import { isValidDomain } from '@toolnest/shared';
 
@@ -165,6 +165,7 @@ networkRouter.post('/censorship', async (req, res, next) => {
     const response: ApiResponse = { success: true, data: results };
     res.json(response);
   } catch (err) {
+    if (err instanceof OoniError) return next(new AppError(err.statusCode, err.code, err.message));
     if (err instanceof AppError) return next(err);
     next(err);
   }

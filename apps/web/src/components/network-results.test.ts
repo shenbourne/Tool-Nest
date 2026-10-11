@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { buildNetworkGroups, displayValue } from './network-results';
 const label = (key: string) => key;
 describe('network result presentation', () => {
+  it('distinguishes no measurements from evidence of non-blocking', () => {
+    const [group] = buildNetworkGroups([{ input: 'https://example.com/', measurementCount: 0, countries: [] }], 'censorship', label);
+    expect(group.state).toBe('networkResults.noMeasurements');
+    expect(group.fields?.[0].value).toBe('0');
+    expect(group.tone).toBe('default');
+  });
   it('maps actual MTR nested hops and preserves unknown metrics', () => {
     const groups = buildNetworkGroups({ results: [{ probe: { city: 'Buffalo', country: 'US' }, result: { status: 'finished', hops: [{ asn: [174], resolvedAddress: '1.1.1.1', stats: { avg: 1.125, loss: 0, rcv: 3 } }, { asn: [], stats: { avg: null, loss: 100 } }] } }] }, 'mtr', label);
     expect(groups[0].title).toBe('Buffalo, US');

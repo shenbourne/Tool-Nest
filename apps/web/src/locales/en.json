@@ -1,5 +1,9 @@
 {
   "networkResults": {
+    "noMeasurements": "No measurements available; inconclusive",
+    "measurementCount": "Sample count",
+    "countries": "Sample countries/regions",
+    "latestMeasurement": "Latest measurement (UTC)",
     "rateLimited": "Too many requests. Please try again later.",
     "probe": "Probe",
     "completed": "Completed",
@@ -41,7 +45,7 @@
     "mtrNote": "Routes are measured from remote probes. Loss or silence at an intermediate hop does not necessarily mean the destination is unreachable.",
     "latencyNote": "These are DNS query times from remote probes, rather than Ping latency from your device.",
     "dnsLeakNote": "These are server-side DNS results and cannot determine whether your device has a DNS leak.",
-    "censorshipNote": "Results come from OONI measurement records. Missing evidence does not guarantee access in every region.",
+    "censorshipNote": "Queries the latest 100 OONI records per URL from the past 30 days. This is historical evidence, not a live test from your device. Missing evidence does not guarantee access in every region.",
     "invalidResponse": "The network service returned an invalid response. Check that the backend is running and try again.",
     "urlsPlaceholder": "One URL per line, for example https://example.com",
     "recordCount": "{count} records"
@@ -2180,6 +2184,12 @@
       "dnsServerPlaceholder": "Custom DNS server (optional)"
     },
     "censorshipCheck": {
+      "errors": {
+        "VALIDATION_ERROR": "Enter valid URLs or domains, up to 10 per request. URLs containing usernames or passwords are not supported.",
+        "OONI_UNAVAILABLE": "OONI measurement service is unavailable. Please try again later.",
+        "OONI_TIMEOUT": "OONI measurement query timed out. Please try again later.",
+        "OONI_INVALID_RESPONSE": "OONI returned invalid data. Please try again later."
+      },
       "name": "Censorship Check",
       "description": "Check if websites are censored",
       "check": "Check",

@@ -1,5 +1,9 @@
 {
   "networkResults": {
+    "noMeasurements": "暂无测量记录，无法判断",
+    "measurementCount": "样本数",
+    "countries": "样本来源国家/地区",
+    "latestMeasurement": "最近测量时间（UTC）",
     "rateLimited": "请求过于频繁，请稍后重试。",
     "probe": "探针",
     "completed": "测量完成",
@@ -41,7 +45,7 @@
     "mtrNote": "路由由远程探针测得。中间节点不响应或丢包不一定代表目标不可达。",
     "latencyNote": "这里展示远程探针的 DNS 查询耗时，并非当前设备的 Ping 延迟。",
     "dnsLeakNote": "这是服务端 DNS 解析结果，不能据此判定当前设备是否存在 DNS 泄漏。",
-    "censorshipNote": "结果来自 OONI 测量记录；未发现证据不等于网站在所有地区均可访问。",
+    "censorshipNote": "查询 OONI 最近 30 天的历史记录，每个网址最多取最新 100 条。结果不是当前设备的实时检测；未发现证据不等于在所有地区均可访问。",
     "invalidResponse": "网络服务返回了无效响应，请确认后端已启动后重试。",
     "urlsPlaceholder": "每行输入一个网址，例如 https://example.com",
     "recordCount": "{count} 条记录"
@@ -2180,6 +2184,12 @@
       "dnsServerPlaceholder": "自定义 DNS 服务器（可选）"
     },
     "censorshipCheck": {
+      "errors": {
+        "VALIDATION_ERROR": "请输入有效的网址或域名，每次最多 10 个，不支持带有用户名或密码的网址。",
+        "OONI_UNAVAILABLE": "暂时无法连接 OONI 测量服务，请稍后重试。",
+        "OONI_TIMEOUT": "OONI 测量查询超时，请稍后重试。",
+        "OONI_INVALID_RESPONSE": "OONI 返回了无效数据，请稍后重试。"
+      },
       "name": "审查检查",
       "description": "检查网站是否被审查封锁",
       "check": "检查",

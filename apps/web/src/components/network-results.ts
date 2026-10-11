@@ -62,8 +62,11 @@ export function buildNetworkGroups(data: unknown, kind: NetworkResultKind, label
   if (kind === 'censorship') {
     return list(data).map(value => {
       const row = record(value);
-      const state = row.confirmed === true ? 'confirmed' : row.anomaly === true ? 'anomaly' : row.confirmed === false && row.anomaly === false ? 'noEvidence' : 'unknown';
-      return { title: displayValue(row.input), state: l(state), tone: state === 'confirmed' ? 'error' : state === 'anomaly' ? 'warning' : 'default' };
+      const state = row.measurementCount === 0 ? 'noMeasurements' : row.confirmed === true ? 'confirmed' : row.anomaly === true ? 'anomaly' : row.confirmed === false && row.anomaly === false ? 'noEvidence' : 'unknown';
+      return {
+        title: displayValue(row.input), state: l(state), tone: state === 'confirmed' ? 'error' : state === 'anomaly' ? 'warning' : 'default',
+        fields: typeof row.measurementCount === 'number' ? [{ label: l('measurementCount'), value: displayValue(row.measurementCount) }, { label: l('countries'), value: list(row.countries).map(displayValue).join(', ') || '—' }, { label: l('latestMeasurement'), value: displayValue(row.latestMeasurement) }] : undefined,
+      };
     });
   }
   const registrar = list(root.entities).map(record).find(entity => list(entity.roles).includes('registrar'));

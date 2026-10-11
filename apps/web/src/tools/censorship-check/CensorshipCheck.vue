@@ -35,7 +35,11 @@ async function run() {
     });
     if (res.status === 429) throw new Error(t('networkResults.rateLimited'));
     const json = await res.json().catch(() => { throw new Error(t('networkResults.invalidResponse')); });
-    if (!json.success) throw new Error(json.error?.message ?? t('common.requestFailed'));
+    if (!json.success) {
+      const code = json.error?.code;
+      const known = ['VALIDATION_ERROR', 'OONI_UNAVAILABLE', 'OONI_TIMEOUT', 'OONI_INVALID_RESPONSE'];
+      throw new Error(known.includes(code) ? t(`tools.censorshipCheck.errors.${code}`) : t('common.requestFailed'));
+    }
     result.value = json.data;
   } catch (e: unknown) {
     error.value = e instanceof Error ? e.message : t('common.requestFailed');
