@@ -231,3 +231,4 @@ Keep this short and factual so another agent can resume without chat history.
 ## 2026-10-11 Phase 28 HTML entities
 - Layout and actions repaired on feature/phase-28-html-entities from refreshed private/master 742c5e3. Two independent conversion rows; browser acceptance PASS, 342 tests/typecheck/scoped lint/build PASS. Phase complete; master merge awaits authorization.
 - Component mirrored into primary dirty checkout for immediate review; unrelated edits preserved. No ADR or harness change needed. Publication pending final fetch/push verification.
+- Publication PASS: private/feature/phase-28-html-entities verified at 0303c1f; clean isolated worktree. Next action: authorized master integration; no merge performed.
