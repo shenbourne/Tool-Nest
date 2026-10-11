@@ -15,3 +15,5 @@ Final affected tests PASS 5/5 after reactive-clone repair and malformed version 
 Feature push and ls-remote PASS: 4483d360312f5833d2f254e3d9480facdd0c1bf9. No default branch mutation.
 
 Refinement: vue-tsc --noEmit PASS; scoped eslint DockerComposeTo1panel.vue PASS. Browser import/remove PASS. Source review: empty selection clears import state and invalidates pending read; stale completion/error/finally guarded by monotonically increasing import id. No new tests for simple presentation change; behavior verified through browser. Full build not repeated: localized template/handler change typechecked; previous package build PASS.
+
+Authorized master integration: merge 8190baf retains both STATE records; all business/locales auto-merged. Post-merge pnpm test PASS 381/53; pnpm build PASS including vue-tsc (Vite 21.03s); diff check PASS. Generated declarations excluded. No business edits introduced during integration. Remote master unchanged; only local master merge authorized.
