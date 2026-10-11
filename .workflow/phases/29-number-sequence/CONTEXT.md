@@ -1,0 +1,2 @@
+# Phase 29 — Number sequence interface
+User requests an attractive, human-friendly interface for the number generator. Replace command textarea with four example cards, count field, explicit generation, and result metadata. Preserve copy/export and bilingual themes. Isolated branch feature/phase-29-number-sequence from fetched private/master 742c5e3; original HEAD behind base by 27, all original edits preserved. No architecture/dependency changes; ADR and codebase health audit not applicable.

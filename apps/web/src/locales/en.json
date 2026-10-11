@@ -696,7 +696,21 @@
     "numberGenerator": {
       "name": "Number Generator",
       "description": "Generate number sequences: Fibonacci, primes, even, odd",
-      "usageHint": "Line 1: type (fibonacci/primes/even/odd)\nLine 2: count"
+      "usageHint": "Line 1: type (fibonacci/primes/even/odd)\nLine 2: count",
+      "settings": "Sequence settings",
+      "intro": "Choose a sequence and how many numbers to generate.",
+      "sequenceType": "Sequence type",
+      "fibonacci": "Fibonacci",
+      "primes": "Primes",
+      "even": "Even",
+      "odd": "Odd",
+      "countLabel": "Number of terms",
+      "range": "1–{max} terms",
+      "generate": "Generate sequence",
+      "result": "Generated sequence",
+      "items": "{count} terms",
+      "pending": "Settings changed. Generate to update the result.",
+      "ready": "Comma-separated numbers, ready to copy or export."
     },
     "csvToJson": {
       "name": "CSV to JSON",

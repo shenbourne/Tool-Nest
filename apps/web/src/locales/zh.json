@@ -696,7 +696,21 @@
     "numberGenerator": {
       "name": "数字序列生成",
       "description": "生成数字序列：斐波那契、素数、偶数、奇数",
-      "usageHint": "第 1 行：类型（fibonacci/primes/even/odd）\n第 2 行：数量"
+      "usageHint": "第 1 行：类型（fibonacci/primes/even/odd）\n第 2 行：数量",
+      "settings": "生成设置",
+      "intro": "选择一种数列，设置数量，即可生成。",
+      "sequenceType": "数列类型",
+      "fibonacci": "斐波那契",
+      "primes": "素数",
+      "even": "偶数",
+      "odd": "奇数",
+      "countLabel": "生成数量",
+      "range": "支持 1–{max} 项",
+      "generate": "生成数列",
+      "result": "生成结果",
+      "items": "{count} 项",
+      "pending": "设置已更改，点击「生成数列」更新结果。",
+      "ready": "数字以逗号分隔，可直接复制或导出。"
     },
     "csvToJson": {
       "name": "CSV 转 JSON",
