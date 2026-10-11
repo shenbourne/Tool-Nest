@@ -232,3 +232,5 @@ Keep this short and factual so another agent can resume without chat history.
 - Isolated feature/phase-25-generation-actions from master 9b1e7d7. Explicit bilingual generation labels, primary solid buttons and left-parameter/right-action rows.
 - Scoped lint/typecheck, 342 tests and build PASS. Browser visual checks NOT RUN. Other dirty workspace changes and generated declarations excluded.
 - Publication blocked by automatic approval review: private remote trust unverified; explicit destination approval required. Next: visual review, approved publication and authorized merge; expanded task not merged.
+
+- Phase 25 browser review: desktop button styles/alignment PASS (833px and RSA 1280px). 390px layout FAIL due fixed sidebar/content clipping; OTP blank with otplib crypto.randomBytes error; BIP39 empty generation; existing random/password switch labels invisible. Phase not complete. Evidence in .scratch/generation-visual/ of main workspace. Next: address responsive/runtime findings separately. No remote publication or master merge performed.
