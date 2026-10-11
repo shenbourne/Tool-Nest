@@ -208,3 +208,9 @@ Keep this short and factual so another agent can resume without chat history.
 - Smooth scrolling/mouse dragging added; fixed Now then drag jumping to first option by removing label default activation, freezing current animation on pointer down, and centralizing snap settling.
 - Desktop regression 09 -> 11 after two-row drag PASS; typecheck, scoped lint, 342 tests and production build PASS (19.49s). Screenshot .scratch/now-drag-fixed.png. Touch/mobile NOT RUN.
 - Feature only, master unchanged; generated declarations and screenshots unstaged.
+
+## 2026-10-11 time-only parity
+- Time truncation now uses shared DateTimePicker timeOnly mode: centered hour/minute/second wheels, smooth mouse drag, Now and one confirmation; confirmed value remains HH:mm:ss.
+- Typecheck, scoped eslint, 342/342 web tests and build PASS (19.35s, existing chunk warnings).
+- Desktop browser PASS: Now hour 09 then 72px upward drag selects 11; all three selected center offsets 0px; confirm yields 11:43:53 and truncation results 11:43:00 / 11:00:00. Screenshot .scratch/time-only-picker.png. Touch/mobile NOT RUN.
+- Review: shares existing wheel implementation, no dependency or new abstraction; no ADR/health audit warranted for one consumer mode. Feature publication follows; generated declarations excluded.

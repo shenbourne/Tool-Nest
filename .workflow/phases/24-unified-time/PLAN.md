@@ -19,3 +19,6 @@ Smoothly align click/wheel/keyboard changes, follow mouse drag directly with poi
 
 ## Now then drag regression
 Reproduced hour 09 resetting to 00 after Now and 73px upward drag. Remove competing native CSS snap while retaining JS release/settle alignment; stop ongoing animation on pointer down and suspend settling during pointer interaction. Re-run identical browser sequence.
+
+## Time-only parity
+Reuse shared picker with timeOnly mode for truncation: hide calendar/divider, preserve HH:mm:ss binding, reuse centered smooth draggable wheels and Now/Confirm. No duplicate interaction implementation.

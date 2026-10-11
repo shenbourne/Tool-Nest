@@ -45,3 +45,9 @@
 - Also stop in-flight animation on pointer down, suspend settle while pointer held, and retain one JS snap owner rather than CSS snap competing with direct drag.
 - Identical browser regression PASS: Now 09 then 73px upward drag -> 11/top396; screenshot .scratch/now-drag-fixed.png. Smooth and drag follow-up incorporated in same commit. Touch/mobile NOT RUN.
 - Final repair verification: typecheck PASS; scoped lint PASS; 342/342 tests PASS; production build PASS 19.49s; diff whitespace PASS. No new dependencies. Browser regression provides the actual UI-boundary check.
+
+## 2026-10-11 time-only parity
+- Time truncation now uses shared DateTimePicker timeOnly mode: centered hour/minute/second wheels, smooth mouse drag, Now and one confirmation; confirmed value remains HH:mm:ss.
+- Typecheck, scoped eslint, 342/342 web tests and build PASS (19.35s, existing chunk warnings).
+- Desktop browser PASS: Now hour 09 then 72px upward drag selects 11; all three selected center offsets 0px; confirm yields 11:43:53 and truncation results 11:43:00 / 11:00:00. Screenshot .scratch/time-only-picker.png. Touch/mobile NOT RUN.
+- Review: shares existing wheel implementation, no dependency or new abstraction; no ADR/health audit warranted for one consumer mode. Feature publication follows; generated declarations excluded.

@@ -19,3 +19,9 @@
 - Smooth/drag PASS desktop browser: mouse drag 73px changed hour 00 to 02 with exact scrollTop 72; keyboard End produced intermediate position 74 before ending at 828 for 23. Trailing click suppressed, stable centered finish. Touch/mobile NOT RUN.
 
 - Now -> drag regression PASS desktop browser: no reset to 00; upward two-row drag advances 09 to 11 and remains centered.
+
+## 2026-10-11 time-only parity
+- Time truncation now uses shared DateTimePicker timeOnly mode: centered hour/minute/second wheels, smooth mouse drag, Now and one confirmation; confirmed value remains HH:mm:ss.
+- Typecheck, scoped eslint, 342/342 web tests and build PASS (19.35s, existing chunk warnings).
+- Desktop browser PASS: Now hour 09 then 72px upward drag selects 11; all three selected center offsets 0px; confirm yields 11:43:53 and truncation results 11:43:00 / 11:00:00. Screenshot .scratch/time-only-picker.png. Touch/mobile NOT RUN.
+- Review: shares existing wheel implementation, no dependency or new abstraction; no ADR/health audit warranted for one consumer mode. Feature publication follows; generated declarations excluded.
