@@ -1,38 +1,36 @@
 export type NumberSequenceType = 'fibonacci' | 'primes' | 'even' | 'odd';
-
 const MAX_COUNT = 10_000;
-
+export const MAX_SEQUENCE_START = 1_000_000;
+const fibonacci = [0, 1];
+while (Number.isSafeInteger(fibonacci[fibonacci.length - 1] + fibonacci[fibonacci.length - 2])) {
+  fibonacci.push(fibonacci[fibonacci.length - 1] + fibonacci[fibonacci.length - 2]);
+}
+export function sequenceCountLimit(type: NumberSequenceType, start: number): number {
+  return type === 'fibonacci' ? fibonacci.filter(value => value >= start).length : MAX_COUNT;
+}
 function isSequenceType(type: string): type is NumberSequenceType {
   return type === 'fibonacci' || type === 'primes' || type === 'even' || type === 'odd';
 }
-
-/**
- * Returns the generated sequence as a comma-separated string, an empty string
- * for a non-positive count, or null for an unknown type. Negative counts used
- * to crash the component via `Array.from({ length: -n })`, and unbounded counts
- * froze the page, so both are guarded here.
- */
-export function generateNumbers(type: string, n: number): string | null {
+/** Generate from the first sequence value at or above start; invalid input yields empty output. */
+export function generateNumbers(type: string, n: number, start = 0): string | null {
   if (!isSequenceType(type)) return null;
-  if (!Number.isFinite(n) || n < 1) return '';
-
+  if (!Number.isFinite(n) || n < 1 || !Number.isInteger(start) || start < 0 || start > MAX_SEQUENCE_START) return '';
   const count = Math.min(Math.floor(n), MAX_COUNT);
-
   if (type === 'fibonacci') {
-    const s = [0, 1];
-    for (let i = 2; i < count; i++) s.push(s[i - 1] + s[i - 2]);
-    return s.slice(0, count).join(', ');
+    const values = fibonacci.filter(value => value >= start);
+    return count <= values.length ? values.slice(0, count).join(', ') : '';
   }
-
   if (type === 'primes') {
-    const p: number[] = [];
-    for (let i = 2; p.length < count; i++) {
-      const isPrime = i > 1 && Array.from({ length: Math.floor(Math.sqrt(i)) - 1 }, (_, j) => j + 2).every(d => i % d !== 0);
-      if (isPrime) p.push(i);
+    const values: number[] = [];
+    for (let candidate = Math.max(2, start); values.length < count; candidate++) {
+      let prime = true;
+      for (let divisor = 2; divisor * divisor <= candidate; divisor++) {
+        if (candidate % divisor === 0) { prime = false; break; }
+      }
+      if (prime) values.push(candidate);
     }
-    return p.join(', ');
+    return values.join(', ');
   }
-
-  if (type === 'even') return Array.from({ length: count }, (_, i) => i * 2).join(', ');
-  return Array.from({ length: count }, (_, i) => i * 2 + 1).join(', ');
+  const first = start + (start % 2 === (type === 'even' ? 0 : 1) ? 0 : 1);
+  return Array.from({ length: count }, (_, index) => first + index * 2).join(', ');
 }

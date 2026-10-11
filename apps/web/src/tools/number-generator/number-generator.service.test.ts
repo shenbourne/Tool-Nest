@@ -32,3 +32,17 @@ describe('generateNumbers', () => {
     expect(result.split(', ')).toHaveLength(10000);
   });
 });
+  it('starts at the first matching value at or above the lower bound', () => {
+    expect(generateNumbers('primes', 4, 10)).toBe('11, 13, 17, 19');
+    expect(generateNumbers('even', 3, 11)).toBe('12, 14, 16');
+    expect(generateNumbers('odd', 3, 10)).toBe('11, 13, 15');
+    expect(generateNumbers('fibonacci', 4, 10)).toBe('13, 21, 34, 55');
+  });
+  it('preserves duplicate Fibonacci ones when starting at one', () => {
+    expect(generateNumbers('fibonacci', 4, 1)).toBe('1, 1, 2, 3');
+  });
+  it('rejects invalid starts and unsafe Fibonacci lengths', () => {
+    expect(generateNumbers('primes', 4, NaN)).toBe('');
+    expect(generateNumbers('even', 4, -1)).toBe('');
+    expect(generateNumbers('fibonacci', 79, 10)).toBe('');
+  });

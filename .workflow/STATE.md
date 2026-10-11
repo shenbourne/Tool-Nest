@@ -287,6 +287,17 @@ Phase29 authorized local master integration: merged latest local master 2e919b4 
 
 2026-10-11 user authorized network fixes merge to local master. Integrated latest local master f6adb77 via 6c35627; kept both progress histories. Combined web395/server57 tests, workspace typecheck, scoped eslint, production build, diff-check PASS. Ready to fast-forward master, restore saved dirty state/declarations. Feature publication required; remote master push not requested. Positive OONI live-data acceptance remains pending external connectivity.
 
-2026-10-12 authorized phase33 OTP integration: preserved master native getRandomValues/Base32 normalization/invalid-secret false handling (existing1700b74), integrated phase33 comprehensive RFC/URI/expiry/countdown tests and evidence. User requested master submission. Work performed in detached temporary integration tree preserving dirty master and primary workspaces. Verification pending.
+## 2026-10-11 — Phase 29 number sequence UI
 
-2026-10-12 phase33 authorized master merge verified: web403/server57/typecheck/scoped lint/build PASS. Preserved existing master OTP runtime and integrated comprehensive tests/docs. Next: fast-forward local master and publish private/master; primary dirty changes preserved.
+Branch: feature/phase-29-number-sequence, isolated worktree from private/master 742c5e3; fetch comparison 0/0 before and after. Cards, count, explicit generation and result metadata implemented. Web tests 342 PASS; typecheck, scoped lint and build PASS. Desktop browser acceptance PASS; mobile and dark visual acceptance unverified. Scoped component and locale changes copied to shared checkout for local preview, all unrelated edits preserved. Status: implemented, remaining visual acceptance; merge pending. Remote feature publication follows this record.
+
+Phase 29 follow-up: user requested real-time generation and starting value lower bound. Implemented computed output, input-time updates, bounded start field and safe Fibonacci remaining-count limit. 10 service tests PASS (RED observed before implementation), browser live interaction PASS. Final build pending; feature update pending publication.
+Phase 29 follow-up final: 345 web tests PASS, scoped lint PASS, production build/typecheck PASS, browser live count/start/type behavior PASS. Published update to private/feature/phase-29-number-sequence; merge remains pending. Dark/mobile visual acceptance still unverified.
+Phase 29 single-line hint: concise bilingual wording and nowrap applied; browser visual check PASS, scoped lint PASS. Feature branch updated; shared preview receives scoped edits only.
+
+2026-10-12: user authorized phase 29 merge to master. Isolated integration preserves committed local master work and dirty shared checkouts. Verification pending.
+2026-10-12 master integration verification PASS: web tests 398, server tests 57, web build/typecheck, server typecheck and scoped lint. User-authorized private/master publication; local master checkout remains untouched because it has pre-existing uncommitted records and declarations.
+
+2026-10-12 phase33 OTP authorized master merge: a94ded5 preserves existing master OTP implementation and integrates comprehensive10 regression tests/docs. Web403/server57/typecheck/scoped lint/build PASS before remote reconciliation. Remote mastera3efa72 concurrently added number-sequence; merged preserving remote STATE plus this OTP record. Final checks pending.
+
+Final integrated checks PASS: web406/server57 (server unaffected by remote frontend changes),typecheck,OTP scoped lint,build32.68s. Ready to publish merged private/master. User authorized master submission; unrelated dirty files kept outside commit.
