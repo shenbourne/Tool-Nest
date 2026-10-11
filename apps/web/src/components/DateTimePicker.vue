@@ -4,14 +4,14 @@ import { NButton, NDatePicker, NInput, NPopover } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import TimeWheel from './TimeWheel.vue';
 import { format } from 'date-fns';
-const props = defineProps<{ value?: number | null; formattedValue?: string; timeOnly?: boolean }>();
+const props = defineProps<{ value?: number | null; formattedValue?: string; timeOnly?: boolean; dateOnly?: boolean }>();
 const emit = defineEmits<{ 'update:value': [number]; 'update:formattedValue': [string] }>();
 const { t } = useI18n();
-const label = computed(() => t(props.timeOnly ? 'tools.dateTime.clockInput' : 'tools.dateTime.dateTime'));
+const label = computed(() => t(props.timeOnly ? 'tools.dateTime.clockInput' : props.dateOnly ? 'tools.dateTime.date' : 'tools.dateTime.dateTime'));
 const show = ref(false);
 const draft = ref(Date.now());
 const selected = computed(() => props.formattedValue ? new Date(props.timeOnly ? format(new Date(), 'yyyy-MM-dd') + 'T' + props.formattedValue : props.formattedValue).getTime() : props.value);
-const display = computed(() => selected.value != null && Number.isFinite(selected.value) ? format(selected.value, props.timeOnly ? 'HH:mm:ss' : 'yyyy-MM-dd HH:mm:ss') : '');
+const display = computed(() => selected.value != null && Number.isFinite(selected.value) ? format(selected.value, props.timeOnly ? 'HH:mm:ss' : props.dateOnly ? 'yyyy-MM-dd' : 'yyyy-MM-dd HH:mm:ss') : '');
 function open(value: boolean) {
   if (value) draft.value = selected.value != null && Number.isFinite(selected.value) ? selected.value : Date.now();
   show.value = value;
@@ -34,7 +34,7 @@ function setTime(field: typeof fields[number], value: number) {
 }
 function confirm() {
   emit('update:value', draft.value);
-  emit('update:formattedValue', format(draft.value, props.timeOnly ? 'HH:mm:ss' : "yyyy-MM-dd'T'HH:mm:ss"));
+  emit('update:formattedValue', format(draft.value, props.timeOnly ? 'HH:mm:ss' : props.dateOnly ? 'yyyy-MM-dd' : "yyyy-MM-dd'T'HH:mm:ss"));
   show.value = false;
 }
 </script>
@@ -44,7 +44,7 @@ function confirm() {
     <div role="dialog" :aria-label="label" class="datetime-popup">
       <div class="picker-columns">
         <NDatePicker v-if="!timeOnly" :value="draft" type="date" panel :actions="[]" @update:value="setDate" />
-        <div class="time-columns" :class="{ 'time-only': timeOnly }">
+        <div v-if="!dateOnly" class="time-columns" :class="{ 'time-only': timeOnly }">
           <div class="time-field" v-for="field in fields" :key="field"><span>{{ t('common.' + field) }}</span>
             <TimeWheel :value="part(field)" :count="field === 'hours' ? 24 : 60" :label="t('common.' + field)" @update:value="setTime(field, $event)" />
           </div>

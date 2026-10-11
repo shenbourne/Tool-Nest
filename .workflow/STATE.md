@@ -214,3 +214,11 @@ Keep this short and factual so another agent can resume without chat history.
 - Typecheck, scoped eslint, 342/342 web tests and build PASS (19.35s, existing chunk warnings).
 - Desktop browser PASS: Now hour 09 then 72px upward drag selects 11; all three selected center offsets 0px; confirm yields 11:43:53 and truncation results 11:43:00 / 11:00:00. Screenshot .scratch/time-only-picker.png. Touch/mobile NOT RUN.
 - Review: shares existing wheel implementation, no dependency or new abstraction; no ADR/health audit warranted for one consumer mode. Feature publication follows; generated declarations excluded.
+- Publication: private/feature/phase-24-unified-time push succeeded at dab14fb9d9b1b5a9b5441c7a65b26b05f73e21c6. Independent ls-remote verification hit TLS EOF twice; next action retry remote SHA check. This publication note remains local.
+
+## 2026-10-11 remaining picker audit
+- Source inventory across web Vue/TS: remaining old consumers were ETA datetime and weekday date-only; both now reuse shared picker. No raw date/time inputs or old picker consumers remain outside shared calendar.
+- Date-only mode preserves yyyy-MM-dd and omits wheels; ETA preserves numeric timestamp. Browser PASS: 2026-10-15 gives Thursday, ETA minute 49 -> 48 confirms 09:48:40 and recomputes results. Screenshot .scratch/eta-picker.png.
+- pnpm --filter @toolnest/web type-check PASS; scoped eslint PASS; web test PASS; build PASS 30.32s with existing warnings; git diff --check PASS. Touch/mobile NOT RUN.
+- Focused health review triggered by multiple consumers: no calculation changes, dependencies or cycles; shared picker owns draft/confirmation, services retain calculation ownership. No ADR needed. Reversible presentation change verified in browser rather than implementation-mirroring tests.
+- private base already ancestor of HEAD (14/0); upstream initially 0/0. Feature-only publication; generated declarations/screenshots excluded.

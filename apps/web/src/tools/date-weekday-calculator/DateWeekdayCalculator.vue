@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NDatePicker, NFormItem, NAlert } from 'naive-ui';
+import { NFormItem, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import TimeToolPanel from '../date-time/TimeToolPanel.vue';
+import DateTimePicker from '@/components/DateTimePicker.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 import { formatLocalDate, parseLocalDate } from './date-weekday-calculator.service';
@@ -28,7 +29,7 @@ const results = computed(() => output.value ? [{ label: t('tools.dateWeekdayCalc
 <template>
   <ToolLayout :tool="tool">
     <TimeToolPanel :results="results">
-      <NFormItem :show-feedback="false" :label="t('tools.dateTime.date')"><NDatePicker v-model:formatted-value="input" type="date" value-format="yyyy-MM-dd" format="yyyy-MM-dd" :clearable="false" style="width: 100%;" /></NFormItem>
+      <NFormItem :show-feedback="false" :label="t('tools.dateTime.date')"><DateTimePicker v-model:formatted-value="input" date-only /></NFormItem>
       <template #feedback><NAlert v-if="dateError" type="error">{{ dateError }}</NAlert></template>
     </TimeToolPanel>
   </ToolLayout>

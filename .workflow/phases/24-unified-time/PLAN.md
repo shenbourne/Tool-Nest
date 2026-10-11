@@ -22,3 +22,4 @@ Reproduced hour 09 resetting to 00 after Now and 73px upward drag. Remove compet
 
 ## Time-only parity
 Reuse shared picker with timeOnly mode for truncation: hide calendar/divider, preserve HH:mm:ss binding, reuse centered smooth draggable wheels and Now/Confirm. No duplicate interaction implementation.
+- Audit follow-up: migrate ETA datetime and weekday date-only inputs to shared picker; add dateOnly presentation/format mode, preserve timestamp and yyyy-MM-dd contracts. Verify inventory, browser selection and standard checks.
