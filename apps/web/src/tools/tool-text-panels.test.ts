@@ -48,6 +48,8 @@ const EXPECTED: string[] = [
   'sql-prettify/SqlPrettify.vue',
   // data/dev converters
   'base64-encoder/Base64Encoder.vue',
+  // Phase 26: mixed text/file rows use action overrides and the standard FileCard.
+  'base64-file-converter/Base64FileConverter.vue',
   'docker-run-to-compose/DockerRunToCompose.vue',
   'email-extractor/EmailExtractor.vue',
   'email-normalizer/EmailNormalizer.vue',
@@ -107,7 +109,6 @@ const EXPECTED: string[] = [
 const EXCLUDED: string[] = [
   // Phase 24: clock picker and structured result rows replace the text/file pair.
   'truncate-clock-time/TruncateClockTime.vue',
-  'base64-file-converter/Base64FileConverter.vue',
   // phase 16: generates a whole 1Panel app directory (metadata form + file
   // tree + editable file cards + zip export), not an input->output text pair
   'docker-compose-to-1panel/DockerComposeTo1panel.vue',

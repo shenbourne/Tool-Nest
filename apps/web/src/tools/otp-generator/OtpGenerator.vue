@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { NCard, NInput, NSpace, NButton, NProgress, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -94,7 +94,7 @@ watch([secret, issuer, account], () => {
               <NButton text @click="copySecret">{{ t('tool.copy') }}</NButton>
             </template>
           </NInput>
-          <NButton @click="regenerate">{{ t('tools.otpGenerator.generateNewSecret') }}</NButton>
+          <NButton type="primary" @click="regenerate">{{ t('tools.otpGenerator.generateNewSecret') }}</NButton>
         </NSpace>
       </NCard>
 
