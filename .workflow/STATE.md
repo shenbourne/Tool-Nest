@@ -284,3 +284,5 @@ Package extension publication verified: private/feature/phase-29-readme-import m
 
 Phase29 authorized local master integration: merged latest local master 2e919b4 on clean feature branch, verified 381 tests/typecheck/production build PASS. Ready to fast-forward master preserving its dirty state note/declarations. No remote master push requested.
 
+
+2026-10-11 user authorized network fixes merge to local master. Integrated latest local master f6adb77 via 6c35627; kept both progress histories. Combined web395/server57 tests, workspace typecheck, scoped eslint, production build, diff-check PASS. Ready to fast-forward master, restore saved dirty state/declarations. Feature publication required; remote master push not requested. Positive OONI live-data acceptance remains pending external connectivity.

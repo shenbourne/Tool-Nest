@@ -25,3 +25,10 @@
 - Focused codebase health invoked for server/client contract change: service owns external request/normalization and typed errors; route maps HTTP envelope; frontend owns translation. No dependencies or cycles added, other tools untouched.
 - ADR/harness audit SKIP: no architecture policy change or recurring workflow audit needed.
 - Source mirrored into primary checkout, preserving unrelated dirty work. Generated declarations excluded. No merge authorized.
+
+## Authorized master integration — 2026-10-11
+- User explicitly requested local master merge. Integrated master f6adb77 into feature via 6c35627. Only STATE/ROADMAP append conflicts; preserved both histories. Locales and runtime sources merged automatically; reviewed changed scope against master.
+- pnpm test PASS: web395 + server57 =452. pnpm type-check PASS. Scoped server/web eslint PASS (sandbox path access initially denied; escalated retry successful).
+- Prior publication confirmed 8456693. Pre-integration local notes/declarations preserved in stash phase32-pre-master-integration. Master dirty tracked edits separately preserved in phase32-authorized-master-preservation; untracked assets remain untouched.
+- Positive live OONI response remains unverified due external timeout; merge authorization does not change that acceptance limitation.
+- pnpm build PASS (server/web; existing externalization/TOML eval warnings). git diff --check PASS. Source unchanged after checks. Full lint skipped because known pre-existing baseline; relevant scoped checks passed.
