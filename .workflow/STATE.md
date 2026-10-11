@@ -233,3 +233,7 @@ Keep this short and factual so another agent can resume without chat history.
 Publication verified: private/feature/phase-30-ping-fix at 154f0b0. Technical and acceptance verification complete; awaiting authorized master integration. Generated declarations/build files intentionally unstaged.
 
 2026-10-11 Ping output visibility follow-up complete: probe cards with latency/loss/status and collapsed logs/JSON. Desktop real baidu.com browser PASS; web349/typecheck/scoped lint/build PASS. Existing feature/phase-30-ping-fix reused and source mirrored into primary. No merge authorized; next authorized integration.
+
+Active phase31 network result readability on feature/phase-31-network-results; from published phase30 de82219 due dependency. Initial fetch TLS EOF, remote freshness not confirmed. Scope eight unreadable/sparse network outputs, preserve other work. Next: implement and verify.
+
+Phase31 technical and output acceptance complete: eight views implemented, seven live browser successes, censorship fixture view PASS but existing OONI upstream error unresolved/out of scope. Final targeted6/typecheck/differential lint new0/build/diff PASS. Feature/phase-31-network-results ready for publication; no master merge authorized. Initial TLS errors recorded; final fetch exit=0. Next: verify publication and user-authorized integration.

@@ -1,0 +1,3 @@
+# Phase 31 — Network result readability
+User requests other network tools to gain readable output after Ping. Scope: MTR, global DNS latency, rule test, DNS leak test, censorship check, WHOIS, IP info and DNS resolver. Other tools already render named metrics/status/calculation tables; no cosmetic churn required.
+Isolated feature/phase-31-network-results based on de82219 (published phase30 dependency for valid Globalping selectors). Initial fetch attempts failed TLS EOF; base freshness unconfirmed, preserve and record this limitation. No merge authorized. R-002 bilingual unified UI applies. No ADR decision needed for local result presenter.
