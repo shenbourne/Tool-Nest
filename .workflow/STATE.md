@@ -231,3 +231,6 @@ Keep this short and factual so another agent can resume without chat history.
 ## 2026-10-11 — Phase 29 number sequence UI
 
 Branch: feature/phase-29-number-sequence, isolated worktree from private/master 742c5e3; fetch comparison 0/0 before and after. Cards, count, explicit generation and result metadata implemented. Web tests 342 PASS; typecheck, scoped lint and build PASS. Desktop browser acceptance PASS; mobile and dark visual acceptance unverified. Scoped component and locale changes copied to shared checkout for local preview, all unrelated edits preserved. Status: implemented, remaining visual acceptance; merge pending. Remote feature publication follows this record.
+
+Phase 29 follow-up: user requested real-time generation and starting value lower bound. Implemented computed output, input-time updates, bounded start field and safe Fibonacci remaining-count limit. 10 service tests PASS (RED observed before implementation), browser live interaction PASS. Final build pending; feature update pending publication.
+Phase 29 follow-up final: 345 web tests PASS, scoped lint PASS, production build/typecheck PASS, browser live count/start/type behavior PASS. Published update to private/feature/phase-29-number-sequence; merge remains pending. Dark/mobile visual acceptance still unverified.
