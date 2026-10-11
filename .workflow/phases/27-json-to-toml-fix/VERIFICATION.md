@@ -19,3 +19,6 @@
 
 - Final isolated production build: pnpm exec vite build exit 0, 21.71s. Existing externalized built-in/eval/chunk-size warnings only. Technical and browser-load/conversion acceptance gates PASS; phase verified, pending authorized integration.
 - Source feature publication PASS: a938a1d on private/feature/phase-27-json-to-toml-fix verified by ls-remote. Whitespace EOF cleanup recorded separately.
+
+## Authorized master integration 2026-10-11
+Merged latest local master 01bbdac into phase27 as b0e0fc9 with no conflicts. Integrated tree tests PASS 368/368, typecheck PASS, build PASS 50.60s; no new source modifications. Local master fast-forward follows verification; remote master publication outside this request.
