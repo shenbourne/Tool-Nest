@@ -36,4 +36,3 @@ describe('browser authenticator OTP', () => {
     expect(getTimeRemaining()).toEqual({ remaining: 30000, total: 30000 });
   });
 });
-
