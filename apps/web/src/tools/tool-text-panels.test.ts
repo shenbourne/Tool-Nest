@@ -98,7 +98,6 @@ const EXPECTED: string[] = [
   'seconds-to-time/SecondsToTime.vue',
   'time-to-decimal/TimeToDecimal.vue',
   'time-to-seconds/TimeToSeconds.vue',
-  'truncate-clock-time/TruncateClockTime.vue',
   'encryption/EncryptionTool.vue',
 ];
 

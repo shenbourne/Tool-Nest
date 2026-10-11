@@ -197,3 +197,9 @@ Keep this short and factual so another agent can resume without chat history.
 - Shared side-by-side calendar/time picker applied to interval, Discord and date converter; vertical divider and unified confirmation.
 - 342 tests, typecheck, scoped lint/build PASS; desktop visual and 08:30:00 confirmation PASS. Preview at 3425, screenshot .scratch/datetime-picker.png.
 - Feature branch publication pending; master unchanged, existing dirty generated declarations excluded.
+- Feature push succeeded at 16158b0 after TLS retry; independent remote check initially TLS EOF, retried. No master merge performed.
+
+## 2026-10-11 centered time wheels
+- Shared date/time picker now keeps selected hour/minute/second vertically centered, including endpoint values. Keyboard/click/wheel selection and snap settling supported.
+- Browser measured 0px center offsets for 23/59/00. Typecheck/lint/build PASS; 342/342 tests PASS after stale text-panel inventory fix. Screenshot .scratch/centered-time-wheel.png.
+- Feature publication pending; master unchanged; primary worktree and generated declarations preserved.

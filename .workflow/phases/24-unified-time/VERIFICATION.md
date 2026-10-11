@@ -27,3 +27,9 @@
 - type-check PASS; scoped eslint PASS; web tests 342/342 PASS; production build PASS 20.76s (existing warnings).
 - Browser visual PASS: calendar and time parallel, divider visible, no nested time popup. Selected 08:30:00 and confirmed; input and Discord results updated correctly. Screenshot .scratch/datetime-picker.png. New preview http://127.0.0.1:3425/date-time (previous preview stopped; restart chose next port). Mobile and DST selection NOT RUN.
 - Focused health review: shared control replaces all three datetime consumers, uses existing dependencies, edits draft before confirmation and discards unconfirmed draft on reopen. No ADR needed for presentation choice.
+
+## 2026-10-11 centered time wheels
+- Native select replaced by TimeWheel with fixed 36px rows, 252px viewport and 108px symmetric padding. Selected values align on mount/external changes, clicks, wheel and keyboard; touch/drag scrolling snaps on settle. Timers cleared on unmount.
+- Browser PASS: initial 08/30/00 centered; keyboard End selects hour 23/minute 59 and measured selected center offsets [0,0,0] px including second 00. Screenshot .scratch/centered-time-wheel.png. Touch/mobile NOT RUN.
+- Typecheck, scoped lint and build PASS (24.07s). Initial full tests 341 pass/1 failure exposed stale truncate-clock-time EXPECTED inventory also present in EXCLUDED. Removed obsolete EXPECTED entry; rerun all tests 342/342 PASS. This corrects prior follow-up test claims: inventory change had not removed the CRLF line as intended.
+- Focused review: shared wheel owns scrolling and keyboard interaction, parent owns timestamp update, no new dependency/ADR; behavioral browser geometry check covers the center requirement.

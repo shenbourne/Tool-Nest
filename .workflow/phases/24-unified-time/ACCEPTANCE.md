@@ -13,3 +13,5 @@
 - Remaining NOT RUN: mobile, English and full keyboard/picker interactions.
 
 - Datetime popup PASS (desktop browser): left calendar/right hour-minute-second selection, vertical divider; confirmed time updates both display and calculations. Interval endpoints and date converter reuse same component (source/typecheck PASS).
+
+- Centered wheel PASS desktop browser: selected initial and endpoint rows have 0px center offset, keyboard End updates selection. Fading and fixed central highlight source/visual PASS. Touch/mobile NOT RUN.
