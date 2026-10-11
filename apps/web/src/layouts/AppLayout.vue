@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { useMediaQuery } from '@vueuse/core';
 import type { CSSProperties } from 'vue';
 import { NLayout, NLayoutSider, NLayoutContent, NTooltip } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
@@ -15,7 +16,8 @@ const route = useRoute();
 const router = useRouter();
 const preferencesStore = usePreferencesStore();
 
-const collapsed = computed(() => preferencesStore.sidebarCollapsed);
+const narrowScreen = useMediaQuery('(max-width: 640px)');
+const collapsed = computed(() => narrowScreen.value || preferencesStore.sidebarCollapsed);
 
 const sortedCategories = computed(() =>
   [...TOOL_CATEGORIES].sort((a, b) => a.order - b.order)
@@ -251,5 +253,13 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .sidebar-footer {
+    padding: 8px 4px;
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 </style>

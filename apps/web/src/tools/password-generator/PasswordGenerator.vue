@@ -39,10 +39,10 @@ function gen() {
           <span>{{ t('common.length') }}:</span><NInputNumber v-model:value="length" :min="4" :max="128" style="width:100px"  :input-props="{ id: 'passwordGeneratorField0' }"/>
         </NSpace>
         <NSpace>
-          <NSwitch v-model:value="upper">{{ t('common.uppercase') }}</NSwitch>
-          <NSwitch v-model:value="lower">{{ t('common.lowercase') }}</NSwitch>
-          <NSwitch v-model:value="nums">{{ t('common.numbers') }}</NSwitch>
-          <NSwitch v-model:value="syms">{{ t('common.symbols') }}</NSwitch>
+          <label class="tool-switch-label"><NSwitch v-model:value="upper" :aria-label="t('common.uppercase')" /><span>{{ t('common.uppercase') }}</span></label>
+          <label class="tool-switch-label"><NSwitch v-model:value="lower" :aria-label="t('common.lowercase')" /><span>{{ t('common.lowercase') }}</span></label>
+          <label class="tool-switch-label"><NSwitch v-model:value="nums" :aria-label="t('common.numbers')" /><span>{{ t('common.numbers') }}</span></label>
+          <label class="tool-switch-label"><NSwitch v-model:value="syms" :aria-label="t('common.symbols')" /><span>{{ t('common.symbols') }}</span></label>
         </NSpace>
         <NInput v-model:value="exclude" :placeholder="t('tools.passwordGenerator.excludePlaceholder')"  :input-props="{ id: 'passwordGeneratorField1' }"/>
         <NButton type="primary" @click="gen">{{ t('tools.passwordGenerator.generatePassword') }}</NButton>
