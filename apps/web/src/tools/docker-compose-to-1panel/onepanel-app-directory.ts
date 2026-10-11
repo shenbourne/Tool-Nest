@@ -160,12 +160,13 @@ export interface AppLogo {
   blob: Blob;
 }
 
-export async function buildAppZip(appKey: string, files: DirectoryFile[], logo: AppLogo | null): Promise<Blob> {
+export async function buildAppZip(appKey: string, files: DirectoryFile[], logo: AppLogo | null, assets: { path: string; content: Uint8Array }[] = []): Promise<Blob> {
   const { default: JSZip } = await import('jszip');
   const zip = new JSZip();
   const root = zip.folder(appKey);
   if (!root) throw new Error('failed to create zip root folder');
 
+  for (const asset of assets) root.file(asset.path, asset.content);
   for (const file of files) {
     root.file(file.path, file.content);
   }

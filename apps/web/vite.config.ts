@@ -7,6 +7,13 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path';
 
 export default defineConfig({
+  // @iarna/toml uses Node's global alias for Date, Buffer checks and BigInt.
+  // Vite applies these replacements in both dependency pre-bundling and builds.
+  define: {
+    'global.Date': 'globalThis.Date',
+    'global.Buffer': 'globalThis.Buffer',
+    'global.BigInt': 'globalThis.BigInt',
+  },
   // Pre-bundling rewrites @ffmpeg/ffmpeg's `new Worker(new URL('./worker.js', import.meta.url))`
   // to a non-existent node_modules/.vite/deps/worker.js, which makes ffmpeg.load() hang forever.
   optimizeDeps: {

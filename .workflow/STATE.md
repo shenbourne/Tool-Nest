@@ -228,6 +228,65 @@ Keep this short and factual so another agent can resume without chat history.
 - Post-merge pnpm --filter @toolnest/web type-check PASS; test PASS 342/342; build PASS 33.36s (existing dependency/chunk warnings); git diff --check PASS. Exact implementation already browser-verified on feature branch; no code changes during merge.
 - Existing dirty generated declarations/cache preserved and excluded. Master publication pending, next action fetch/compare and normal push to private/master.
 
+
+2026-10-11 phase30 Ping fix: feature/phase-30-ping-fix from private/master 742c5e3. Empty proxy500 caused by missing local backend; restored. Globalping tagged locations translated to selector fields. Web349/server52 tests, typecheck/scoped lint/build and real baidu.com browser Ping PASS. Source mirrored into shared checkout preserving unrelated edits. No master merge authorized. Next: feature publication and authorized integration.
+
+Publication verified: private/feature/phase-30-ping-fix at 154f0b0. Technical and acceptance verification complete; awaiting authorized master integration. Generated declarations/build files intentionally unstaged.
+
+2026-10-11 Ping output visibility follow-up complete: probe cards with latency/loss/status and collapsed logs/JSON. Desktop real baidu.com browser PASS; web349/typecheck/scoped lint/build PASS. Existing feature/phase-30-ping-fix reused and source mirrored into primary. No merge authorized; next authorized integration.
+
+Active phase31 network result readability on feature/phase-31-network-results; from published phase30 de82219 due dependency. Initial fetch TLS EOF, remote freshness not confirmed. Scope eight unreadable/sparse network outputs, preserve other work. Next: implement and verify.
+
+Phase31 technical and output acceptance complete: eight views implemented, seven live browser successes, censorship fixture view PASS but existing OONI upstream error unresolved/out of scope. Final targeted6/typecheck/differential lint new0/build/diff PASS. Feature/phase-31-network-results ready for publication; no master merge authorized. Initial TLS errors recorded; final fetch exit=0. Next: verify publication and user-authorized integration.
+
+Active phase32 censorship repair on feature/phase-32-censorship-fix from8942ac2; fetched private/master742c5e3, 4ahead/0behind. User authorizes interface fix; next regression and real endpoint verification.
+
+Phase32 implementation verified (server57/web356/typecheck/scoped lint/build PASS), live www.google.com now shows localized typed OONI timeout and recovers. GET contract/normalization/evidence sample repaired. Positive live data acceptance unverified because official service inaccessible; phase awaiting connectivity. Source mirrored into primary. feature/phase-32-censorship-fix, no merge authorized. Next publish scoped fix and verify positive response when network recovers.
+
+2026-10-11 phase29 README import: isolated feature/phase-29-readme-import from fetched private/master 742c5e3. Current primary workspace preserved. Implementation and verification in progress.
+
+Phase29 implementation verified: 350 web tests, typecheck, scoped lint, production build PASS. Source mirrored into primary checkout. Browser acceptance outstanding; next: UI acceptance and separately authorized merge. Feature publication pending.
+
+Publication verified: private/feature/phase-29-readme-import points to implementation 8c9f4ca (git ls-remote matched). No default-branch merge performed. Browser acceptance remains next action.
+
+2026-10-11 phase29 expanded: existing-app ZIP import/new version supported on feature/phase-29-readme-import. Inherited editable metadata; old versions and binary/root/source assets preserved. Browser upload/edit/download and downloaded ZIP inspection PASS. Source mirrored into shared primary checkout; unrelated edits retained. Final verification/publication pending; no merge authorized.
+
+Package extension technically verified and browser accepted; ready for feature publication and separately authorized integration. Original README browser acceptance remains pending.
+
+Package extension publication verified: private/feature/phase-29-readme-import matches implementation commit 4483d36. Browser ZIP evidence .scratch/1panel-import-verified.png and D:/Users/Downloads/demo.zip. No master merge. Next: authorized integration.
+
+2026-10-11 package UI refinement verified: instruction row and exit button removed; file removal exits mode and invalidates pending imports. Typecheck/scoped lint/browser import-remove PASS. Branch feature/phase-29-readme-import; source mirrored into primary. Next: authorized integration. Remote fetch PASS: feature upstream 0/0, base unchanged; only own 4 commits ahead of private/master.
+
+## 2026-10-11 JSON to TOML load fix
+- Scoped fix on feature/phase-27-json-to-toml-fix from refreshed private/master 742c5e3; primary shared edits preserved, fix mirrored into primary checkout for local use.
+- Serializer-only import avoids parser global.Date ReferenceError. Browser-like regression 2/2, typecheck/scoped lint/build PASS; full web tests 336 PASS/1 unrelated Base64 contract FAIL. Actual browser clicks NOT RUN.
+- Phase27 documents hold plan and evidence. No merge authorized. Next: resolve existing Base64 test discrepancy separately, browser acceptance, safe integration. Feature publication result recorded below.
+
+## 2026-10-11 all TOML converter load fixes — verified
+- User expanded phase27 to all tools sharing the failure. Four consumers confirmed: JSON to TOML, YAML to TOML, TOML to JSON, TOML to YAML. Serializers use stringify-only import; parser global.Date/Buffer/BigInt mapped to globalThis properties via Vite define for dev/production.
+- Actual browser loading and nested conversion PASS for all four, screenshot .scratch/toml-to-json-fixed.png. Isolated feature/phase-27-json-to-toml-fix tests 348/348, typecheck/scoped lint/build PASS. Initial shared Base64 test failure excluded and isolated full gates now green.
+- Source changes mirrored into shared primary checkout; unrelated edits preserved. Isolated dependency junctions and ignored build artifacts retained for further work. No master merge. Source publication will be verified against private feature branch.
+
+- Publication verified: private/feature/phase-27-json-to-toml-fix points to source fix a938a1d (git ls-remote matched HEAD). No master merge. Phase27 verified and ready for authorized integration.
+
+
+## 2026-10-11 authorized TOML master integration
+- User explicitly authorized merging all four TOML fixes to local master. Integrated master 01bbdac into phase27 via b0e0fc9 with no conflicts; only TOML source/config/tests and phase27 records differ from master.
+- Post-integration pnpm exec vitest run PASS 51 files/368 tests; pnpm exec vue-tsc --noEmit PASS; pnpm exec vite build PASS 50.60s (existing externalization/eval/chunk warnings). No source edits after verification.
+- Plan: fast-forward local master to this verified phase branch in its existing worktree, preserving dirty generated files and publication note through autostash. Primary shared checkout unchanged. Remote master publication not requested; feature branch publication authorized by repository policy.
+
+## 2026-10-11 Phase 28 HTML entities
+- Layout and actions repaired on feature/phase-28-html-entities from refreshed private/master 742c5e3. Two independent conversion rows; browser acceptance PASS, 342 tests/typecheck/scoped lint/build PASS. Phase complete; master merge awaits authorization.
+- Component mirrored into primary dirty checkout for immediate review; unrelated edits preserved. No ADR or harness change needed. Publication pending final fetch/push verification.
+- Publication PASS: private/feature/phase-28-html-entities verified at 0303c1f; clean isolated worktree. Next action: authorized master integration; no merge performed.
+
+2026-10-11 user authorized phase29 merge to local master. Latest local master 2e919b4 integrated into feature; only STATE append conflict resolved preserving both records. Post-merge verification pending. Primary shared edits and master dirty files preserved. Remote master publication not requested.
+
+Phase29 authorized local master integration: merged latest local master 2e919b4 on clean feature branch, verified 381 tests/typecheck/production build PASS. Ready to fast-forward master preserving its dirty state note/declarations. No remote master push requested.
+
+
+2026-10-11 user authorized network fixes merge to local master. Integrated latest local master f6adb77 via 6c35627; kept both progress histories. Combined web395/server57 tests, workspace typecheck, scoped eslint, production build, diff-check PASS. Ready to fast-forward master, restore saved dirty state/declarations. Feature publication required; remote master push not requested. Positive OONI live-data acceptance remains pending external connectivity.
+
 ## 2026-10-11 — Phase 29 number sequence UI
 
 Branch: feature/phase-29-number-sequence, isolated worktree from private/master 742c5e3; fetch comparison 0/0 before and after. Cards, count, explicit generation and result metadata implemented. Web tests 342 PASS; typecheck, scoped lint and build PASS. Desktop browser acceptance PASS; mobile and dark visual acceptance unverified. Scoped component and locale changes copied to shared checkout for local preview, all unrelated edits preserved. Status: implemented, remaining visual acceptance; merge pending. Remote feature publication follows this record.
@@ -235,3 +294,5 @@ Branch: feature/phase-29-number-sequence, isolated worktree from private/master 
 Phase 29 follow-up: user requested real-time generation and starting value lower bound. Implemented computed output, input-time updates, bounded start field and safe Fibonacci remaining-count limit. 10 service tests PASS (RED observed before implementation), browser live interaction PASS. Final build pending; feature update pending publication.
 Phase 29 follow-up final: 345 web tests PASS, scoped lint PASS, production build/typecheck PASS, browser live count/start/type behavior PASS. Published update to private/feature/phase-29-number-sequence; merge remains pending. Dark/mobile visual acceptance still unverified.
 Phase 29 single-line hint: concise bilingual wording and nowrap applied; browser visual check PASS, scoped lint PASS. Feature branch updated; shared preview receives scoped edits only.
+
+2026-10-12: user authorized phase 29 merge to master. Isolated integration preserves committed local master work and dirty shared checkouts. Verification pending.

@@ -29,3 +29,11 @@ The detailed delivery sequence remains authoritative in `DEVELOPMENT_PLAN.md`. R
 | 23 — Date/time pickers | Calendar/clock selection for weekday, Discord, date intervals and date conversion | User request 2026-10-10; R-002 | Implemented; automated checks PASS, browser acceptance pending | Existing Naive UI |
 
 | 24 — Unified date and time | Consolidate nine screenshot tools with duration conversion and in-page tabs | User request 2026-10-10; R-002 | In progress | Existing calendar tools |
+
+
+| 31 — Network result readability | User requested other network tools to follow Ping readability: eight tools, structured probe/record/registration views and collapsible diagnostics | R-002 (2026-10-11 user request) | Implementation and scoped acceptance verified; existing censorship upstream failure documented | Phase30 selector fix de82219 |
+
+| 32 — Censorship query repair | User requests repair of internal error; official GET contract, normalized URLs, bounded evidence and localized upstream errors | R-002/R-004 | Implementation verified; live successful upstream acceptance awaits connectivity | Phase31 8942ac2 |
+
+Phase29: README file/URL import for Docker Compose to 1Panel.
+

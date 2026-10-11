@@ -9,5 +9,5 @@ export const tool = defineTool({
   keywords: ['ping', 'latency', 'test', 'network', 'icmp'],
   component: () => import('./PingTest.vue'),
   createdAt: '2026-09-18',
-  runtimeLocation: 'browser',
+  runtimeLocation: 'backend',
 });

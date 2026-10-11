@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NSwitch, NSlider, NInput, NButton, NFormItem } from 'naive-ui';
+import { useMediaQuery } from '@vueuse/core';
+import { NSwitch, NSlider, NInput, NInputNumber, NButton, NFormItem } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { createToken, tool } from './index';
 
 const { t } = useI18n();
+const narrowScreen = useMediaQuery('(max-width: 640px)');
 
 const length = ref(64);
 const withUppercase = ref(true);
@@ -21,6 +23,10 @@ const token = computed(() => {
 });
 
 function refresh() { nonce.value++; }
+
+function updateLength(value: number | null) {
+  if (value !== null) length.value = Math.min(512, Math.max(1, Math.round(value)));
+}
 </script>
 
 <template>
@@ -30,29 +36,64 @@ function refresh() { nonce.value++; }
         <NInput :value="token" type="textarea" readonly :rows="3" style="text-align: center; font-family: monospace;"  :input-props="{ id: 'tokenGeneratorField0' }"/>
       </template>
       <template #params>
-        <div style="display: flex; justify-content: center; gap: 32px;">
-          <div>
-            <NFormItem :label="t('common.uppercase')" label-placement="left">
+        <div class="token-options">
+            <NFormItem :label="t('common.uppercase')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withUppercase" />
             </NFormItem>
-            <NFormItem :label="t('common.lowercase')" label-placement="left">
+            <NFormItem :label="t('common.lowercase')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withLowercase" />
             </NFormItem>
-          </div>
-          <div>
-            <NFormItem :label="t('common.numbers')" label-placement="left">
+            <NFormItem :label="t('common.numbers')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withNumbers" />
             </NFormItem>
-            <NFormItem :label="t('common.symbols')" label-placement="left">
+            <NFormItem :label="t('common.symbols')" :label-placement="narrowScreen ? 'top' : 'left'">
               <NSwitch v-model:value="withSymbols" />
             </NFormItem>
-          </div>
         </div>
-        <NFormItem :label="`${t('common.length')} (${length})`" label-placement="left">
-          <NSlider v-model:value="length" :step="1" :min="1" :max="512" />
+        <NFormItem :label="t('common.length')" label-placement="left">
+          <div class="token-length">
+            <NInputNumber :value="length" :min="1" :max="512" :step="1" :precision="0" :aria-label="t('common.length')" @update:value="updateLength" />
+            <NSlider v-model:value="length" :step="1" :min="1" :max="512" />
+          </div>
         </NFormItem>
-        <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+        <NButton type="primary" block @click="refresh">{{ t('common.generationActions.token') }}</NButton>
       </template>
     </ToolTextPanel>
   </ToolLayout>
 </template>
+
+<style scoped>
+.token-options {
+  display: flex;
+  justify-content: safe center;
+  gap: 32px;
+  overflow-x: auto;
+}
+
+.token-options :deep(.n-form-item) {
+  flex-shrink: 0;
+}
+
+.token-length {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.token-length :deep(.n-input-number) {
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.token-length :deep(.n-slider) {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .token-options {
+    gap: 16px;
+  }
+}
+</style>

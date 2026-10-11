@@ -98,6 +98,16 @@ describe('buildRootDataYml / defaultReadme fallbacks', () => {
 });
 
 describe('buildAppZip', () => {
+  it('exports imported README content verbatim instead of generated text', async () => {
+    const { default: JSZip } = await import('jszip');
+    const imported = '# 导入的说明\n\nCustom instructions\n';
+    const files = generateAppDirectory(COMPOSE, { ...META, name: 'Changed name' }).files
+      .map(file => file.path === 'README.md' ? { ...file, content: imported } : file);
+    const blob = await buildAppZip('my-app', files, null);
+    const zip = await JSZip.loadAsync(await blob.arrayBuffer());
+    expect(await zip.files['my-app/README.md'].async('string')).toBe(imported);
+  });
+
   it('packs every file under the app key root, including the logo', async () => {
     const { default: JSZip } = await import('jszip');
     const files = generateAppDirectory(COMPOSE, META).files;

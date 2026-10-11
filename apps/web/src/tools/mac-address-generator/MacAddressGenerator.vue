@@ -80,7 +80,7 @@ function copyAll() {
       <NCard :title="t('tools.macAddressGenerator.generatedMacAddresses')">
         <pre style="margin: 0; font-family: monospace; white-space: pre-wrap;">{{ macAddresses.join('\n') }}</pre>
         <NSpace style="margin-top: 12px" justify="center">
-          <NButton @click="refresh">{{ t('common.refresh') }}</NButton>
+          <NButton type="primary" @click="refresh">{{ t('common.generationActions.macAddresses') }}</NButton>
           <NButton @click="copyAll">{{ t('tool.copy') }}</NButton>
         </NSpace>
       </NCard>

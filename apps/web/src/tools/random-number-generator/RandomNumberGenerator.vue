@@ -34,8 +34,10 @@ function gen() {
           <NInputNumber v-model:value="count" :min="1" :max="10000" :placeholder="t('common.count')" style="width:120px"  :input-props="{ id: 'randomNumberGeneratorField2' }"/>
         </div>
         </NSpace>
-        <NSwitch v-model:value="unique">{{ t('tools.randomNumberGenerator.uniqueOnly') }}</NSwitch>
-        <NButton type="primary" @click="gen">{{ t('common.generate') }}</NButton>
+        <div class="tool-generation-row">
+        <label class="tool-switch-label"><NSwitch v-model:value="unique" :aria-label="t('tools.randomNumberGenerator.uniqueOnly')" /><span>{{ t('tools.randomNumberGenerator.uniqueOnly') }}</span></label>
+        <NButton type="primary" @click="gen">{{ t('common.generationActions.randomNumbers') }}</NButton>
+        </div>
       </template>
     </ToolTextPanel>
   </ToolLayout>

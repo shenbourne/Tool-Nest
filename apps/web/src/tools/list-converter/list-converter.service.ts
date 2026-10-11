@@ -14,8 +14,13 @@ export function convertList(input: string, options: ListOptions): string {
 
   const sep = options.separator;
 
-  // Split by separator
-  let items = input.split(sep);
+  // Detect the input delimiter independently of the selected output delimiter.
+  // Prefer explicit list delimiters so spaces inside names remain intact.
+  const inputDelimiter = [',', ';', '\t', '|', '\n', '\r', ' ']
+    .find(delimiter => input.includes(delimiter));
+  let items = inputDelimiter === '\n' || inputDelimiter === '\r'
+    ? input.split(/\r\n|\r|\n/)
+    : inputDelimiter ? input.split(inputDelimiter) : [input];
 
   // Pipeline: trim
   if (options.trimItems) {

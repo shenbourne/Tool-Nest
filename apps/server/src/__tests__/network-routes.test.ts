@@ -19,7 +19,8 @@ beforeEach(async () => {
     },
   }));
 
-  vi.doMock('../services/ooni', () => ({
+  vi.doMock('../services/ooni', async () => ({
+    ...await vi.importActual<typeof import('../services/ooni')>('../services/ooni'),
     OoniService: {
       checkCensorship: vi.fn().mockResolvedValue([
         { input: 'https://example.com', confirmed: false, anomaly: false },
@@ -176,6 +177,13 @@ describe('POST /api/network/rule-test', () => {
 });
 
 describe('POST /api/network/censorship', () => {
+  it('returns a typed upstream timeout instead of an internal error', async () => {
+    const { OoniService, OoniError } = await import('../services/ooni');
+    vi.mocked(OoniService.checkCensorship).mockRejectedValueOnce(new OoniError('OONI_TIMEOUT', 'OONI query timed out', 504));
+    const res = await fetch(`${baseUrl}/api/network/censorship`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ urls: ['example.com'] }) });
+    expect(res.status).toBe(504);
+    expect((await res.json()).error.code).toBe('OONI_TIMEOUT');
+  });
   it('returns censorship check results', async () => {
     const res = await fetch(`${baseUrl}/api/network/censorship`, {
       method: 'POST',
