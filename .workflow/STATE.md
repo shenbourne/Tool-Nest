@@ -233,3 +233,7 @@ Keep this short and factual so another agent can resume without chat history.
 Phase29 implementation verified: 350 web tests, typecheck, scoped lint, production build PASS. Source mirrored into primary checkout. Browser acceptance outstanding; next: UI acceptance and separately authorized merge. Feature publication pending.
 
 Publication verified: private/feature/phase-29-readme-import points to implementation 8c9f4ca (git ls-remote matched). No default-branch merge performed. Browser acceptance remains next action.
+
+2026-10-11 phase29 expanded: existing-app ZIP import/new version supported on feature/phase-29-readme-import. Inherited editable metadata; old versions and binary/root/source assets preserved. Browser upload/edit/download and downloaded ZIP inspection PASS. Source mirrored into shared primary checkout; unrelated edits retained. Final verification/publication pending; no merge authorized.
+
+Package extension technically verified and browser accepted; ready for feature publication and separately authorized integration. Original README browser acceptance remains pending.

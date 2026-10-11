@@ -22,6 +22,7 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { readReadmeUrl } from './readme-import';
+import { importAppPackage, generatePackageVersion, packageAssets, packageText, type ImportedAppPackage } from './app-package';
 import {
   ARCHITECTURE_OPTIONS,
   TAG_OPTIONS,
@@ -38,6 +39,10 @@ const message = useMessage();
 const readmeMode = ref('file');
 const readmeUrl = ref('');
 const importingReadme = ref(false);
+const importedApp = ref<ImportedAppPackage | null>(null);
+const sourceVersion = ref('');
+const importingPackage = ref(false);
+const sourceVersionOptions = computed(() => importedApp.value?.versions.map(value => ({ label: value.replace(/^versions\//, ''), value })) ?? []);
 const readmeModes = computed(() => [
   { label: t('tool.importFile'), value: 'file' },
   { label: t('tools.dockerComposeTo1panel.readmeLink'), value: 'url' },
@@ -98,7 +103,51 @@ const logoFile = ref<File | null>(null);
 const selectedPath = ref('data.yml');
 const downloading = ref(false);
 
-const generated = computed(() => generateAppDirectory(input.value, meta.value));
+const generated = computed(() => {
+  if (!importedApp.value) return generateAppDirectory(input.value, meta.value);
+  const result = generatePackageVersion(importedApp.value, sourceVersion.value, meta.value, input.value);
+  if (!result.success) result.error = t(result.error?.startsWith('Use a valid new version')
+    ? 'tools.dockerComposeTo1panel.packageVersionError'
+    : 'tools.dockerComposeTo1panel.packageComposeError');
+  return result;
+});
+
+async function importPackage(fileList: File[]) {
+  const file = fileList[0];
+  if (!file || importingPackage.value) return;
+  importingPackage.value = true;
+  try {
+    if (file.size > 50 * 1024 * 1024) throw new Error('Package exceeds 50 MB');
+    const app = await importAppPackage(new Uint8Array(await file.arrayBuffer()));
+    const compose = packageText(app, `${app.versions[0]}/docker-compose.yml`);
+    const logo = app.assets.find(asset => asset.path === 'logo.png');
+    importedApp.value = app;
+    sourceVersion.value = app.versions[0];
+    input.value = compose;
+    meta.value = { ...app.meta };
+    overrides.value = {};
+    logoFile.value = logo ? new window.File([logo.content], 'logo.png', { type: 'image/png' }) : null;
+    selectedPath.value = 'data.yml';
+    message.success(t('tools.dockerComposeTo1panel.packageImported'));
+  } catch {
+    message.error(t('tools.dockerComposeTo1panel.packageImportFailed'));
+  } finally {
+    importingPackage.value = false;
+  }
+}
+
+function changeSourceVersion(value: string) {
+  if (!importedApp.value) return;
+  sourceVersion.value = value;
+  input.value = packageText(importedApp.value, `${value}/docker-compose.yml`);
+  overrides.value = Object.fromEntries(Object.entries(overrides.value).filter(([path]) => !path.includes('/')));
+}
+
+function clearPackage() {
+  importedApp.value = null;
+  sourceVersion.value = '';
+  overrides.value = {};
+}
 
 const files = computed(() =>
   generated.value.success
@@ -201,6 +250,7 @@ async function downloadZip() {
       appKey.value,
       files.value,
       logoFile.value ? { fileName: 'logo.png', blob: logoFile.value } : null,
+      importedApp.value ? packageAssets(importedApp.value, sourceVersion.value, meta.value.version) : [],
     );
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
@@ -217,6 +267,20 @@ async function downloadZip() {
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
+      <NCard :title="t('tools.dockerComposeTo1panel.packageTitle')">
+        <NSpace vertical :size="12">
+          <ToolFileUpload accept=".zip,application/zip,application/x-zip-compressed" :multiple="false" @change="importPackage"/>
+          <div style="opacity: 0.65; font-size: 12px;">{{ t('tools.dockerComposeTo1panel.packageHint') }}</div>
+          <NAlert v-if="importingPackage" type="info">{{ t('tools.dockerComposeTo1panel.packageLoading') }}</NAlert>
+          <template v-if="importedApp">
+            <NAlert type="info">{{ t('tools.dockerComposeTo1panel.packageVersionHint') }}</NAlert>
+            <NFormItem :label="t('tools.dockerComposeTo1panel.sourceVersion')">
+              <NSelect :value="sourceVersion" :options="sourceVersionOptions" @update:value="changeSourceVersion"/>
+            </NFormItem>
+            <NButton @click="clearPackage">{{ t('tools.dockerComposeTo1panel.clearPackage') }}</NButton>
+          </template>
+        </NSpace>
+      </NCard>
       <NCollapse default-expanded-names="compose">
         <NCollapseItem name="compose" :title="t('tools.dockerComposeTo1panel.composeTitle')">
           <NInput
@@ -249,16 +313,16 @@ async function downloadZip() {
               <NInput v-model:value="meta.descEn"/>
             </NFormItem>
             <NFormItem :label="t('tools.dockerComposeTo1panel.fieldTags')">
-              <NSelect v-model:value="meta.tags" multiple :options="tagSelectOptions"/>
+              <NSelect v-model:value="meta.tags" multiple filterable tag :options="tagSelectOptions"/>
             </NFormItem>
             <NFormItem :label="t('tools.dockerComposeTo1panel.fieldType')">
-              <NSelect v-model:value="meta.type" :options="typeSelectOptions"/>
+              <NSelect v-model:value="meta.type" filterable tag :options="typeSelectOptions"/>
             </NFormItem>
-            <NFormItem :label="t('tools.dockerComposeTo1panel.fieldVersion')">
+            <NFormItem :label="t(importedApp ? 'tools.dockerComposeTo1panel.newVersion' : 'tools.dockerComposeTo1panel.fieldVersion')">
               <NInput v-model:value="meta.version"/>
             </NFormItem>
             <NFormItem :label="t('tools.dockerComposeTo1panel.fieldArch')">
-              <NSelect v-model:value="meta.architectures" multiple :options="archSelectOptions"/>
+              <NSelect v-model:value="meta.architectures" multiple filterable tag :options="archSelectOptions"/>
             </NFormItem>
           </div>
           <NFormItem :label="t('tools.dockerComposeTo1panel.logoTitle')">

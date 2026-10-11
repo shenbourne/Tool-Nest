@@ -1596,6 +1596,17 @@
       "syntaxDiagram": "┌──────────── minute (0 - 59)\n│ ┌────────── hour (0 - 23)\n│ │ ┌──────── day of month (1 - 31)\n│ │ │ ┌────── month (1 - 12)\n│ │ │ │ ┌──── day of week (0 - 6, Sunday = 0)\n│ │ │ │ │\n* * * * *"
     },
     "dockerComposeTo1panel": {
+      "packageVersionError": "Enter a valid new version that does not already exist in the package.",
+      "packageComposeError": "Invalid Compose configuration. Check the YAML and services.",
+      "packageTitle": "Import an existing 1Panel app",
+      "packageHint": "Select a single-app ZIP (up to 50 MB). App information, existing versions and supporting files are preserved.",
+      "packageLoading": "Reading application package…",
+      "packageVersionHint": "Create a new app version: choose a source version, edit app information and Compose, and enter a distinct new version.",
+      "sourceVersion": "Source version",
+      "newVersion": "New version",
+      "clearPackage": "Exit package import mode",
+      "packageImported": "App imported. Confirm the new version.",
+      "packageImportFailed": "Import failed. Existing content was preserved. Check that the ZIP contains one app with root data.yml, version Compose and version data.yml.",
       "readmeLink": "File URL",
       "readmeImportMode": "README import mode",
       "readmeLinkPlaceholder": "Enter an HTTP(S) URL to the raw README file",
