@@ -241,3 +241,28 @@ Package extension technically verified and browser accepted; ready for feature p
 Package extension publication verified: private/feature/phase-29-readme-import matches implementation commit 4483d36. Browser ZIP evidence .scratch/1panel-import-verified.png and D:/Users/Downloads/demo.zip. No master merge. Next: authorized integration.
 
 2026-10-11 package UI refinement verified: instruction row and exit button removed; file removal exits mode and invalidates pending imports. Typecheck/scoped lint/browser import-remove PASS. Branch feature/phase-29-readme-import; source mirrored into primary. Next: authorized integration. Remote fetch PASS: feature upstream 0/0, base unchanged; only own 4 commits ahead of private/master.
+
+## 2026-10-11 JSON to TOML load fix
+- Scoped fix on feature/phase-27-json-to-toml-fix from refreshed private/master 742c5e3; primary shared edits preserved, fix mirrored into primary checkout for local use.
+- Serializer-only import avoids parser global.Date ReferenceError. Browser-like regression 2/2, typecheck/scoped lint/build PASS; full web tests 336 PASS/1 unrelated Base64 contract FAIL. Actual browser clicks NOT RUN.
+- Phase27 documents hold plan and evidence. No merge authorized. Next: resolve existing Base64 test discrepancy separately, browser acceptance, safe integration. Feature publication result recorded below.
+
+## 2026-10-11 all TOML converter load fixes — verified
+- User expanded phase27 to all tools sharing the failure. Four consumers confirmed: JSON to TOML, YAML to TOML, TOML to JSON, TOML to YAML. Serializers use stringify-only import; parser global.Date/Buffer/BigInt mapped to globalThis properties via Vite define for dev/production.
+- Actual browser loading and nested conversion PASS for all four, screenshot .scratch/toml-to-json-fixed.png. Isolated feature/phase-27-json-to-toml-fix tests 348/348, typecheck/scoped lint/build PASS. Initial shared Base64 test failure excluded and isolated full gates now green.
+- Source changes mirrored into shared primary checkout; unrelated edits preserved. Isolated dependency junctions and ignored build artifacts retained for further work. No master merge. Source publication will be verified against private feature branch.
+
+- Publication verified: private/feature/phase-27-json-to-toml-fix points to source fix a938a1d (git ls-remote matched HEAD). No master merge. Phase27 verified and ready for authorized integration.
+
+
+## 2026-10-11 authorized TOML master integration
+- User explicitly authorized merging all four TOML fixes to local master. Integrated master 01bbdac into phase27 via b0e0fc9 with no conflicts; only TOML source/config/tests and phase27 records differ from master.
+- Post-integration pnpm exec vitest run PASS 51 files/368 tests; pnpm exec vue-tsc --noEmit PASS; pnpm exec vite build PASS 50.60s (existing externalization/eval/chunk warnings). No source edits after verification.
+- Plan: fast-forward local master to this verified phase branch in its existing worktree, preserving dirty generated files and publication note through autostash. Primary shared checkout unchanged. Remote master publication not requested; feature branch publication authorized by repository policy.
+
+## 2026-10-11 Phase 28 HTML entities
+- Layout and actions repaired on feature/phase-28-html-entities from refreshed private/master 742c5e3. Two independent conversion rows; browser acceptance PASS, 342 tests/typecheck/scoped lint/build PASS. Phase complete; master merge awaits authorization.
+- Component mirrored into primary dirty checkout for immediate review; unrelated edits preserved. No ADR or harness change needed. Publication pending final fetch/push verification.
+- Publication PASS: private/feature/phase-28-html-entities verified at 0303c1f; clean isolated worktree. Next action: authorized master integration; no merge performed.
+
+2026-10-11 user authorized phase29 merge to local master. Latest local master 2e919b4 integrated into feature; only STATE append conflict resolved preserving both records. Post-merge verification pending. Primary shared edits and master dirty files preserved. Remote master publication not requested.

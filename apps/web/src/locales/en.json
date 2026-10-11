@@ -212,6 +212,7 @@
     "decrypt": "Decrypt",
     "settings": "Settings",
     "select": "Select",
+    "generationActions": {"mnemonic":"Generate mnemonic","uuid":"Generate UUID","ulid":"Generate ULID","token":"Generate token","randomNumbers":"Generate random numbers","macAddresses":"Generate MAC addresses","randomPort":"Generate random port","ipv6Ula":"Generate IPv6 ULA address"},
     "generate": "Generate",
     "convert": "Convert",
     "compare": "Compare",

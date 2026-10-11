@@ -1,4 +1,5 @@
-import { stringify } from '@iarna/toml';
+// Avoid the parser entry point, which references Node globals in browsers.
+import stringify from '@iarna/toml/stringify';
 
 export interface ConvertResult { result: string; error: string | null; }
 

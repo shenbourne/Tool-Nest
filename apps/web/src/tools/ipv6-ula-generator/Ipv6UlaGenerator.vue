@@ -46,7 +46,7 @@ const sections = computed(() => [
           </div>
         </NSpace>
         <NSpace justify="center" style="margin-top: 16px">
-          <NButton @click="regenerate">Generate New</NButton>
+          <NButton type="primary" @click="regenerate">{{ t('common.generationActions.ipv6Ula') }}</NButton>
         </NSpace>
       </NCard>
     </NSpace>
