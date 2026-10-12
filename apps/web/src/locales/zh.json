@@ -689,7 +689,7 @@
     },
     "numberToWords": {
       "name": "数字转英文",
-      "description": "将数字转换为英文单词"
+      "description": "将整数转换为英文单词写法，适用于英文文档、数字表达学习及金额数字的英文拼写（不自动添加货币单位）。输入一个整数即可自动转换，例如 123 → one hundred and twenty-three，1000 → one thousand，-42 → negative forty-two，0 → zero。支持负数和前导零，会忽略首尾空白；有效范围为 -9007199254740991 至 9007199254740991。仅支持整数，不支持小数、千位逗号、科学计数法、正号或批量输入；输出为基数词，不是序数词。转换在浏览器本地完成。"
     },
     "arithmeticSequence": {
       "name": "等差数列",

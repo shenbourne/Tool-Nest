@@ -689,7 +689,7 @@
     },
     "numberToWords": {
       "name": "Number to Words",
-      "description": "Convert numbers to English words"
+      "description": "Convert an integer into English words for documents, learning number expressions, or spelling out monetary amounts (currency units are not added). Enter one integer to convert automatically: 123 → one hundred and twenty-three, 1000 → one thousand, -42 → negative forty-two, and 0 → zero. Negative numbers and leading zeros are supported; surrounding whitespace is ignored. Valid range: -9007199254740991 to 9007199254740991. Integers only: decimals, comma separators, scientific notation, a leading plus sign, and batch input are unsupported. Output uses cardinal words, not ordinals. Conversion runs locally in your browser."
     },
     "arithmeticSequence": {
       "name": "Arithmetic Sequence",
