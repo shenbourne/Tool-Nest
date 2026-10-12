@@ -38,4 +38,3 @@ describe('synchronized temperature controls', () => {
     expect(model.celsius.value).toBe(12.34);
   });
 });
-

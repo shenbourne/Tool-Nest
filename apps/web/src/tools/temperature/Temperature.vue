@@ -36,4 +36,3 @@ const fields = computed(() => [
   .temperature-row { grid-template-columns: minmax(0, 1fr); gap: 12px; }
 }
 </style>
-
