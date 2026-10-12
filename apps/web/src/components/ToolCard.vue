@@ -53,6 +53,7 @@ function toggleFav(e: Event) {
 
 <style scoped>
 .tool-card {
+  height: 100%;
   border: 1px solid var(--color-hairline);
   transition:
     box-shadow var(--motion-base) var(--motion-ease),
