@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.benchmarkBuilder.name',
   path: '/benchmark-builder',
   description: 'tools.benchmarkBuilder.description',
-  category: 'measurement',
+  category: 'developer',
   tags: ['developer', 'calculator'],
   keywords: ['benchmark', 'performance', 'measure', 'javascript', 'speed', 'test'],
   component: () => import('./BenchmarkBuilder.vue'),

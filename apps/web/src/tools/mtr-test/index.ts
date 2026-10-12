@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.mtrTest.name',
   path: '/mtr-test',
   description: 'tools.mtrTest.description',
-  category: 'network-test',
+  category: 'network',
   tags: ['network', 'check'],
   keywords: ['mtr', 'traceroute', 'route', 'network', 'path'],
   component: () => import('./MtrTest.vue'),

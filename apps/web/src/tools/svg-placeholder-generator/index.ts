@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.svgPlaceholderGenerator.name',
   path: '/svg-placeholder-generator',
   description: 'tools.svgPlaceholderGenerator.description',
-  category: 'generator',
+  category: 'image',
   tags: ['generator', 'media'],
   keywords: ['svg', 'placeholder', 'image', 'generator', 'dummy'],
   component: () => import('./SvgPlaceholderGenerator.vue'),

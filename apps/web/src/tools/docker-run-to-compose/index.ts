@@ -5,7 +5,7 @@ export const tool = defineTool({
   path: '/docker-run-to-compose',
   description: 'tools.dockerRunToCompose.description',
   category: 'developer',
-  tags: ['developer', 'parser'],
+  tags: ['developer', 'parser', 'converter'],
   keywords: ['docker', 'compose', 'run', 'convert', 'yaml', 'container'],
   component: () => import('./DockerRunToCompose.vue'),
   createdAt: '2026-09-18',

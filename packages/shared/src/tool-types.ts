@@ -1,21 +1,18 @@
 // 工具分类
 export type ToolCategory =
+  | 'text'
+  | 'data'
+  | 'encoding'
   | 'crypto'
-  | 'converter'
   | 'web'
   | 'developer'
   | 'network'
-  | 'text'
-  | 'data'
+  | 'math'
+  | 'datetime'
   | 'image'
   | 'video'
   | 'audio'
-  | 'pdf'
-  | 'math'
-  | 'measurement'
-  | 'generator'
-  | 'network-test'
-  | 'platform';
+  | 'pdf';
 
 // 工具标签
 export type ToolTag =
@@ -26,6 +23,7 @@ export type ToolTag =
   | 'worker'         // 使用 Web Worker
   | 'clipboard'      // 剪贴板操作
   | 'media'          // 媒体处理
+  | 'compressor'     // 压缩工具
   | 'converter'      // 格式转换
   | 'generator'      // 内容生成
   | 'validator'      // 数据校验

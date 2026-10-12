@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.emailNormalizer.name',
   path: '/email-normalizer',
   description: 'tools.emailNormalizer.description',
-  category: 'developer',
+  category: 'text',
   tags: ['developer', 'validator'],
   keywords: ['email', 'normalize', 'gmail', 'alias', 'format'],
   component: () => import('./EmailNormalizer.vue'),

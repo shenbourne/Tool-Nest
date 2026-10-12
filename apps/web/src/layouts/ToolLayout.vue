@@ -71,7 +71,7 @@ function goCategory() {
             size="small"
             :bordered="false"
           >
-            {{ tag }}
+            {{ t(`tags.labels.${tag}`) }}
           </NTag>
           <NTag v-if="tool.isNew" size="small" type="success" :bordered="false">
             NEW

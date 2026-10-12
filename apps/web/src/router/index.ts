@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { allTools } from '@/tools/registry';
 import { CATEGORY_ANCHOR_OFFSET } from '@/utils/category-anchor';
+import { legacyCategoryLocation } from '@/utils/legacy-category';
 
 // 自动生成工具路由
 const toolRoutes: RouteRecordRaw[] = allTools.map((tool) => ({
@@ -72,4 +73,11 @@ export const router = createRouter({
     }
     return { top: 0 };
   },
+});
+
+router.beforeEach((to) => {
+  if (to.name === 'category') return legacyCategoryLocation(String(to.params.category));
+  if (to.path === '/' && to.hash.startsWith('#category-')) {
+    return legacyCategoryLocation(to.hash.slice('#category-'.length));
+  }
 });

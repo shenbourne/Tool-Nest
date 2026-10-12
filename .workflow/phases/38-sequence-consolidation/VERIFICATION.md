@@ -1,3 +1,7 @@
 # VERIFICATION
 
 PASS: pnpm exec vitest run: 60 files, 440 tests. Arithmetic RED observed: 2 new tests failed before implementation, GREEN afterward. PASS: pnpm exec eslint src/tools/number-generator; pnpm exec vue-tsc --noEmit; vite production build (59.23s); git diff --check. Initial external Vitest runner caused one category registry failure from shared dependencies; isolated pnpm runner passed all tests after offline install. Browser visual inspection NOT RUN. Backend/integration checks SKIP: no server or network changes. Focused codebase-health invoked for tool consolidation: inspected registry redirect filtering, router redirect mapping, preference normalization and bilingual metadata; no new dependencies or cycles, duplicate tool removed. Even/odd internal service types retained for compatibility, removed from UI. Unrelated primary edits preserved via scoped mirror and backups in .scratch/phase38-primary-backup.
+
+Remote taxonomy integration766bfd3 reconciled: metadata category math plus arithmetic aliases/redirect retained; both state histories preserved. Reverification445 frontend tests and scoped lint PASS; build/typecheck running.
+
+Final integration gates PASS:445 tests, scoped lint, vue-tsc and production build36.39s. Phase38 implementation complete; publish updated feature branch, master merge remains separate.

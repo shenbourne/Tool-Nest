@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { useToolStore } from '@/stores/tool.store';
 import type { ToolDefinition } from '@toolnest/shared';
 import { computed } from 'vue';
+import { visibleToolTags } from '@/utils/tool-tags';
 
 const props = defineProps<{ tool: ToolDefinition }>();
 const router = useRouter();
@@ -44,8 +45,8 @@ function toggleFav(e: Event) {
       <NTag size="small" :bordered="false" type="info">
         {{ t(`category.${tool.category}.name`) }}
       </NTag>
-      <NTag v-for="tag in tool.tags.slice(0, 3)" :key="tag" size="small" :bordered="false">
-        {{ tag }}
+      <NTag v-for="tag in visibleToolTags(tool.tags).slice(0, 3)" :key="tag" size="small" :bordered="false">
+        {{ t(`tags.labels.${tag}`) }}
       </NTag>
     </NSpace>
   </NCard>

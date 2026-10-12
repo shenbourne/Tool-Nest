@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.qrCodeGenerator.name',
   path: '/qr-code-generator',
   description: 'tools.qrCodeGenerator.description',
-  category: 'generator',
+  category: 'encoding',
   tags: ['generator'],
   keywords: ['qr', 'code', 'generator', 'barcode'],
   component: () => import('./QrCodeGenerator.vue'),
