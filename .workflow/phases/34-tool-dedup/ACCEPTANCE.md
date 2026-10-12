@@ -9,3 +9,5 @@
 - PASS: final full416 tests, targeted store3 after lint cleanup, typecheck, scoped lint and production build. Chinese/light desktop browser coverage; mobile/dark/English browser NOT RUN. No server/integration suite rerun because backend and persistence API unchanged.
 
 Generator slider follow-up PASS: length numeric field and following slider share1–512 state; actual browser immediate input128 -> slider128, ArrowRight ->129 with numeric129 screenshot, pointer track click ->257, numeric min1/max512 -> slider1/512, token preset ->64. Four options centered: measured options center760px = row center760px. Screenshot .scratch/phase34-evidence/password-slider.jpg. Desktop Chinese/light verified; mobile/dark/English NOT RUN.
+
+JSON option order source PASS: Tab first, then spaces1–8; default remains2. Browser NOT RUN for this one-line reorder.

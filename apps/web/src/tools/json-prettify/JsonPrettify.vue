@@ -14,8 +14,8 @@ const input = ref('');
 const indent = ref<number | 'tab'>(2);
 
 const indentOptions = computed(() => [
-  ...Array.from({ length: 8 }, (_, i) => ({ label: t('tools.jsonPrettify.spaces', { count: i + 1 }), value: i + 1 })),
   { label: t('tools.jsonPrettify.tab'), value: 'tab' },
+  ...Array.from({ length: 8 }, (_, i) => ({ label: t('tools.jsonPrettify.spaces', { count: i + 1 }), value: i + 1 })),
 ]);
 
 const result = computed(() => formatJson(input.value, indent.value));

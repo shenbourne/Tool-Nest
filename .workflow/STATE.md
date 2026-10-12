@@ -309,3 +309,5 @@ Phase34 source4347acd publication verified on private/feature/phase-34-tool-dedu
 2026-10-12 phase34 generator controls follow-up: synchronized length slider1–512 added after numeric field, four switches centered. Browser numeric/slider/preset sync and measured centering PASS, targeted6 tests/scoped lint PASS. Same isolated feature/phase-34-tool-dedup; refreshed base ahead2/behind0/upstream0/0 before edits. Next final build confirmation, scoped mirror and feature publication; master merge not authorized.
 
 Slider follow-up complete: be2908b pushed private/feature/phase-34-tool-dedup and remote SHA verified. Production build/typecheck PASS21.66s; source mirrored into primary with backup. Next authorized master integration; no merge.
+
+2026-10-12 JSON indentation dropdown now lists Tab first, spaces1–8 follow. Source/lint/diff PASS, primary mirrored. Existing phase34 branch refreshed upstream0/0/base4/0. No master merge.
