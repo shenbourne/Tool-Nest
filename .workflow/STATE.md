@@ -311,3 +311,11 @@ Phase34 source4347acd publication verified on private/feature/phase-34-tool-dedu
 Slider follow-up complete: be2908b pushed private/feature/phase-34-tool-dedup and remote SHA verified. Production build/typecheck PASS21.66s; source mirrored into primary with backup. Next authorized master integration; no merge.
 
 2026-10-12 JSON indentation dropdown now lists Tab first, spaces1–8 follow. Source/lint/diff PASS, primary mirrored. Existing phase34 branch refreshed upstream0/0/base4/0. No master merge.
+
+2026-10-12 phase35 list consolidation in progress on isolated feature/phase-35-list-consolidation; refreshed remote8a79a5d plus authorized local mastera0c18fd prerequisite (ahead6/behind0). Existing shared dirty work preserved. Next verify presets/routes/options and scoped publication; no master merge authorized.
+
+Phase35 final scope: single converter without tabs; all nine list tools shared Auto input/Same output controls. Final433 tests/scoped lint/typecheck/build PASS, live browser all nine tools PASS. Concurrent local master37e5c89 integrated (card-height-only). Next scoped mirror and feature publication; no master merge authorized.
+
+2026-10-12 latest user scope: remove List Duplicate completely (page, catalog, translations and text-panel contract); inventory marked excluded. Remaining eight list tools keep shared Auto input/Same output controls. Earlier nine-tool checks describe superseded scope.
+
+Phase35 complete: final eight tools with shared separators, List Duplicate removed.434 tests/build/lint PASS. Primary mirrored, typecheck PASS; unrelated Base64 contract mismatch recorded. Next publish feature/phase-35-list-consolidation; merge requires separate authorization.

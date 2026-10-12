@@ -5,8 +5,12 @@ import { allTools } from '@/tools/registry';
 const validCategories = new Set(TOOL_CATEGORIES.map((c) => c.name));
 
 describe('tool registry', () => {
+  it('excludes the removed list duplicate tool', () => {
+    expect(allTools.some(tool => tool.path === '/list-duplicate' || tool.redirectFrom?.includes('/list-duplicate'))).toBe(false);
+  });
   it('consolidates duplicate CSV, JSON, dedup and secret tools with legacy URLs', () => {
     const groups: Record<string, string[]> = {
+      '/list-converter': ['/list-sort', '/list-wrap', '/text-join'],
       '/csv-rows-to-columns': ['/csv-transpose'],
       '/json-prettify': ['/json-stringify', '/json-viewer'],
       '/remove-duplicate-lines': ['/list-find-unique'],

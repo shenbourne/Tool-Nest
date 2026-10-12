@@ -623,10 +623,6 @@
       "description": "Detect invisible and special Unicode characters",
       "noneDetected": "No hidden characters detected."
     },
-    "textJoin": {
-      "name": "Text Join",
-      "description": "Join multiple lines with a custom separator"
-    },
     "quoteGenerator": {
       "name": "Quote Generator",
       "description": "Browse and display random programming quotes",
@@ -812,10 +808,6 @@
       "columnA": "Column A",
       "columnB": "Column B"
     },
-    "listDuplicate": {
-      "name": "List Duplicate",
-      "description": "Duplicate each item in a list"
-    },
     "listFindPopular": {
       "name": "List Find Most Popular",
       "description": "Find the most frequent items in a list"
@@ -839,10 +831,6 @@
       "name": "List Shuffle",
       "description": "Randomly shuffle list items"
     },
-    "listSort": {
-      "name": "List Sort",
-      "description": "Sort list items alphabetically or numerically"
-    },
     "listTruncate": {
       "name": "List Truncate",
       "description": "Keep only the first N items of a list"
@@ -850,10 +838,6 @@
     "listUnwrap": {
       "name": "List Unwrap",
       "description": "Remove wrapping characters from list items"
-    },
-    "listWrap": {
-      "name": "List Wrap",
-      "description": "Wrap each list item with prefix and suffix"
     },
     "jsonEscape": {
       "name": "JSON Escape",
@@ -1905,13 +1889,13 @@
     },
     "listConverter": {
       "name": "List Converter",
-      "description": "Transform lists with sort, deduplicate, prefix/suffix options",
+      "description": "Convert, sort, wrap or join lists with independent input and output delimiters",
       "inputPlaceholder": "Enter list items...",
       "comma": "Comma (,)",
       "semicolon": "Semicolon (;)",
       "newline": "Newline",
       "tab": "Tab",
-      "pipe": "Pipe (|)",
+      "pipe": "Pipe",
       "space": "Space",
       "none": "None",
       "ascending": "Ascending",
@@ -1921,7 +1905,15 @@
       "removeEmpty": "Remove Empty",
       "removeDuplicates": "Remove Duplicates",
       "itemPrefix": "Item Prefix",
-      "itemSuffix": "Item Suffix"
+      "itemSuffix": "Item Suffix",
+      "inputSeparator": "Input separator",
+      "outputSeparator": "Output separator",
+      "auto": "Auto detect",
+      "custom": "Custom",
+      "customInputSeparator": "Custom input separator",
+      "customOutputSeparator": "Custom output separator",
+      "inputSeparatorRequired": "Enter a separator to split the input",
+      "sameAsInput": "Same as input separator"
     },
     "qrCodeGenerator": {
       "name": "QR Code Generator",

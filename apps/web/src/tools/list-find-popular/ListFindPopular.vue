@@ -5,14 +5,17 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
+import ListSeparators from '@/components/ListSeparators.vue';
+import { useListSeparators } from '@/composables/useListSeparators';
 
 const { t } = useI18n();
 
 const input = ref('');
+const { inputSeparator, outputSeparator, items, formatOutput } = useListSeparators(input);
 const output = computed(() => {
-  const counts: Record<string, number> = {};
-  input.value.split('\n').filter(Boolean).forEach(l => { counts[l] = (counts[l]||0) + 1; });
-  return Object.entries(counts).sort((a,b) => b[1]-a[1]).map(([k,v]) => k + ' (' + v + ')').join('\n');
+  const counts = new Map<string, number>();
+  items.value.filter(Boolean).forEach(l => { counts.set(l, (counts.get(l) ?? 0) + 1); });
+  return formatOutput([...counts].sort((a,b) => b[1]-a[1]).map(([k,v]) => k + ' (' + v + ')'));
 });
 </script>
 <template>
@@ -23,6 +26,9 @@ const output = computed(() => {
       </template>
       <template #output>
         <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'listFindPopularField1' }"/>
+      </template>
+      <template #params>
+        <ListSeparators v-model:input-separator="inputSeparator" v-model:output-separator="outputSeparator" />
       </template>
     </ToolTextPanel>
   </ToolLayout>

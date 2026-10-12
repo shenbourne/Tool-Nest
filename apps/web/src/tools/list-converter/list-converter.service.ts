@@ -1,5 +1,8 @@
+import { resolveOutputSeparator, splitListInput } from '@/utils/list-input';
+
 export interface ListOptions {
-  separator: string;
+  inputSeparator?: string;
+  separator: string | null;
   trimItems: boolean;
   removeEmpty: boolean;
   lowerCase: boolean;
@@ -9,18 +12,17 @@ export interface ListOptions {
   itemSuffix: string;
 }
 
+export const DEFAULT_LIST_OPTIONS: Readonly<ListOptions> = {
+  inputSeparator: undefined, separator: null, trimItems: true, removeEmpty: true,
+  lowerCase: false, removeDuplicates: false, sortItems: 'none', itemPrefix: '', itemSuffix: '',
+};
+
 export function convertList(input: string, options: ListOptions): string {
   if (!input) return '';
+  if (options.inputSeparator === '') throw new Error('inputSeparatorRequired');
 
-  const sep = options.separator;
-
-  // Detect the input delimiter independently of the selected output delimiter.
-  // Prefer explicit list delimiters so spaces inside names remain intact.
-  const inputDelimiter = [',', ';', '\t', '|', '\n', '\r', ' ']
-    .find(delimiter => input.includes(delimiter));
-  let items = inputDelimiter === '\n' || inputDelimiter === '\r'
-    ? input.split(/\r\n|\r|\n/)
-    : inputDelimiter ? input.split(inputDelimiter) : [input];
+  const sep = resolveOutputSeparator(input, options.inputSeparator, options.separator);
+  let items = splitListInput(input, options.inputSeparator);
 
   // Pipeline: trim
   if (options.trimItems) {

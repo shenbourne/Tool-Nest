@@ -1,0 +1,11 @@
+# Phase35 — Unified list converter
+
+Final user decision: consolidate list-converter/list-sort/list-wrap/text-join into one List Converter page with no tabs or presets. Input defaults to Auto detect and Trim item whitespace defaults ON. Sorting, prefix/suffix wrapping and output joining remain combinable controls on the same page. Explicit newline input is available to preserve complete lines with embedded commas; trimming and empty removal can be disabled. Old tool URLs redirect to the unified page, and former preset query strings are ignored so every entry opens the requested common defaults. Saved favorites/recents/search use existing metadata compatibility. Empty input produces no output. Earlier button/tab proposals are superseded by the user's latest instruction.
+
+Branch feature/phase-35-list-consolidation created from refreshed private/master8a79a5d, fast-forwarded to committed local mastera0c18fd to retain user-authorized phase34 prerequisite (local master ahead6/behind0). Shared primary dirty edits untouched. No master merge authorized for this new phase.
+
+No shared routing contract change: existing redirectFrom handles all legacy URLs. Preset/route watchers and mode helpers were removed. Relevant ADR0001 file-import contract stays unchanged. No new dependency or ADR needed.
+
+Further user instruction: all nine remaining list-* tools expose the same input/output separator UI. Shared defaults: Auto detect input and Same as input output. Actual separator detection prefers complete lines (retains CRLF on output) then common punctuation/space. Manual/custom overrides supported; custom empty output concatenates items. Group output delimiter applies inside each labeled group. Shuffle output format changes preserve shuffled order. Scoped shared component/composable/parser replace all hardcoded newline splitting/joining. Concurrent local master37e5c89 card-height fix included safely before implementation.
+
+2026-10-12 latest user scope: remove List Duplicate completely (page, catalog, translations and text-panel contract); inventory marked excluded. Remaining eight list tools keep shared Auto input/Same output controls. Earlier nine-tool checks describe superseded scope.
