@@ -8,4 +8,4 @@
 - PASS: shared preview mirror preserves unrelated modifications/deleted tools. Preview tests15 and typecheck.
 - PASS: desktop visual layout inspected via browser screenshot. Mobile/dark layout unchanged and not separately verified.
 
-Remote reconciliation and final publication pending.
+PASS: integrated phase35 list consolidation, preserving redirects/aliases and data classification. Final442 tests and build/typecheck passed. All in-scope technical and desktop acceptance complete; feature publication pending.

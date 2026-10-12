@@ -18,3 +18,9 @@ Codebase-health invoked because shared definitions, registry metadata, navigatio
 Equivalent explicit checks used instead of scripts/verify (Bash wrapper on Windows; lint wrapper uses --fix and unrelated baseline failures). Server execution tests skipped: no server behavior changed. Harness audit not applicable to one taxonomy task. Existing state conflict markers retained; no unrelated cleanup. No memory records changed.
 
 Publication re-fetch found private/master advanced3 commits with phase35 list consolidation; reconcile before delivery and rerun affected checks.
+
+## Final remote reconciliation
+
+Integrated private/master92c5fb0 (phase35 lists) in7c2654d. List converter keeps remote redirects/aliases/keywords and category data. Both appended state records retained. Final web442 tests in61 files PASS using --maxWorkers=4 --minWorkers=1; one earlier TOML browser-compatibility test timed out at5s during concurrent build, passed in full reduced-concurrency rerun without changing its timeout. Vue-tsc and production build PASS66s. ESLint105 actual classification-changed ts/vue/config files PASS0 errors; an earlier incorrectly scoped invocation ran full web lint and exposed226 existing errors, not fixed. Shared tsc PASS. Browser post-integration compression filter4 results across PDF/image/JSON/video; data36 and text21 reflect the merged removal of redundant list tools. No errors observed in browser logs.
+
+Generated component declarations omitted from commit; scratch scripts/logs remain local evidence. Branch contains only scoped implementation and workflow records. No deployment or master merge performed.

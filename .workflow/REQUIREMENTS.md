@@ -25,4 +25,4 @@ Phase35 user decision2026-10-12: unify list sorting/wrapping/text joining under 
 2026-10-12 latest user scope: remove List Duplicate completely (page, catalog, translations and text-panel contract); inventory marked excluded. Remaining eight list tools keep shared Auto input/Same output controls. Earlier nine-tool checks describe superseded scope.
 
 R-002 phase36 clarification (2026-10-12): random generators automatically produce results on open and parameter changes; generate actions request fresh results.
-| R-037 | Classify tools into 13 object/domain categories; retain localized operation filters and legacy category navigation | Must | User approval 2026-10-12 | 37 | Verified, remote reconciliation pending |
+| R-037 | Classify tools into 13 object/domain categories; retain localized operation filters and legacy category navigation | Must | User approval 2026-10-12 | 37 | Complete; feature publication pending |

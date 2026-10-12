@@ -330,4 +330,4 @@ Master integration checks PASS437 tests/build31.04s; user authorization recorded
 
 ## 2026-10-12 Phase 37 — object/domain taxonomy
 
-Active work: feature/phase-37-tool-taxonomy in .worktrees/phase-37-tool-taxonomy, from fetched private/master 98f4e1e. Scope: 13 primary categories, functional tag filters, legacy category navigation and bilingual labels. Implementation/verification pending; shared checkout unchanged. Next: implement and verify taxonomy; no master merge authorized.
+Phase37 complete: feature/phase-37-tool-taxonomy in .worktrees/phase-37-tool-taxonomy; base private/master98f4e1e, integrated refreshed private/master92c5fb0. 13 primary categories, localized functional tags, legacy category routes/anchors, stable tool URLs/preferences. Final442 web tests/typecheck/shared typecheck/build/scoped105-file lint PASS; browser desktop/category/filter/English checks PASS. Scoped shared preview mirror applied with backups; primary targeted15 tests/typecheck PASS. No master merge authorized. Next: publish feature branch and verify remote SHA; then await separate merge instruction.
