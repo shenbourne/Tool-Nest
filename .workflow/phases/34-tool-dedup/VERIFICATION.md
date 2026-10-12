@@ -28,3 +28,5 @@ Focused codebase-health review invoked because registry, stores and multiple too
 ## Delivery
 
 Source mirrored into primary checkout using scoped files and locale blocks; originals backed up under `.scratch/phase34-primary-backup`. Primary calculator synchronized to already-approved master implementation; obsolete math-evaluator directory removed. Unrelated primary edits retained. Final publication evidence appended after commit/push; master merge not authorized.
+
+Primary mirror verification: pnpm --filter @toolnest/web test -- src/tools/tool-dedup.test.ts src/stores/tool.store.test.ts src/tools/generic-calculator PASS20; primary type-check PASS. Primary runtime residue scan no matches. Source4347acd published to private/feature/phase-34-tool-dedup; git ls-remote matched full4347acd22eca322ddaf866fda90c2fe462af1b65. Initial TLS EOF and transient auth failures cleared on third push. Master untouched.
