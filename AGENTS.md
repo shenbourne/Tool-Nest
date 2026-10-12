@@ -30,6 +30,8 @@ For non-trivial work, one phase uses one isolated `feature/phase-<number>-<slug>
 
 ## Completion gate
 
+After every task, perform browser visual verification before reporting completion: open the running application, inspect the relevant pages and interaction results, and check layout, alignment, overflow, and responsive behavior at desktop and mobile viewport sizes. Save screenshots and record the checked pages, viewport sizes, results, and evidence paths in `VERIFICATION.md`. Automated tests and source inspection do not replace browser visual verification. If the browser or application is unavailable, record the blocker and report visual verification as `NOT RUN`; do not claim it passed.
+
 Keep an implementation plan in the active phase. Review against the phase scope. Run applicable tests, lint, typecheck, build, and integration checks using `scripts/verify` or equivalent. Record actual commands, results, and limitations in `VERIFICATION.md`. Check each acceptance criterion with observable evidence in `ACCEPTANCE.md`. Update `STATE.md` with next action and branch. Report incomplete checks honestly. The phase can be marked complete after both technical and acceptance verification pass; merge remains a separate authorized action.
 
 ## Context and improvement
