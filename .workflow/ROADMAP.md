@@ -49,3 +49,5 @@ Phase29: README file/URL import for Docker Compose to 1Panel.
 ## Phase 37 — Tool taxonomy
 
 User-approved scope: 13 object/domain categories, operation-tag discovery, bilingual labels and backward-compatible category navigation. Acceptance/plan: phases/37-tool-taxonomy. ADR: adr/ADR-0002-tool-taxonomy.md. Tool URLs and preferences stay stable.
+
+Phase 41: synchronized Number Converter (Arabic, English, Roman, binary, octal, hexadecimal).

@@ -2275,6 +2275,18 @@
       "localTime": "Dates and times use your local time zone",
       "resultsClock": "Hours, minutes, seconds",
       "confirm": "Confirm"
+    },
+    "numberConverter": {
+      "name": "Number Converter",
+      "description": "Convert between Arabic numbers, English words, Roman numerals, binary, octal and hexadecimal.",
+      "decimal": "Arabic (decimal)",
+      "english": "English words",
+      "roman": "Roman numerals",
+      "binary": "Binary",
+      "octal": "Octal",
+      "hex": "Hexadecimal",
+      "invalid": "Enter a valid integer or number representation. Range: ±9,007,199,254,740,991; Roman numerals: 1–3999.",
+      "romanRange": "Roman numerals support integers from 1 to 3999. This value cannot be represented."
     }
   }
 }

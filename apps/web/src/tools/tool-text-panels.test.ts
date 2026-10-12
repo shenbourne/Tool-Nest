@@ -87,7 +87,6 @@ const EXPECTED: string[] = [
   'hours-to-days/HoursToDays.vue',
   'number-generator/NumberGenerator.vue',
   'number-sum/NumberSum.vue',
-  'number-to-words/NumberToWords.vue',
   'palindrome-checker/PalindromeChecker.vue',
   'seconds-to-time/SecondsToTime.vue',
   'time-to-decimal/TimeToDecimal.vue',
