@@ -28,3 +28,4 @@ R-002 phase36 clarification (2026-10-12): random generators automatically produc
 | R-037 | Classify tools into 13 object/domain categories; retain localized operation filters and legacy category navigation | Must | User approval 2026-10-12 | 37 | Complete; feature published, merge pending |
 
 R-041: Merge English/Roman tools into synchronized six-format Number Converter; preserve legacy URLs and preferences. Phase 41.
+R-040: All byte conversion units accept linked input (phase40, user request 2026-10-12).

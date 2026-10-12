@@ -1,0 +1,1 @@
+User request: bytes, KB, MB, GB, TB and bits must all accept input. Preserve existing binary factors and PB. Base private/master dac0597, 0/0; isolated feature/phase-40-byte-inputs. No new ADR needed: local conversion UI only.
