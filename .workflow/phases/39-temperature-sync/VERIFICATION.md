@@ -1,0 +1,4 @@
+# Verification
+Primary preview: pnpm --filter @toolnest/web exec vitest run src/tools/temperature/temperature-model.test.ts PASS (3 tests); scoped eslint PASS after resolving naming/test lint; pnpm --filter @toolnest/web type-check PASS; pnpm --filter @toolnest/web build PASS (29.45s; existing bundle/externalization warnings). Final defineOptions naming-only change re-typechecked.
+Review: single canonical temperature, writable derived units, finite/null guard, absolute-zero bound, adaptive matching slider ranges, localized accessible labels, responsive grid. No dependency or architecture change; codebase-health not applicable. Tests exercise conversions and repeated edits; added with implementation, no RED claim.
+Browser interaction/visual checks NOT RUN. Full suite/server checks not run for this isolated frontend tool. Primary workspace unrelated changes excluded from branch.
