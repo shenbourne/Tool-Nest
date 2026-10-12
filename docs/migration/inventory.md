@@ -94,7 +94,7 @@
 | # | 工具名称 | 来源 | 源路径 | 运行位置 | 外部依赖 | 重复关系 | 合并方案 | 迁移状态 | 验证情况 |
 |---|---------|------|--------|---------|---------|---------|---------|---------|---------|
 | 16 | Date-Time Converter | it-tools | `src/tools/date-time-converter/` | 浏览器 | dayjs | omni: time/* (部分) | 保留 it-tools（更完整） | 待迁移 | — |
-| 17 | Integer Base Converter | it-tools | `src/tools/integer-base-converter/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/base-converter/；/base-converter` |
+| 17 | Integer Base Converter | it-tools | `src/tools/integer-base-converter/` | 浏览器 | 无 | byte-converter (部分重叠) | 并入 Byte Converter (#36) | 已迁移（已合并） | `apps/web/src/tools/byte-converter/；/base-converter` 重定向至 `/byte-converter` |
 | 18 | Roman Numeral Converter | it-tools | `src/tools/roman-numeral-converter/` | 浏览器 | 无 | — | 直接迁移 | 待迁移 | — |
 | 19 | Base64 String Converter | it-tools | `src/tools/base64-string-converter/` | 浏览器 | 无 | omni: string/base64 | 保留 it-tools（双方向） | 已迁移 | `apps/web/src/tools/base64-encoder/；/base64-encoder` |
 | 20 | Base64 File Converter | it-tools | `src/tools/base64-file-converter/` | 浏览器 | 无 | — | 直接迁移 | 待迁移 | — |
@@ -113,7 +113,7 @@
 | 33 | XML to JSON | it-tools | `src/tools/xml-to-json/` | 浏览器 | xml-js | — | 直接迁移 | 待迁移 | — |
 | 34 | JSON to XML | it-tools | `src/tools/json-to-xml/` | 浏览器 | xml-js | omni: json/json-to-xml | 保留 it-tools | 待迁移 | — |
 | 35 | Markdown to HTML | it-tools | `src/tools/markdown-to-html/` | 浏览器 | markdown-it | — | 直接迁移 | 待迁移 | — |
-| 36 | Byte Converter | omni-tools | `src/pages/tools/number/byte-converter/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/byte-converter/；/byte-converter` |
+| 36 | Byte Converter | omni-tools | `src/pages/tools/number/byte-converter/` | 浏览器 | 无 | base-converter | 保留并并入 #17 进制转换 | 已迁移 | `apps/web/src/tools/byte-converter/；/byte-converter` |
 | 37 | Number to Words | omni-tools | `src/pages/tools/number/number-to-words/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/number-to-words/；/number-to-words` |
 | 38 | Temperature Converter | it-tools | `src/tools/temperature-converter/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/temperature/；/temperature-converter` |
 | 39 | Morse Code Converter | omni-tools | `src/pages/tools/string/to-morse/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/morse-code/；/morse-code` |

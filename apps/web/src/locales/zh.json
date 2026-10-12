@@ -476,21 +476,6 @@
       "suggestAvoidRepeats": "避免重复字符",
       "suggestAvoidCommon": "避免常见模式"
     },
-    "baseConverter": {
-      "name": "进制转换器",
-      "description": "在二进制、八进制、十进制和十六进制之间转换数字",
-      "inputBase": "输入进制",
-      "outputBase": "输出进制",
-      "inputPlaceholder": "输入数字...",
-      "resultPlaceholder": "结果...",
-      "invalidInput": "输入无效",
-      "binary": "二进制 (2)",
-      "octal": "八进制 (8)",
-      "decimal": "十进制 (10)",
-      "hexadecimal": "十六进制 (16)",
-      "base32": "Base32",
-      "base36": "Base36"
-    },
     "colorConverter": {
       "name": "颜色转换器",
       "description": "在 HEX、RGB 和 HSL 格式之间转换颜色",
@@ -717,10 +702,23 @@
     "byteConverter": {
       "bits": "比特",
       "name": "字节转换器",
-      "description": "在字节、KB、MB、GB、TB 和比特之间转换",
+      "description": "在字节、KB、MB、GB、TB、比特之间转换，并在二进制、八进制、十进制、十六进制等进制之间转换数字",
       "unit": "单位",
       "value": "数值",
-      "inputPlaceholder": "输入字节数..."
+      "inputPlaceholder": "输入字节数...",
+      "byteSection": "字节单位",
+      "baseSection": "进制转换",
+      "inputBase": "输入进制",
+      "outputBase": "输出进制",
+      "baseInputPlaceholder": "输入数字...",
+      "resultPlaceholder": "结果...",
+      "invalidInput": "输入无效",
+      "binary": "二进制 (2)",
+      "octal": "八进制 (8)",
+      "decimal": "十进制 (10)",
+      "hexadecimal": "十六进制 (16)",
+      "base32": "Base32",
+      "base36": "Base36"
     },
     "numberToWords": {
       "name": "数字转英文",

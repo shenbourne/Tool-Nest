@@ -476,21 +476,6 @@
       "suggestAvoidRepeats": "Avoid repeated characters",
       "suggestAvoidCommon": "Avoid common patterns"
     },
-    "baseConverter": {
-      "name": "Base Converter",
-      "description": "Convert numbers between binary, octal, decimal, and hexadecimal",
-      "inputBase": "Input base",
-      "outputBase": "Output base",
-      "inputPlaceholder": "Enter number...",
-      "resultPlaceholder": "Result...",
-      "invalidInput": "Invalid input",
-      "binary": "Binary (2)",
-      "octal": "Octal (8)",
-      "decimal": "Decimal (10)",
-      "hexadecimal": "Hexadecimal (16)",
-      "base32": "Base32",
-      "base36": "Base36"
-    },
     "colorConverter": {
       "name": "Color Converter",
       "description": "Convert colors between HEX, RGB, and HSL formats",
@@ -717,10 +702,23 @@
     "byteConverter": {
       "bits": "Bits",
       "name": "Byte Converter",
-      "description": "Convert between bytes, KB, MB, GB, TB, and bits",
+      "description": "Convert between bytes, KB, MB, GB, TB, and bits, and convert numbers between binary, octal, decimal, hexadecimal and other bases",
       "unit": "Unit",
       "value": "Value",
-      "inputPlaceholder": "Enter bytes..."
+      "inputPlaceholder": "Enter bytes...",
+      "byteSection": "Byte units",
+      "baseSection": "Base conversion",
+      "inputBase": "Input base",
+      "outputBase": "Output base",
+      "baseInputPlaceholder": "Enter number...",
+      "resultPlaceholder": "Result...",
+      "invalidInput": "Invalid input",
+      "binary": "Binary (2)",
+      "octal": "Octal (8)",
+      "decimal": "Decimal (10)",
+      "hexadecimal": "Hexadecimal (16)",
+      "base32": "Base32",
+      "base36": "Base36"
     },
     "numberToWords": {
       "name": "Number to Words",
