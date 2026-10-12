@@ -9,3 +9,4 @@
 - PASS: desktop visual layout inspected via browser screenshot. Mobile/dark layout unchanged and not separately verified.
 
 PASS: integrated phase35 list consolidation, preserving redirects/aliases and data classification. Final442 tests and build/typecheck passed. All in-scope technical and desktop acceptance complete; feature publication pending.
+`nPASS: feature branch published and exact remote SHA verified; master merge remains separate.
