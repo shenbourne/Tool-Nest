@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.globalLatencyTest.name',
   path: '/global-latency-test',
   description: 'tools.globalLatencyTest.description',
-  category: 'network-test',
+  category: 'network',
   tags: ['network', 'check'],
   keywords: ['latency', 'global', 'dns', 'test', 'speed'],
   component: () => import('./GlobalLatencyTest.vue'),

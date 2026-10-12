@@ -93,69 +93,57 @@
     "noToolsInstalled": "No tools installed yet"
   },
   "category": {
-    "crypto": {
-      "name": "Crypto",
-      "desc": "Encryption, hashing, and security tools"
-    },
-    "converter": {
-      "name": "Converters",
-      "desc": "Format and unit conversion tools"
-    },
-    "web": {
-      "name": "Web",
-      "desc": "Web development and URL tools"
-    },
-    "developer": {
-      "name": "Developer",
-      "desc": "Development and DevOps tools"
-    },
-    "network": {
-      "name": "Network",
-      "desc": "Network calculation and analysis tools"
-    },
     "text": {
-      "name": "Text",
-      "desc": "Text processing and analysis tools"
+      "name": "Text & Strings",
+      "desc": "Edit, compare, extract, analyze and generate text"
     },
     "data": {
-      "name": "Data",
-      "desc": "Data format and validation tools"
+      "name": "Data & Structured Formats",
+      "desc": "JSON, YAML, TOML, XML, CSV and list processing"
+    },
+    "encoding": {
+      "name": "Encoding & Identifiers",
+      "desc": "Base64, character encodings, unique identifiers and QR codes"
+    },
+    "crypto": {
+      "name": "Passwords & Security",
+      "desc": "Passwords, authentication, hashes, encryption and redaction"
+    },
+    "web": {
+      "name": "Web & Browser",
+      "desc": "URLs, HTML, HTTP, browser information and colors"
+    },
+    "developer": {
+      "name": "Development & Operations",
+      "desc": "Git, regex, SQL, Cron, permissions and containers"
+    },
+    "network": {
+      "name": "Network & Diagnostics",
+      "desc": "IP, DNS, connectivity, routing and network diagnostics"
+    },
+    "math": {
+      "name": "Numbers & Units",
+      "desc": "Calculations, sequences, random numbers, bases and units"
+    },
+    "datetime": {
+      "name": "Date & Time",
+      "desc": "Dates, timestamps, duration calculations and timers"
     },
     "image": {
-      "name": "Image",
-      "desc": "Image processing tools"
+      "name": "Images & Graphics",
+      "desc": "Image editing, compression, conversion, OCR and screenshots"
     },
     "video": {
-      "name": "Video",
-      "desc": "Video editing tools"
+      "name": "Video & GIF",
+      "desc": "Video, GIF and image animation processing"
     },
     "audio": {
       "name": "Audio",
-      "desc": "Audio processing tools"
+      "desc": "Audio trimming, conversion, merging and speed changes"
     },
     "pdf": {
-      "name": "PDF",
-      "desc": "PDF manipulation tools"
-    },
-    "math": {
-      "name": "Math",
-      "desc": "Mathematical calculation tools"
-    },
-    "measurement": {
-      "name": "Measurement",
-      "desc": "Measurement and timing tools"
-    },
-    "generator": {
-      "name": "Generators",
-      "desc": "Content generation tools"
-    },
-    "network-test": {
-      "name": "Network Tests",
-      "desc": "Network testing and diagnostics"
-    },
-    "platform": {
-      "name": "Platform",
-      "desc": "Platform and utility tools"
+      "name": "PDF & Documents",
+      "desc": "PDF editing, merging, splitting, conversion and protection"
     }
   },
   "settings": {
@@ -263,7 +251,15 @@
     "decrypt": "Decrypt",
     "settings": "Settings",
     "select": "Select",
-    "generationActions": {"mnemonic":"Generate mnemonic","uuid":"Generate UUID","ulid":"Generate ULID","randomNumbers":"Generate random numbers","macAddresses":"Generate MAC addresses","randomPort":"Generate random port","ipv6Ula":"Generate IPv6 ULA address"},
+    "generationActions": {
+      "mnemonic": "Generate mnemonic",
+      "uuid": "Generate UUID",
+      "ulid": "Generate ULID",
+      "randomNumbers": "Generate random numbers",
+      "macAddresses": "Generate MAC addresses",
+      "randomPort": "Generate random port",
+      "ipv6Ula": "Generate IPv6 ULA address"
+    },
     "generate": "Generate",
     "convert": "Convert",
     "compare": "Compare",
@@ -328,7 +324,45 @@
   "tags": {
     "filter": "Filter by tags",
     "clearAll": "Clear all",
-    "selected": "{count} selected"
+    "selected": "{count} selected",
+    "labels": {
+      "converter": "Convert",
+      "generator": "Generate",
+      "validator": "Validate",
+      "calculator": "Calculate",
+      "parser": "Parse",
+      "encoder": "Encode / Decode",
+      "security": "Security",
+      "text": "Text",
+      "csv": "CSV",
+      "list": "Lists",
+      "json": "JSON",
+      "xml": "XML",
+      "math": "Math",
+      "time": "Time",
+      "number": "Numbers",
+      "statistics": "Statistics",
+      "random": "Random",
+      "filter": "Filter",
+      "check": "Check",
+      "extract": "Extract",
+      "debug": "Debug",
+      "discord": "Discord",
+      "tsv": "TSV",
+      "yaml": "YAML",
+      "toml": "TOML",
+      "network": "Network",
+      "developer": "Development",
+      "productivity": "Productivity",
+      "media": "Media",
+      "clipboard": "Clipboard",
+      "browser": "Runs in browser",
+      "backend": "Runs on server",
+      "file-upload": "File input",
+      "lazy-load": "Loaded on demand",
+      "worker": "Background processing",
+      "compressor": "Compress"
+    }
   },
   "commandPalette": {
     "placeholder": "Search tools, actions...",

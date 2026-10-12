@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.textToNatoAlphabet.name',
   path: '/text-to-nato-alphabet',
   description: 'tools.textToNatoAlphabet.description',
-  category: 'converter',
+  category: 'encoding',
   tags: ['converter', 'text'],
   keywords: ['NATO', 'phonetic', 'alphabet', 'alpha', 'bravo'],
   component: () => import('./TextToNatoAlphabet.vue'),

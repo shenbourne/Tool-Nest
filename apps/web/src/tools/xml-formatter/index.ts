@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.xmlFormatter.name',
   path: '/xml-formatter',
   description: 'tools.xmlFormatter.description',
-  category: 'developer',
+  category: 'data',
   tags: ['xml', 'developer'],
   keywords: ['xml', 'format', 'beautify', 'minify', 'indent'],
   component: () => import('./XmlFormatter.vue'),

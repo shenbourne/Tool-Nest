@@ -41,3 +41,7 @@ Phase29: README file/URL import for Docker Compose to 1Panel.
 | 34 — Tool deduplication | Four canonical tools, five duplicate entries removed; legacy routes and preferences retained; calculator residue cleaned | R-001/R-002, user decision 2026-10-12 | Verified, isolated feature/phase-34-tool-dedup; pending merge | Existing registry redirectFrom |
 
 |36 — Automatic generation|Open/change parameters generate secrets, random numbers and RSA; buttons regenerate|R-002 user request2026-10-12|Engineering verified; browser NOT RUN|Existing Vue watchers|
+
+## Phase 37 — Tool taxonomy
+
+User-approved scope: 13 object/domain categories, operation-tag discovery, bilingual labels and backward-compatible category navigation. Acceptance/plan: phases/37-tool-taxonomy. ADR: adr/ADR-0002-tool-taxonomy.md. Tool URLs and preferences stay stable.

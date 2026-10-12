@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.yamlToToml.name',
   path: '/yaml-to-toml',
   description: 'tools.yamlToToml.description',
-  category: 'converter',
+  category: 'data',
   tags: ['converter', 'yaml'],
   keywords: ['yaml', 'toml', 'convert'],
   component: () => import('./YamlToToml.vue'),

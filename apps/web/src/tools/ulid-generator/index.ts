@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.ulidGenerator.name',
   path: '/ulid-generator',
   description: 'tools.ulidGenerator.description',
-  category: 'crypto',
+  category: 'encoding',
   tags: ['generator'],
   keywords: ['ulid', 'unique', 'identifier', 'sortable', 'id'],
   component: () => import('./UlidGenerator.vue'),

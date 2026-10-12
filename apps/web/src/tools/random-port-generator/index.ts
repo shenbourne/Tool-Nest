@@ -5,7 +5,7 @@ export const tool = defineTool({
   path: '/random-port-generator',
   description: 'tools.randomPortGenerator.description',
   category: 'developer',
-  tags: ['random', 'developer'],
+  tags: ['random', 'developer', 'generator'],
   keywords: ['port', 'random', 'generator', 'network', 'number'],
   component: () => import('./RandomPortGenerator.vue'),
   createdAt: '2026-09-18',

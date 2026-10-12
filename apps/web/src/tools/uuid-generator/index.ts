@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.uuidGenerator.name',
   path: '/uuid-generator',
   description: 'tools.uuidGenerator.description',
-  category: 'crypto',
+  category: 'encoding',
   tags: ['generator', 'security'],
   keywords: ['uuid', 'guid', 'unique', 'identifier', 'v4'],
   component: () => import('./UuidGenerator.vue'),

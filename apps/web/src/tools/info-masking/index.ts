@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.infoMasking.name',
   path: '/info-masking',
   description: 'tools.infoMasking.description',
-  category: 'platform',
+  category: 'crypto',
   tags: ['developer', 'security'],
   keywords: ['mask', 'redact', 'sensitive', 'privacy', 'email', 'phone', 'ip', 'credit card'],
   component: () => import('./InfoMasking.vue'),

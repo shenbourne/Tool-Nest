@@ -21,3 +21,4 @@ R-029 extension: import a single-app ZIP and create a distinct new version; inhe
 Phase34 user decision (2026-10-12): consolidate CSV transpose, JSON formatting/viewing, line/list deduplication and password/token generation under R-001/R-002; retain old links/search/favorites/recents. Remove calculator residue; calculator was already unified in master. Acceptance: phases/34-tool-dedup/ACCEPTANCE.md.
 
 R-002 phase36 clarification (2026-10-12): random generators automatically produce results on open and parameter changes; generate actions request fresh results.
+| R-037 | Classify tools into 13 object/domain categories; retain localized operation filters and legacy category navigation | Must | User approval 2026-10-12 | 37 | Verified, remote reconciliation pending |

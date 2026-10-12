@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.base64Encoder.name',
   path: '/base64-encoder',
   description: 'tools.base64Encoder.description',
-  category: 'converter',
+  category: 'encoding',
   tags: ['encoder', 'converter'],
   keywords: ['base64', 'encode', 'decode', 'convert'],
   aliases: ['base64'],

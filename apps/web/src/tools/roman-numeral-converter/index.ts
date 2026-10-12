@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.romanNumeralConverter.name',
   path: '/roman-numeral-converter',
   description: 'tools.romanNumeralConverter.description',
-  category: 'converter',
+  category: 'math',
   tags: ['converter', 'text'],
   keywords: ['roman', 'arabic', 'numeral', 'X', 'I', 'V', 'L', 'C', 'D', 'M'],
   component: () => import('./RomanNumeralConverter.vue'),

@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.markdownToHtml.name',
   path: '/markdown-to-html',
   description: 'tools.markdownToHtml.description',
-  category: 'converter',
+  category: 'web',
   tags: ['converter', 'text'],
   keywords: ['markdown', 'html', 'convert', 'render', 'preview'],
   component: () => import('./MarkdownToHtml.vue'),

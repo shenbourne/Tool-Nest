@@ -313,3 +313,7 @@ Slider follow-up complete: be2908b pushed private/feature/phase-34-tool-dedup an
 2026-10-12 JSON indentation dropdown now lists Tab first, spaces1–8 follow. Source/lint/diff PASS, primary mirrored. Existing phase34 branch refreshed upstream0/0/base4/0. No master merge.
 
 2026-10-12 Phase36 automatic generation: feature/phase-36-auto-generation from fetched private/master 8a79a5d, fast-forward integrated local master37e5c89 (7 ahead/0 behind). Password/token, random numbers and RSA automatically generate on open/parameter changes; buttons regenerate. 419 tests/build/scoped lint PASS, targeted3 rerun PASS. Browser acceptance NOT RUN. Shared three component edits mirrored without staging unrelated edits. Next: optional browser acceptance and separately authorized master merge.
+
+## 2026-10-12 Phase 37 — object/domain taxonomy
+
+Active work: feature/phase-37-tool-taxonomy in .worktrees/phase-37-tool-taxonomy, from fetched private/master 98f4e1e. Scope: 13 primary categories, functional tag filters, legacy category navigation and bilingual labels. Implementation/verification pending; shared checkout unchanged. Next: implement and verify taxonomy; no master merge authorized.
