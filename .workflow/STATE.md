@@ -327,3 +327,5 @@ Phase35 publication complete: implementation0d783f8 pushed private/feature/phase
 
 2026-10-12 user authorized master merge and private master push. Concurrent98f4e1e generator update integrated; only append-only workflow documentation conflicts, both intents retained. Merge checks pending.
 Master integration checks PASS437 tests/build31.04s; user authorization recorded. Ready to fast-forward master and push private.
+
+2026-10-12 Phase38 sequence consolidation: feature/phase-38-sequence-consolidation from private/master92c5fb0. Arithmetic replaces even/odd UI choices; exact first term/difference/count, nth term/sum; legacy redirect and preference compatibility.440 frontend tests, scoped lint/typecheck/build PASS. Browser NOT RUN. Primary scoped mirror applied, unrelated dirty work preserved. Next: publish feature and await separately authorized master merge.

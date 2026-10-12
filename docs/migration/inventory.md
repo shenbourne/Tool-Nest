@@ -313,7 +313,7 @@ ToolNest 统一分类（不按来源项目划分）：
 | 180 | Math Evaluator | it-tools | `src/tools/math-evaluator/` | 浏览器 | mathjs | — | 直接迁移 | 已合并 | `apps/web/src/tools/generic-calculator/；/generic-calculator（旧 /math-evaluator 重定向）` |
 | 181 | ETA Calculator | it-tools | `src/tools/eta-calculator/` | 浏览器 | 无 | — | 直接迁移 | 待迁移 | — |
 | 182 | Percentage Calculator | it-tools | `src/tools/percentage-calculator/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/percentage-calc/；/percentage-calculator` |
-| 183 | Arithmetic Sequence | omni-tools | `src/pages/tools/number/arithmetic-sequence/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/arithmetic-sequence/；/arithmetic-sequence` |
+| 183 | Arithmetic Sequence | omni-tools | `src/pages/tools/number/arithmetic-sequence/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/number-generator/；/arithmetic-sequence → /number-generator` |
 | 184 | Generic Calculator | omni-tools | `src/pages/tools/number/generic-calc/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/generic-calculator/；/generic-calculator` |
 | 185 | Random Number Generator | omni-tools | `src/pages/tools/number/random-number-generator/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/random-number-generator/；/random-number-generator` |
 | 186 | Number Sum | omni-tools | `src/pages/tools/number/sum/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/number-sum/；/number-sum` |

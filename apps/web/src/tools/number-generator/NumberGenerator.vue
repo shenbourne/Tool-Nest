@@ -10,17 +10,20 @@ const { t } = useI18n();
 const type = ref<NumberSequenceType>('fibonacci');
 const count = ref<number | null>(10);
 const start = ref<number | null>(0);
+const difference = ref<number | null>(3);
+const arithmetic = computed(() => type.value === 'arithmetic');
 const options: { value: NumberSequenceType; preview: string }[] = [
   { value: 'fibonacci', preview: '0, 1, 1, 2, 3, 5…' },
   { value: 'primes', preview: '2, 3, 5, 7, 11…' },
-  { value: 'even', preview: '0, 2, 4, 6, 8…' },
-  { value: 'odd', preview: '1, 3, 5, 7, 9…' },
+  { value: 'arithmetic', preview: '0, 3, 6, 9, 12…' },
 ];
-const validStart = computed(() => start.value !== null && Number.isInteger(start.value) && start.value >= 0 && start.value <= MAX_SEQUENCE_START);
+const validStart = computed(() => start.value !== null && (arithmetic.value ? Number.isFinite(start.value) : Number.isInteger(start.value) && start.value >= 0 && start.value <= MAX_SEQUENCE_START));
 const limit = computed(() => sequenceCountLimit(type.value, start.value ?? 0));
-const valid = computed(() => validStart.value && count.value !== null && Number.isInteger(count.value) && count.value >= 1 && count.value <= limit.value);
+const valid = computed(() => validStart.value && (!arithmetic.value || (difference.value !== null && Number.isFinite(difference.value))) && count.value !== null && Number.isInteger(count.value) && count.value >= 1 && count.value <= limit.value);
 const output = computed(() => valid.value && count.value !== null
-  ? generateNumbers(type.value, count.value, start.value ?? 0) ?? '' : '');
+  ? generateNumbers(type.value, count.value, start.value ?? 0, difference.value ?? NaN) ?? '' : '');
+const nth = computed(() => (start.value ?? 0) + ((count.value ?? 1) - 1) * (difference.value ?? 0));
+const sum = computed(() => (count.value ?? 0) * ((start.value ?? 0) / 2 + nth.value / 2));
 </script>
 <template>
   <ToolLayout :tool="tool">
@@ -37,10 +40,14 @@ const output = computed(() => valid.value && count.value !== null
         </div>
         <div class="sequence-controls">
           <div class="count-field">
-            <label for="sequence-start">{{ t('tools.numberGenerator.startLabel') }}</label>
-            <NInputNumber v-model:value="start" :min="0" :max="MAX_SEQUENCE_START" :update-value-on-input="true"
+            <label for="sequence-start">{{ t(arithmetic ? 'tools.arithmeticSequence.firstTerm' : 'tools.numberGenerator.startLabel') }}</label>
+            <NInputNumber v-model:value="start" :min="arithmetic ? undefined : 0" :max="arithmetic ? undefined : MAX_SEQUENCE_START" :update-value-on-input="true"
               :input-props="{ id: 'sequence-start', 'aria-describedby': 'sequence-start-hint' }" />
-            <span id="sequence-start-hint" class="count-hint">{{ t('tools.numberGenerator.startHint') }}</span>
+            <span id="sequence-start-hint" class="count-hint">{{ t(arithmetic ? 'tools.numberGenerator.arithmeticHint' : 'tools.numberGenerator.startHint') }}</span>
+          </div>
+          <div v-if="arithmetic" class="count-field">
+            <label for="sequence-difference">{{ t('tools.arithmeticSequence.difference') }}</label>
+            <NInputNumber v-model:value="difference" :update-value-on-input="true" :input-props="{ id: 'sequence-difference' }" />
           </div>
           <div class="count-field">
             <label for="sequence-count">{{ t('tools.numberGenerator.countLabel') }}</label>
@@ -55,7 +62,9 @@ const output = computed(() => valid.value && count.value !== null
           <h2>{{ t('tools.numberGenerator.result') }}</h2>
           <span class="result-meta">{{ t(`tools.numberGenerator.${type}`) }} · {{ t('tools.numberGenerator.items', { count: valid ? count : 0 }) }}</span>
         </div>
-        <p role="status">{{ !validStart ? t('tools.numberGenerator.invalidStart', { max: MAX_SEQUENCE_START }) : valid ? t('tools.numberGenerator.ready') : t('tools.numberGenerator.invalidCount', { max: limit }) }}</p>
+        <p role="status">{{ arithmetic && !valid ? t('tools.numberGenerator.invalidArithmetic') : !validStart ? t('tools.numberGenerator.invalidStart', { max: MAX_SEQUENCE_START }) : valid ? t('tools.numberGenerator.ready') : t('tools.numberGenerator.invalidCount', { max: limit }) }}</p>
+        <p v-if="arithmetic && output && Number.isFinite(sum)">{{ t('tools.arithmeticSequence.nthTerm', { value: nth }) }} | {{ t('common.sum', { value: sum }) }}</p>
+        <p v-if="arithmetic && valid && (!output || !Number.isFinite(sum))" role="alert">{{ t('tools.numberGenerator.invalidArithmetic') }}</p>
         <ToolTextPanel :input-text="''" :output-text="output" export-name="numbers.txt" hide-input>
           <template #output>
             <NInput :value="output" type="textarea" :rows="7" readonly :input-props="{ 'aria-label': t('tools.numberGenerator.result') }" />
@@ -70,7 +79,7 @@ const output = computed(() => valid.value && count.value !== null
 .sequence-settings, .sequence-result { padding: 24px; border: 1px solid var(--color-hairline); border-radius: 12px; background: var(--color-canvas); }
 h2 { margin: 0; color: var(--color-ink); font-size: 16px; font-weight: 600; }
 p { margin: 6px 0 16px; color: var(--color-text-2); font-size: 13px; }
-.sequence-types { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+.sequence-types { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
 .sequence-type { padding: 16px; text-align: left; font: inherit; color: var(--color-ink); border: 1px solid var(--color-hairline); border-radius: 8px; background: var(--color-surface-soft); cursor: pointer; transition: border-color .15s, background .15s; }
 .sequence-type:hover { border-color: var(--color-primary); }
 .sequence-type:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }

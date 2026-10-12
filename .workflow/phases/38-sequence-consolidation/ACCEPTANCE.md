@@ -1,0 +1,3 @@
+# ACCEPTANCE
+
+PASS: component has Fibonacci, primes and arithmetic choices, three-column desktop layout. PASS: arithmetic supports exact first term, difference, count, including negative/zero/fractional differences (service tests). PASS: template displays nth term and sum; invalid/overflow output handled. PASS: /arithmetic-sequence redirects to /number-generator; aliases retain search, preferences normalization test passes. PASS: independent arithmetic registry entry removed and migration inventory updated. PASS: Chinese/English labels updated. PASS: tests/lint/typecheck/build. Browser visual inspection not separately performed.

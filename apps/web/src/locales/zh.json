@@ -735,15 +735,13 @@
     },
     "numberGenerator": {
       "name": "数字序列生成",
-      "description": "生成数字序列：斐波那契、素数、偶数、奇数",
-      "usageHint": "第 1 行：类型（fibonacci/primes/even/odd）\n第 2 行：数量",
+      "description": "生成数字序列：斐波那契、素数、等差数列",
+      "usageHint": "选择数列类型，设置首项、数量及等差数列公差。",
       "settings": "生成设置",
       "intro": "选择数列并调整数量，结果实时更新。",
       "sequenceType": "数列类型",
       "fibonacci": "斐波那契",
       "primes": "素数",
-      "even": "偶数",
-      "odd": "奇数",
       "countLabel": "生成数量",
       "range": "支持 1–{max} 项",
       "result": "生成结果",
@@ -752,7 +750,10 @@
       "invalidCount": "请输入 1–{max} 之间的整数。",
       "startLabel": "首项下限",
       "startHint": "从不小于此值的数开始",
-      "invalidStart": "首项下限须为 0–{max} 之间的整数。"
+      "invalidStart": "首项下限须为 0–{max} 之间的整数。",
+      "arithmetic": "等差数列",
+      "arithmeticHint": "以此值作为首项",
+      "invalidArithmetic": "请输入有效首项、公差和数量；计算结果须为有限数值。"
     },
     "csvToJson": {
       "name": "CSV 转 JSON",

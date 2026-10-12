@@ -46,3 +46,22 @@ describe('generateNumbers', () => {
     expect(generateNumbers('even', 4, -1)).toBe('');
     expect(generateNumbers('fibonacci', 79, 10)).toBe('');
   });
+
+ describe('arithmetic sequence', () => {
+ it('supports arbitrary first terms and positive, negative and zero differences', () => {
+ expect(generateNumbers('arithmetic', 4, 1, 3)).toBe('1, 4, 7, 10');
+ expect(generateNumbers('arithmetic', 3, -1.5, -0.5)).toBe('-1.5, -2, -2.5');
+ expect(generateNumbers('arithmetic', 3, 2, 0)).toBe('2, 2, 2');
+ });
+ it('rejects invalid arithmetic parameters and overflow', () => {
+ expect(generateNumbers('arithmetic', 3, 1, NaN)).toBe('');
+ expect(generateNumbers('arithmetic', 3, 1e308, 1e308)).toBe('');
+ });
+ });
+
+import { tool } from './index';
+import { canonicalToolPath, normalizeToolPreferences } from '../../utils/tool-paths';
+it('preserves legacy arithmetic routes and preferences', () => {
+ expect(canonicalToolPath('/arithmetic-sequence', [tool])).toBe('/number-generator');
+ expect(normalizeToolPreferences({favorites: ['/arithmetic-sequence', '/number-generator'], recentTools: []}, [tool]).favorites).toEqual(['/number-generator']);
+});
