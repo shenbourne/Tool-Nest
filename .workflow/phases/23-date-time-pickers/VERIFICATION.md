@@ -29,3 +29,13 @@
 - Evidence: .scratch/rsa-visual-2026-10-12/regenerating.jpg (post-generation, not evidence of loading state).
 - Conclusion: browser verification performed, acceptance FAIL. Earlier local RSA layout change is absent from current master source. Next: reapply required layout preserving later automatic-generation lifecycle, then verify both viewports and all actions again.
 - No new lint/typecheck/build needed for verification-only work; no remote sync or push performed because no development/source changes. Viewport override reset. Existing generated declaration modification preserved.
+
+## Master integration verification — 2026-10-12
+
+- Scope: user-authorized commit of RSA layout (c9a3991, fast-forward from private/master ef505da) and InfoMasking comparison removal (acf5cfd) onto master. Temp dev server on :5199 for browser checks; stopped afterwards.
+- Dependencies: root node_modules bin links and apps/web links were missing; reinstalled pnpm 9.11.0 and ran pnpm install --force (killed leftover esbuild service PID 122676 and two stale vite dev servers PID 122656/143136 holding locks; 105 packages re-downloaded). Build then passed.
+- Technical: scoped eslint PASS (0) on InfoMasking.vue + RsaKeyPair.vue; vue-tsc type-check PASS (0); vitest scoped PASS (6/6); pnpm --filter @toolnest/web build PASS (44.91s, chunk-size warning only).
+- Browser (real Chrome via WebBridge, dev server :5199): info-masking desktop 1680w — masking works (phone/email masked), redundant before/after comparison card absent; RSA desktop — private/public panels side by side above a row with key length left and generate button right, each key panel has copy + export file; RSA mobile 390x844 — panels stack, no horizontal overflow (scrollWidth 390 = innerWidth 390); info-masking mobile 390x844 — stacks, no overflow; minor pre-existing cramped action-row wrapping at 390px in shared ToolTextPanel, unrelated to these commits.
+- Clipboard: synthetic/CDP clicks show "复制到剪贴板失败" toast because automation clicks leave the document unfocused (shared useCopy path, unchanged by these commits; phase43 evidence verified copy/export with real clicks).
+- Evidence: .agent-workflows/tmp-tasks/verify-info-masking-desktop.jpg, verify-rsa-desktop.jpg, verify-rsa-copy.jpg, verify-rsa-mobile.jpg, verify-info-masking-mobile.jpg.
+- Publication: master pushed to private and origin; SHAs verified.
