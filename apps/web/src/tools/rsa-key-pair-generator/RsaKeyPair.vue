@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 import { NInputNumber, NInput, NButton, NFormItem, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import * as forge from 'node-forge';
@@ -15,21 +15,45 @@ const privateKey = ref('');
 const generating = ref(false);
 const error = ref('');
 
+let revision = 0;
+let disposed = false;
 function generate() {
-  generating.value = true;
+  revision++;
   error.value = '';
-  // The callback form runs off the main thread, so the loading state renders
-  // and the page stays responsive during key generation.
-  forge.pki.rsa.generateKeyPair({ bits: keySize.value }, (err, keypair) => {
-    if (err) {
-      error.value = err.message || t('tools.rsaKeyPair.generateFailed');
+  publicKey.value = '';
+  privateKey.value = '';
+  if (!generating.value) runGeneration();
+}
+function runGeneration() {
+  const current = revision;
+  const bits = keySize.value;
+  if (!Number.isInteger(bits) || bits < 512 || bits > 4096) {
+    generating.value = false;
+    return;
+  }
+  generating.value = true;
+  const finish = (err: Error | null, keypair?: forge.pki.rsa.KeyPair) => {
+    if (disposed) return;
+    if (current !== revision) {
+      runGeneration();
+      return;
+    }
+    generating.value = false;
+    if (err || !keypair) {
+      error.value = err?.message || t('tools.rsaKeyPair.generateFailed');
     } else {
       publicKey.value = forge.pki.publicKeyToPem(keypair.publicKey);
       privateKey.value = forge.pki.privateKeyToPem(keypair.privateKey);
     }
-    generating.value = false;
-  });
+  };
+  try {
+    forge.pki.rsa.generateKeyPair({ bits }, finish);
+  } catch (cause) {
+    finish(cause instanceof Error ? cause : new Error(String(cause)));
+  }
 }
+watch(keySize, generate, { immediate: true });
+onBeforeUnmount(() => { disposed = true; });
 </script>
 
 <template>

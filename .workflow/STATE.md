@@ -118,7 +118,8 @@ Keep this short and factual so another agent can resume without chat history.
 - Private base refreshed and fast-forwarded to documentation-only 62f9ddd. Concurrent phase 22 changes and pre-existing generated/untracked files preserved and excluded.
 - Web tests 335/335 PASS; typecheck and build PASS; differential lint 0 added messages (10 existing); diff whitespace PASS. Browser visual/click-focus review NOT RUN.
 - Next: manual UI review and authorized merge; publication status recorded in phase 21 VERIFICATION.md. No merge authorized.
-`n- Phase 22 published: private/feature/phase-22-number-sum-string-io afdcf3c. Shared checkout switched concurrently to phase 21 during commit; local phase 22 ref corrected, accidental phase 21 upstream removed. No other working changes committed. Remote SHA verified. Next: review/authorized merge.
+
+- Phase 22 published: private/feature/phase-22-number-sum-string-io afdcf3c. Shared checkout switched concurrently to phase 21 during commit; local phase 22 ref corrected, accidental phase 21 upstream removed. No other working changes committed. Remote SHA verified. Next: review/authorized merge.
 
 ## 2026-10-10 authorized file panel merge
 - User requested submission to master. Fast-forwarded master 1a0144e -> bcae33d in isolated worktree, preserving active phase 21 uncommitted work.
@@ -319,4 +320,10 @@ Phase35 final scope: single converter without tabs; all nine list tools shared A
 2026-10-12 latest user scope: remove List Duplicate completely (page, catalog, translations and text-panel contract); inventory marked excluded. Remaining eight list tools keep shared Auto input/Same output controls. Earlier nine-tool checks describe superseded scope.
 
 Phase35 complete: final eight tools with shared separators, List Duplicate removed.434 tests/build/lint PASS. Primary mirrored, typecheck PASS; unrelated Base64 contract mismatch recorded. Next publish feature/phase-35-list-consolidation; merge requires separate authorization.
-`nPhase35 publication complete: implementation0d783f8 pushed private/feature/phase-35-list-consolidation, ls-remote exact SHA verified; isolated worktree clean. Next await separate master merge instruction. Live preview retained.
+
+Phase35 publication complete: implementation0d783f8 pushed private/feature/phase-35-list-consolidation, ls-remote exact SHA verified; isolated worktree clean. Next await separate master merge instruction. Live preview retained.
+
+2026-10-12 Phase36 automatic generation: feature/phase-36-auto-generation from fetched private/master 8a79a5d, fast-forward integrated local master37e5c89 (7 ahead/0 behind). Password/token, random numbers and RSA automatically generate on open/parameter changes; buttons regenerate. 419 tests/build/scoped lint PASS, targeted3 rerun PASS. Browser acceptance NOT RUN. Shared three component edits mirrored without staging unrelated edits. Next: optional browser acceptance and separately authorized master merge.
+
+2026-10-12 user authorized master merge and private master push. Concurrent98f4e1e generator update integrated; only append-only workflow documentation conflicts, both intents retained. Merge checks pending.
+Master integration checks PASS437 tests/build31.04s; user authorization recorded. Ready to fast-forward master and push private.
