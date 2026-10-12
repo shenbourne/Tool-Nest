@@ -6,3 +6,5 @@
 - Review: single source unit/value avoids feedback loops and intermediate rounding. Null handling, decimal conversion and input label IDs checked. No dependency or shared architecture changes; health audit/ADR not applicable.
 - Browser NOT RUN. Shared preview scoped files mirrored with backups in .scratch/phase40-byte-backup; unrelated edits preserved.
 - Remote private/master dac0597 fetched before development and publication, base0/0.
+
+Browser desktop acceptance PASS using real preview http://127.0.0.1:5173/byte-converter; bilingual screenshots inspected, every input edited through browser controls, zero/clear/keyboard verified through rendered values. Screenshot .scratch/phase40-byte-evidence/desktop.jpg in shared preview. No source change required. Mobile/dark NOT RUN.
