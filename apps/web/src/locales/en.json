@@ -715,6 +715,7 @@
       "invalidLength": "Length must be an integer from 1 to 512"
     },
     "byteConverter": {
+      "bits": "Bits",
       "name": "Byte Converter",
       "description": "Convert between bytes, KB, MB, GB, TB, and bits",
       "unit": "Unit",

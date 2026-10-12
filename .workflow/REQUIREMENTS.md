@@ -26,3 +26,5 @@ Phase35 user decision2026-10-12: unify list sorting/wrapping/text joining under 
 
 R-002 phase36 clarification (2026-10-12): random generators automatically produce results on open and parameter changes; generate actions request fresh results.
 | R-037 | Classify tools into 13 object/domain categories; retain localized operation filters and legacy category navigation | Must | User approval 2026-10-12 | 37 | Complete; feature published, merge pending |
+
+R-040: All byte conversion units accept linked input (phase40, user request 2026-10-12).

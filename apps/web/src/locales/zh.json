@@ -715,6 +715,7 @@
       "invalidLength": "长度必须是 1–512 的整数"
     },
     "byteConverter": {
+      "bits": "比特",
       "name": "字节转换器",
       "description": "在字节、KB、MB、GB、TB 和比特之间转换",
       "unit": "单位",

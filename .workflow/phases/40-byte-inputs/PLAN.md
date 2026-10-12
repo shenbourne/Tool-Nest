@@ -1,0 +1,1 @@
+1. Verify bidirectional conversion, decimals, zero and cleared inputs with tests. 2. Render linked labeled numeric fields without rounded intermediate state. 3. Review, test, lint, typecheck/build; mirror scoped files preserving shared changes; fetch and publish feature. No structural health audit needed: single tool, no new shared abstraction.
