@@ -8,19 +8,25 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CommandPalette: typeof import('./components/CommandPalette.vue')['default']
+    DateTimePicker: typeof import('./components/DateTimePicker.vue')['default']
+    DiffViewer: typeof import('./components/DiffViewer.vue')['default']
     FileCard: typeof import('./components/FileCard.vue')['default']
     FilePreviewOverlay: typeof import('./components/FilePreviewOverlay.vue')['default']
+    ListSeparators: typeof import('./components/ListSeparators.vue')['default']
     LocaleSwitcher: typeof import('./components/LocaleSwitcher.vue')['default']
-    NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
+    NetworkResults: typeof import('./components/NetworkResults.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SearchBar: typeof import('./components/SearchBar.vue')['default']
     ShareButton: typeof import('./components/ShareButton.vue')['default']
     TagFilter: typeof import('./components/TagFilter.vue')['default']
     ThemeSwitcher: typeof import('./components/ThemeSwitcher.vue')['default']
+    TimeWheel: typeof import('./components/TimeWheel.vue')['default']
     ToolCard: typeof import('./components/ToolCard.vue')['default']
     ToolFilePanel: typeof import('./components/ToolFilePanel.vue')['default']
     ToolFileUpload: typeof import('./components/ToolFileUpload.vue')['default']
+    ToolTextPairPanel: typeof import('./components/ToolTextPairPanel.vue')['default']
+    ToolTextPanel: typeof import('./components/ToolTextPanel.vue')['default']
   }
 }
