@@ -12,3 +12,5 @@ Risk: concurrent sessions and dirty shared source; all changes isolated. Tests t
 Steps1–5 complete; step6 verification/documentation/remote integration complete, publication pending.
 
 Step6 complete: feature published with exact SHA verification; next authorized master merge.
+
+User-authorized master integration: backup scoped dirty master files, fast-forward, restore edits, refresh and push private/master, verify SHA.
