@@ -1,0 +1,1 @@
+1. Preserve unique service contract; invert UI via computed allowRepeat (default true). 2. Tool-local bilingual labels and centered wrapping parameter group; full-width primary button. 3. Update existing interaction test. 4. Review scoped diff, run full web tests/lint/typecheck/build, integrate and publish master after re-fetch.

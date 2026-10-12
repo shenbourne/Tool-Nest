@@ -759,7 +759,10 @@
       "description": "Generate random numbers with custom range",
       "rangeTooSmall": "Range too small for unique numbers",
       "invalidRange": "Minimum must be less than or equal to maximum",
-      "uniqueOnly": "Unique only"
+      "allowRepeat": "Allow repeats",
+      "min": "Minimum",
+      "max": "Maximum",
+      "count": "Count"
     },
     "numberSum": {
       "name": "Number Sum",

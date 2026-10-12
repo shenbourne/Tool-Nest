@@ -359,3 +359,7 @@ Phase38 verified: final464 tests, scoped lint, typecheck and build PASS. Technic
 
 2026-10-12 master publication verification: concurrent number-to-words mastere992b30 safely integrated into feature4bd5660. State-only conflict resolved preserving both records. Final467 frontend tests, scoped eslint, vue-tsc and production build38.34s PASS. No business changes after these checks. Authorized master fast-forward/push ready; narrow-screen global sidebar limitation remains.
 Phase39 final integration: latest master d6032a3 preserved;470 frontend tests/typecheck/build30.11s PASS. User authorized master fast-forward and private publication. Local dirty state restored via backed-up three-way union; declaration file preserved.
+
+2026-10-12 Phase42 random-number controls: isolated feature/phase-42-random-number-controls from private/master dac0597. Master merge/push authorized. Centered bilingual parameters, inverse allow-repeat toggle and full-width generate action; desktop browser PASS. Final isolated checks pending.
+
+Phase42 verified:470 frontend tests, scoped lint, typecheck/build26.00s PASS; Chinese desktop browser PASS. Ready for authorized master integration; other work untouched.
