@@ -40,6 +40,10 @@ Phase29: README file/URL import for Docker Compose to 1Panel.
 
 | 34 — Tool deduplication | Four canonical tools, five duplicate entries removed; legacy routes and preferences retained; calculator residue cleaned | R-001/R-002, user decision 2026-10-12 | Verified, isolated feature/phase-34-tool-dedup; pending merge | Existing registry redirectFrom |
 
+| 35 — Unified List Converter | One page without tabs/presets, Auto/Trim defaults, independent/custom separators; three old tools consolidated | R-001/R-002, user decision2026-10-12 | In progress, feature/phase-35-list-consolidation | Phase34 legacy path compatibility |
+
+2026-10-12 latest user scope: remove List Duplicate completely (page, catalog, translations and text-panel contract); inventory marked excluded. Remaining eight list tools keep shared Auto input/Same output controls. Earlier nine-tool checks describe superseded scope.
+
 |36 — Automatic generation|Open/change parameters generate secrets, random numbers and RSA; buttons regenerate|R-002 user request2026-10-12|Engineering verified; browser NOT RUN|Existing Vue watchers|
 
 ## Phase 37 — Tool taxonomy

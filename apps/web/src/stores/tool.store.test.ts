@@ -45,4 +45,20 @@ describe('legacy tool preferences', () => {
     search.setQuery('令牌生成器');
     expect(search.results.map(tool => tool.path)).toContain('/password-generator');
   });
+  it('consolidates the three old list tools in favorites, recents and search', async () => {
+    const state = preferenceState.current as { prefs: { favorites: string[]; recentTools: { path: string; timestamp: number }[] } };
+    state.prefs.favorites = ['/list-sort', '/list-wrap', '/text-join'];
+    state.prefs.recentTools = [{ path: '/list-sort', timestamp: 1 }, { path: '/text-join', timestamp: 2 }];
+    const store = useToolStore();
+    expect(store.favoriteTools.map(tool => tool.path)).toEqual(['/list-converter']);
+    expect(store.recentToolsList.map(tool => tool.path)).toEqual(['/list-converter']);
+    expect(store.getToolByPath('/list-wrap')?.path).toBe('/list-converter');
+    const search = useSearchStore();
+    for (const name of ['列表排序', '列表包装', '文本连接']) {
+      search.setQuery(name);
+      expect(search.results.map(tool => tool.path)).toContain('/list-converter');
+    }
+    await store.toggleFavorite('/list-converter');
+    expect(store.favoriteTools).toHaveLength(0);
+  });
 });

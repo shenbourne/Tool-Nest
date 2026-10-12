@@ -5,11 +5,14 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
+import ListSeparators from '@/components/ListSeparators.vue';
+import { useListSeparators } from '@/composables/useListSeparators';
 
 const { t } = useI18n();
 
 const input = ref('');
-const output = computed(() => input.value.split('\n').reverse().join('\n'));
+const { inputSeparator, outputSeparator, items, formatOutput } = useListSeparators(input);
+const output = computed(() => formatOutput([...items.value].reverse()));
 </script>
 <template>
   <ToolLayout :tool="tool">
@@ -19,6 +22,9 @@ const output = computed(() => input.value.split('\n').reverse().join('\n'));
       </template>
       <template #output>
         <NInput :value="output" type="textarea" :rows="6" readonly :placeholder="t('common.outputPlaceholder')"  :input-props="{ id: 'listReverseField1' }"/>
+      </template>
+      <template #params>
+        <ListSeparators v-model:input-separator="inputSeparator" v-model:output-separator="outputSeparator" />
       </template>
     </ToolTextPanel>
   </ToolLayout>

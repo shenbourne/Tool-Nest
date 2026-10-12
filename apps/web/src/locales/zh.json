@@ -657,10 +657,6 @@
       "description": "检测不可见和特殊 Unicode 字符",
       "noneDetected": "未检测到隐藏字符。"
     },
-    "textJoin": {
-      "name": "文本连接",
-      "description": "使用自定义分隔符连接多行文本"
-    },
     "quoteGenerator": {
       "name": "名言生成器",
       "description": "浏览和显示随机编程名言",
@@ -846,10 +842,6 @@
       "columnA": "列 A",
       "columnB": "列 B"
     },
-    "listDuplicate": {
-      "name": "列表复制",
-      "description": "复制列表中的每个项目"
-    },
     "listFindPopular": {
       "name": "列表找最频繁",
       "description": "查找列表中出现最频繁的项目"
@@ -873,10 +865,6 @@
       "name": "列表洗牌",
       "description": "随机打乱列表项"
     },
-    "listSort": {
-      "name": "列表排序",
-      "description": "按字母或数字排序列表项"
-    },
     "listTruncate": {
       "name": "列表截断",
       "description": "仅保留列表的前 N 项"
@@ -884,10 +872,6 @@
     "listUnwrap": {
       "name": "列表解包",
       "description": "移除列表项的包裹字符"
-    },
-    "listWrap": {
-      "name": "列表包装",
-      "description": "用前缀和后缀包装每个列表项"
     },
     "jsonEscape": {
       "name": "JSON 转义",
@@ -1939,13 +1923,13 @@
     },
     "listConverter": {
       "name": "列表转换器",
-      "description": "使用排序、去重、前后缀等选项转换列表",
+      "description": "转换、排序、包装或连接列表，独立设置输入与输出分隔符",
       "inputPlaceholder": "输入列表项...",
       "comma": "逗号 (,)",
       "semicolon": "分号 (;)",
       "newline": "换行",
       "tab": "制表符",
-      "pipe": "竖线 (|)",
+      "pipe": "竖线",
       "space": "空格",
       "none": "无",
       "ascending": "升序",
@@ -1955,7 +1939,15 @@
       "removeEmpty": "移除空项",
       "removeDuplicates": "移除重复项",
       "itemPrefix": "项目前缀",
-      "itemSuffix": "项目后缀"
+      "itemSuffix": "项目后缀",
+      "inputSeparator": "输入分隔符",
+      "outputSeparator": "输出分隔符",
+      "auto": "自动识别",
+      "custom": "自定义",
+      "customInputSeparator": "自定义输入分隔符",
+      "customOutputSeparator": "自定义输出分隔符",
+      "inputSeparatorRequired": "请输入用于拆分输入的分隔符",
+      "sameAsInput": "与输入分隔符相同"
     },
     "qrCodeGenerator": {
       "name": "二维码生成器",

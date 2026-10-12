@@ -5,38 +5,34 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
-import { convertList } from './list-converter.service';
+import ListSeparators from '@/components/ListSeparators.vue';
+import { useListSeparators } from '@/composables/useListSeparators';
+import { convertList, DEFAULT_LIST_OPTIONS } from './list-converter.service';
 
 const { t } = useI18n();
 
 const inputText = ref('apple, banana, apple, cherry, banana, date');
 
-const separator = ref(',');
-const separatorOptions = computed(() => [
-  { label: t('tools.listConverter.comma'), value: ',' },
-  { label: t('tools.listConverter.semicolon'), value: ';' },
-  { label: t('tools.listConverter.newline'), value: '\n' },
-  { label: t('tools.listConverter.tab'), value: '\t' },
-  { label: t('tools.listConverter.pipe'), value: '|' },
-  { label: t('tools.listConverter.space'), value: ' ' },
-]);
+const { inputSeparator, outputSeparator } = useListSeparators(inputText);
 
-const trimItems = ref(true);
-const removeEmpty = ref(true);
-const lowerCase = ref(false);
-const removeDuplicates = ref(false);
-const sortItems = ref<'none' | 'asc' | 'desc'>('none');
+const trimItems = ref(DEFAULT_LIST_OPTIONS.trimItems);
+const removeEmpty = ref(DEFAULT_LIST_OPTIONS.removeEmpty);
+const lowerCase = ref(DEFAULT_LIST_OPTIONS.lowerCase);
+const removeDuplicates = ref(DEFAULT_LIST_OPTIONS.removeDuplicates);
+const sortItems = ref<'none' | 'asc' | 'desc'>(DEFAULT_LIST_OPTIONS.sortItems);
 const sortOptions = computed(() => [
   { label: t('tools.listConverter.none'), value: 'none' },
   { label: t('tools.listConverter.ascending'), value: 'asc' },
   { label: t('tools.listConverter.descending'), value: 'desc' },
 ]);
-const itemPrefix = ref('');
-const itemSuffix = ref('');
+const itemPrefix = ref(DEFAULT_LIST_OPTIONS.itemPrefix);
+const itemSuffix = ref(DEFAULT_LIST_OPTIONS.itemSuffix);
 
 const output = computed(() => {
+  if (inputSeparator.value === '') return '';
   return convertList(inputText.value, {
-    separator: separator.value,
+    inputSeparator: inputSeparator.value,
+    separator: outputSeparator.value,
     trimItems: trimItems.value,
     removeEmpty: removeEmpty.value,
     lowerCase: lowerCase.value,
@@ -69,32 +65,29 @@ const output = computed(() => {
       </template>
       <template #params>
         <div class="list-options">
+          <ListSeparators v-model:input-separator="inputSeparator" v-model:output-separator="outputSeparator" />
           <div class="list-options__fields">
             <div class="list-options__field">
-              <span class="list-options__label">{{ t('common.separator') }}</span>
-              <NSelect v-model:value="separator" :options="separatorOptions" class="list-options__control" />
-            </div>
-            <div class="list-options__field">
               <span class="list-options__label">{{ t('tools.listConverter.sortOrder') }}</span>
-              <NSelect v-model:value="sortItems" :options="sortOptions" class="list-options__control" />
+              <NSelect v-model:value="sortItems" :options="sortOptions" :aria-label="t('tools.listConverter.sortOrder')" class="list-options__control" />
             </div>
           </div>
           <div class="list-options__switches">
             <div class="list-options__field">
               <span class="list-options__label">{{ t('tools.listConverter.trimItems') }}</span>
-              <NSwitch v-model:value="trimItems" />
+              <NSwitch v-model:value="trimItems" :aria-label="t('tools.listConverter.trimItems')" />
             </div>
             <div class="list-options__field">
               <span class="list-options__label">{{ t('tools.listConverter.removeEmpty') }}</span>
-              <NSwitch v-model:value="removeEmpty" />
+              <NSwitch v-model:value="removeEmpty" :aria-label="t('tools.listConverter.removeEmpty')" />
             </div>
             <div class="list-options__field">
               <span class="list-options__label">{{ t('common.lowercase') }}</span>
-              <NSwitch v-model:value="lowerCase" />
+              <NSwitch v-model:value="lowerCase" :aria-label="t('common.lowercase')" />
             </div>
             <div class="list-options__field">
               <span class="list-options__label">{{ t('tools.listConverter.removeDuplicates') }}</span>
-              <NSwitch v-model:value="removeDuplicates" />
+              <NSwitch v-model:value="removeDuplicates" :aria-label="t('tools.listConverter.removeDuplicates')" />
             </div>
           </div>
           <div class="list-options__fields">

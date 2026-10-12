@@ -197,7 +197,7 @@
 | 97 | Email Extractor | omni-tools | `src/pages/tools/string/email-extractor/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/email-extractor/；/email-extractor` |
 | 98 | Extract Substring | omni-tools | `src/pages/tools/string/extract-substring/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/extract-substring/；/extract-substring` |
 | 99 | Hidden Character Detector | omni-tools | `src/pages/tools/string/hidden-character-detector/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/hidden-char-detector/；/hidden-char-detector` |
-| 100 | Text Join | omni-tools | `src/pages/tools/string/join/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-join/；/text-join` |
+| 100 | Text Join | omni-tools | `src/pages/tools/string/join/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/list-converter/；/list-converter（旧 /text-join 重定向统一页面）` |
 | 101 | Palindrome Checker | omni-tools | `src/pages/tools/string/palindrome/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/palindrome-checker/；/palindrome-checker` |
 | 102 | Quote Generator | omni-tools | `src/pages/tools/string/quote/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/quote-generator/；/quote-generator` |
 | 103 | Remove Duplicate Lines | omni-tools | `src/pages/tools/string/remove-duplicate-lines/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/remove-duplicate-lines/；/remove-duplicate-lines` |
@@ -226,17 +226,17 @@
 | 121 | Insert CSV Columns | omni-tools | `src/pages/tools/csv/insert-csv-columns/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/csv-insert-columns/；/csv-insert-columns` |
 | 122 | Swap CSV Columns | omni-tools | `src/pages/tools/csv/swap-csv-columns/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/csv-swap-columns/；/csv-swap-columns` |
 | 123 | Transpose CSV | omni-tools | `src/pages/tools/csv/transpose-csv/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/csv-rows-to-columns/；/csv-rows-to-columns（旧 /csv-transpose 重定向）` |
-| 124 | List Duplicate | omni-tools | `src/pages/tools/list/duplicate/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-duplicate/；/list-duplicate` |
+| 124 | List Duplicate | omni-tools | `src/pages/tools/list/duplicate/` | 浏览器 | 无 | — | 直接迁移 | 已排除 | 用户要求移除（phase35） |
 | 125 | List Find Most Popular | omni-tools | `src/pages/tools/list/find-most-popular/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-find-popular/；/list-find-popular` |
 | 126 | List Find Unique | omni-tools | `src/pages/tools/list/find-unique/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/remove-duplicate-lines/；/remove-duplicate-lines（旧 /list-find-unique 重定向）` |
 | 127 | List Group | omni-tools | `src/pages/tools/list/group/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-group/；/list-group` |
 | 128 | List Reverse | omni-tools | `src/pages/tools/list/reverse/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-reverse/；/list-reverse` |
 | 129 | List Rotate | omni-tools | `src/pages/tools/list/rotate/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-rotate/；/list-rotate` |
 | 130 | List Shuffle | omni-tools | `src/pages/tools/list/shuffle/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-shuffle/；/list-shuffle` |
-| 131 | List Sort | omni-tools | `src/pages/tools/list/sort/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-sort/；/list-sort` |
+| 131 | List Sort | omni-tools | `src/pages/tools/list/sort/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/list-converter/；/list-converter（旧 /list-sort 重定向统一页面）` |
 | 132 | List Truncate | omni-tools | `src/pages/tools/list/truncate/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-truncate/；/list-truncate` |
 | 133 | List Unwrap | omni-tools | `src/pages/tools/list/unwrap/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-unwrap/；/list-unwrap` |
-| 134 | List Wrap | omni-tools | `src/pages/tools/list/wrap/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-wrap/；/list-wrap` |
+| 134 | List Wrap | omni-tools | `src/pages/tools/list/wrap/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/list-converter/；/list-converter（旧 /list-wrap 重定向统一页面）` |
 
 ### 8. 图片处理 (image)
 
