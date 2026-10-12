@@ -328,6 +328,7 @@ Phase35 publication complete: implementation0d783f8 pushed private/feature/phase
 2026-10-12 user authorized master merge and private master push. Concurrent98f4e1e generator update integrated; only append-only workflow documentation conflicts, both intents retained. Merge checks pending.
 Master integration checks PASS437 tests/build31.04s; user authorization recorded. Ready to fast-forward master and push private.
 
+2026-10-12 Phase38 sequence consolidation: feature/phase-38-sequence-consolidation from private/master92c5fb0. Arithmetic replaces even/odd UI choices; exact first term/difference/count, nth term/sum; legacy redirect and preference compatibility.440 frontend tests, scoped lint/typecheck/build PASS. Browser NOT RUN. Primary scoped mirror applied, unrelated dirty work preserved. Next: publish feature and await separately authorized master merge.
 ## 2026-10-12 Phase 37 — object/domain taxonomy
 
 Phase37 complete: feature/phase-37-tool-taxonomy in .worktrees/phase-37-tool-taxonomy; base private/master98f4e1e, integrated refreshed private/master92c5fb0. 13 primary categories, localized functional tags, legacy category routes/anchors, stable tool URLs/preferences. Final442 web tests/typecheck/shared typecheck/build/scoped105-file lint PASS; browser desktop/category/filter/English checks PASS. Scoped shared preview mirror applied with backups; primary targeted15 tests/typecheck PASS. No master merge authorized. Next: publish feature branch and verify remote SHA; then await separate merge instruction.
@@ -346,3 +347,14 @@ Publication: private/feature/phase-39-temperature-sync push of b8e8e22 succeeded
 
 Phase38 verified: final464 tests, scoped lint, typecheck and build PASS. Technical and source-based acceptance complete; browser visual check not run. Branch feature/phase-38-number-to-words ready for private publication; next action separately authorized master merge.
 2026-10-12 User authorized phase39 master merge/publication. Integrated master e992b30;467 tests/typecheck/build PASS on merged tree. Master local records/declarations backed up under primary .scratch/phase39-master-backup. Next fast-forward master, restore dirty records and push private/master.
+Remote taxonomy integration766bfd3 reconciled: metadata category math plus arithmetic aliases/redirect retained; both state histories preserved. Reverification445 frontend tests and scoped lint PASS; build/typecheck running.
+
+Final integration gates PASS:445 tests, scoped lint, vue-tsc and production build36.39s. Phase38 implementation complete; publish updated feature branch, master merge remains separate.
+
+2026-10-12 user authorized phase38 sequence master integration and canonical private/master push. Visual desktop/bilingual/parameters/legacy redirect PASS; narrow-screen global sidebar limitation recorded. Remote private/master766bfd3 ancestor of verified986524e; business tree unchanged since445-test/typecheck/build validation. Next fast-forward master preserving dirty work and verify publication.
+
+2026-10-12 Phase38: fixed Number to Words integer validation and expanded Chinese/English description. Isolated feature/phase-38-number-to-words; initial base92c5fb0, integrated refreshed private/master766bfd3.464 frontend tests/scoped lint/current-preview typecheck PASS; final build/publication pending. Shared preview scoped mirror applied; unrelated dirty work preserved. No master merge authorized. Next: publish feature and verify remote SHA.
+
+Phase38 verified: final464 tests, scoped lint, typecheck and build PASS. Technical and source-based acceptance complete; browser visual check not run. Branch feature/phase-38-number-to-words ready for private publication; next action separately authorized master merge.
+
+2026-10-12 master publication verification: concurrent number-to-words mastere992b30 safely integrated into feature4bd5660. State-only conflict resolved preserving both records. Final467 frontend tests, scoped eslint, vue-tsc and production build38.34s PASS. No business changes after these checks. Authorized master fast-forward/push ready; narrow-screen global sidebar limitation remains.

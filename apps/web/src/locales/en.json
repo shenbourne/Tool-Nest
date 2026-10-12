@@ -769,15 +769,13 @@
     },
     "numberGenerator": {
       "name": "Number Generator",
-      "description": "Generate number sequences: Fibonacci, primes, even, odd",
-      "usageHint": "Line 1: type (fibonacci/primes/even/odd)\nLine 2: count",
+      "description": "Generate Fibonacci, prime and arithmetic sequences",
+      "usageHint": "Choose a sequence and set the first term, count and arithmetic difference.",
       "settings": "Sequence settings",
       "intro": "Choose a sequence and adjust the count. Results update instantly.",
       "sequenceType": "Sequence type",
       "fibonacci": "Fibonacci",
       "primes": "Primes",
-      "even": "Even",
-      "odd": "Odd",
       "countLabel": "Number of terms",
       "range": "1–{max} terms",
       "result": "Generated sequence",
@@ -786,7 +784,10 @@
       "invalidCount": "Enter a whole number between 1 and {max}.",
       "startLabel": "Starting value",
       "startHint": "First value ≥ start",
-      "invalidStart": "Starting value must be a whole number between 0 and {max}."
+      "invalidStart": "Starting value must be a whole number between 0 and {max}.",
+      "arithmetic": "Arithmetic sequence",
+      "arithmeticHint": "Use this exact first term",
+      "invalidArithmetic": "Enter valid first term, difference and count; results must be finite."
     },
     "csvToJson": {
       "name": "CSV to JSON",

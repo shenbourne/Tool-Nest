@@ -1,4 +1,4 @@
-export type NumberSequenceType = 'fibonacci' | 'primes' | 'even' | 'odd';
+export type NumberSequenceType = 'fibonacci' | 'primes' | 'even' | 'odd' | 'arithmetic';
 const MAX_COUNT = 10_000;
 export const MAX_SEQUENCE_START = 1_000_000;
 const fibonacci = [0, 1];
@@ -9,11 +9,16 @@ export function sequenceCountLimit(type: NumberSequenceType, start: number): num
   return type === 'fibonacci' ? fibonacci.filter(value => value >= start).length : MAX_COUNT;
 }
 function isSequenceType(type: string): type is NumberSequenceType {
-  return type === 'fibonacci' || type === 'primes' || type === 'even' || type === 'odd';
+  return type === 'fibonacci' || type === 'primes' || type === 'even' || type === 'odd' || type === 'arithmetic';
 }
 /** Generate from the first sequence value at or above start; invalid input yields empty output. */
-export function generateNumbers(type: string, n: number, start = 0): string | null {
+export function generateNumbers(type: string, n: number, start = 0, difference = 3): string | null {
   if (!isSequenceType(type)) return null;
+  if (type === 'arithmetic') {
+    if (!Number.isFinite(n) || n < 1 || !Number.isFinite(start) || !Number.isFinite(difference)) return '';
+    const values = Array.from({ length: Math.min(Math.floor(n), MAX_COUNT) }, (_, index) => start + index * difference);
+    return values.every(Number.isFinite) ? values.join(', ') : '';
+  }
   if (!Number.isFinite(n) || n < 1 || !Number.isInteger(start) || start < 0 || start > MAX_SEQUENCE_START) return '';
   const count = Math.min(Math.floor(n), MAX_COUNT);
   if (type === 'fibonacci') {
