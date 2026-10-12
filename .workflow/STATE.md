@@ -372,3 +372,5 @@ Phase42 verified:470 frontend tests, scoped lint, typecheck/build26.00s PASS; Ch
 Phase40 desktop visual and interaction acceptance PASS2026-10-12; bilingual seven unit edits, decimals/zero/clear/keyboard verified. Phase complete for requested scope; mobile/dark not tested. Next: separately authorized master merge.
 
 Phase40 alignment follow-up complete: seven grid inputs align and fill card right edge; bilingual desktop/browser conversion/lint/typecheck PASS. Mirrored to shared preview; next separately authorized master merge.
+
+2026-10-12 phase40 user-authorized master merge verified: latest master1a6dca1 safely integrated, full tests/typecheck/build PASS; desktop visual PASS, mobile sidebar limitation recorded. Publishing master; preserve shared declaration edit. Next action: independent global narrow-screen shell improvement if requested.
