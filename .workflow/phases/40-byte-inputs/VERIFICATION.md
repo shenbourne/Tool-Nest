@@ -8,3 +8,5 @@
 - Remote private/master dac0597 fetched before development and publication, base0/0.
 
 Browser desktop acceptance PASS using real preview http://127.0.0.1:5173/byte-converter; bilingual screenshots inspected, every input edited through browser controls, zero/clear/keyboard verified through rendered values. Screenshot .scratch/phase40-byte-evidence/desktop.jpg in shared preview. No source change required. Mobile/dark NOT RUN.
+
+Alignment follow-up: scoped eslint and vue-tsc --noEmit PASS. Browser screenshot and DOM bounds PASS for bilingual aligned full-width fields; .scratch/phase40-byte-evidence/aligned-desktop.jpg. CSS-only tool-local edit; no new tests/full build needed (previous full build PASS, runtime layout observed).

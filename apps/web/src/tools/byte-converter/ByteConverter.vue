@@ -25,16 +25,33 @@ function unitLabel(unit: ByteUnit) {
 <template>
   <ToolLayout :tool="tool">
     <NCard><NSpace vertical :size="12">
-      <div v-for="unit in byteUnits" :key="unit.id" class="tool-numeric-param">
+      <div v-for="unit in byteUnits" :key="unit.id" class="byte-unit-row">
         <label :for="`byteConverter-${unit.id}`">{{ unitLabel(unit.id) }}:</label>
         <NInputNumber
           :value="convertByteUnit(sourceValue, sourceUnit, unit.id)"
           :min="0"
           :input-props="{ id: `byteConverter-${unit.id}` }"
-          style="width: 100%; max-width: 360px"
           @update:value="updateValue(unit.id, $event)"
         />
       </div>
     </NSpace></NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.byte-unit-row {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.byte-unit-row > label {
+  color: var(--color-ink);
+}
+
+.byte-unit-row > .n-input-number {
+  width: 100%;
+  min-width: 0;
+}
+</style>

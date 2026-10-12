@@ -363,3 +363,5 @@ Phase39 final integration: latest master d6032a3 preserved;470 frontend tests/ty
 2026-10-12 phase40 byte inputs: feature/phase-40-byte-inputs based private/master dac0597; all seven units linked/editable;480 tests/scoped lint/typecheck/build PASS. Shared scoped preview mirrored; unrelated edits preserved. Browser NOT RUN, visual acceptance pending. Next: publish feature then visual acceptance/separate master authorization.
 
 Phase40 desktop visual and interaction acceptance PASS2026-10-12; bilingual seven unit edits, decimals/zero/clear/keyboard verified. Phase complete for requested scope; mobile/dark not tested. Next: separately authorized master merge.
+
+Phase40 alignment follow-up complete: seven grid inputs align and fill card right edge; bilingual desktop/browser conversion/lint/typecheck PASS. Mirrored to shared preview; next separately authorized master merge.
