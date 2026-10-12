@@ -1,0 +1,2 @@
+# Phase 38 — Number to Words
+Fix integer validation and expand the bilingual tool description with purpose, examples and supported input. Preserve the shared checkout's unrelated work. Remote private/master fetched 2026-10-12 at 92c5fb0; local master ahead 7/behind 0. Independent branch feature/phase-38-number-to-words starts from the fetched remote base. No architecture change or harness audit required for this local correction.

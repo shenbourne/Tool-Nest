@@ -23,7 +23,7 @@ function toWords(n: number): string {
 }
 const error = computed(() => {
   const v = input.value.trim();
-  return v && !/^-?d+$/.test(v) ? t('common.invalidNumber') : '';
+  return v && (!/^-?\d+$/.test(v) || !Number.isSafeInteger(Number(v))) ? t('common.invalidNumber') : '';
 });
 const output = computed(() => { if (error.value) return ''; const n = parseInt(input.value); return isNaN(n) ? '' : toWords(n); });
 </script>
