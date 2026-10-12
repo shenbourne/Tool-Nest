@@ -33,11 +33,12 @@ describe('automatic generator interactions', () => {
   });
   it('generates random numbers on open/change/retry and recovers after invalid ranges', async () => {
     const generator = vi.fn(generateRandomNumbers);
-    const { state: s, stop } = setup('./random-number-generator/RandomNumberGenerator.vue', ['min','max','count','unique','result','gen'], { generateRandomNumbers: generator });
+    const { state: s, stop } = setup('./random-number-generator/RandomNumberGenerator.vue', ['min','max','count','allowRepeat','result','gen'], { generateRandomNumbers: generator });
     try {
       expect(s.result.value).toMatch(/^\d+$/);
+      expect(s.allowRepeat.value).toBe(true);
       s.min.value = 7; s.max.value = 7; s.count.value = 2; await nextTick(); expect(s.result.value).toBe('7, 7');
-      s.unique.value = true; await nextTick(); expect(s.result.value).toContain('rangeTooSmall');
+      s.allowRepeat.value = false; await nextTick(); expect(s.result.value).toContain('rangeTooSmall');
       s.count.value = 1; await nextTick(); expect(s.result.value).toBe('7');
       s.gen(); expect(generator).toHaveBeenCalledTimes(5);
     } finally { stop(); }

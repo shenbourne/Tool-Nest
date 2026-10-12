@@ -759,7 +759,10 @@
       "description": "在自定义范围内生成随机数",
       "rangeTooSmall": "范围太小，无法生成不重复的数字",
       "invalidRange": "最小值必须小于或等于最大值",
-      "uniqueOnly": "仅不重复"
+      "allowRepeat": "允许重复",
+      "min": "最小值",
+      "max": "最大值",
+      "count": "生成数量"
     },
     "numberSum": {
       "name": "数字求和",
