@@ -35,6 +35,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
+      '@toolnest/shared': resolve(__dirname, '../../packages/shared/src/index.ts'),
     },
   },
   server: {

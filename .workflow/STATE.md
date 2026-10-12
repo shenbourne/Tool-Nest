@@ -327,3 +327,13 @@ Phase35 publication complete: implementation0d783f8 pushed private/feature/phase
 
 2026-10-12 user authorized master merge and private master push. Concurrent98f4e1e generator update integrated; only append-only workflow documentation conflicts, both intents retained. Merge checks pending.
 Master integration checks PASS437 tests/build31.04s; user authorization recorded. Ready to fast-forward master and push private.
+
+## 2026-10-12 Phase 37 — object/domain taxonomy
+
+Phase37 complete: feature/phase-37-tool-taxonomy in .worktrees/phase-37-tool-taxonomy; base private/master98f4e1e, integrated refreshed private/master92c5fb0. 13 primary categories, localized functional tags, legacy category routes/anchors, stable tool URLs/preferences. Final442 web tests/typecheck/shared typecheck/build/scoped105-file lint PASS; browser desktop/category/filter/English checks PASS. Scoped shared preview mirror applied with backups; primary targeted15 tests/typecheck PASS. No master merge authorized. Next: publish feature branch and verify remote SHA; then await separate merge instruction.
+
+Publication verified: implementation5595b60 pushed to private/feature/phase-37-tool-taxonomy; ls-remote exactly matched5595b60c45b9265ceee41ee2132ac940b0373cc9. Phase37 technical/desktop acceptance complete. Next action: separate user-authorized master merge. Shared preview edits and backups retained; unrelated work preserved.
+
+Final publication limitation: feature implementation5595b60 exact remote SHA verified; follow-up records59e592c push succeeded. Fetch/ls-remote later repeatedly failed with TLS unexpected EOF. Final status-only commit0e57aa4 remains local; no functional implementation pending. Next: retry fetch, compare and publish final documentation when TLS connection recovers; master merge remains separately authorized.
+
+2026-10-12 user authorized phase37 master merge and canonical private/master publication. Refreshed private/master92c5fb0 is ancestor of taxonomy feature; no business conflicts. Reverification442 tests PASS and vue-tsc PASS. Business source byte-identical to previously verified5595b60 (git diff --exit-code5595b60 HEAD -- apps packages empty), so previous production build66s and scoped105-file lint results remain applicable. Next fast-forward local master preserving its dirty records/declarations, publish master and verify exact remote SHA.

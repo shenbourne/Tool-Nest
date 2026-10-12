@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { NH2, NP, NGrid, NGi, NDivider, NEmpty } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import SearchBar from '@/components/SearchBar.vue';
 import ToolCard from '@/components/ToolCard.vue';
 import TagFilter from '@/components/TagFilter.vue';
@@ -13,6 +14,17 @@ import { TOOL_CATEGORIES } from '@toolnest/shared';
 const { t } = useI18n();
 const toolStore = useToolStore();
 const searchStore = useSearchStore();
+const route = useRoute();
+
+watch(() => route.query.tag, (tag, previousTag) => {
+  if (typeof tag === 'string' && searchStore.allTags.includes(tag)) {
+    searchStore.query = '';
+    searchStore.selectedCategory = null;
+    searchStore.selectedTags = [tag];
+  } else if (previousTag) {
+    searchStore.selectedTags = [];
+  }
+}, { immediate: true });
 
 const isSearching = computed(() =>
   searchStore.query.trim() || searchStore.selectedTags.length > 0 || searchStore.selectedCategory

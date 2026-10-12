@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.otpGenerator.name',
   path: '/otp-generator',
   description: 'tools.otpGenerator.description',
-  category: 'generator',
+  category: 'crypto',
   tags: ['generator', 'security'],
   keywords: ['otp', 'totp', 'mfa', 'two-factor', 'authenticator'],
   component: () => import('./OtpGenerator.vue'),
