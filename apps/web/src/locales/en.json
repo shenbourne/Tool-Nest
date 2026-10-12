@@ -263,7 +263,7 @@
     "decrypt": "Decrypt",
     "settings": "Settings",
     "select": "Select",
-    "generationActions": {"mnemonic":"Generate mnemonic","uuid":"Generate UUID","ulid":"Generate ULID","token":"Generate token","randomNumbers":"Generate random numbers","macAddresses":"Generate MAC addresses","randomPort":"Generate random port","ipv6Ula":"Generate IPv6 ULA address"},
+    "generationActions": {"mnemonic":"Generate mnemonic","uuid":"Generate UUID","ulid":"Generate ULID","randomNumbers":"Generate random numbers","macAddresses":"Generate MAC addresses","randomPort":"Generate random port","ipv6Ula":"Generate IPv6 ULA address"},
     "generate": "Generate",
     "convert": "Convert",
     "compare": "Compare",
@@ -345,7 +345,9 @@
       "name": "JSON Prettify",
       "description": "Format and beautify JSON strings",
       "input": "Input JSON",
-      "output": "Formatted Output"
+      "output": "Formatted Output",
+      "spaces": "{count} spaces",
+      "tab": "Tab"
     },
     "base64Encoder": {
       "name": "Base64 Encoder/Decoder",
@@ -353,10 +355,6 @@
       "encodePlaceholder": "Enter text to encode...",
       "decodePlaceholder": "Enter Base64 to decode...",
       "nothingToSwap": "Nothing to swap: the output is empty"
-    },
-    "tokenGenerator": {
-      "name": "Token Generator",
-      "description": "Generate random alphanumeric tokens with custom length and character sets"
     },
     "hashText": {
       "name": "Hash Text",
@@ -523,18 +521,6 @@
       "class": "Class",
       "descriptionColumn": "Description"
     },
-    "mathEvaluator": {
-      "name": "Math Evaluator",
-      "description": "Evaluate mathematical expressions with operators and grouping",
-      "expressionPlaceholder": "Enter math expression...",
-      "supportedOperators": "Supported operators",
-      "operatorsList": "+, -, *, /, ^ (power), % (modulo), () (grouping)",
-      "divisionByZero": "Division by zero",
-      "missingClosingParenthesis": "Missing closing parenthesis",
-      "unexpectedCharacter": "Unexpected character: {char}",
-      "endOfInput": "end of input",
-      "errorPrefix": "Error: {message}"
-    },
     "textStats": {
       "name": "Text Statistics",
       "description": "Count characters, words, lines, sentences, and estimate reading time",
@@ -648,7 +634,8 @@
     },
     "removeDuplicateLines": {
       "name": "Remove Duplicate Lines",
-      "description": "Remove duplicate lines from text"
+      "description": "Remove duplicate lines from text",
+      "keepEmpty": "Keep empty lines"
     },
     "textRepeat": {
       "name": "Text Repeat",
@@ -685,12 +672,17 @@
       "lines": "Lines"
     },
     "passwordGenerator": {
-      "name": "Password Generator",
-      "description": "Generate secure random passwords with custom options",
+      "name": "Password & Token Generator",
+      "description": "Generate passwords or tokens with custom length, character sets and exclusions",
       "selectOneOption": "Select at least one option",
       "excludePlaceholder": "Exclude characters...",
       "generatePassword": "Generate Password",
-      "outputPlaceholder": "Click generate..."
+      "outputPlaceholder": "Generated password or token",
+      "passwordPreset": "Password",
+      "tokenPreset": "Token",
+      "preset": "Generation preset",
+      "generateToken": "Generate Token",
+      "invalidLength": "Length must be an integer from 1 to 512"
     },
     "byteConverter": {
       "name": "Byte Converter",
@@ -715,11 +707,8 @@
       "name": "Generic Calculator",
       "description": "Evaluate expressions live with calculator keys and reusable history",
       "expressionPlaceholder": "Expression: {example}",
-      "resultPlaceholder": "Result...",
       "history": "History:",
-      "unexpected": "Unexpected: {char}",
       "endOfInput": "end of input",
-      "errorPrefix": "Error: {message}",
       "notFinite": "result is not a finite number",
       "invalidFactorial": "Factorial requires an integer from 0 to 170",
       "clear": "Clear input",
@@ -730,7 +719,10 @@
       "emptyHistory": "Press equals or Enter to save a calculation",
       "reuse": "Reuse this expression",
       "operators": "Supports + − × ÷, remainder %, power ^, parentheses and factorial !",
-      "historyHint": "Saved in this browser, up to 100 entries"
+      "historyHint": "Saved in this browser, up to 100 entries",
+      "divisionByZero": "Division by zero",
+      "missingClosingParenthesis": "Missing closing parenthesis",
+      "unexpectedCharacter": "Unexpected character: {char}"
     },
     "randomNumberGenerator": {
       "name": "Random Number Generator",
@@ -820,10 +812,6 @@
       "columnA": "Column A",
       "columnB": "Column B"
     },
-    "csvTranspose": {
-      "name": "Transpose CSV",
-      "description": "Transpose CSV data (rows become columns)"
-    },
     "listDuplicate": {
       "name": "List Duplicate",
       "description": "Duplicate each item in a list"
@@ -831,10 +819,6 @@
     "listFindPopular": {
       "name": "List Find Most Popular",
       "description": "Find the most frequent items in a list"
-    },
-    "listFindUnique": {
-      "name": "List Find Unique",
-      "description": "Extract unique items from a list"
     },
     "listGroup": {
       "name": "List Group",
@@ -878,10 +862,6 @@
       "escapePlaceholder": "Text to escape...",
       "unescapePlaceholder": "JSON string to unescape...",
       "invalidInput": "Invalid input"
-    },
-    "jsonStringify": {
-      "name": "JSON Stringify",
-      "description": "Format and serialize JSON with options"
     },
     "jsonSort": {
       "name": "JSON Sort",
@@ -1523,12 +1503,6 @@
       "execute": "Execute (1)",
       "octal": "Octal",
       "symbolic": "Symbolic"
-    },
-    "jsonViewer": {
-      "name": "JSON Viewer",
-      "description": "Format and validate JSON data",
-      "inputPlaceholder": "Paste your JSON here...",
-      "outputTitle": "Formatted Output"
     },
     "dockerRunToCompose": {
       "name": "Docker Run to Compose",

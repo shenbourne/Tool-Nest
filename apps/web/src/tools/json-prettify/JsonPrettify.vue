@@ -4,34 +4,22 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
+import { formatJson } from './json-prettify.service';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
 
 const input = ref('');
-const indent = ref(2);
-const error = ref('');
+const indent = ref<number | 'tab'>(2);
 
-const indentOptions = [
-  { label: '2 spaces', value: 2 },
-  { label: '4 spaces', value: 4 },
-  { label: 'Tab', value: 0 },
-];
+const indentOptions = computed(() => [
+  ...Array.from({ length: 8 }, (_, i) => ({ label: t('tools.jsonPrettify.spaces', { count: i + 1 }), value: i + 1 })),
+  { label: t('tools.jsonPrettify.tab'), value: 'tab' },
+]);
 
-const output = computed(() => {
-  if (!input.value.trim()) return '';
-  try {
-    const parsed = JSON.parse(input.value);
-    if (indent.value === 0) return JSON.stringify(parsed, null, '\t');
-    return JSON.stringify(parsed, null, indent.value);
-  } catch (e: any) {
-    error.value = e.message;
-    return '';
-  }
-});
-
-watch(input, () => { error.value = ''; });
+const result = computed(() => formatJson(input.value, indent.value));
+const output = computed(() => result.value.formatted);
 </script>
 
 <template>
@@ -45,10 +33,10 @@ watch(input, () => { error.value = ''; });
       </template>
       <template #params>
         <NSpace align="center">
-          <NSelect v-model:value="indent" :options="indentOptions" style="width: 140px;" />
+          <NSelect v-model:value="indent" :options="indentOptions" :aria-label="t('common.indent')" style="width: 140px;" />
           <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
         </NSpace>
-        <NAlert v-if="error" type="error" :title="error" />
+        <NAlert v-if="result.error" type="error" :title="result.error" />
       </template>
     </ToolTextPanel>
   </ToolLayout>

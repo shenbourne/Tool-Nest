@@ -37,3 +37,5 @@ The detailed delivery sequence remains authoritative in `DEVELOPMENT_PLAN.md`. R
 
 Phase29: README file/URL import for Docker Compose to 1Panel.
 
+
+| 34 — Tool deduplication | Four canonical tools, five duplicate entries removed; legacy routes and preferences retained; calculator residue cleaned | R-001/R-002, user decision 2026-10-12 | Verified, isolated feature/phase-34-tool-dedup; pending merge | Existing registry redirectFrom |

@@ -76,7 +76,7 @@ ToolNest 统一分类（不按来源项目划分）：
 
 | # | 工具名称 | 来源 | 源路径 | 运行位置 | 外部依赖 | 重复关系 | 合并方案 | 迁移状态 | 验证情况 |
 |---|---------|------|--------|---------|---------|---------|---------|---------|---------|
-| 1 | Token Generator | it-tools | `src/tools/token-generator/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/token-generator/；/token-generator` |
+| 1 | Token Generator | it-tools | `src/tools/token-generator/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/password-generator/；/password-generator（旧 /token-generator 重定向）` |
 | 2 | Hash Text | it-tools | `src/tools/hash-text/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/hash-text/；/hash-text` |
 | 3 | BCrypt | it-tools | `src/tools/bcrypt/` | 浏览器 | bcryptjs | omni: string/bcrypt | 保留 it-tools（含对比验证） | 已迁移 | `apps/web/src/tools/bcrypt/；/bcrypt` |
 | 4 | UUID Generator | it-tools | `src/tools/uuid-generator/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/uuid-generator/；/uuid-generator` |
@@ -166,7 +166,7 @@ ToolNest 统一分类（不按来源项目划分）：
 | 73 | Regex Tester | it-tools | `src/tools/regex-tester/` | 浏览器 | 无 | — | 直接迁移 | 待迁移 | — |
 | 74 | Regex Memo | it-tools | `src/tools/regex-memo/` | 浏览器 | 无 | — | 直接迁移 | 待迁移 | — |
 | 75 | JSON Escape | omni-tools | `src/pages/tools/json/escape-json/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/json-escape/；/json-escape` |
-| 76 | JSON Stringify | omni-tools | `src/pages/tools/json/stringify/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/json-stringify/；/json-stringify` |
+| 76 | JSON Stringify | omni-tools | `src/pages/tools/json/stringify/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/json-prettify/；/json-prettify（旧 /json-stringify 重定向）` |
 | 77 | JSON Sort | omni-tools | `src/pages/tools/json/sort/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/json-sort/；/json-sort` |
 | 78 | JSON Validate | omni-tools | `src/pages/tools/json/validateJson/` | 浏览器 | 无 | it-tools #64(部分) | 合并到 JSON Viewer | 已迁移（独立实现） | `apps/web/src/tools/json-validate/；/json-validate（未并入 #64，单独成工具）` |
 | 79 | XML Validator | omni-tools | `src/pages/tools/xml/xml-validator/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/xml-validator/；/xml-validator` |
@@ -228,10 +228,10 @@ ToolNest 统一分类（不按来源项目划分）：
 | 120 | Find Incomplete CSV Records | omni-tools | `src/pages/tools/csv/find-incomplete-csv-records/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/csv-find-incomplete/；/csv-find-incomplete` |
 | 121 | Insert CSV Columns | omni-tools | `src/pages/tools/csv/insert-csv-columns/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/csv-insert-columns/；/csv-insert-columns` |
 | 122 | Swap CSV Columns | omni-tools | `src/pages/tools/csv/swap-csv-columns/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/csv-swap-columns/；/csv-swap-columns` |
-| 123 | Transpose CSV | omni-tools | `src/pages/tools/csv/transpose-csv/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/csv-transpose/；/csv-transpose` |
+| 123 | Transpose CSV | omni-tools | `src/pages/tools/csv/transpose-csv/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/csv-rows-to-columns/；/csv-rows-to-columns（旧 /csv-transpose 重定向）` |
 | 124 | List Duplicate | omni-tools | `src/pages/tools/list/duplicate/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-duplicate/；/list-duplicate` |
 | 125 | List Find Most Popular | omni-tools | `src/pages/tools/list/find-most-popular/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-find-popular/；/list-find-popular` |
-| 126 | List Find Unique | omni-tools | `src/pages/tools/list/find-unique/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-find-unique/；/list-find-unique` |
+| 126 | List Find Unique | omni-tools | `src/pages/tools/list/find-unique/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/remove-duplicate-lines/；/remove-duplicate-lines（旧 /list-find-unique 重定向）` |
 | 127 | List Group | omni-tools | `src/pages/tools/list/group/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-group/；/list-group` |
 | 128 | List Reverse | omni-tools | `src/pages/tools/list/reverse/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-reverse/；/list-reverse` |
 | 129 | List Rotate | omni-tools | `src/pages/tools/list/rotate/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/list-rotate/；/list-rotate` |
@@ -310,7 +310,7 @@ ToolNest 统一分类（不按来源项目划分）：
 
 | # | 工具名称 | 来源 | 源路径 | 运行位置 | 外部依赖 | 重复关系 | 合并方案 | 迁移状态 | 验证情况 |
 |---|---------|------|--------|---------|---------|---------|---------|---------|---------|
-| 180 | Math Evaluator | it-tools | `src/tools/math-evaluator/` | 浏览器 | mathjs | — | 直接迁移 | 已迁移 | `apps/web/src/tools/math-evaluator/；/math-evaluator` |
+| 180 | Math Evaluator | it-tools | `src/tools/math-evaluator/` | 浏览器 | mathjs | — | 直接迁移 | 已合并 | `apps/web/src/tools/generic-calculator/；/generic-calculator（旧 /math-evaluator 重定向）` |
 | 181 | ETA Calculator | it-tools | `src/tools/eta-calculator/` | 浏览器 | 无 | — | 直接迁移 | 待迁移 | — |
 | 182 | Percentage Calculator | it-tools | `src/tools/percentage-calculator/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/percentage-calc/；/percentage-calculator` |
 | 183 | Arithmetic Sequence | omni-tools | `src/pages/tools/number/arithmetic-sequence/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/arithmetic-sequence/；/arithmetic-sequence` |
@@ -347,7 +347,7 @@ ToolNest 统一分类（不按来源项目划分）：
 | 204 | Lorem Ipsum Generator | it-tools | `src/tools/lorem-ipsum-generator/` | 浏览器 | 无 | — | 见 #89 | 已迁移 | 同 #89（`apps/web/src/tools/lorem-ipsum/；/lorem-ipsum-generator`） |
 | 205 | UUID Generator | it-tools | `src/tools/uuid-generator/` | 浏览器 | 无 | — | 见 #4 | 已迁移 | 同 #4（`apps/web/src/tools/uuid-generator/；/uuid-generator`） |
 | 206 | ULID Generator | it-tools | `src/tools/ulid-generator/` | 浏览器 | ulid | — | 见 #5 | 已迁移 | 同 #5（`apps/web/src/tools/ulid-generator/；/ulid-generator`） |
-| 207 | Token Generator | it-tools | `src/tools/token-generator/` | 浏览器 | 无 | — | 见 #1 | 已迁移 | 同 #1（`apps/web/src/tools/token-generator/；/token-generator`） |
+| 207 | Token Generator | it-tools | `src/tools/token-generator/` | 浏览器 | 无 | — | 见 #1 | 已合并 | 同 #1（`apps/web/src/tools/password-generator/；/password-generator（旧 /token-generator 重定向）`） |
 | 208 | Password Generator | omni-tools | `src/pages/tools/string/password-generator/` | 浏览器 | 无 | — | 见 #12 | 已迁移 | 同 #12（`apps/web/src/tools/password-generator/；/password-generator`） |
 | 209 | Random Number Generator | omni-tools | `src/pages/tools/number/random-number-generator/` | 浏览器 | 无 | — | 见 #185 | 已迁移 | 同 #185（`apps/web/src/tools/random-number-generator/；/random-number-generator`） |
 | 210 | Random Port Generator | it-tools | `src/tools/random-port-generator/` | 浏览器 | 无 | — | 见 #62 | 待迁移 | — |
@@ -401,14 +401,14 @@ ToolNest 统一分类（不按来源项目划分）：
 | R09 | JSON 压缩 | json-minify | json/minify | — | **保留 it-tools** | 功能一致 |
 | R10 | JSON to CSV | json-to-csv | json/json-to-csv | — | **保留 it-tools** | papaparse 更成熟 |
 | R11 | JSON to XML | json-to-xml | json/json-to-xml | — | **保留 it-tools** | 功能一致 |
-| R12 | JSON 美化/查看 | json-viewer | json/prettify, validateJson | — | **保留 it-tools** | 树形视图更好 |
+| R12 | JSON 美化/查看 | json-viewer | json/prettify, validateJson | — | **合并至 json-prettify** | 当前实现统一文本格式化、1–8 空格或制表符；旧网址重定向（phase34） |
 | R13 | XML 格式化 | xml-formatter | xml/xml-beautifier | — | **保留 it-tools** | 功能一致 |
 | R14 | Crontab | crontab-generator | time/crontab-guru | — | **合并：it-tools + omni 预览** | 互补功能 |
 | R15 | 随机端口 | random-port-generator | number/random-port-generator | — | **保留 it-tools** | 功能一致 |
 | R16 | 文本统计 | text-statistics | string/statistic | — | **保留 it-tools** | 指标更全 |
 | R17 | 文本对比 | text-diff | string/text-compare | — | **保留 it-tools** | 差异可视化更好 |
 | R18 | QR 码 | qr-code-generator | image/generic/qr-code | — | **保留 it-tools** | 功能一致 |
-| R19 | 密码生成 | token-generator(部分) | string/password-generator | — | **合并：omni 为主 + it-tools 选项** | 互补 |
+| R19 | 密码生成 | token-generator(部分) | string/password-generator | — | **合并至 password-generator** | 密码/令牌预设、排除字符、1–512 长度、浏览器 crypto（phase34） |
 | R20 | 图片压缩 | — | image/generic/compress, image/png/compress-png | — | **合并为统一 Image Compress** | PNG 压缩是子集 |
 | R21 | 时间转换 | date-time-converter | time/convert-unix-to-date 等 | — | **保留 it-tools + 合并 omni 子功能** | it-tools 更完整 |
 | R22 | 设备信息 | device-information | — | BrowserInfo.vue | **合并：it-tools 为主 + MyIP 补充** | 互补 |

@@ -17,3 +17,5 @@ Keep requirements observable. When scope changes, record the decision and update
 R-029: Docker Compose to 1Panel README supports local Markdown/text and HTTP(S) file URL imports, retaining editing/reset and ZIP output (phase29).
 
 R-029 extension: import a single-app ZIP and create a distinct new version; inherit editable app metadata, retain old versions and supporting assets.
+
+Phase34 user decision (2026-10-12): consolidate CSV transpose, JSON formatting/viewing, line/list deduplication and password/token generation under R-001/R-002; retain old links/search/favorites/recents. Remove calculator residue; calculator was already unified in master. Acceptance: phases/34-tool-dedup/ACCEPTANCE.md.

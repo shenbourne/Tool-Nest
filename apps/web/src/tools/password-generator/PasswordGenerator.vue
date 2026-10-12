@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NInputNumber, NSwitch, NButton, NInput, NAlert, NSpace } from 'naive-ui';
+import { NInputNumber, NSwitch, NButton, NInput, NAlert, NSpace, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
+import { computed } from 'vue';
+import { generateSecret, secretPresets } from './password-generator.service';
 const { t } = useI18n();
-const length = ref(16);
+const preset = ref<'password' | 'token'>('password');
+const length = ref<number | null>(16);
 const upper = ref(true);
 const lower = ref(true);
 const nums = ref(true);
@@ -14,29 +17,41 @@ const syms = ref(true);
 const exclude = ref('');
 const pw = ref('');
 const error = ref('');
+const presetOptions = computed(() => [
+  { label: t('tools.passwordGenerator.passwordPreset'), value: 'password' },
+  { label: t('tools.passwordGenerator.tokenPreset'), value: 'token' },
+]);
+function applyPreset(value: 'password' | 'token') {
+  preset.value = value;
+  const options = secretPresets[value];
+  length.value = options.length;
+  upper.value = options.upper;
+  lower.value = options.lower;
+  nums.value = options.numbers;
+  syms.value = options.symbols;
+  pw.value = '';
+  error.value = '';
+}
 function gen() {
   error.value = '';
-  let chars = '';
-  if (upper.value) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  if (lower.value) chars += 'abcdefghijklmnopqrstuvwxyz';
-  if (nums.value) chars += '0123456789';
-  if (syms.value) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-  if (exclude.value) chars = chars.split('').filter(c => !exclude.value.includes(c)).join('');
-  if (!chars) { pw.value = ''; error.value = t('tools.passwordGenerator.selectOneOption'); return; }
-  const arr = new Uint32Array(length.value);
-  crypto.getRandomValues(arr);
-  pw.value = Array.from(arr, v => chars[v % chars.length]).join('');
+  pw.value = '';
+  try {
+    pw.value = generateSecret({ length: length.value ?? 0, upper: upper.value, lower: lower.value, numbers: nums.value, symbols: syms.value, exclude: exclude.value });
+  } catch (cause) {
+    error.value = t(`tools.passwordGenerator.${cause instanceof Error && cause.message === 'invalidLength' ? 'invalidLength' : 'selectOneOption'}`);
+  }
 }
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <ToolTextPanel :input-text="''" :output-text="pw" :output-title="t('common.output')" export-name="password.txt" hide-input>
+    <ToolTextPanel :input-text="''" :output-text="pw" :output-title="t('common.output')" :export-name="`${preset}.txt`" hide-input>
       <template #output>
-        <NInput :value="pw" readonly :placeholder="t('tools.passwordGenerator.outputPlaceholder')"  :input-props="{ id: 'passwordGeneratorField2' }"/>
+        <NInput :value="pw" type="textarea" :rows="3" readonly :placeholder="t('tools.passwordGenerator.outputPlaceholder')"  :input-props="{ id: 'passwordGeneratorField2' }"/>
       </template>
       <template #params>
         <NSpace align="center">
-          <span>{{ t('common.length') }}:</span><NInputNumber v-model:value="length" :min="4" :max="128" style="width:100px"  :input-props="{ id: 'passwordGeneratorField0' }"/>
+          <NSelect :value="preset" :options="presetOptions" :aria-label="t('tools.passwordGenerator.preset')" style="width:160px" @update:value="applyPreset" />
+          <label for="passwordGeneratorField0">{{ t('common.length') }}:</label><NInputNumber v-model:value="length" :min="1" :max="512" :precision="0" style="width:100px"  :input-props="{ id: 'passwordGeneratorField0' }"/>
         </NSpace>
         <NSpace>
           <label class="tool-switch-label"><NSwitch v-model:value="upper" :aria-label="t('common.uppercase')" /><span>{{ t('common.uppercase') }}</span></label>
@@ -45,7 +60,7 @@ function gen() {
           <label class="tool-switch-label"><NSwitch v-model:value="syms" :aria-label="t('common.symbols')" /><span>{{ t('common.symbols') }}</span></label>
         </NSpace>
         <NInput v-model:value="exclude" :placeholder="t('tools.passwordGenerator.excludePlaceholder')"  :input-props="{ id: 'passwordGeneratorField1' }"/>
-        <NButton type="primary" @click="gen">{{ t('tools.passwordGenerator.generatePassword') }}</NButton>
+        <NButton type="primary" @click="gen">{{ t(preset === 'token' ? 'tools.passwordGenerator.generateToken' : 'tools.passwordGenerator.generatePassword') }}</NButton>
         <NAlert v-if="error" type="error" :title="error" />
       </template>
     </ToolTextPanel>

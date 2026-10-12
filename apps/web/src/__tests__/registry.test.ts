@@ -5,6 +5,24 @@ import { allTools } from '@/tools/registry';
 const validCategories = new Set(TOOL_CATEGORIES.map((c) => c.name));
 
 describe('tool registry', () => {
+  it('consolidates duplicate CSV, JSON, dedup and secret tools with legacy URLs', () => {
+    const groups: Record<string, string[]> = {
+      '/csv-rows-to-columns': ['/csv-transpose'],
+      '/json-prettify': ['/json-stringify', '/json-viewer'],
+      '/remove-duplicate-lines': ['/list-find-unique'],
+      '/password-generator': ['/token-generator'],
+    };
+    for (const [canonical, legacy] of Object.entries(groups)) {
+      const retained = allTools.filter(tool => tool.path === canonical);
+      expect(retained).toHaveLength(1);
+      for (const path of legacy) {
+        expect(allTools.some(tool => tool.path === path)).toBe(false);
+        expect(retained[0].redirectFrom).toContain(path);
+      }
+    }
+    const paths = allTools.flatMap(tool => [tool.path, ...(tool.redirectFrom ?? [])]);
+    expect(new Set(paths).size).toBe(paths.length);
+  });
   it('consolidates nine time cards and retains every old URL', () => {
     const merged = allTools.filter(tool => tool.path === '/date-time');
     expect(merged).toHaveLength(1);

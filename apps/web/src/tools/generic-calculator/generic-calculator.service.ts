@@ -22,7 +22,7 @@ export function evaluateExpression(expr: string): number {
     let result = parsePower();
     while (pos < s.length) {
       if (s[pos] === '*') { pos++; result *= parsePower(); }
-      else if (s[pos] === '/') { pos++; const d = parsePower(); if (d === 0) throw new Error(i18n.global.t('tools.mathEvaluator.divisionByZero')); result /= d; }
+      else if (s[pos] === '/') { pos++; const d = parsePower(); if (d === 0) throw new Error(i18n.global.t('tools.genericCalculator.divisionByZero')); result /= d; }
       else if (s[pos] === '%') { pos++; result %= parsePower(); }
       else break;
     }
@@ -56,24 +56,24 @@ export function evaluateExpression(expr: string): number {
     if (s[pos] === '(') {
       pos++;
       const result = parseExpression();
-      if (s[pos] !== ')') throw new Error(i18n.global.t('tools.mathEvaluator.missingClosingParenthesis'));
+      if (s[pos] !== ')') throw new Error(i18n.global.t('tools.genericCalculator.missingClosingParenthesis'));
       pos++;
       return result;
     }
     const start = pos;
     while (pos < s.length && (s[pos] >= '0' && s[pos] <= '9' || s[pos] === '.')) pos++;
-    if (pos === start) throw new Error(i18n.global.t('tools.mathEvaluator.unexpectedCharacter', { char: s[pos] || i18n.global.t('tools.mathEvaluator.endOfInput') }));
+    if (pos === start) throw new Error(i18n.global.t('tools.genericCalculator.unexpectedCharacter', { char: s[pos] || i18n.global.t('tools.genericCalculator.endOfInput') }));
     const numStr = s.substring(start, pos);
     // Reject malformed numbers like 1.2.3 instead of silently truncating
     // them via parseFloat.
     if (!/^\d+(\.\d+)?$/.test(numStr) && !/^\.\d+$/.test(numStr)) {
-      throw new Error(i18n.global.t('tools.mathEvaluator.unexpectedCharacter', { char: s[pos] || i18n.global.t('tools.mathEvaluator.endOfInput') }));
+      throw new Error(i18n.global.t('tools.genericCalculator.unexpectedCharacter', { char: s[pos] || i18n.global.t('tools.genericCalculator.endOfInput') }));
     }
     return parseFloat(numStr);
   }
 
   const result = parseExpression();
-  if (pos < s.length) throw new Error(i18n.global.t('tools.mathEvaluator.unexpectedCharacter', { char: s[pos] }));
+  if (pos < s.length) throw new Error(i18n.global.t('tools.genericCalculator.unexpectedCharacter', { char: s[pos] }));
   if (!Number.isFinite(result)) throw new Error(i18n.global.t('tools.genericCalculator.notFinite'));
   return result;
 }

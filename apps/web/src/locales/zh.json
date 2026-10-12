@@ -263,7 +263,7 @@
     "decrypt": "解密",
     "settings": "设置",
     "select": "选择",
-    "generationActions": {"mnemonic":"生成助记词","uuid":"生成 UUID","ulid":"生成 ULID","token":"生成令牌","randomNumbers":"生成随机数","macAddresses":"生成 MAC 地址","randomPort":"生成随机端口","ipv6Ula":"生成 IPv6 ULA 地址"},
+    "generationActions": {"mnemonic":"生成助记词","uuid":"生成 UUID","ulid":"生成 ULID","randomNumbers":"生成随机数","macAddresses":"生成 MAC 地址","randomPort":"生成随机端口","ipv6Ula":"生成 IPv6 ULA 地址"},
     "generate": "生成",
     "convert": "转换",
     "compare": "比较",
@@ -345,7 +345,9 @@
       "name": "JSON 格式化",
       "description": "格式化和美化 JSON 字符串",
       "input": "输入 JSON",
-      "output": "格式化输出"
+      "output": "格式化输出",
+      "spaces": "{count} 个空格",
+      "tab": "制表符"
     },
     "base64Encoder": {
       "name": "Base64 编码/解码",
@@ -353,10 +355,6 @@
       "encodePlaceholder": "输入要编码的文本...",
       "decodePlaceholder": "输入要解码的 Base64...",
       "nothingToSwap": "没有可交换的内容：输出为空"
-    },
-    "tokenGenerator": {
-      "name": "令牌生成器",
-      "description": "生成可自定义长度和字符集的随机令牌"
     },
     "hashText": {
       "name": "文本哈希",
@@ -523,18 +521,6 @@
       "class": "类别",
       "descriptionColumn": "描述"
     },
-    "mathEvaluator": {
-      "name": "数学表达式计算",
-      "description": "计算包含运算符和分组的数学表达式",
-      "expressionPlaceholder": "输入数学表达式...",
-      "supportedOperators": "支持的运算符",
-      "operatorsList": "+, -, *, /, ^ (幂), % (取模), () (分组)",
-      "divisionByZero": "除数不能为零",
-      "missingClosingParenthesis": "缺少右括号",
-      "unexpectedCharacter": "无法识别的字符: {char}",
-      "endOfInput": "输入末尾",
-      "errorPrefix": "错误: {message}"
-    },
     "textStats": {
       "name": "文本统计",
       "description": "统计字符、单词、行数、句子数，并估算阅读时间",
@@ -648,7 +634,8 @@
     },
     "removeDuplicateLines": {
       "name": "去除重复行",
-      "description": "删除文本中的重复行"
+      "description": "删除文本中的重复行",
+      "keepEmpty": "保留空行"
     },
     "textRepeat": {
       "name": "文本重复",
@@ -685,12 +672,17 @@
       "lines": "行"
     },
     "passwordGenerator": {
-      "name": "密码生成器",
-      "description": "使用自定义选项生成安全随机密码",
+      "name": "密码与令牌生成器",
+      "description": "生成密码或令牌，自定义长度、字符类型和排除字符",
       "selectOneOption": "请至少选择一项",
       "excludePlaceholder": "排除字符...",
       "generatePassword": "生成密码",
-      "outputPlaceholder": "点击生成..."
+      "outputPlaceholder": "生成的密码或令牌",
+      "passwordPreset": "密码",
+      "tokenPreset": "令牌",
+      "preset": "生成类型",
+      "generateToken": "生成令牌",
+      "invalidLength": "长度必须是 1–512 的整数"
     },
     "byteConverter": {
       "name": "字节转换器",
@@ -715,11 +707,8 @@
       "name": "通用计算器",
       "description": "实时计算数学表达式，使用计算器按键并回看计算记录",
       "expressionPlaceholder": "表达式: {example}",
-      "resultPlaceholder": "结果...",
       "history": "历史记录:",
-      "unexpected": "意外字符: {char}",
       "endOfInput": "输入末尾",
-      "errorPrefix": "错误: {message}",
       "notFinite": "结果不是有限数",
       "invalidFactorial": "阶乘仅支持 0 到 170 的整数",
       "clear": "清空输入",
@@ -730,7 +719,10 @@
       "emptyHistory": "按等号或回车保存计算记录",
       "reuse": "使用此表达式",
       "operators": "支持 + − × ÷、取余 %、乘方 ^、括号和阶乘 !",
-      "historyHint": "记录保存在此浏览器，最多保留 100 条"
+      "historyHint": "记录保存在此浏览器，最多保留 100 条",
+      "divisionByZero": "除数不能为零",
+      "missingClosingParenthesis": "缺少右括号",
+      "unexpectedCharacter": "无法识别的字符: {char}"
     },
     "randomNumberGenerator": {
       "name": "随机数生成器",
@@ -820,10 +812,6 @@
       "columnA": "列 A",
       "columnB": "列 B"
     },
-    "csvTranspose": {
-      "name": "CSV 转置",
-      "description": "转置 CSV 数据（行变列）"
-    },
     "listDuplicate": {
       "name": "列表复制",
       "description": "复制列表中的每个项目"
@@ -831,10 +819,6 @@
     "listFindPopular": {
       "name": "列表找最频繁",
       "description": "查找列表中出现最频繁的项目"
-    },
-    "listFindUnique": {
-      "name": "列表去重",
-      "description": "从列表中提取唯一项目"
     },
     "listGroup": {
       "name": "列表分组",
@@ -878,10 +862,6 @@
       "escapePlaceholder": "要转义的文本...",
       "unescapePlaceholder": "要反转义的 JSON 字符串...",
       "invalidInput": "输入无效"
-    },
-    "jsonStringify": {
-      "name": "JSON 序列化",
-      "description": "格式化并序列化 JSON"
     },
     "jsonSort": {
       "name": "JSON 排序",
@@ -1523,12 +1503,6 @@
       "execute": "执行 (1)",
       "octal": "数字",
       "symbolic": "符号"
-    },
-    "jsonViewer": {
-      "name": "JSON 查看器",
-      "description": "格式化和验证 JSON 数据",
-      "inputPlaceholder": "在此粘贴你的 JSON...",
-      "outputTitle": "格式化输出"
     },
     "dockerRunToCompose": {
       "name": "Docker Run 转 Compose",

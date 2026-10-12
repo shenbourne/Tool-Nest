@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import Fuse from 'fuse.js';
 import { useToolStore } from './tool.store';
-import type { ToolDefinition, ToolCategory } from '@toolnest/shared';
+import type { ToolDefinition } from '@toolnest/shared';
 
 export const useSearchStore = defineStore('search', () => {
   const query = ref('');
@@ -17,6 +17,7 @@ export const useSearchStore = defineStore('search', () => {
         { name: 'name', weight: 0.4 },
         { name: 'description', weight: 0.2 },
         { name: 'keywords', weight: 0.25 },
+        { name: 'aliases', weight: 0.25 },
         { name: 'tags', weight: 0.1 },
         { name: 'category', weight: 0.05 },
       ],
@@ -34,7 +35,7 @@ export const useSearchStore = defineStore('search', () => {
 
     if (selectedTags.value.length > 0) {
       filtered = filtered.filter(t =>
-        selectedTags.value.every(tag => t.tags.includes(tag as any))
+        selectedTags.value.every(tag => t.tags.some(toolTag => toolTag === tag))
       );
     }
 
