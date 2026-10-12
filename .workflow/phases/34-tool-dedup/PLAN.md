@@ -11,3 +11,5 @@ Tasks1–5 implemented and verified. Primary mirror applied; isolated source com
 2026-10-12 generator layout follow-up: add length slider after numeric field with the same1–512 bounds and shared length state; center four character switches. Reuse this phase branch (remote refreshed, base ahead2/behind0, upstream0/0). Verify browser numeric/slider/preset sync and option centering, scoped lint/typecheck/build, then mirror component and publish. No new unit test: reversible presentation change with synchronization verified through actual controls; service generation tests retained. No ADR/codebase-health/harness needed for a one-component layout change.
 
 JSON dropdown follow-up: user requests Tab first. Move option before spaces1–8; default2 and formatting unchanged. Source order review/scoped lint/diff verification; no new test or full build for literal array reorder.
+
+User authorized master merge2026-10-12: complete local fast-forward and dirty-state restoration, post-merge verification PASS. Master remote publication remains separate.
