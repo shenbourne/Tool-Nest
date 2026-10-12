@@ -26,3 +26,5 @@ Integrated private/master92c5fb0 (phase35 lists) in7c2654d. List converter keeps
 Generated component declarations omitted from commit; scratch scripts/logs remain local evidence. Branch contains only scoped implementation and workflow records. No deployment or master merge performed.
 
 Publication verified: implementation5595b60 pushed to private/feature/phase-37-tool-taxonomy; ls-remote exactly matched5595b60c45b9265ceee41ee2132ac940b0373cc9. Phase37 technical/desktop acceptance complete. Next action: separate user-authorized master merge. Shared preview edits and backups retained; unrelated work preserved.
+
+Final publication limitation: feature implementation5595b60 exact remote SHA verified; follow-up records59e592c push succeeded. Fetch/ls-remote later repeatedly failed with TLS unexpected EOF. Final status-only commit0e57aa4 remains local; no functional implementation pending. Next: retry fetch, compare and publish final documentation when TLS connection recovers; master merge remains separately authorized.
