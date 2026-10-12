@@ -319,3 +319,4 @@ Phase35 final scope: single converter without tabs; all nine list tools shared A
 2026-10-12 latest user scope: remove List Duplicate completely (page, catalog, translations and text-panel contract); inventory marked excluded. Remaining eight list tools keep shared Auto input/Same output controls. Earlier nine-tool checks describe superseded scope.
 
 Phase35 complete: final eight tools with shared separators, List Duplicate removed.434 tests/build/lint PASS. Primary mirrored, typecheck PASS; unrelated Base64 contract mismatch recorded. Next publish feature/phase-35-list-consolidation; merge requires separate authorization.
+`nPhase35 publication complete: implementation0d783f8 pushed private/feature/phase-35-list-consolidation, ls-remote exact SHA verified; isolated worktree clean. Next await separate master merge instruction. Live preview retained.
