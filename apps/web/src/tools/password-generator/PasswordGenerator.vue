@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NInputNumber, NSwitch, NButton, NInput, NAlert, NSpace, NSelect } from 'naive-ui';
+import { NInputNumber, NSwitch, NButton, NInput, NAlert, NSpace, NSelect, NSlider } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
@@ -10,6 +10,10 @@ import { generateSecret, secretPresets } from './password-generator.service';
 const { t } = useI18n();
 const preset = ref<'password' | 'token'>('password');
 const length = ref<number | null>(16);
+const sliderLength = computed({
+  get: () => length.value ?? 1,
+  set: (value: number) => { length.value = value; },
+});
 const upper = ref(true);
 const lower = ref(true);
 const nums = ref(true);
@@ -49,11 +53,14 @@ function gen() {
         <NInput :value="pw" type="textarea" :rows="3" readonly :placeholder="t('tools.passwordGenerator.outputPlaceholder')"  :input-props="{ id: 'passwordGeneratorField2' }"/>
       </template>
       <template #params>
-        <NSpace align="center">
+        <div class="secret-length-row">
           <NSelect :value="preset" :options="presetOptions" :aria-label="t('tools.passwordGenerator.preset')" style="width:160px" @update:value="applyPreset" />
-          <label for="passwordGeneratorField0">{{ t('common.length') }}:</label><NInputNumber v-model:value="length" :min="1" :max="512" :precision="0" style="width:100px"  :input-props="{ id: 'passwordGeneratorField0' }"/>
-        </NSpace>
-        <NSpace>
+          <div class="secret-length-field">
+            <label for="passwordGeneratorField0">{{ t('common.length') }}:</label><NInputNumber v-model:value="length" :min="1" :max="512" :validator="Number.isInteger" :update-value-on-input="true" style="width:100px" :input-props="{ id: 'passwordGeneratorField0' }"/>
+          </div>
+          <NSlider v-model:value="sliderLength" :min="1" :max="512" :step="1" :aria-label="t('common.length')" class="secret-length-slider" />
+        </div>
+        <NSpace justify="center" :size="32">
           <label class="tool-switch-label"><NSwitch v-model:value="upper" :aria-label="t('common.uppercase')" /><span>{{ t('common.uppercase') }}</span></label>
           <label class="tool-switch-label"><NSwitch v-model:value="lower" :aria-label="t('common.lowercase')" /><span>{{ t('common.lowercase') }}</span></label>
           <label class="tool-switch-label"><NSwitch v-model:value="nums" :aria-label="t('common.numbers')" /><span>{{ t('common.numbers') }}</span></label>
@@ -66,3 +73,8 @@ function gen() {
     </ToolTextPanel>
   </ToolLayout>
 </template>
+<style scoped>
+.secret-length-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.secret-length-field { display: flex; align-items: center; gap: 12px; }
+.secret-length-slider { flex: 1; min-width: 160px; }
+</style>
