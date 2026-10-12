@@ -311,3 +311,5 @@ Phase34 source4347acd publication verified on private/feature/phase-34-tool-dedu
 Slider follow-up complete: be2908b pushed private/feature/phase-34-tool-dedup and remote SHA verified. Production build/typecheck PASS21.66s; source mirrored into primary with backup. Next authorized master integration; no merge.
 
 2026-10-12 JSON indentation dropdown now lists Tab first, spaces1–8 follow. Source/lint/diff PASS, primary mirrored. Existing phase34 branch refreshed upstream0/0/base4/0. No master merge.
+
+2026-10-12 Phase36 automatic generation: feature/phase-36-auto-generation from fetched private/master 8a79a5d, fast-forward integrated local master37e5c89 (7 ahead/0 behind). Password/token, random numbers and RSA automatically generate on open/parameter changes; buttons regenerate. 419 tests/build/scoped lint PASS, targeted3 rerun PASS. Browser acceptance NOT RUN. Shared three component edits mirrored without staging unrelated edits. Next: optional browser acceptance and separately authorized master merge.

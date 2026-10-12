@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { NInputNumber, NButton, NInput, NSwitch, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -13,6 +13,7 @@ function gen() {
   const res = generateRandomNumbers(min.value, max.value, count.value, unique.value);
   result.value = res.ok ? res.values.join(', ') : t(`tools.randomNumberGenerator.${res.error}`);
 }
+watch([min, max, count, unique], gen, { immediate: true });
 </script>
 <template>
   <ToolLayout :tool="tool">

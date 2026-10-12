@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { NInputNumber, NSwitch, NButton, NInput, NAlert, NSpace, NSelect, NSlider } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -33,8 +33,6 @@ function applyPreset(value: 'password' | 'token') {
   lower.value = options.lower;
   nums.value = options.numbers;
   syms.value = options.symbols;
-  pw.value = '';
-  error.value = '';
 }
 function gen() {
   error.value = '';
@@ -45,6 +43,7 @@ function gen() {
     error.value = t(`tools.passwordGenerator.${cause instanceof Error && cause.message === 'invalidLength' ? 'invalidLength' : 'selectOneOption'}`);
   }
 }
+watch([preset, length, upper, lower, nums, syms, exclude], gen, { immediate: true });
 </script>
 <template>
   <ToolLayout :tool="tool">
