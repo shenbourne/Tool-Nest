@@ -29,11 +29,11 @@
 
 | 状态 | 条目数 | 说明 |
 |------|--------|------|
-| 已迁移 | 124 | 含平台功能 3 项（#226/#227/#230）与生成器分类交叉引用 7 项 |
-| 已合并 | 3 | #60 → browser-fingerprint、#88 → mac-lookup、#151 → image-compress |
+| 已迁移 | 121 | 含平台功能 3 项（#226/#227/#230）与生成器分类交叉引用 7 项；#95/#104/#107 于 2026-10-12 应用户要求移除 |
+| 已合并 | 5 | #60 → browser-fingerprint、#88 → mac-lookup、#151 → image-compress、#96 → palindrome-checker、#98 → text-truncate |
 | 待迁移 | 103 | 主要为 YAML/TOML/XML 转换、视频/音频、二维码与网络测试类 |
 | **编号条目小计** | **230** | |
-| 排除 | 3 | X01–X03（MyIP 私有 API，不占用编号条目） |
+| 排除 | 6 | X01–X03（MyIP 私有 API，不占用编号条目）；#95 Text Censor、#104 Text Repeat、#107 Text Split（用户要求移除，2026-10-12） |
 
 ### 验证方式（2026-09-17）
 
@@ -192,21 +192,21 @@
 | 92 | Text Diff | it-tools | `src/tools/text-diff/` | 浏览器 | 无 | omni: string/text-compare | 保留 it-tools | 已迁移 | `apps/web/src/tools/text-diff/；/text-diff` |
 | 93 | Numeronym Generator | it-tools | `src/tools/numeronym-generator/` | 浏览器 | 无 | — | 直接迁移 | 待迁移 | — |
 | 94 | ASCII Text Drawer | it-tools | `src/tools/ascii-text-drawer/` | 浏览器 | figlet | — | 直接迁移 | 待迁移 | — |
-| 95 | Text Censor | omni-tools | `src/pages/tools/string/censor/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-censor/；/text-censor` |
-| 96 | Create Palindrome | omni-tools | `src/pages/tools/string/create-palindrome/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/create-palindrome/；/create-palindrome` |
+| 95 | Text Censor | omni-tools | `src/pages/tools/string/censor/` | 浏览器 | 无 | — | 直接迁移 | 已排除 | 用户要求移除（2026-10-12） |
+| 96 | Create Palindrome | omni-tools | `src/pages/tools/string/create-palindrome/` | 浏览器 | 无 | — | 并入 Palindrome Checker（#101） | 已合并 → palindrome-checker（#101） | 并入 `apps/web/src/tools/palindrome-checker/；/palindrome-checker`（检测/创建双标签页，旧 `/create-palindrome` 重定向） |
 | 97 | Email Extractor | omni-tools | `src/pages/tools/string/email-extractor/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/email-extractor/；/email-extractor` |
-| 98 | Extract Substring | omni-tools | `src/pages/tools/string/extract-substring/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/extract-substring/；/extract-substring` |
+| 98 | Extract Substring | omni-tools | `src/pages/tools/string/extract-substring/` | 浏览器 | 无 | — | 并入 Text Truncate（#109） | 已合并 → text-truncate（#109） | 并入 `apps/web/src/tools/text-truncate/；/text-truncate`（按范围提取/字符/单词/行四模式，旧 `/extract-substring` 重定向） |
 | 99 | Hidden Character Detector | omni-tools | `src/pages/tools/string/hidden-character-detector/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/hidden-char-detector/；/hidden-char-detector` |
 | 100 | Text Join | omni-tools | `src/pages/tools/string/join/` | 浏览器 | 无 | — | 直接迁移 | 已合并 | `apps/web/src/tools/list-converter/；/list-converter（旧 /text-join 重定向统一页面）` |
-| 101 | Palindrome Checker | omni-tools | `src/pages/tools/string/palindrome/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/palindrome-checker/；/palindrome-checker` |
+| 101 | Palindrome Checker | omni-tools | `src/pages/tools/string/palindrome/` | 浏览器 | 无 | omni: string/create-palindrome | 合并 #96 为双标签页工具 | 已迁移（已合并 #96） | `apps/web/src/tools/palindrome-checker/；/palindrome-checker（检测/创建双标签页，`/create-palindrome` 重定向）` |
 | 102 | Quote Generator | omni-tools | `src/pages/tools/string/quote/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/quote-generator/；/quote-generator` |
-| 103 | Remove Duplicate Lines | omni-tools | `src/pages/tools/string/remove-duplicate-lines/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/remove-duplicate-lines/；/remove-duplicate-lines` |
-| 104 | Text Repeat | omni-tools | `src/pages/tools/string/repeat/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-repeat/；/text-repeat` |
+| 103 | Remove Duplicate Lines | omni-tools | `src/pages/tools/string/remove-duplicate-lines/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/remove-duplicate-lines/；/remove-duplicate-lines（旧 /list-find-unique 重定向）` |
+| 104 | Text Repeat | omni-tools | `src/pages/tools/string/repeat/` | 浏览器 | 无 | — | 直接迁移 | 已排除 | 用户要求移除（2026-10-12） |
 | 105 | Text Reverse | omni-tools | `src/pages/tools/string/reverse/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-reverse/；/text-reverse` |
 | 106 | Text Rotate | omni-tools | `src/pages/tools/string/rotate/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-rotate/；/text-rotate` |
-| 107 | Text Split | omni-tools | `src/pages/tools/string/split/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-split/；/text-split` |
+| 107 | Text Split | omni-tools | `src/pages/tools/string/split/` | 浏览器 | 无 | — | 直接迁移 | 已排除 | 用户要求移除（2026-10-12）；拆分场景可由列表转换器覆盖 |
 | 108 | Text Replacer | omni-tools | `src/pages/tools/string/text-replacer/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-replacer/；/text-replacer` |
-| 109 | Text Truncate | omni-tools | `src/pages/tools/string/truncate/` | 浏览器 | 无 | — | 直接迁移 | 已迁移 | `apps/web/src/tools/text-truncate/；/text-truncate` |
+| 109 | Text Truncate | omni-tools | `src/pages/tools/string/truncate/` | 浏览器 | 无 | omni: string/extract-substring | 合并 #98 为四模式工具 | 已迁移（已合并 #98） | `apps/web/src/tools/text-truncate/；/text-truncate（按范围提取/字符/单词/行四模式，`/extract-substring` 重定向）` |
 | 110 | URL Editor | omni-tools | `src/pages/tools/string/url-editor/` | 浏览器 | 无 | it-tools #46(部分) | 合并到 URL Parser | 待迁移 | URL 编辑能力未实现；`/url-parser` 目前仅解析展示 |
 
 ### 7. 数据处理 (data)
@@ -454,6 +454,6 @@
    - `image-flip` — 图片翻转（媒体批次附带的补充工具）
 
 8. **合并/交叉引用说明**：
-   - 已完成的合并：#60 → browser-fingerprint（#47）、#88 → mac-lookup（#85）、#151 → image-compress（#141）
+   - 已完成的合并：#60 → browser-fingerprint（#47）、#88 → mac-lookup（#85）、#151 → image-compress（#141）、#96 → palindrome-checker（#101，2026-10-12，检测/创建双标签页）、#98 → text-truncate（#109，2026-10-12，按范围提取/字符/单词/行四模式）
    - #78 JSON Validate 以独立工具 `/json-validate` 实现，未按原方案并入 #64 JSON Viewer
    - 合并目标尚未实现的条目保持“待迁移”并注明并入目标：#80 → #63 Crontab Generator、#110 → #46 URL Parser、#196 → #16 Date-Time Converter

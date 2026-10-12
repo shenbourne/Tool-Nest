@@ -58,8 +58,8 @@
     "opacity": "Opacity (0–1)",
     "fps": "Frame rate (fps)",
     "duration": "Duration (seconds, 0 = full video)",
-    "startIndex": "Start index (zero-based)",
-    "endIndex": "End index (exclusive)",
+    "startIndex": "Start index",
+    "endIndex": "End index",
     "columnPosition": "Insert position (zero-based)",
     "columnA": "Column A index (zero-based)",
     "columnB": "Column B index (zero-based)",
@@ -613,17 +613,11 @@
       "description": "Convert text to Morse code and back",
       "unmappable": "These characters cannot be encoded: {chars}"
     },
-    "textCensor": {
-      "name": "Text Censor",
-      "description": "Filter and mask profanity or sensitive words"
-    },
-    "createPalindrome": {
-      "name": "Create Palindrome",
-      "description": "Create a palindrome by appending reversed text"
-    },
     "palindromeChecker": {
-      "name": "Palindrome Checker",
-      "description": "Check if text is a palindrome",
+      "name": "Palindrome",
+      "description": "Check if text is a palindrome, or create one by appending reversed text",
+      "checkTab": "Check",
+      "createTab": "Create",
       "isPalindrome": "✅ Yes! This is a palindrome.",
       "notPalindrome": "❌ Not a palindrome."
     },
@@ -631,11 +625,6 @@
       "name": "Email Extractor",
       "description": "Extract email addresses from text using regex",
       "noEmailsFound": "No emails found."
-    },
-    "extractSubstring": {
-      "name": "Extract Substring",
-      "description": "Extract a portion of text by position range",
-      "inputPlaceholder": "Input text..."
     },
     "hiddenCharDetector": {
       "name": "Hidden Character Detector",
@@ -652,23 +641,14 @@
       "description": "Remove duplicate lines from text",
       "keepEmpty": "Keep empty lines"
     },
-    "textRepeat": {
-      "name": "Text Repeat",
-      "description": "Repeat text a specified number of times",
-      "inputPlaceholder": "Text to repeat..."
-    },
     "textReverse": {
       "name": "Text Reverse",
       "description": "Reverse the characters in text"
     },
     "textRotate": {
       "name": "Text Rotate",
-      "description": "Rotate text lines by N positions",
-      "inputPlaceholder": "Input lines..."
-    },
-    "textSplit": {
-      "name": "Text Split",
-      "description": "Split text by delimiters into separate lines"
+      "description": "Rotate characters by N positions",
+      "inputPlaceholder": "Input text..."
     },
     "textReplacer": {
       "name": "Text Replacer",
@@ -679,8 +659,8 @@
       "invalidRegex": "Invalid regex"
     },
     "textTruncate": {
-      "name": "Text Truncate",
-      "description": "Truncate text by characters, words, or lines",
+      "name": "Text Slice",
+      "description": "Extract a slice of text by character, word, or line range",
       "inputPlaceholder": "Input text...",
       "characters": "Characters",
       "words": "Words",

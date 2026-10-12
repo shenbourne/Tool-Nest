@@ -8,6 +8,12 @@ describe('tool registry', () => {
   it('excludes the removed list duplicate tool', () => {
     expect(allTools.some(tool => tool.path === '/list-duplicate' || tool.redirectFrom?.includes('/list-duplicate'))).toBe(false);
   });
+  it('excludes tools removed at user request', () => {
+    const removed = ['/text-split', '/text-censor', '/text-repeat'];
+    for (const path of removed) {
+      expect(allTools.some(tool => tool.path === path || tool.redirectFrom?.includes(path))).toBe(false);
+    }
+  });
   it('consolidates duplicate CSV, JSON, dedup and secret tools with legacy URLs', () => {
     const groups: Record<string, string[]> = {
       '/list-converter': ['/list-sort', '/list-wrap', '/text-join'],

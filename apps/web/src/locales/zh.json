@@ -58,8 +58,8 @@
     "opacity": "不透明度 (0–1)",
     "fps": "帧率 (帧/秒)",
     "duration": "截取时长 (秒，0 为全部)",
-    "startIndex": "起始索引 (从 0 开始)",
-    "endIndex": "结束索引 (不包含)",
+    "startIndex": "起始索引",
+    "endIndex": "结束索引",
     "columnPosition": "插入位置 (从 0 开始)",
     "columnA": "列 A 索引 (从 0 开始)",
     "columnB": "列 B 索引 (从 0 开始)",
@@ -613,17 +613,11 @@
       "description": "将文本转换为摩尔斯电码及反向转换",
       "unmappable": "以下字符无法编码：{chars}"
     },
-    "textCensor": {
-      "name": "文本过滤",
-      "description": "过滤和屏蔽敏感词汇"
-    },
-    "createPalindrome": {
-      "name": "创建回文",
-      "description": "通过追加反转文本创建回文"
-    },
     "palindromeChecker": {
-      "name": "回文检测",
-      "description": "检测文本是否为回文",
+      "name": "回文工具",
+      "description": "检测文本是否为回文，或通过追加反转文本创建回文",
+      "checkTab": "检测回文",
+      "createTab": "创建回文",
       "isPalindrome": "✅ 是的！这是回文。",
       "notPalindrome": "❌ 不是回文。"
     },
@@ -631,11 +625,6 @@
       "name": "邮箱提取器",
       "description": "使用正则表达式从文本中提取邮箱地址",
       "noEmailsFound": "未找到邮箱。"
-    },
-    "extractSubstring": {
-      "name": "提取子串",
-      "description": "按位置范围提取文本片段",
-      "inputPlaceholder": "输入文本..."
     },
     "hiddenCharDetector": {
       "name": "隐藏字符检测",
@@ -652,23 +641,14 @@
       "description": "删除文本中的重复行",
       "keepEmpty": "保留空行"
     },
-    "textRepeat": {
-      "name": "文本重复",
-      "description": "将文本重复指定次数",
-      "inputPlaceholder": "要重复的文本..."
-    },
     "textReverse": {
       "name": "文本反转",
       "description": "反转文本中的字符"
     },
     "textRotate": {
       "name": "文本旋转",
-      "description": "将文本行旋转 N 个位置",
-      "inputPlaceholder": "输入行..."
-    },
-    "textSplit": {
-      "name": "文本分割",
-      "description": "按分隔符将文本拆分为多行"
+      "description": "将字符旋转 N 个位置",
+      "inputPlaceholder": "输入文本..."
     },
     "textReplacer": {
       "name": "文本替换",
@@ -679,8 +659,8 @@
       "invalidRegex": "无效的正则表达式"
     },
     "textTruncate": {
-      "name": "文本截断",
-      "description": "按字符、单词或行截断文本",
+      "name": "文本截取",
+      "description": "按字符、单词或行范围提取文本片段",
       "inputPlaceholder": "输入文本...",
       "characters": "字符",
       "words": "单词",

@@ -6,12 +6,13 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
-const input = ref('Line 1\nLine 2\nLine 3\nLine 4');
+const input = ref('abcdefg');
 const positions = ref(1);
 const output = computed(() => {
-  const lines = input.value.split('\n');
-  const n = ((positions.value % lines.length) + lines.length) % lines.length;
-  return [...lines.slice(n), ...lines.slice(0, n)].join('\n');
+  const chars = Array.from(input.value);
+  if (!chars.length) return '';
+  const n = ((positions.value % chars.length) + chars.length) % chars.length;
+  return [...chars.slice(n), ...chars.slice(0, n)].join('');
 });
 </script>
 <template>
