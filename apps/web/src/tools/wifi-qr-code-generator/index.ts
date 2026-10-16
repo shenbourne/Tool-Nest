@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.wifiQrCodeGenerator.name',
   path: '/wifi-qr-code-generator',
   description: 'tools.wifiQrCodeGenerator.description',
-  category: 'generator',
+  category: 'network',
   tags: ['generator'],
   keywords: ['wifi', 'qr', 'code', 'generator', 'network'],
   component: () => import('./WifiQrCodeGenerator.vue'),

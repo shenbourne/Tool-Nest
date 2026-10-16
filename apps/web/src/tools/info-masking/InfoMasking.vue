@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NInput, NInputNumber, NSpace, NCheckbox, NCheckboxGroup, NCard, NDivider, NTag } from 'naive-ui';
+import { NInput, NInputNumber, NSpace, NCheckbox, NCheckboxGroup, NTag } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
@@ -87,20 +87,6 @@ const detectedPatterns = computed(() => detectPatterns(inputText.value));
         </template>
       </ToolTextPanel>
 
-      <NDivider />
-
-      <NCard :title="t('tools.infoMasking.comparison')">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div>
-            <h4 style="margin-bottom: 8px; opacity: 0.7;">{{ t('tools.infoMasking.before') }}</h4>
-            <pre style="white-space: pre-wrap; word-break: break-all; font-family: monospace; font-size: 13px; padding: 12px; background: rgba(0,0,0,0.05); border-radius: 6px;">{{ inputText }}</pre>
-          </div>
-          <div>
-            <h4 style="margin-bottom: 8px; opacity: 0.7;">{{ t('tools.infoMasking.after') }}</h4>
-            <pre style="white-space: pre-wrap; word-break: break-all; font-family: monospace; font-size: 13px; padding: 12px; background: rgba(0,0,0,0.05); border-radius: 6px;">{{ maskedOutput }}</pre>
-          </div>
-        </div>
-      </NCard>
     </NSpace>
   </ToolLayout>
 </template>

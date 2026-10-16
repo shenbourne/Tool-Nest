@@ -22,6 +22,8 @@ export const usePreferencesStore = defineStore('preferences', () => {
   const loaded = ref(false);
   const loading = ref(false);
   const syncError = ref<string | null>(null);
+  let saveQueue = Promise.resolve();
+  let latestSave = 0;
 
   // ── Theme management ────────────────────────────────────────────────
   const systemDark = usePreferredDark();
@@ -130,6 +132,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
 
   // ── Server sync: save ───────────────────────────────────────────────
   async function save(updates: Partial<UserPreferences>): Promise<void> {
+    const saveId = ++latestSave;
     const merged = { ...prefs.value, ...updates };
     prefs.value = merged;
 
@@ -145,6 +148,7 @@ export const usePreferencesStore = defineStore('preferences', () => {
     }
 
     // Try to sync to server
+    const sync = async () => {
     try {
       const res = await fetch(`${API_BASE}/user/preferences`, {
         method: 'PUT',
@@ -153,13 +157,17 @@ export const usePreferencesStore = defineStore('preferences', () => {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      if (json.success && json.data) {
+      if (saveId === latestSave && json.success && json.data) {
         prefs.value = { ...prefs.value, ...json.data };
       }
     } catch (err) {
       console.warn('Failed to sync preferences to server:', err);
       syncError.value = 'Changes saved locally (server unavailable)';
     }
+    };
+    const queued = saveQueue.then(sync, sync);
+    saveQueue = queued.then(() => undefined, () => undefined);
+    await queued;
   }
 
   // ── Favorites & recents ─────────────────────────────────────────────

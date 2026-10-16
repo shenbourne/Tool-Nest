@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NProgress, NSpace, NTag, NAlert } from 'naive-ui';
+import { NCard, NInput, NProgress, NSpace, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { analyzePassword, tool } from './index';

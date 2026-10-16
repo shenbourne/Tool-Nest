@@ -16,6 +16,7 @@ type Expectation = {
 };
 
 const EXPECTED: Record<string, Expectation> = {
+  'table-tools/TableTools.vue': { accept: ['.csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain'] },
   'audio-change-speed/AudioChangeSpeed.vue': { accept: ['audio/*'] },
   'audio-converter/AudioConverter.vue': { accept: ['audio/*'] },
   'audio-extract/AudioExtract.vue': { accept: ['video/*'] },
@@ -32,7 +33,7 @@ const EXPECTED: Record<string, Expectation> = {
   'image-split/ImageSplit.vue': { accept: ['image/*'] },
   'image-to-text-ocr/ImageToTextOcr.vue': { accept: ['image/*'] },
   'images-to-gif/ImagesToGif.vue': { accept: ['image/*'], multiple: true },
-  'jpg-to-png/JpgToPng.vue': { accept: ['image/jpeg'] },
+  'image-format-converter/ImageFormatConverter.vue': { accept: ['image/*'] },
   'pdf-merge/PdfMerge.vue': { accept: ['.pdf'], multiple: true },
   'video-add-audio/VideoAddAudio.vue': { accept: ['video/*', 'audio/*'] },
   'video-change-speed/VideoChangeSpeed.vue': { accept: ['video/*'] },

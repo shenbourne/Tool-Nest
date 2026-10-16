@@ -4,10 +4,10 @@ export const tool = defineTool({
   name: 'tools.pingTest.name',
   path: '/ping-test',
   description: 'tools.pingTest.description',
-  category: 'network-test',
+  category: 'network',
   tags: ['network', 'check'],
   keywords: ['ping', 'latency', 'test', 'network', 'icmp'],
   component: () => import('./PingTest.vue'),
   createdAt: '2026-09-18',
-  runtimeLocation: 'browser',
+  runtimeLocation: 'backend',
 });

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ToolChronometer' });
 import { ref, onUnmounted } from 'vue';
 import { NCard, NButton, NSpace } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
@@ -27,7 +28,7 @@ onUnmounted(() => { if (interval) clearInterval(interval); });
         <NButton @click="reset">{{ t('common.reset') }}</NButton>
       </NSpace>
       <div v-if="laps.length" style="width: 100%; max-width: 300px;">
-        <div v-for="(l, i) in laps" :key="i" style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--color-hairline);">
+        <div v-for="(l, i) in laps" :key="i" style="display: flex; justify-content: space-between; column-gap: 24px; white-space: nowrap; padding: 4px 0; border-bottom: 1px solid var(--color-hairline);">
           <span>{{ t('tools.chronometer.lapN', { n: i + 1 }) }}</span><span style="font-family: monospace;">{{ fmt(l) }}</span>
         </div>
       </div>

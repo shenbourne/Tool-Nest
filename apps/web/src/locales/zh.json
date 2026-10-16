@@ -1,4 +1,73 @@
 {
+  "networkResults": {
+    "noMeasurements": "暂无测量记录，无法判断",
+    "measurementCount": "样本数",
+    "countries": "样本来源国家/地区",
+    "latestMeasurement": "最近测量时间（UTC）",
+    "rateLimited": "请求过于频繁，请稍后重试。",
+    "probe": "探针",
+    "completed": "测量完成",
+    "failed": "测量失败",
+    "hopCount": "路由跳数",
+    "targetIp": "目标 IP",
+    "hop": "跳数",
+    "host": "主机",
+    "loss": "丢包率",
+    "average": "平均延迟",
+    "minimum": "最低延迟",
+    "maximum": "最高延迟",
+    "received": "接收包数",
+    "queryTime": "DNS 查询耗时",
+    "dnsStatus": "DNS 状态",
+    "resolver": "解析器",
+    "name": "名称",
+    "type": "类型",
+    "answer": "解析结果",
+    "resolved": "解析成功",
+    "unresolved": "解析失败",
+    "confirmed": "存在已确认的封锁证据",
+    "anomaly": "检测到异常，尚未确认",
+    "noEvidence": "未发现封锁证据",
+    "unknown": "证据不足",
+    "registrar": "注册商",
+    "status": "状态",
+    "nameservers": "域名服务器",
+    "event": "事件",
+    "date": "日期（UTC）",
+    "registered": "注册时间",
+    "expires": "到期时间",
+    "updated": "最后变更",
+    "databaseUpdated": "RDAP 数据更新时间",
+    "noResults": "暂无测量数据。",
+    "noRecords": "暂无返回记录。",
+    "log": "查看探针日志",
+    "rawData": "查看完整数据（JSON）",
+    "mtrNote": "路由由远程探针测得。中间节点不响应或丢包不一定代表目标不可达。",
+    "latencyNote": "这里展示远程探针的 DNS 查询耗时，并非当前设备的 Ping 延迟。",
+    "dnsLeakNote": "这是服务端 DNS 解析结果，不能据此判定当前设备是否存在 DNS 泄漏。",
+    "censorshipNote": "查询 OONI 最近 30 天的历史记录，每个网址最多取最新 100 条。结果不是当前设备的实时检测；未发现证据不等于在所有地区均可访问。",
+    "invalidResponse": "网络服务返回了无效响应，请确认后端已启动后重试。",
+    "urlsPlaceholder": "每行输入一个网址，例如 https://example.com",
+    "recordCount": "{count} 条记录"
+  },
+  "numericParams": {
+    "widthPixels": "宽度 (px)",
+    "heightPixels": "高度 (px)",
+    "quality": "压缩质量 (0.1–1)",
+    "angle": "旋转角度 (°)",
+    "opacity": "不透明度 (0–1)",
+    "fps": "帧率 (帧/秒)",
+    "duration": "截取时长 (秒，0 为全部)",
+    "startIndex": "起始索引",
+    "endIndex": "结束索引",
+    "columnPosition": "插入位置 (从 0 开始)",
+    "columnA": "列 A 索引 (从 0 开始)",
+    "columnB": "列 B 索引 (从 0 开始)",
+    "repeatCount": "重复次数",
+    "rotatePositions": "轮转行数",
+    "bytes": "字节数 (B)",
+    "keepCount": "保留数量"
+  },
   "app": {
     "title": "ToolNest",
     "subtitle": "开发者工具箱"
@@ -24,69 +93,57 @@
     "noToolsInstalled": "暂无工具"
   },
   "category": {
-    "crypto": {
-      "name": "加密与安全",
-      "desc": "加密、哈希和安全工具"
-    },
-    "converter": {
-      "name": "转换器",
-      "desc": "格式和单位转换工具"
-    },
-    "web": {
-      "name": "Web 工具",
-      "desc": "Web 开发和 URL 工具"
-    },
-    "developer": {
-      "name": "开发者",
-      "desc": "开发和运维工具"
-    },
-    "network": {
-      "name": "网络",
-      "desc": "网络计算和分析工具"
-    },
     "text": {
-      "name": "文本",
-      "desc": "文本处理和分析工具"
+      "name": "文本与字符串",
+      "desc": "文本编辑、比较、提取、统计与生成"
     },
     "data": {
-      "name": "数据",
-      "desc": "数据格式和校验工具"
+      "name": "数据与结构化格式",
+      "desc": "JSON、YAML、TOML、XML、CSV 和列表处理"
+    },
+    "encoding": {
+      "name": "编码与标识",
+      "desc": "Base64、字符编码、唯一标识与二维码"
+    },
+    "crypto": {
+      "name": "密码与安全",
+      "desc": "密码、身份验证、哈希、加密与信息脱敏"
+    },
+    "web": {
+      "name": "Web 与浏览器",
+      "desc": "URL、HTML、HTTP、浏览器信息与颜色"
+    },
+    "developer": {
+      "name": "开发与运维",
+      "desc": "Git、正则、SQL、Cron、权限与容器工具"
+    },
+    "network": {
+      "name": "网络与诊断",
+      "desc": "IP、DNS、连通性、路由与网络诊断"
+    },
+    "math": {
+      "name": "数字与单位",
+      "desc": "数学计算、数列、随机数、进制与单位换算"
+    },
+    "datetime": {
+      "name": "日期与时间",
+      "desc": "日期、时间戳、时长计算与计时"
     },
     "image": {
-      "name": "图片",
-      "desc": "图片处理工具"
+      "name": "图片与图形",
+      "desc": "图片编辑、压缩、转换、OCR 与截图"
     },
     "video": {
-      "name": "视频",
-      "desc": "视频编辑工具"
+      "name": "视频与 GIF",
+      "desc": "视频、GIF 与图片动画处理"
     },
     "audio": {
       "name": "音频",
-      "desc": "音频处理工具"
+      "desc": "音频剪辑、转换、合并与变速"
     },
     "pdf": {
-      "name": "PDF",
-      "desc": "PDF 操作工具"
-    },
-    "math": {
-      "name": "数学",
-      "desc": "数学计算工具"
-    },
-    "measurement": {
-      "name": "度量",
-      "desc": "度量和计时工具"
-    },
-    "generator": {
-      "name": "生成器",
-      "desc": "内容生成工具"
-    },
-    "network-test": {
-      "name": "网络测试",
-      "desc": "网络测试和诊断工具"
-    },
-    "platform": {
-      "name": "平台",
-      "desc": "平台和实用工具"
+      "name": "PDF 与文档",
+      "desc": "PDF 编辑、合并、拆分、转换与保护"
     }
   },
   "settings": {
@@ -139,6 +196,7 @@
     "importFile": "导入文件",
     "exportFile": "导出文件",
     "pasteFile": "粘贴文件",
+    "pasteText": "粘贴文本",
     "importFailed": "读取文件失败",
     "pasteFailed": "读取剪贴板失败",
     "collapse": "折叠",
@@ -193,6 +251,15 @@
     "decrypt": "解密",
     "settings": "设置",
     "select": "选择",
+    "generationActions": {
+      "mnemonic": "生成助记词",
+      "uuid": "生成 UUID",
+      "ulid": "生成 ULID",
+      "randomNumbers": "生成随机数",
+      "macAddresses": "生成 MAC 地址",
+      "randomPort": "生成随机端口",
+      "ipv6Ula": "生成 IPv6 ULA 地址"
+    },
     "generate": "生成",
     "convert": "转换",
     "compare": "比较",
@@ -257,7 +324,45 @@
   "tags": {
     "filter": "按标签筛选",
     "clearAll": "清除全部",
-    "selected": "已选 {count} 个"
+    "selected": "已选 {count} 个",
+    "labels": {
+      "converter": "转换",
+      "generator": "生成",
+      "validator": "校验",
+      "calculator": "计算",
+      "parser": "解析",
+      "encoder": "编解码",
+      "security": "安全",
+      "text": "文本",
+      "csv": "CSV",
+      "list": "列表",
+      "json": "JSON",
+      "xml": "XML",
+      "math": "数学",
+      "time": "时间",
+      "number": "数字",
+      "statistics": "统计",
+      "random": "随机",
+      "filter": "过滤",
+      "check": "检查",
+      "extract": "提取",
+      "debug": "调试",
+      "discord": "Discord",
+      "tsv": "TSV",
+      "yaml": "YAML",
+      "toml": "TOML",
+      "network": "网络",
+      "developer": "开发",
+      "productivity": "效率",
+      "media": "媒体",
+      "clipboard": "剪贴板",
+      "browser": "浏览器运行",
+      "backend": "服务端运行",
+      "file-upload": "文件输入",
+      "lazy-load": "按需加载",
+      "worker": "后台处理",
+      "compressor": "压缩"
+    }
   },
   "commandPalette": {
     "placeholder": "搜索工具、操作...",
@@ -265,6 +370,72 @@
     "hint": "↑↓ 导航 · Enter 选择 · Esc 关闭"
   },
   "tools": {
+    "jsonTools": {"name":"JSON 工具","description":"格式化、压缩、排序、转义和验证 JSON，共用一份输入","operation":"操作","format":"格式化","minify":"压缩","sort":"排序","escape":"转义","unescape":"反转义","validate":"验证","awaitingValidation":"待验证"},
+    "tableTools": {
+      "tableTooLarge": "表格最多支持 20,000 个单元格（行数 × 最大列数），请减少行或列。",
+      "pipeLabel": "竖线",
+      "headerRow": "标题", "insertAbove": "在上方插入行", "insertBelow": "在下方插入行", "insertLeft": "在左侧插入列", "insertRight": "在右侧插入列",
+      "sameAsImport": "与导入分隔符相同",
+      "autoDelimiter": "自动识别", "detectedDelimiter": "已识别：{separator}",
+
+  "transposeNow": "转置当前表格",
+  "deleteColumn": "删除当前列",
+  "deleteRow": "删除当前行",
+  "pasteTable": "粘贴表格",
+  "dimensions": "{rows} 行 × {columns} 列",
+  "addRow": "添加行",
+  "undo": "撤销",
+  "sheetHint": "直接编辑 · Tab 切换 · Enter 下一行 · Shift+Enter 换行 · 可粘贴 Excel 区域",
+  "exportDelimiter": "复制/导出分隔符",
+  "importDelimiter": "导入分隔符",
+  "redo": "重做",
+  "copyTable": "复制表格",
+  "sheet": "可编辑表格",
+  "addColumn": "添加列",
+  "cell": "{column}{row} 单元格"
+,
+      "unclosedQuote": "单元格的引号未闭合。", "invalidQuote": "引号格式有误，请使用两个双引号转义。", "invalidCsv": "CSV/TSV 格式有误，请检查分隔符和引号。",
+  "insert": "插入列",
+  "columnA": "列 A（从 1 开始）",
+  "transposeShort": "转置",
+  "position": "插入位置（前面保留的列数）",
+  "checkNote": "以首条记录为表头，检查后续记录的列数；引号内换行属于同一条记录。",
+  "transpose": "行列转置",
+  "targetSeparator": "输出分隔符",
+  "insertShort": "插入",
+  "name": "表格数据处理",
+  "swapShort": "交换",
+  "separatorShort": "分隔符",
+  "description": "直接编辑 CSV/TSV 表格，实时转置、插入、交换列并检查记录",
+  "sourceSeparator": "输入分隔符",
+  "separator": "分隔符",
+  "checkShort": "检查",
+  "swap": "交换列",
+  "invalidIndex": "请输入有效的整数列位置。",
+  "columnB": "列 B（从 1 开始）",
+  "columnRange": "列号超出表格范围。",
+  "issue": "记录 {record}：{columns} 列，表头为 {expected} 列",
+  "check": "记录检查"
+},
+    "dataConverter": {
+      "json-to-yaml": "JSON → YAML",
+      "yaml-to-json": "YAML → JSON",
+      "json-to-csv": "JSON → CSV",
+      "csv-to-json": "CSV → JSON",
+      "xml-to-json": "XML → JSON",
+      "xmlHeaders": "XML 表头需使用字母或下划线开头的节点名。",
+  "duplicateHeaders": "表头重复，请先改为唯一名称。",
+  "extraColumns": "数据行列数超过表头，请先补齐表头。",
+  "tableArray": "导出表格需要对象数组。",
+  "to": "目标格式",
+  "swap": "交换方向",
+  "note": "CSV/TSV 首行为表头，单元格读为字符串；导出表格需对象数组。XML 使用属性/文本节点表示（_attributes / _text）。转换可能丢失注释和类型信息。",
+  "nestedCells": "表格不支持嵌套对象或数组，请先展开数据。",
+  "description": "在 JSON、YAML、TOML、XML、CSV、TSV 之间转换",
+  "xmlShape": "XML 需要带根节点的对象，请调整数据结构。",
+  "name": "数据格式转换",
+  "from": "来源格式"
+},
     "helloWorld": {
       "name": "Hello World",
       "description": "用于验证注册系统的示例工具",
@@ -274,18 +445,21 @@
       "name": "JSON 格式化",
       "description": "格式化和美化 JSON 字符串",
       "input": "输入 JSON",
-      "output": "格式化输出"
+      "output": "格式化输出",
+      "spaces": "{count} 个空格",
+      "tab": "制表符"
     },
     "base64Encoder": {
-      "name": "Base64 编码/解码",
-      "description": "编码或解码 Base64 字符串",
+      "name": "Base64 工具",
+      "description": "Base64 字符串编码解码，支持文件与 Base64 互转",
+      "tabCodec": "编码/解码",
+      "tabFile": "文件转换",
+      "textToBase64": "文本 → Base64",
+      "base64ToText": "Base64 → 文本",
       "encodePlaceholder": "输入要编码的文本...",
       "decodePlaceholder": "输入要解码的 Base64...",
-      "nothingToSwap": "没有可交换的内容：输出为空"
-    },
-    "tokenGenerator": {
-      "name": "令牌生成器",
-      "description": "生成可自定义长度和字符集的随机令牌"
+      "invalidBase64": "无效的 Base64 输入",
+      "invalidText": "文本包含无法编码的字符"
     },
     "hashText": {
       "name": "文本哈希",
@@ -373,21 +547,6 @@
       "suggestAvoidRepeats": "避免重复字符",
       "suggestAvoidCommon": "避免常见模式"
     },
-    "baseConverter": {
-      "name": "进制转换器",
-      "description": "在二进制、八进制、十进制和十六进制之间转换数字",
-      "inputBase": "输入进制",
-      "outputBase": "输出进制",
-      "inputPlaceholder": "输入数字...",
-      "resultPlaceholder": "结果...",
-      "invalidInput": "输入无效",
-      "binary": "二进制 (2)",
-      "octal": "八进制 (8)",
-      "decimal": "十进制 (10)",
-      "hexadecimal": "十六进制 (16)",
-      "base32": "Base32",
-      "base36": "Base36"
-    },
     "colorConverter": {
       "name": "颜色转换器",
       "description": "在 HEX、RGB 和 HSL 格式之间转换颜色",
@@ -399,8 +558,8 @@
       "inputPlaceholder": "要编码/解码的文本...",
       "encoded": "已编码",
       "decoded": "已解码",
-      "copyEncoded": "复制编码结果",
-      "copyDecoded": "复制解码结果",
+      "inputEncode": "URL 编码",
+      "inputDecode": "URL 解码",
       "invalidEncoding": "无效的百分号编码"
     },
     "caseConverter": {
@@ -442,7 +601,9 @@
       "pathname": "路径",
       "search": "查询字符串",
       "hash": "锚点",
-      "defaultPort": "（默认）"
+      "defaultPort": "（默认）",
+      "addParam": "添加参数",
+      "removeParam": "删除"
     },
     "httpStatus": {
       "name": "HTTP 状态码",
@@ -451,18 +612,6 @@
       "code": "状态码",
       "class": "类别",
       "descriptionColumn": "描述"
-    },
-    "mathEvaluator": {
-      "name": "数学表达式计算",
-      "description": "计算包含运算符和分组的数学表达式",
-      "expressionPlaceholder": "输入数学表达式...",
-      "supportedOperators": "支持的运算符",
-      "operatorsList": "+, -, *, /, ^ (幂), % (取模), () (分组)",
-      "divisionByZero": "除数不能为零",
-      "missingClosingParenthesis": "缺少右括号",
-      "unexpectedCharacter": "无法识别的字符: {char}",
-      "endOfInput": "输入末尾",
-      "errorPrefix": "错误: {message}"
     },
     "textStats": {
       "name": "文本统计",
@@ -537,17 +686,11 @@
       "description": "将文本转换为摩尔斯电码及反向转换",
       "unmappable": "以下字符无法编码：{chars}"
     },
-    "textCensor": {
-      "name": "文本过滤",
-      "description": "过滤和屏蔽敏感词汇"
-    },
-    "createPalindrome": {
-      "name": "创建回文",
-      "description": "通过追加反转文本创建回文"
-    },
     "palindromeChecker": {
-      "name": "回文检测",
-      "description": "检测文本是否为回文",
+      "name": "回文工具",
+      "description": "检测文本是否为回文，或通过追加反转文本创建回文",
+      "checkTab": "检测回文",
+      "createTab": "创建回文",
       "isPalindrome": "✅ 是的！这是回文。",
       "notPalindrome": "❌ 不是回文。"
     },
@@ -556,19 +699,10 @@
       "description": "使用正则表达式从文本中提取邮箱地址",
       "noEmailsFound": "未找到邮箱。"
     },
-    "extractSubstring": {
-      "name": "提取子串",
-      "description": "按位置范围提取文本片段",
-      "inputPlaceholder": "输入文本..."
-    },
     "hiddenCharDetector": {
       "name": "隐藏字符检测",
       "description": "检测不可见和特殊 Unicode 字符",
       "noneDetected": "未检测到隐藏字符。"
-    },
-    "textJoin": {
-      "name": "文本连接",
-      "description": "使用自定义分隔符连接多行文本"
     },
     "quoteGenerator": {
       "name": "名言生成器",
@@ -577,12 +711,8 @@
     },
     "removeDuplicateLines": {
       "name": "去除重复行",
-      "description": "删除文本中的重复行"
-    },
-    "textRepeat": {
-      "name": "文本重复",
-      "description": "将文本重复指定次数",
-      "inputPlaceholder": "要重复的文本..."
+      "description": "删除文本中的重复行",
+      "keepEmpty": "保留空行"
     },
     "textReverse": {
       "name": "文本反转",
@@ -590,12 +720,8 @@
     },
     "textRotate": {
       "name": "文本旋转",
-      "description": "将文本行旋转 N 个位置",
-      "inputPlaceholder": "输入行..."
-    },
-    "textSplit": {
-      "name": "文本分割",
-      "description": "按分隔符将文本拆分为多行"
+      "description": "将字符旋转 N 个位置",
+      "inputPlaceholder": "输入文本..."
     },
     "textReplacer": {
       "name": "文本替换",
@@ -606,31 +732,38 @@
       "invalidRegex": "无效的正则表达式"
     },
     "textTruncate": {
-      "name": "文本截断",
-      "description": "按字符、单词或行截断文本",
+      "name": "文本截取",
+      "description": "按字符、单词或行范围提取文本片段",
       "inputPlaceholder": "输入文本...",
       "characters": "字符",
       "words": "单词",
       "lines": "行"
     },
     "passwordGenerator": {
-      "name": "密码生成器",
-      "description": "使用自定义选项生成安全随机密码",
+      "name": "密码与令牌生成器",
+      "description": "生成密码或令牌，自定义长度、字符类型和排除字符",
       "selectOneOption": "请至少选择一项",
       "excludePlaceholder": "排除字符...",
       "generatePassword": "生成密码",
-      "outputPlaceholder": "点击生成..."
+      "outputPlaceholder": "生成的密码或令牌",
+      "passwordPreset": "密码",
+      "tokenPreset": "令牌",
+      "preset": "生成类型",
+      "generateToken": "生成令牌",
+      "invalidLength": "长度必须是 1–512 的整数"
     },
     "byteConverter": {
+      "bits": "比特",
       "name": "字节转换器",
-      "description": "在字节、KB、MB、GB、TB 和比特之间转换",
+      "description": "在字节、KB、MB、GB、TB、PB、比特之间转换",
       "unit": "单位",
       "value": "数值",
-      "inputPlaceholder": "输入字节数..."
+      "inputPlaceholder": "输入字节数...",
+      "byteSection": "字节单位"
     },
     "numberToWords": {
       "name": "数字转英文",
-      "description": "将数字转换为英文单词"
+      "description": "将整数转换为英文单词写法，适用于英文文档、数字表达学习及金额数字的英文拼写（不自动添加货币单位）。输入一个整数即可自动转换，例如 123 → one hundred and twenty-three，1000 → one thousand，-42 → negative forty-two，0 → zero。支持负数和前导零，会忽略首尾空白；有效范围为 -9007199254740991 至 9007199254740991。仅支持整数，不支持小数、千位逗号、科学计数法、正号或批量输入；输出为基数词，不是序数词。转换在浏览器本地完成。"
     },
     "arithmeticSequence": {
       "name": "等差数列",
@@ -642,21 +775,34 @@
     },
     "genericCalculator": {
       "name": "通用计算器",
-      "description": "基本数学表达式的简单计算器",
+      "description": "实时计算数学表达式，使用计算器按键并回看计算记录",
       "expressionPlaceholder": "表达式: {example}",
-      "resultPlaceholder": "结果...",
       "history": "历史记录:",
-      "unexpected": "意外字符: {char}",
       "endOfInput": "输入末尾",
-      "errorPrefix": "错误: {message}",
-      "notFinite": "结果不是有限数"
+      "notFinite": "结果不是有限数",
+      "invalidFactorial": "阶乘仅支持 0 到 170 的整数",
+      "clear": "清空输入",
+      "backspace": "退格",
+      "toggleSign": "切换正负",
+      "equals": "计算并记录",
+      "clearHistory": "清空记录",
+      "emptyHistory": "按等号或回车保存计算记录",
+      "reuse": "使用此表达式",
+      "operators": "支持 + − × ÷、取余 %、乘方 ^、括号和阶乘 !",
+      "historyHint": "记录保存在此浏览器，最多保留 100 条",
+      "divisionByZero": "除数不能为零",
+      "missingClosingParenthesis": "缺少右括号",
+      "unexpectedCharacter": "无法识别的字符: {char}"
     },
     "randomNumberGenerator": {
       "name": "随机数生成器",
       "description": "在自定义范围内生成随机数",
       "rangeTooSmall": "范围太小，无法生成不重复的数字",
       "invalidRange": "最小值必须小于或等于最大值",
-      "uniqueOnly": "仅不重复"
+      "allowRepeat": "允许重复",
+      "min": "最小值",
+      "max": "最大值",
+      "count": "生成数量"
     },
     "numberSum": {
       "name": "数字求和",
@@ -666,8 +812,35 @@
     },
     "numberGenerator": {
       "name": "数字序列生成",
-      "description": "生成数字序列：斐波那契、素数、偶数、奇数",
-      "usageHint": "第 1 行：类型（fibonacci/primes/even/odd）\n第 2 行：数量"
+      "description": "生成斐波那契、素数、等差和等比数列，并统计数字",
+      "usageHint": "选择数列类型，设置首项、数量及等差数列公差。",
+      "settings": "生成设置",
+      "intro": "选择数列并调整数量，结果实时更新。",
+      "sequenceType": "数列类型",
+      "fibonacci": "斐波那契",
+      "primes": "素数",
+      "countLabel": "生成数量",
+      "range": "支持 1–{max} 项",
+      "result": "生成结果",
+      "items": "{count} 项",
+      "ready": "数字以逗号分隔，可直接复制或导出。",
+      "invalidCount": "请输入 1–{max} 之间的整数。",
+      "startLabel": "首项下限",
+      "startHint": "从不小于此值的数开始",
+      "invalidStart": "首项下限须为 0–{max} 之间的整数。",
+      "arithmetic": "等差数列",
+      "arithmeticHint": "以此值作为首项",
+      "invalidArithmetic": "请输入有效首项、公差和数量；计算结果须为有限数值。",
+      "geometric": "等比数列",
+      "parameters": "参数",
+      "ratio": "公比",
+      "statistics": "数字统计",
+      "statisticsSource": "统计来源",
+      "customNumbers": "自定义数字",
+      "customHint": "输入数字，以换行、逗号或空格分隔",
+      "total": "求和",
+      "emptyStatistics": "暂无可统计的数字",
+      "overflow": "超出数值范围"
     },
     "csvToJson": {
       "name": "CSV 转 JSON",
@@ -723,57 +896,6 @@
       "columnA": "列 A",
       "columnB": "列 B"
     },
-    "csvTranspose": {
-      "name": "CSV 转置",
-      "description": "转置 CSV 数据（行变列）"
-    },
-    "listDuplicate": {
-      "name": "列表复制",
-      "description": "复制列表中的每个项目"
-    },
-    "listFindPopular": {
-      "name": "列表找最频繁",
-      "description": "查找列表中出现最频繁的项目"
-    },
-    "listFindUnique": {
-      "name": "列表去重",
-      "description": "从列表中提取唯一项目"
-    },
-    "listGroup": {
-      "name": "列表分组",
-      "description": "将列表项分成 N 个一组",
-      "inputPlaceholder": "输入列表项（每行一项）...",
-      "groupSize": "每组大小",
-      "groupLabel": "--- 第 {number} 组 ---"
-    },
-    "listReverse": {
-      "name": "列表反转",
-      "description": "反转列表项的顺序"
-    },
-    "listRotate": {
-      "name": "列表旋转",
-      "description": "将列表项旋转 N 个位置"
-    },
-    "listShuffle": {
-      "name": "列表洗牌",
-      "description": "随机打乱列表项"
-    },
-    "listSort": {
-      "name": "列表排序",
-      "description": "按字母或数字排序列表项"
-    },
-    "listTruncate": {
-      "name": "列表截断",
-      "description": "仅保留列表的前 N 项"
-    },
-    "listUnwrap": {
-      "name": "列表解包",
-      "description": "移除列表项的包裹字符"
-    },
-    "listWrap": {
-      "name": "列表包装",
-      "description": "用前缀和后缀包装每个列表项"
-    },
     "jsonEscape": {
       "name": "JSON 转义",
       "description": "转义和反转义 JSON 字符串",
@@ -781,10 +903,6 @@
       "escapePlaceholder": "要转义的文本...",
       "unescapePlaceholder": "要反转义的 JSON 字符串...",
       "invalidInput": "输入无效"
-    },
-    "jsonStringify": {
-      "name": "JSON 序列化",
-      "description": "格式化并序列化 JSON"
     },
     "jsonSort": {
       "name": "JSON 排序",
@@ -897,18 +1015,6 @@
       "watermarkPlaceholder": "水印文本...",
       "addWatermark": "添加水印"
     },
-    "convertToJpg": {
-      "name": "转换为 JPG",
-      "description": "将图片转换为 JPEG 格式",
-      "convert": "转换为 JPG",
-      "downloadJpg": "下载 JPG"
-    },
-    "convertToWebp": {
-      "name": "转换为 WebP",
-      "description": "将图片转换为 WebP 格式",
-      "convert": "转换为 WebP",
-      "downloadWebp": "下载 WebP"
-    },
     "imageChangeOpacity": {
       "name": "图片透明度调整",
       "description": "调整图片透明度和不透明度",
@@ -944,14 +1050,14 @@
     },
     "imageEditor": {
       "name": "图片编辑器",
-      "description": "在图片上添加文字和绘图",
+      "description": "裁剪、翻转、旋转和调整图片尺寸，调节颜色与透明度、去背景，并添加批注和水印。",
       "addText": "添加文本",
       "drawLine": "绘制线条",
       "clearAll": "全部清除",
-      "color": "颜色：",
-      "lineWidth": "线宽：",
-      "fontSize": "字号：",
-      "text": "文本：",
+      "color": "颜色",
+      "lineWidth": "线宽",
+      "fontSize": "字号",
+      "text": "文本",
       "textPlaceholder": "输入文本...",
       "defaultText": "文本",
       "confirmClearAll": "清空所有标注？",
@@ -988,36 +1094,79 @@
       "blurEffect": "模糊",
       "modeRect": "框选",
       "modeBrush": "笔刷",
-      "colour": "颜色：",
-      "width": "宽度：",
-      "size": "大小：",
-      "fontFamily": "字体：",
-      "fill": "填充：",
-      "cornerRadius": "圆角：",
-      "content": "内容：",
-      "stroke": "描边：",
-      "background": "背景：",
-      "opacity": "不透明度：",
-      "effect": "效果：",
-      "strength": "强度：",
-      "mode": "模式：",
-      "startArrow": "起点箭头：",
-      "endArrow": "终点箭头：",
-      "numberFormat": "序号格式：",
-      "leaderLine": "引导线：",
-      "leaderWidth": "引导线宽度：",
-      "leaderStroke": "引导线样式："
+      "colour": "颜色",
+      "width": "宽度",
+      "size": "大小",
+      "fontFamily": "字体",
+      "fill": "填充",
+      "cornerRadius": "圆角",
+      "content": "内容",
+      "stroke": "线型",
+      "background": "背景",
+      "opacity": "不透明度",
+      "effect": "效果",
+      "strength": "强度",
+      "mode": "模式",
+      "startArrow": "起点箭头",
+      "endArrow": "终点箭头",
+      "numberFormat": "序号格式",
+      "leaderLine": "引导线",
+      "leaderWidth": "引导线宽度",
+      "leaderStroke": "引导线样式",
+      "tabcrop": "裁剪",
+      "tabadjust": "调节",
+      "tabannotate": "批注",
+      "operationcrop": "裁剪",
+      "operationflip": "翻转",
+      "operationrotate": "旋转",
+      "operationresize": "尺寸",
+      "operationcolors": "颜色",
+      "operationopacity": "透明度",
+      "operationtransparent": "透明化",
+      "operationbackground": "去背景",
+      "operationwatermark": "水印",
+      "freeRatio": "自由比例",
+      "originalRatio": "原图比例",
+      "ratio": "裁剪比例",
+      "horizontal": "水平翻转",
+      "vertical": "垂直翻转",
+      "lockAspect": "锁定比例",
+      "hue": "色相",
+      "saturation": "饱和度",
+      "brightness": "亮度",
+      "contrast": "对比度",
+      "targetColor": "目标颜色",
+      "tolerance": "容差",
+      "operationFailed": "图片处理失败，请调整参数后重试",
+      "softenEdges": "边缘柔化",
+      "operationhue": "色相",
+      "operationsaturation": "饱和度",
+      "operationbrightness": "亮度",
+      "operationcontrast": "对比度",
+      "pickFromImage": "从图片取色",
+      "pickColorHint": "点击图片中的位置取色，按 Esc 取消",
+      "shapeStrokeColor": "描边颜色",
+      "lineColor": "线条颜色",
+      "penColor": "画笔颜色",
+      "textColor": "文字颜色",
+      "numberColor": "序号颜色",
+      "strokeWidth": "描边宽度",
+      "numberSize": "序号字号",
+      "brushSize": "笔刷大小",
+      "startArrowSize": "起点箭头大小",
+      "endArrowSize": "终点箭头大小",
+      "startArrowStyle": "起点箭头样式",
+      "endArrowStyle": "终点箭头样式",
+      "textStroke": "文字描边",
+      "textBackground": "文字背景",
+      "mosaicStrength": "马赛克强度",
+      "blurStrength": "模糊强度"
     },
     "imageRemoveBackground": {
       "name": "图片去背景",
       "description": "移除图片的背景颜色",
       "backgroundColor": "背景颜色：",
       "toleranceRange": "容差 (0-100)："
-    },
-    "jpgToPng": {
-      "name": "JPG 转 PNG",
-      "description": "将 JPG 图片转换为 PNG 格式",
-      "downloadAsPng": "下载为 PNG"
     },
     "pdfMerge": {
       "name": "PDF 合并",
@@ -1124,8 +1273,27 @@
       "error": "错误：{message}"
     },
     "browserFingerprint": {
-      "name": "浏览器指纹",
-      "description": "查看详细的浏览器和设备信息"
+      "name": "浏览器信息",
+      "description": "查看详细的浏览器和设备信息",
+      "platform": "平台",
+      "language": "语言",
+      "languages": "语言列表",
+      "screen": "屏幕",
+      "colorDepth": "色彩深度",
+      "timezone": "时区",
+      "cookies": "Cookie 已启用",
+      "doNotTrack": "禁止跟踪",
+      "hardwareConcurrency": "逻辑处理器数量",
+      "deviceMemory": "设备内存",
+      "maxTouchPoints": "最大触控点数",
+      "pdfViewer": "PDF 查看器",
+      "webglVendor": "WebGL 厂商",
+      "webglRenderer": "WebGL 渲染器",
+      "unavailable": "不可用",
+      "notSet": "未设置",
+      "enabled": "是",
+      "disabled": "否",
+      "bits": "位"
     },
     "speedTest": {
       "name": "速度测试",
@@ -1256,8 +1424,8 @@
       "ogUrlPlaceholder": "OG 页面 URL",
       "twitter": "Twitter 卡片",
       "twitterCardPlaceholder": "Twitter 卡片类型",
-      "twitterSitePlaceholder": "Twitter 站点账号（如 @example）",
-      "twitterCreatorPlaceholder": "Twitter 作者账号（如 @author）",
+      "twitterSitePlaceholder": "Twitter 站点账号（如 {'@'}example）",
+      "twitterCreatorPlaceholder": "Twitter 作者账号（如 {'@'}author）",
       "output": "生成的 Meta 标签"
     },
     "mimeTypes": {
@@ -1427,12 +1595,6 @@
       "octal": "数字",
       "symbolic": "符号"
     },
-    "jsonViewer": {
-      "name": "JSON 查看器",
-      "description": "格式化和验证 JSON 数据",
-      "inputPlaceholder": "在此粘贴你的 JSON...",
-      "outputTitle": "格式化输出"
-    },
     "dockerRunToCompose": {
       "name": "Docker Run 转 Compose",
       "description": "将 docker run 命令转换为 docker-compose YAML",
@@ -1465,7 +1627,7 @@
       "normalized": "标准化",
       "status": "状态",
       "ok": "正常",
-      "errorMissingAt": "邮箱格式无效：缺少 @"
+      "errorMissingAt": "邮箱格式无效：缺少 {'@'}"
     },
     "regexTester": {
       "name": "正则表达式测试器",
@@ -1567,6 +1729,24 @@
       "syntaxDiagram": "┌──────────── 分钟 (0 - 59)\n│ ┌────────── 小时 (0 - 23)\n│ │ ┌──────── 日 (1 - 31)\n│ │ │ ┌────── 月 (1 - 12)\n│ │ │ │ ┌──── 星期 (0 - 6，周日 = 0)\n│ │ │ │ │\n* * * * *"
     },
     "dockerComposeTo1panel": {
+      "packageVersionError": "请输入有效的新版本号，不能与压缩包中已有版本重复。",
+      "packageComposeError": "Compose 配置无效，请检查 YAML 和 services 内容。",
+      "packageTitle": "导入已有 1Panel 应用",
+      "packageHint": "支持单个应用的 ZIP 压缩包（最大 50 MB）。导入后沿用应用信息，并保留旧版本和附属文件。",
+      "packageLoading": "正在读取应用压缩包…",
+      "packageVersionHint": "当前为新建应用版本：选择来源版本，修改下方应用信息、Compose 和新版本号。新版本号不能与已有版本重复。",
+      "sourceVersion": "来源版本",
+      "newVersion": "新版本号",
+      "clearPackage": "退出压缩包导入模式",
+      "packageImported": "应用已导入，请确认新版本号",
+      "packageImportFailed": "导入失败，原内容已保留。请检查 ZIP 是否包含单个应用的 data.yml、版本 Compose 和版本 data.yml。",
+      "readmeLink": "文件链接",
+      "readmeImportMode": "README 导入方式",
+      "readmeLinkPlaceholder": "输入 README 原始文件的 HTTP(S) 链接",
+      "readmeImportLink": "从链接导入",
+      "readmeLinkHint": "请使用原始文件链接，目标网站需允许跨域读取。",
+      "readmeImported": "README 导入成功",
+      "readmeImportFailed": "导入失败，原内容已保留。请检查文件或使用允许跨域读取的原始文件链接。",
       "name": "Docker Compose 转 1Panel",
       "description": "将 docker-compose YAML 转换为 1Panel 应用目录并打包",
       "composeTitle": "Docker Compose YAML（点击标题可折叠）",
@@ -1707,8 +1887,6 @@
       "print": "打印"
     },
     "base64FileConverter": {
-      "name": "Base64 文件转换",
-      "description": "文件与 Base64 编码互转",
       "base64ToFile": "Base64 → 文件",
       "fileToBase64": "文件 → Base64",
       "inputPlaceholder": "粘贴 Base64 字符串或 data URL...",
@@ -1814,15 +1992,72 @@
       "labelLocalDateTime": "本地日期时间",
       "labelRelative": "相对时间"
     },
+    "listWorkbench": {
+      "convertShort": "转换",
+      "reorderShort": "重排",
+      "sliceShort": "截取",
+      "groupShort": "分组",
+      "statisticsShort": "统计",
+      "groupDisabledHint": "每组数量为 0 时不分组，保留原列表。",
+      "applyOnce": "确定",
+      "emptyItem": "（空项）",
+      "item": "项目",
+      "reorder": "排序与重排",
+      "format": "包装 / 输出",
+      "statsHint": "统计列表项，不包含包装字符和分组分隔符。",
+      "groupSize": "每组数量",
+      "statistics": "频次统计",
+      "group": "分组",
+      "rotateHint": "正数向左旋转，负数向右旋转。",
+      "statsOrder": "频次排序",
+      "leastFirst": "次数从少到多",
+      "enableConvert": "启用转换与包装",
+      "enableSlice": "启用截取",
+      "convert": "转换与包装",
+      "reshuffle": "重新洗牌",
+      "trimItems": "去除首尾空白",
+      "unwrap": "移除包裹字符",
+      "sort": "排序",
+      "noItems": "暂无列表项",
+      "positions": "旋转位数",
+      "semicolon": "分号",
+      "enableReorder": "启用排序",
+      "sequence": "处理顺序",
+      "mostFirst": "次数从多到少",
+      "rangeHint": "索引从 1 开始，包含结束项；按前面操作处理后的列表截取。",
+      "shuffle": "洗牌",
+      "groupSeparator": "组间分隔符",
+      "pipe": "竖线",
+      "originalItems": "原始输入",
+      "statsSource": "统计来源",
+      "slice": "截取",
+      "finalItems": "最终列表",
+      "summary": "总项数 {total} / 不同项数 {unique}",
+      "operations": "列表操作",
+      "reverse": "反转",
+      "rotate": "旋转",
+      "removeEmpty": "移除空项",
+      "clean": "解包 / 清理 / 去重",
+      "useOutput": "将结果作为输入",
+      "blankLine": "空行",
+      "enabled": "已启用",
+      "topN": "显示前 N 项",
+      "removeDuplicates": "去重",
+      "newLine": "换行",
+      "separatorHint": "分隔符始终生效；关闭此页签仅停用清理和包装。",
+      "lowerCase": "转为小写",
+      "count": "次数",
+      "enableGroup": "启用分组"
+    },
     "listConverter": {
-      "name": "列表转换器",
-      "description": "使用排序、去重、前后缀等选项转换列表",
+      "name": "列表工具",
+      "description": "组合转换、排序、重排、截取和分组，并统计列表项频次",
       "inputPlaceholder": "输入列表项...",
       "comma": "逗号 (,)",
       "semicolon": "分号 (;)",
       "newline": "换行",
       "tab": "制表符",
-      "pipe": "竖线 (|)",
+      "pipe": "竖线",
       "space": "空格",
       "none": "无",
       "ascending": "升序",
@@ -1832,7 +2067,15 @@
       "removeEmpty": "移除空项",
       "removeDuplicates": "移除重复项",
       "itemPrefix": "项目前缀",
-      "itemSuffix": "项目后缀"
+      "itemSuffix": "项目后缀",
+      "inputSeparator": "输入分隔符",
+      "outputSeparator": "输出分隔符",
+      "auto": "自动识别",
+      "custom": "自定义",
+      "customInputSeparator": "自定义输入分隔符",
+      "customOutputSeparator": "自定义输出分隔符",
+      "inputSeparatorRequired": "请输入用于拆分输入的分隔符",
+      "sameAsInput": "与输入分隔符相同"
     },
     "qrCodeGenerator": {
       "name": "二维码生成器",
@@ -2060,7 +2303,32 @@
     "pingTest": {
       "name": "Ping 测试",
       "description": "测试到目标的网络延迟",
-      "ping": "Ping"
+      "ping": "Ping",
+      "results": {
+        "probeCount": "{count} 个探针",
+        "probe": "探针 {index}",
+        "remoteNote": "延迟由下方远程探针测得，并非当前设备到目标的延迟。",
+        "reachable": "连接正常",
+        "packetLoss": "存在丢包",
+        "unreachable": "无响应",
+        "failed": "测量失败",
+        "completed": "测量完成",
+        "average": "平均延迟",
+        "minimum": "最低延迟",
+        "maximum": "最高延迟",
+        "loss": "丢包率",
+        "address": "目标 IP",
+        "packets": "发送 {sent} · 接收 {received} · 丢失 {lost}",
+        "rawOutput": "查看探针日志",
+        "rawData": "查看完整数据（JSON）",
+        "noResults": "暂无探针测量结果。"
+      },
+      "errors": {
+        "serviceUnavailable": "Ping 服务暂时不可用，请确认后端服务已启动，稍后重试。",
+        "invalidResponse": "Ping 服务返回了无效响应，请检查服务配置后重试。",
+        "rateLimited": "请求过于频繁，请稍后重试。",
+        "requestFailed": "Ping 请求失败，请稍后重试。"
+      }
     },
     "mtrTest": {
       "name": "MTR 测试",
@@ -2079,6 +2347,12 @@
       "dnsServerPlaceholder": "自定义 DNS 服务器（可选）"
     },
     "censorshipCheck": {
+      "errors": {
+        "VALIDATION_ERROR": "请输入有效的网址或域名，每次最多 10 个，不支持带有用户名或密码的网址。",
+        "OONI_UNAVAILABLE": "暂时无法连接 OONI 测量服务，请稍后重试。",
+        "OONI_TIMEOUT": "OONI 测量查询超时，请稍后重试。",
+        "OONI_INVALID_RESPONSE": "OONI 返回了无效数据，请稍后重试。"
+      },
       "name": "审查检查",
       "description": "检查网站是否被审查封锁",
       "check": "检查",
@@ -2108,6 +2382,62 @@
       "removed": "移除",
       "changed": "修改",
       "differences": "差异"
+    },
+    "dateTime": {
+      "durationShort": "时长",
+      "weekdayShort": "星期",
+      "intervalShort": "间隔",
+      "discordShort": "时间戳",
+      "truncateShort": "截断",
+      "name": "日期与时间",
+      "description": "统一换算时长、查询星期、计算日期间隔、生成 Discord 时间戳和截断时间",
+      "duration": "时长换算",
+      "unit": "输入单位",
+      "clock": "时分秒（HH:MM:SS）",
+      "amount": "输入时长",
+      "invalid": "请输入非负有限数值，时分秒中的分和秒必须小于 60",
+      "results": "计算结果",
+      "copyAll": "复制全部",
+      "copyResult": "复制{label}",
+      "empty": "请输入有效值以查看结果",
+      "date": "日期",
+      "dateTime": "日期与时间",
+      "clockInput": "时间",
+      "remainder": "天数与剩余时间",
+      "localTime": "日期和时间按本地时区计算",
+      "resultsClock": "时分秒",
+      "confirm": "确认"
+    },
+    "numberConverter": {
+      "name": "数字转换器",
+      "description": "在阿拉伯数字、英文数字、罗马数字及二、八、十六进制之间同步转换。",
+      "decimal": "阿拉伯数字（十进制）",
+      "english": "英文数字",
+      "roman": "罗马数字",
+      "binary": "二进制",
+      "octal": "八进制",
+      "hex": "十六进制",
+      "invalid": "请输入有效整数或数字表示。支持范围为 ±9,007,199,254,740,991；罗马数字限 1–3999。",
+      "romanRange": "罗马数字仅支持 1–3999 的整数，当前值无法表示。"
+    },
+    "imageFormatConverter": {
+      "name": "图片格式转换",
+      "description": "将图片转换为 PNG、JPG 或 WebP 格式。JPG 使用白色背景，PNG 和 WebP 保留透明度。",
+      "format": "输出格式",
+      "convert": "转换图片"
+    },
+    "textWorkbench": {
+      "name": "文本工具",
+      "description": "替换、反转、旋转、截取文本，并统计和比较输入输出",
+      "replace": "替换",
+      "reorder": "顺序",
+      "slice": "截取",
+      "statistics": "统计",
+      "diff": "对比",
+      "operations": "文本操作",
+      "hint": "处理顺序：替换 → 去重复行 → 反转/旋转 → 截取。切换分页不会执行操作。",
+      "statsShort": "统计",
+      "deduplicate": "去重"
     }
   }
 }

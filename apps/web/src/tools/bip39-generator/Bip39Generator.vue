@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { NInput, NSelect, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import * as bip39 from 'bip39';
+import { generateMnemonic, validateMnemonic } from './bip39-generator.service';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
@@ -19,13 +19,13 @@ const words = ref(12);
 const nonce = ref(0);
 const mnemonic = computed(() => {
   void nonce.value;
-  try { return bip39.generateMnemonic(words.value === 12 ? 128 : words.value === 15 ? 160 : words.value === 18 ? 192 : words.value === 21 ? 224 : 256); } catch { return ''; }
+  return generateMnemonic(words.value);
 });
 
 const inputMnemonic = ref('');
 const isValid = computed(() => {
   if (!inputMnemonic.value) return null;
-  try { return bip39.validateMnemonic(inputMnemonic.value); } catch { return false; }
+  return validateMnemonic(inputMnemonic.value);
 });
 
 function refresh() { nonce.value++; }
@@ -38,8 +38,10 @@ function refresh() { nonce.value++; }
         <NInput :value="mnemonic" type="textarea" readonly :rows="4" style="font-family: monospace;"  :input-props="{ id: 'bip39GeneratorField0' }"/>
       </template>
       <template #params>
-        <NSelect v-model:value="words" :options="wordCountOptions" />
-        <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+        <div class="mnemonic-actions">
+          <NSelect v-model:value="words" :options="wordCountOptions" class="mnemonic-actions__count" />
+          <NButton type="primary" @click="refresh">{{ t('common.generationActions.mnemonic') }}</NButton>
+        </div>
         <div>
           <div style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">{{ t('tools.bip39Generator.validateMnemonic') }}</div>
           <NInput v-model:value="inputMnemonic" type="textarea" :rows="3" :placeholder="t('tools.bip39Generator.validatePlaceholder')"  :input-props="{ id: 'bip39GeneratorField1' }"/>
@@ -51,3 +53,25 @@ function refresh() { nonce.value++; }
     </ToolTextPanel>
   </ToolLayout>
 </template>
+
+<style scoped>
+.mnemonic-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.mnemonic-actions__count {
+  width: 160px;
+  min-width: 0;
+  flex: 0 1 160px;
+}
+
+.mnemonic-actions :deep(.n-button) {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+</style>

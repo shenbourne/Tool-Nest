@@ -1,4 +1,4 @@
-import type { ToolDefinition, ToolCategory, ToolTag } from './tool-types';
+import type { ToolDefinition, ToolCategory, ToolTag } from './tool-types.js';
 
 interface DefineToolOptions {
   name: string;
@@ -9,7 +9,6 @@ interface DefineToolOptions {
   keywords: string[];
   component: () => Promise<any>;
   icon?: string;
-  aliases?: string[];
   createdAt?: string;  // ISO date string
   redirectFrom?: string[];
   isExternal?: boolean;
@@ -30,7 +29,6 @@ export function defineTool(options: DefineToolOptions): ToolDefinition {
     category: options.category,
     tags: options.tags,
     keywords: options.keywords,
-    aliases: options.aliases,
     component: options.component,
     icon: options.icon,
     createdAt,

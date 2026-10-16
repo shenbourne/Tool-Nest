@@ -9,13 +9,13 @@ export type {
   UserPreferences,
   ApiResponse,
   ShareReport,
-} from './tool-types';
+} from './tool-types.js';
 
 // 工厂函数
-export { defineTool } from './tool-definition';
+export { defineTool } from './tool-definition.js';
 
 // 分类定义
-export { TOOL_CATEGORIES } from './categories';
+export { TOOL_CATEGORIES } from './categories.js';
 
 // 校验工具
-export { isValidIP, isValidDomain, isValidPort, sanitizeHtml } from './validation';
+export { isValidIP, isValidDomain, isValidPort, sanitizeHtml } from './validation.js';

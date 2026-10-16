@@ -22,7 +22,7 @@ const categoryDef = computed(() =>
 );
 
 const tools = computed(() =>
-  toolStore.getToolsByCategory(categoryName.value as any)
+  categoryDef.value ? toolStore.getToolsByCategory(categoryDef.value.name) : []
 );
 
 // In anchor mode, redirect to home with hash

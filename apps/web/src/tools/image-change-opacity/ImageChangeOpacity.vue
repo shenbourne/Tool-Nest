@@ -69,8 +69,10 @@ async function process() {
           <NButton :disabled="!resultFile" @click="download">{{ t('tools.imageChangeOpacity.downloadPng') }}</NButton>
         </template>
         <template #params>
-          <NSpace vertical :size="12">
-            <NInputNumber v-model:value="opacity" :min="0" :max="1" :step="0.1" style="width:140px"  :input-props="{ id: 'imageChangeOpacityField0' }"/>
+          <NSpace vertical :size="12">            <div class="tool-numeric-param">
+              <label for="imageChangeOpacityField0">{{ t('numericParams.opacity') }}:</label>
+              <NInputNumber v-model:value="opacity" :min="0" :max="1" :step="0.1" style="width:140px"  :input-props="{ id: 'imageChangeOpacityField0' }"/>
+            </div>
             <NButton type="primary" :loading="processing" @click="process" :disabled="!file" block>
               {{ t('common.apply') }}
             </NButton>

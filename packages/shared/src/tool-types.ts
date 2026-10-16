@@ -1,21 +1,18 @@
 // 工具分类
 export type ToolCategory =
+  | 'text'
+  | 'data'
+  | 'encoding'
   | 'crypto'
-  | 'converter'
   | 'web'
   | 'developer'
   | 'network'
-  | 'text'
-  | 'data'
+  | 'math'
+  | 'datetime'
   | 'image'
   | 'video'
   | 'audio'
-  | 'pdf'
-  | 'math'
-  | 'measurement'
-  | 'generator'
-  | 'network-test'
-  | 'platform';
+  | 'pdf';
 
 // 工具标签
 export type ToolTag =
@@ -26,6 +23,7 @@ export type ToolTag =
   | 'worker'         // 使用 Web Worker
   | 'clipboard'      // 剪贴板操作
   | 'media'          // 媒体处理
+  | 'compressor'     // 压缩工具
   | 'converter'      // 格式转换
   | 'generator'      // 内容生成
   | 'validator'      // 数据校验
@@ -63,7 +61,6 @@ export interface ToolDefinition {
   category: ToolCategory;     // 主分类
   tags: ToolTag[];            // 功能标签
   keywords: string[];         // 搜索关键词
-  aliases?: string[];         // 别名（用于搜索和重定向）
   component: () => Promise<any>;  // 懒加载组件
   icon?: string;              // 图标名称
   createdAt?: Date;           // 创建时间（用于判断是否新工具）

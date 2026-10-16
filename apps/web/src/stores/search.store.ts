@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import Fuse from 'fuse.js';
+import { visibleToolTags } from '@/utils/tool-tags';
 import { useToolStore } from './tool.store';
-import type { ToolDefinition, ToolCategory } from '@toolnest/shared';
+import type { ToolDefinition } from '@toolnest/shared';
 
 export const useSearchStore = defineStore('search', () => {
   const query = ref('');
@@ -34,7 +35,7 @@ export const useSearchStore = defineStore('search', () => {
 
     if (selectedTags.value.length > 0) {
       filtered = filtered.filter(t =>
-        selectedTags.value.every(tag => t.tags.includes(tag as any))
+        selectedTags.value.every(tag => t.tags.some(toolTag => toolTag === tag))
       );
     }
 
@@ -49,7 +50,7 @@ export const useSearchStore = defineStore('search', () => {
 
   const allTags = computed(() => {
     const tagSet = new Set<string>();
-    toolStore.tools.forEach(t => t.tags.forEach(tag => tagSet.add(tag)));
+    toolStore.tools.forEach(t => visibleToolTags(t.tags).forEach(tag => tagSet.add(tag)));
     return Array.from(tagSet).sort();
   });
 

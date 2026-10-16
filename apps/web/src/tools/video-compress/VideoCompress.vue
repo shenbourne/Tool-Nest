@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { NCard, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import FileCard from '@/components/FileCard.vue';
 import { useI18n } from 'vue-i18n';

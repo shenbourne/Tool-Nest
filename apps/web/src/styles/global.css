@@ -43,3 +43,53 @@ body {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Persistent labels beside numeric controls, matching compact tool parameters. */
+.tool-numeric-param {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.tool-numeric-param > label {
+  color: var(--color-ink);
+}
+
+.tool-numeric-param > .n-input-number {
+  max-width: 100%;
+}
+
+/* Parameter controls on the left, generation action on the right. */
+.tool-generation-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+.tool-generation-row > .n-button {
+  flex-shrink: 0;
+}
+
+.tool-switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 640px) {
+  .tool-generation-row > .n-form-item {
+    max-width: 100%;
+  }
+  .tool-generation-row .n-form-item-blank {
+    min-width: 0;
+  }
+  .tool-generation-row .n-input-number {
+    max-width: 100%;
+  }
+  .tool-generation-row > .n-button {
+    margin-left: auto;
+  }
+}

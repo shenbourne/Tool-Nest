@@ -6,12 +6,13 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';
 const { t } = useI18n();
-const input = ref('Line 1\nLine 2\nLine 3\nLine 4');
+const input = ref('abcdefg');
 const positions = ref(1);
 const output = computed(() => {
-  const lines = input.value.split('\n');
-  const n = ((positions.value % lines.length) + lines.length) % lines.length;
-  return [...lines.slice(n), ...lines.slice(0, n)].join('\n');
+  const chars = Array.from(input.value);
+  if (!chars.length) return '';
+  const n = ((positions.value % chars.length) + chars.length) % chars.length;
+  return [...chars.slice(n), ...chars.slice(0, n)].join('');
 });
 </script>
 <template>
@@ -23,8 +24,10 @@ const output = computed(() => {
       <template #output>
         <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'textRotateField2' }"/>
       </template>
-      <template #params>
-        <NInputNumber v-model:value="positions" :placeholder="t('common.positions')" style="width:150px"  :input-props="{ id: 'textRotateField1' }"/>
+      <template #params>        <div class="tool-numeric-param">
+          <label for="textRotateField1">{{ t('numericParams.rotatePositions') }}:</label>
+          <NInputNumber v-model:value="positions" :placeholder="t('common.positions')" style="width:150px"  :input-props="{ id: 'textRotateField1' }"/>
+        </div>
       </template>
     </ToolTextPanel>
   </ToolLayout>

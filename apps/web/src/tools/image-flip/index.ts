@@ -3,5 +3,5 @@ export const tool = defineTool({
   name: 'tools.imageFlip.name', path: '/image-flip',
   description: 'tools.imageFlip.description', category: 'image',
   tags: ["media","file-upload"], keywords: ["image","flip","mirror","horizontal","vertical"],
-  component: () => import('./ImageFlip.vue'), createdAt: '2026-09-17', runtimeLocation: 'browser',
+  component: () => import('../image-editor/ImageEditor.vue'), createdAt: '2026-09-17', runtimeLocation: 'browser',
 });

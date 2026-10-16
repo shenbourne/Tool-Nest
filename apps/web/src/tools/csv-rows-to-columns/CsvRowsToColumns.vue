@@ -4,19 +4,13 @@ import { NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
-import { parseCSV, serializeCSV } from '@/utils/csv';
+import { transposeCsv } from './csv-rows-to-columns.service';
 import { tool } from './index';
 
 const { t } = useI18n();
 
 const input = ref('');
-const output = computed(() => {
-  const rows = parseCSV(input.value);
-  if (!rows.length) return '';
-  const maxCols = Math.max(...rows.map(r => r.length));
-  const out = Array.from({ length: maxCols }, (_, c) => rows.map(r => r[c] ?? ''));
-  return serializeCSV(out);
-});
+const output = computed(() => transposeCsv(input.value));
 </script>
 <template>
   <ToolLayout :tool="tool">

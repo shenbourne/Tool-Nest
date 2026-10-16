@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { NCard, NSpace, NDataTable } from 'naive-ui';
+import { NCard, NDataTable } from 'naive-ui';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
 const data = ref<{feature: string; status: string; info: string}[]>([]);
 onMounted(() => {
-  const nav = navigator as any;
+  const nav = navigator;
   const checks = [
     { feature: 'HTTPS', status: location.protocol === 'https:' ? '✅' : '❌', info: location.protocol },
     { feature: 'Secure Cookies', status: document.cookie ? 'Check manually' : '✅ No cookies', info: '' },

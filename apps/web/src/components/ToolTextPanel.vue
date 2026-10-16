@@ -18,12 +18,20 @@ const props = withDefaults(defineProps<{
   exportName?: string;
   hideInput?: boolean;
   hideOutput?: boolean;
+  fileActions?: boolean;
+  stackOnMobile?: boolean;
+  wrapActions?: boolean;
+  actionSize?: 'small' | 'medium';
 }>(), {
   inputTitle: '',
   outputTitle: '',
   exportName: 'output.txt',
   hideInput: false,
   hideOutput: false,
+  fileActions: true,
+  stackOnMobile: false,
+  wrapActions: false,
+  actionSize: 'medium',
 });
 
 const emit = defineEmits<{
@@ -77,29 +85,34 @@ function exportOutput() {
 </script>
 
 <template>
-  <div class="tool-text-panel">
+  <div class="tool-text-panel" :class="{ 'tool-text-panel--mobile-stack': stackOnMobile, 'tool-text-panel--wrap-actions': wrapActions }">
     <div class="tool-text-panel__columns" :class="{ 'tool-text-panel__columns--single': hideInput || hideOutput }">
       <section v-if="!hideInput" class="tool-text-panel__column">
         <div v-if="inputTitle" class="tool-text-panel__title">{{ inputTitle }}</div>
         <div class="tool-text-panel__textarea"><slot name="input" /></div>
         <div class="tool-text-panel__actions">
-          <NButton @click="triggerImport">{{ t('tool.importFile') }}</NButton>
-          <NButton @click="pasteFromClipboard">{{ t('tool.pasteFile') }}</NButton>
+          <slot name="input-actions">
+          <NButton v-if="fileActions" :size="actionSize" @click="triggerImport">{{ t('tool.importFile') }}</NButton>
+          <NButton :size="actionSize" @click="pasteFromClipboard">{{ t(fileActions ? 'tool.pasteFile' : 'tool.pasteText') }}</NButton>
+          </slot>
         </div>
       </section>
       <section v-if="!hideOutput" class="tool-text-panel__column">
         <div v-if="outputTitle" class="tool-text-panel__title">{{ outputTitle }}</div>
         <div class="tool-text-panel__textarea"><slot name="output" /></div>
         <div class="tool-text-panel__actions tool-text-panel__actions--right">
-          <NButton :disabled="!outputText" @click="copyOutput">{{ t('tool.copy') }}</NButton>
-          <NButton :disabled="!outputText" @click="exportOutput">{{ t('tool.exportFile') }}</NButton>
+          <slot name="output-actions-before" />
+          <slot name="output-actions">
+          <NButton :size="actionSize" :disabled="!outputText" @click="copyOutput">{{ t('tool.copy') }}</NButton>
+          <NButton v-if="fileActions" :size="actionSize" :disabled="!outputText" @click="exportOutput">{{ t('tool.exportFile') }}</NButton>
+          </slot>
         </div>
       </section>
     </div>
     <div v-if="$slots.params" class="tool-text-panel__params">
       <slot name="params" />
     </div>
-    <input ref="fileInput" type="file" hidden @change="onImportChange" />
+    <input v-if="fileActions" ref="fileInput" type="file" hidden @change="onImportChange" />
   </div>
 </template>
 
@@ -158,8 +171,15 @@ function exportOutput() {
 .tool-text-panel__actions--right {
   justify-content: flex-end;
 }
+.tool-text-panel--wrap-actions .tool-text-panel__actions { flex-wrap: wrap; }
+@media (max-width: 640px) {
+  .tool-text-panel--mobile-stack .tool-text-panel__columns { grid-template-columns: 1fr; }
+}
 
 .tool-text-panel__params {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
   border-top: 1px solid var(--color-hairline);
   padding-top: var(--spacing-sm);
 }

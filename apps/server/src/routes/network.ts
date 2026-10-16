@@ -5,7 +5,8 @@ import rateLimit from 'express-rate-limit';
 import { AppError } from '../middleware/error-handler.js';
 import { isPrivateHost } from '../middleware/security.js';
 import { GlobalpingService } from '../services/globalping.js';
-import { OoniService } from '../services/ooni.js';
+import { OoniService, OoniError } from '../services/ooni.js';
+import { parseDnsServer, resolveDnsBatch } from '../services/dns.js';
 import type { ApiResponse } from '@toolnest/shared';
 import { isValidDomain } from '@toolnest/shared';
 
@@ -95,26 +96,7 @@ networkRouter.post('/dns-leak', async (req, res, next) => {
   try {
     const { domains } = req.body ?? {};
 
-    if (!Array.isArray(domains) || domains.length === 0) {
-      throw new AppError(400, 'VALIDATION_ERROR', 'At least one domain is required');
-    }
-
-    for (const d of domains) {
-      if (typeof d === 'string' && isPrivateHost(d.trim())) {
-        throw new AppError(400, 'VALIDATION_ERROR', 'Access to private networks is blocked');
-      }
-    }
-
-    const results = await Promise.all(
-      domains.map(async (domain: string) => {
-        try {
-          const addresses = await dnsResolve(domain);
-          return { domain, resolved: true, addresses };
-        } catch {
-          return { domain, resolved: false, addresses: [] };
-        }
-      }),
-    );
+    const results = await resolveDnsBatch(domains, dnsResolve);
 
     const response: ApiResponse = { success: true, data: results };
     res.json(response);
@@ -132,13 +114,12 @@ networkRouter.post('/rule-test', async (req, res, next) => {
       throw new AppError(400, 'VALIDATION_ERROR', 'Domain is required');
     }
 
+    if (dnsServer !== undefined && typeof dnsServer !== 'string') {
+      throw new AppError(400, 'VALIDATION_ERROR', 'DNS server must be a string');
+    }
     const resolver = new dns.Resolver();
     if (typeof dnsServer === 'string' && dnsServer.trim()) {
-      const serverHost = dnsServer.trim().replace(/^\[|\]$/g, '');
-      if (isPrivateHost(serverHost)) {
-        throw new AppError(400, 'VALIDATION_ERROR', 'Access to private networks is blocked');
-      }
-      resolver.setServers([dnsServer]);
+      resolver.setServers([parseDnsServer(dnsServer)]);
     }
 
     const resolveAsync = promisify(resolver.resolve4.bind(resolver));
@@ -165,6 +146,7 @@ networkRouter.post('/censorship', async (req, res, next) => {
     const response: ApiResponse = { success: true, data: results };
     res.json(response);
   } catch (err) {
+    if (err instanceof OoniError) return next(new AppError(err.statusCode, err.code, err.message));
     if (err instanceof AppError) return next(err);
     next(err);
   }

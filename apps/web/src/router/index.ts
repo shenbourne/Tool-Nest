@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { allTools } from '@/tools/registry';
 import { CATEGORY_ANCHOR_OFFSET } from '@/utils/category-anchor';
+import { legacyCategoryLocation } from '@/utils/legacy-category';
+import { legacyTextTabs } from '@/tools/text-workbench/text-operations';
+import { legacyTableTabs } from '@/tools/table-tools/operations';
+import { legacyJsonOperations } from '@/tools/json-prettify/json-tools.service';
+import { legacyConversionQuery } from '@/tools/data-converter/formats';
+import { legacyListQuery } from '@/tools/list-converter/list-pipeline';
 
 // 自动生成工具路由
 const toolRoutes: RouteRecordRaw[] = allTools.map((tool) => ({
@@ -18,7 +24,17 @@ const toolRoutes: RouteRecordRaw[] = allTools.map((tool) => ({
 const redirectRoutes: RouteRecordRaw[] = allTools.flatMap((tool) =>
   (tool.redirectFrom ?? []).map((from) => ({
     path: from,
-    redirect: tool.path,
+    redirect: (to) => tool.path === '/json-prettify'
+      ? {path:tool.path,query:{...to.query,operation:legacyJsonOperations[from]},hash:to.hash}
+      : tool.path === '/table-tools'
+      ? { path:tool.path, query:{ ...to.query, tab:legacyTableTabs[from] }, hash:to.hash }
+      : tool.path === '/data-converter'
+      ? { path: tool.path, query: { ...to.query, ...legacyConversionQuery(from) }, hash: to.hash }
+      : tool.path === '/list-converter'
+      ? { path: tool.path, query: { ...to.query, ...legacyListQuery(from) }, hash: to.hash }
+      : tool.path === '/text-tools'
+        ? { path: tool.path, query: { ...to.query, tab: legacyTextTabs[from] }, hash: to.hash }
+        : tool.path,
   }))
 );
 
@@ -72,4 +88,11 @@ export const router = createRouter({
     }
     return { top: 0 };
   },
+});
+
+router.beforeEach((to) => {
+  if (to.name === 'category') return legacyCategoryLocation(String(to.params.category));
+  if (to.path === '/' && to.hash.startsWith('#category-')) {
+    return legacyCategoryLocation(to.hash.slice('#category-'.length));
+  }
 });

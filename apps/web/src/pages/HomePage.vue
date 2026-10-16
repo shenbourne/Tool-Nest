@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { NH2, NP, NGrid, NGi, NDivider, NEmpty } from 'naive-ui';
+import { NH2, NP, NDivider, NEmpty } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import SearchBar from '@/components/SearchBar.vue';
-import ToolCard from '@/components/ToolCard.vue';
+import HomeToolGrid from '@/components/HomeToolGrid.vue';
 import TagFilter from '@/components/TagFilter.vue';
 import { useToolStore } from '@/stores/tool.store';
 import { useSearchStore } from '@/stores/search.store';
@@ -13,6 +14,17 @@ import { TOOL_CATEGORIES } from '@toolnest/shared';
 const { t } = useI18n();
 const toolStore = useToolStore();
 const searchStore = useSearchStore();
+const route = useRoute();
+
+watch(() => route.query.tag, (tag, previousTag) => {
+  if (typeof tag === 'string' && searchStore.allTags.includes(tag)) {
+    searchStore.query = '';
+    searchStore.selectedCategory = null;
+    searchStore.selectedTags = [tag];
+  } else if (previousTag) {
+    searchStore.selectedTags = [];
+  }
+}, { immediate: true });
 
 const isSearching = computed(() =>
   searchStore.query.trim() || searchStore.selectedTags.length > 0 || searchStore.selectedCategory
@@ -42,11 +54,7 @@ const sortedCategories = computed(() =>
       <NP depth="3" style="margin-bottom: 16px;">
         {{ t('search.resultCount', { count: searchStore.results.length }) }}
       </NP>
-      <NGrid v-if="searchStore.results.length > 0" :x-gap="16" :y-gap="16" :cols="3" responsive="screen" :collapsed-rows="999">
-        <NGi v-for="tool in searchStore.results" :key="tool.path">
-          <ToolCard :tool="tool" />
-        </NGi>
-      </NGrid>
+      <HomeToolGrid v-if="searchStore.results.length > 0" :tools="searchStore.results" />
       <NEmpty v-else :description="t('home.noResults')" style="padding: 48px 0;" />
     </div>
 
@@ -55,21 +63,13 @@ const sortedCategories = computed(() =>
       <!-- Favorites -->
       <div v-if="toolStore.favoriteTools.length > 0" style="margin-bottom: 32px;">
         <NDivider title-placement="left">{{ t('home.favoriteTools') }}</NDivider>
-        <NGrid :x-gap="16" :y-gap="16" :cols="3" responsive="screen">
-          <NGi v-for="tool in toolStore.favoriteTools" :key="tool.path">
-            <ToolCard :tool="tool" />
-          </NGi>
-        </NGrid>
+        <HomeToolGrid :tools="toolStore.favoriteTools" />
       </div>
 
       <!-- Recent tools -->
       <div v-if="toolStore.recentToolsList.length > 0" style="margin-bottom: 32px;">
         <NDivider title-placement="left">{{ t('home.recentTools') }}</NDivider>
-        <NGrid :x-gap="16" :y-gap="16" :cols="3" responsive="screen">
-          <NGi v-for="tool in toolStore.recentToolsList" :key="tool.path">
-            <ToolCard :tool="tool" />
-          </NGi>
-        </NGrid>
+        <HomeToolGrid :tools="toolStore.recentToolsList" />
       </div>
 
       <!-- All tools by category (with anchor IDs) -->
@@ -87,11 +87,7 @@ const sortedCategories = computed(() =>
                 {{ toolStore.toolsByCategory.get(cat.name)?.length }}
               </span>
             </h3>
-            <NGrid :x-gap="16" :y-gap="16" :cols="3" responsive="screen">
-              <NGi v-for="tool in toolStore.toolsByCategory.get(cat.name)" :key="tool.path">
-                <ToolCard :tool="tool" />
-              </NGi>
-            </NGrid>
+            <HomeToolGrid :tools="toolStore.toolsByCategory.get(cat.name) ?? []" large-first />
           </div>
         </template>
       </div>

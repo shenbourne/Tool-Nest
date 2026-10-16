@@ -5,7 +5,7 @@ export const tool = defineTool({
   path: '/crontab-generator',
   description: 'tools.crontabGenerator.description',
   category: 'developer',
-  tags: ['developer', 'time'],
+  tags: ['developer', 'time', 'generator'],
   keywords: ['cron', 'crontab', 'schedule', 'cronjob', 'expression', 'timer', 'periodic'],
   component: () => import('./CrontabGenerator.vue'),
   createdAt: '2026-09-18',

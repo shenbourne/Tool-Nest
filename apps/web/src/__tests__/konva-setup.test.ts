@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { createApp } from 'vue';
+import { createApp, type App } from 'vue';
 import { defineComponent, h } from 'vue';
 
 // Mock vue-konva to avoid the native `canvas` dependency that konva
@@ -7,7 +7,7 @@ import { defineComponent, h } from 'vue';
 // contract: it registers v-stage and v-layer as global components.
 vi.mock('vue-konva', () => ({
   default: {
-    install(app: any) {
+    install(app: App) {
       app.component('v-stage', defineComponent({ render: () => h('div') }));
       app.component('v-layer', defineComponent({ render: () => h('div') }));
     },

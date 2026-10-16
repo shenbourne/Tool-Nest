@@ -2,19 +2,21 @@
 import { ref, computed, onMounted } from 'vue';
 import { NInput, NDescriptions, NDescriptionsItem } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
+import { useMediaQuery } from '@vueuse/core';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
-import { parseUserAgent } from './user-agent-parser.service';
+import { parseUserAgent, getCurrentUserAgent } from './user-agent-parser.service';
 
 const { t } = useI18n();
 const tool = useCurrentTool();
+const mobile = useMediaQuery('(max-width: 640px)');
 
 const uaString = ref('');
 const parsed = computed(() => parseUserAgent(uaString.value));
 
 onMounted(() => {
-  uaString.value = navigator.userAgent;
+  uaString.value = getCurrentUserAgent();
 });
 </script>
 
@@ -30,7 +32,7 @@ onMounted(() => {
          :input-props="{ id: 'userAgentParserField0' }"/>
       </template>
       <template #params>
-        <NDescriptions label-placement="left" bordered :column="2" size="small">
+        <NDescriptions label-placement="left" bordered :column="mobile ? 1 : 2" size="small">
           <NDescriptionsItem :label="t('tools.userAgentParser.browser')">{{ parsed.browser.name }} {{ parsed.browser.version }}</NDescriptionsItem>
           <NDescriptionsItem :label="t('tools.userAgentParser.operatingSystem')">{{ parsed.os.name }} {{ parsed.os.version }}</NDescriptionsItem>
           <NDescriptionsItem :label="t('tools.userAgentParser.deviceType')">{{ parsed.device.type }}</NDescriptionsItem>

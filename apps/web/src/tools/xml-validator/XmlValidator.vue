@@ -16,7 +16,7 @@ const output = computed(() => {
     const doc = parser.parseFromString(input.value, 'application/xml');
     const err = doc.querySelector('parsererror');
     return err ? '❌ ' + t('tools.xmlValidator.invalidXml') + ': ' + err.textContent : '✅ ' + t('tools.xmlValidator.validXml');
-  } catch (e: any) { return '❌ ' + t('common.error') + ': ' + e.message; }
+  } catch (e: unknown) { return '❌ ' + t('common.error') + ': ' + (e instanceof Error ? e.message : String(e)); }
 });
 </script>
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { NCard, NSpace, NButton, NAlert, NDataTable } from 'naive-ui';
+import { ref, onUnmounted } from 'vue';
+import { NCard, NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { tool } from './index';
@@ -30,7 +30,7 @@ async function detect() {
     };
     pc.onicegatheringstatechange = () => { if (pc.iceGatheringState === 'complete') { testing.value = false; closePc(pc); } };
     setTimeout(() => { testing.value = false; closePc(pc); }, 5000);
-  } catch (e: any) { error.value = t('tools.webrtcDetection.error', { message: e.message }); testing.value = false; }
+  } catch (e: unknown) { error.value = t('tools.webrtcDetection.error', { message: e instanceof Error ? e.message : String(e) }); testing.value = false; }
 }
 onUnmounted(() => { activePc?.close(); activePc = null; });
 </script>
@@ -42,7 +42,7 @@ onUnmounted(() => { activePc?.close(); activePc = null; });
       <NAlert v-if="error" type="error" :title="error" />
       <div v-if="ips.length">
         <strong>{{ t('tools.webrtcDetection.detected') }}</strong>
-        <div v-for="ip in ips" style="font-family:monospace;padding:4px;">{{ ip }}</div>
+        <div v-for="ip in ips" :key="ip" style="font-family:monospace;padding:4px;">{{ ip }}</div>
       </div>
       <NAlert v-if="!ips.length && !testing" type="success" :title="t('tools.webrtcDetection.noIps')" />
     </NSpace></NCard>

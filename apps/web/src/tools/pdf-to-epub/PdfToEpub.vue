@@ -62,7 +62,7 @@ async function convert() {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
       const pageText = content.items
-        .map((item: any) => ('str' in item) ? item.str : '')
+        .map((item) => ('str' in item) ? item.str : '')
         .join(' ');
       textParts.push(`--- Page ${i} ---\n${pageText}`);
     }
@@ -71,8 +71,8 @@ async function convert() {
     const blob = new Blob([extractedText.value], { type: 'text/plain' });
     resultUrl.value = URL.createObjectURL(blob);
     resultFile.value = new File([extractedText.value], 'extracted.txt', { type: 'text/plain' });
-  } catch (e: any) {
-    error.value = e.message || t('tools.pdfToEpub.failed');
+  } catch (e: unknown) {
+    error.value = (e instanceof Error ? e.message : '') || t('tools.pdfToEpub.failed');
   }
   processing.value = false;
 }

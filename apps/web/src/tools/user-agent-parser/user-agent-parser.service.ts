@@ -10,7 +10,7 @@ export interface UserAgentInfo {
 }
 
 export function parseUserAgent(ua: string): UserAgentInfo {
-  const parser = new (UAParser as any)(ua);
+  const parser = new UAParser(ua);
   const result = parser.getResult();
   return {
     browser: { name: result.browser.name || '-', version: result.browser.version || '-' },
@@ -20,4 +20,16 @@ export function parseUserAgent(ua: string): UserAgentInfo {
     cpu: { architecture: result.cpu.architecture || '-' },
     ua,
   };
+}
+
+export const FALLBACK_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36';
+
+export function getCurrentUserAgent(): string {
+  try {
+    return typeof navigator !== 'undefined' && navigator.userAgent.trim()
+      ? navigator.userAgent
+      : FALLBACK_USER_AGENT;
+  } catch {
+    return FALLBACK_USER_AGENT;
+  }
 }

@@ -64,3 +64,5 @@ archive.7z
 .agent-workflows/
 .superpowers/
 .qoder-cn/
+.release-control/
+.worktrees/

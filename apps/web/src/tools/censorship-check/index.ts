@@ -4,7 +4,7 @@ export const tool = defineTool({
   name: 'tools.censorshipCheck.name',
   path: '/censorship-check',
   description: 'tools.censorshipCheck.description',
-  category: 'network-test',
+  category: 'network',
   tags: ['network', 'security', 'check'],
   keywords: ['censorship', 'ooni', 'check', 'blocked', 'freedom'],
   component: () => import('./CensorshipCheck.vue'),

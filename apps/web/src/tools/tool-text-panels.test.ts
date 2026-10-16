@@ -12,6 +12,8 @@ const toolsDir = fileURLToPath(new URL('.', import.meta.url));
 
 // Full in-scope list (see .workflow/phases/11-text-tool-actions/CONTEXT.md).
 const EXPECTED: string[] = [
+  'string-obfuscator/StringObfuscator.vue',
+  'data-converter/DataConverter.vue',
   // csv/tsv
   'csv-change-separator/CsvChangeSeparator.vue',
   'csv-find-incomplete/CsvFindIncomplete.vue',
@@ -22,20 +24,17 @@ const EXPECTED: string[] = [
   'csv-to-tsv/CsvToTsv.vue',
   'csv-to-xml/CsvToXml.vue',
   'csv-to-yaml/CsvToYaml.vue',
-  'csv-transpose/CsvTranspose.vue',
   'tsv-to-json/TsvToJson.vue',
   // json
   'json-escape/JsonEscape.vue',
   'json-minify/JsonMinify.vue',
   'json-prettify/JsonPrettify.vue',
   'json-sort/JsonSort.vue',
-  'json-stringify/JsonStringify.vue',
   'json-to-csv/JsonToCsv.vue',
   'json-to-toml/JsonToToml.vue',
   'json-to-xml/JsonToXml.vue',
   'json-to-yaml/JsonToYaml.vue',
   'json-validate/JsonValidate.vue',
-  'json-viewer/JsonViewer.vue',
   // xml/yaml/toml/sql
   'xml-formatter/XmlFormatter.vue',
   'xml-to-json/XmlToJson.vue',
@@ -48,6 +47,8 @@ const EXPECTED: string[] = [
   'sql-prettify/SqlPrettify.vue',
   // data/dev converters
   'base64-encoder/Base64Encoder.vue',
+  // Phase 26: mixed text/file rows use action overrides and the standard FileCard.
+  'base64-file-converter/Base64FileConverter.vue',
   'docker-run-to-compose/DockerRunToCompose.vue',
   'email-extractor/EmailExtractor.vue',
   'email-normalizer/EmailNormalizer.vue',
@@ -55,50 +56,33 @@ const EXPECTED: string[] = [
   'hmac-generator/HmacGenerator.vue',
   'html-entities/HtmlEntities.vue',
   'jwt-parser/JwtParser.vue',
+  'url-encoder/UrlEncoder.vue',
   // list
   'list-converter/ListConverter.vue',
-  'list-duplicate/ListDuplicate.vue',
-  'list-find-popular/ListFindPopular.vue',
-  'list-find-unique/ListFindUnique.vue',
-  'list-group/ListGroup.vue',
-  'list-reverse/ListReverse.vue',
-  'list-rotate/ListRotate.vue',
-  'list-shuffle/ListShuffle.vue',
-  'list-sort/ListSort.vue',
-  'list-truncate/ListTruncate.vue',
-  'list-unwrap/ListUnwrap.vue',
-  'list-wrap/ListWrap.vue',
   // text
-  'text-censor/TextCensor.vue',
-  'text-join/TextJoin.vue',
+  'text-workbench/TextWorkbench.vue',
+  'remove-duplicate-lines/RemoveDuplicateLines.vue',
   'text-replacer/TextReplacer.vue',
   'text-reverse/TextReverse.vue',
   'text-rotate/TextRotate.vue',
-  'text-split/TextSplit.vue',
   'text-to-binary/TextToBinary.vue',
   'text-to-nato-alphabet/TextToNatoAlphabet.vue',
   'text-to-unicode/TextToUnicode.vue',
   'text-truncate/TextTruncate.vue',
-  'remove-duplicate-lines/RemoveDuplicateLines.vue',
   'morse-code/MorseCode.vue',
   'rot13/Rot13.vue',
-  'extract-substring/ExtractSubstring.vue',
   'hidden-char-detector/HiddenCharDetector.vue',
   'info-masking/InfoMasking.vue',
   'markdown-to-html/MarkdownToHtml.vue',
   // math/time/encryption
   'check-leap-years/CheckLeapYears.vue',
-  'create-palindrome/CreatePalindrome.vue',
   'days-to-hours/DaysToHours.vue',
   'hours-to-days/HoursToDays.vue',
   'number-generator/NumberGenerator.vue',
-  'number-sum/NumberSum.vue',
-  'number-to-words/NumberToWords.vue',
   'palindrome-checker/PalindromeChecker.vue',
   'seconds-to-time/SecondsToTime.vue',
   'time-to-decimal/TimeToDecimal.vue',
   'time-to-seconds/TimeToSeconds.vue',
-  'truncate-clock-time/TruncateClockTime.vue',
   'encryption/EncryptionTool.vue',
 ];
 
@@ -106,7 +90,8 @@ const EXPECTED: string[] = [
 // phase 11 CONTEXT.md: file-based (has ToolFileUpload already), form
 // generators, or no input->output text pair.
 const EXCLUDED: string[] = [
-  'base64-file-converter/Base64FileConverter.vue',
+  // Phase 24: clock picker and structured result rows replace the text/file pair.
+  'truncate-clock-time/TruncateClockTime.vue',
   // phase 16: generates a whole 1Panel app directory (metadata form + file
   // tree + editable file cards + zip export), not an input->output text pair
   'docker-compose-to-1panel/DockerComposeTo1panel.vue',

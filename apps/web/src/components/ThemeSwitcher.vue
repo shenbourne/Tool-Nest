@@ -11,7 +11,7 @@ const themeIcon = computed(() => {
   switch (preferencesStore.prefs.theme) {
     case 'light': return '☀️';
     case 'dark': return '🌙';
-    case 'system': return '💻';
+    default: return '💻';
   }
 });
 
@@ -19,7 +19,7 @@ const themeTooltip = computed(() => {
   switch (preferencesStore.prefs.theme) {
     case 'light': return t('settings.themeLight');
     case 'dark': return t('settings.themeDark');
-    case 'system': return t('settings.themeSystem');
+    default: return t('settings.themeSystem');
   }
 });
 </script>

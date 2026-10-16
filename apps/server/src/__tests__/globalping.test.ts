@@ -27,6 +27,7 @@ describe('GlobalpingService', () => {
     });
 
     expect(result.id).toBe('meas-123');
+    expect(JSON.parse(mockFetch.mock.calls[0][1].body).locations).toEqual([{ country: 'US', limit: 2 }]);
     expect(mockFetch).toHaveBeenCalledWith(
       'https://api.globalping.io/v1/measurements',
       expect.objectContaining({

@@ -6,10 +6,11 @@ export interface UlaResult {
 }
 
 export function isValidMacAddress(mac: string): boolean {
-  return /^([0-9a-fA-F]{2}[:\-]){5}[0-9a-fA-F]{2}$/.test(mac.trim());
+  return /^([0-9a-fA-F]{2}[:-]){5}[0-9a-fA-F]{2}$/.test(mac.trim());
 }
 
 export function generateULA(macAddress: string): UlaResult {
+  void macAddress; // Retained input for caller compatibility; randomness supplies the global ID.
   // Generate 5 random bytes (40 bits) for the global ID per RFC 4193
   const randomBytes = new Uint8Array(5);
   crypto.getRandomValues(randomBytes);

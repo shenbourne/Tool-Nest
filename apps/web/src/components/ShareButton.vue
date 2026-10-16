@@ -44,7 +44,7 @@ async function createShare() {
     if (json.success && json.data) {
       shareUrl.value = `${window.location.origin}/reports/${json.data.id}`;
     }
-  } catch (err) {
+  } catch {
     shareError.value = t('share.error');
   } finally {
     sharing.value = false;

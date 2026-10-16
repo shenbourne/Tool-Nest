@@ -4,7 +4,7 @@ export const tool = defineTool({
   path: '/video-compress',
   description: 'tools.videoCompress.description',
   category: 'video',
-  tags: ['media', 'file-upload', 'lazy-load'],
+  tags: ['media', 'file-upload', 'lazy-load', 'compressor'],
   keywords: ['video', 'compress', 'reduce', 'size'],
   component: () => import('./VideoCompress.vue'),
   createdAt: '2026-09-18',

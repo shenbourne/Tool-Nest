@@ -3,7 +3,6 @@ import { ref, computed } from 'vue';
 import { NInput, NSelect } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { HmacMD5, HmacRIPEMD160, HmacSHA1, HmacSHA224, HmacSHA256, HmacSHA3, HmacSHA384, HmacSHA512, enc } from 'crypto-js';
-import type { lib } from 'crypto-js';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { tool } from './index';

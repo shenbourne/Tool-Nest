@@ -2,7 +2,6 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useMessage } from 'naive-ui';
 import { fileCategory } from '@/utils/file-thumbnail';
-import { renderThumbnailDataUrl } from '@/utils/thumbnail-render';
 
 export function useFilePreview() {
   const { t } = useI18n();

@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import { NCard, NInput, NSpace, NButton, NAlert, NSelect, NProgress } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import Tesseract from 'tesseract.js';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 const tool = useCurrentTool();
 
 const selectedFile = ref<File | null>(null);
@@ -69,11 +68,6 @@ async function extractText() {
   }
 }
 
-function copyText() {
-  if (extractedText.value) {
-    copyToClipboard(extractedText.value);
-  }
-}
 onUnmounted(() => {
   if (imagePreview.value) URL.revokeObjectURL(imagePreview.value);
 });
@@ -87,6 +81,8 @@ onUnmounted(() => {
           <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFileChange" />
         </template>
         <template #output-files>
+          <ToolTextPanel input-text="" :output-text="extractedText" hide-input export-name="ocr-result.txt" wrap-actions>
+            <template #output>
           <NInput
             v-if="extractedText"
             type="textarea"
@@ -94,9 +90,8 @@ onUnmounted(() => {
             readonly
             :autosize="{ minRows: 6, maxRows: 20 }"
            :input-props="{ id: 'imageToTextOcrField0' }"/>
-        </template>
-        <template #actions-right>
-          <NButton v-if="extractedText" @click="copyText">{{ t('tool.copy') }}</NButton>
+            </template>
+          </ToolTextPanel>
         </template>
         <template #params>
           <NSpace vertical :size="12">

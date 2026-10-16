@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { computed, ref, nextTick, onMounted, onUnmounted } from 'vue';
+import { useMediaQuery } from '@vueuse/core';
 import type { CSSProperties } from 'vue';
 import { NLayout, NLayoutSider, NLayoutContent, NTooltip } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { TOOL_CATEGORIES } from '@toolnest/shared';
 import { usePreferencesStore } from '@/stores/preferences.store';
+import { useSearchStore } from '@/stores/search.store';
 import { categoryAnchorHref, categoryAnchorId } from '@/utils/category-anchor';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
@@ -14,8 +16,10 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const preferencesStore = usePreferencesStore();
+const searchStore = useSearchStore();
 
-const collapsed = computed(() => preferencesStore.sidebarCollapsed);
+const narrowScreen = useMediaQuery('(max-width: 640px)');
+const collapsed = computed(() => narrowScreen.value || preferencesStore.sidebarCollapsed);
 
 const sortedCategories = computed(() =>
   [...TOOL_CATEGORIES].sort((a, b) => a.order - b.order)
@@ -39,28 +43,25 @@ const activeCategory = computed(() => {
 });
 
 const categoryEmojiMap: Record<string, string> = {
-  'crypto': '🔒', 'converter': '🔄', 'web': '🌐', 'developer': '💻',
-  'network': '📡', 'text': '📝', 'data': '📊', 'image': '🖼️',
-  'video': '🎬', 'audio': '🔊', 'pdf': '📄', 'math': '🧮',
-  'measurement': '📏', 'generator': '⚡', 'network-test': '📶', 'platform': '⚙️',
+  text: '📝', data: '📊', encoding: '🔣', crypto: '🔒', web: '🌐',
+  developer: '💻', network: '📡', math: '🧮', datetime: '📅',
+  image: '🖼️', video: '🎬', audio: '🔊', pdf: '📄',
 };
 
 function getCategoryEmoji(name: string): string {
   return categoryEmojiMap[name] || '📦';
 }
 
-function handleCategoryClick(categoryName: string) {
+async function handleCategoryClick(categoryName: string) {
   clickedCategory.value = categoryName;
+  searchStore.clearFilters();
   if (preferencesStore.sidebarMode === 'navigate') {
-    router.push(`/tools/${categoryName}`);
+    await router.push(`/tools/${categoryName}`);
   } else {
-    // Anchor mode: go to home and scroll
-    if (route.path !== '/') {
-      router.push(categoryAnchorHref(categoryName));
-    } else {
-      const el = document.getElementById(categoryAnchorId(categoryName));
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    await router.push(categoryAnchorHref(categoryName));
+    await nextTick();
+    const el = document.getElementById(categoryAnchorId(categoryName));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
@@ -251,5 +252,13 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .sidebar-footer {
+    padding: 8px 4px;
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 </style>

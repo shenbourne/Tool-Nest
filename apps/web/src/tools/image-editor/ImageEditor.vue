@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch, type Component, type VNodeChild } from 'vue';
+import { computed, provide, onMounted, onUnmounted, ref, watch, type Component, type VNodeChild } from 'vue';
 import {
   NButton,
   NCard,
-  NColorPicker,
   NIcon,
   NPopconfirm,
   NSelect,
   NTooltip,
+  useMessage,
 } from 'naive-ui';
 import {
   ArrowBackUp,
@@ -15,6 +15,7 @@ import {
   ArrowLeft,
   ArrowRight,
   BorderStyle,
+  Blur,
   Brush,
   Circle as CircleIcon,
   Click as SelectIcon,
@@ -30,18 +31,26 @@ import {
   Rectangle,
   Trash,
   Typography,
+  LetterT,
   Vector,
 } from '@vicons/tabler';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+import { TOOL_TAB_NAVIGATION, projectToolTabs, resolveToolTab, type TabName } from '@/utils/tool-tab-navigation';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
+import ToolTabs from '@/components/ToolTabs.vue';
 import SizeField from './SizeField.vue';
+import ImageOperations from './ImageOperations.vue';
+import CanvasColorPicker from './CanvasColorPicker.vue';
+import AnnotationColorControl from './AnnotationColorControl.vue';
+import { imageColorPickingKey } from './image-color-picking';
+import { createImageEditorLifecycle } from './image-editor-lifecycle';
+import { hasImageOperationChanges, cropFromDrag, resizeCrop, transformCanvas, type CropHandle, type CropRectangle, type ImageOperation } from './image-transforms';
 import {
   arrowStylePreview,
   lineWeightIcon,
-  modePreview,
-  mosaicEffectPreview,
   numberFormatPreview,
   strokeStylePreview,
 } from './params-previews';
@@ -52,17 +61,10 @@ import { resolveCssColorToken } from '@/utils/css-tokens';
 import {
   arrowPoints,
   applyMosaic,
-  canRedo,
-  canUndo,
-  commit,
-  createHistory,
   distToSegment,
   formatNumber,
-  historyState,
   rectFromPoints,
-  redo,
   strokeDash,
-  undo,
   type Annotation,
   type ArrowConfig,
   type ArrowStyle,
@@ -79,6 +81,7 @@ import {
 
 /** The slice of a Konva node (or of an event's target) this component touches. */
 interface KonvaNode {
+  name(): string;
   x(): number;
   y(): number;
   position(position: { x: number; y: number }): void;
@@ -112,6 +115,36 @@ interface KonvaComponentRef<N = KonvaNode> {
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
+const message = useMessage();
+const editorTabs = computed(() => projectToolTabs('/image-editor', t));
+const editorTab = ref<TabName<'/image-editor'>>(TOOL_TAB_NAVIGATION['/image-editor'].defaultTab);
+const route = useRoute();
+watch(() => route.query.tab, value => {
+  const selected = resolveToolTab('/image-editor', value);
+  if (selected !== undefined) editorTab.value = selected;
+}, { immediate: true });
+const watermarkMode = ref(false);
+const operationBusy = ref(false);
+const colorPicking = ref(false);
+let receivePickedColor: ((color:string) => void) | null = null;
+const operationsRef = ref<InstanceType<typeof ImageOperations> | null>(null);
+const cropSelection = ref<CropRectangle | null>(null);
+const cropEnabled = ref(false);
+const cropRatio = ref(0);
+const hoveredCropHandle = ref<CropHandle | null>(null);
+const resizingCropHandle = ref<CropHandle | null>(null);
+const cropCursor = computed(() => {
+  const handle = resizingCropHandle.value ?? hoveredCropHandle.value;
+  if (!cropEnabled.value) return undefined;
+  if (handle === 'nw' || handle === 'se') return 'nwse-resize';
+  if (handle === 'ne' || handle === 'sw') return 'nesw-resize';
+  if (handle === 'n' || handle === 's') return 'ns-resize';
+  if (handle === 'e' || handle === 'w') return 'ew-resize';
+  return 'crosshair';
+});
+let cropStart: {x: number; y: number} | null = null;
+let cropResize: { handle: CropHandle; rect: CropRectangle } | null = null;
+const previewOperation = ref<ImageOperation | null>(null);
 const tool = useCurrentTool();
 const preferences = usePreferencesStore();
 const { copyFileToClipboard } = useCopy();
@@ -134,21 +167,62 @@ const imageUrl = ref<string>('');
 const imageEl = ref<HTMLImageElement | null>(null);
 const stageWidth = ref(800);
 const stageHeight = ref(600);
+provide(imageColorPickingKey, {
+  available: computed(() => !!imageEl.value && !operationBusy.value),
+  request(receive) {
+    if (!imageEl.value || operationBusy.value) return;
+    cropStart = null; cropResize = null;
+    receivePickedColor = receive;
+    colorPicking.value = true;
+    message.info(t('tools.imageEditor.pickColorHint'));
+  },
+});
+const canvasWrapper = ref<HTMLElement | null>(null);
+const availableWidth = ref(800);
+const displayScale = computed(() => Math.min(1, availableWidth.value / renderWidth.value));
+let canvasObserver: ResizeObserver | null = null;
+watch(canvasWrapper, wrapper => {
+  canvasObserver?.disconnect();
+  if (!wrapper) return;
+  canvasObserver = new ResizeObserver(entries => {
+    availableWidth.value = Math.max(1, entries[0].contentRect.width);
+  });
+  canvasObserver.observe(wrapper);
+}, { flush: 'post' });
+
+/** Image decoding is an adapter; the lifecycle decides whether its result is current. */
+async function decodeImage(url: string): Promise<HTMLImageElement> {
+  const img = new Image();
+  img.src = url;
+  await img.decode();
+  return img;
+}
 
 function onFileChange(files: File[]) {
   const f = files[0] ?? null;
+  cancelColorPicking();
+  previewOperation.value = null;
+  operationsRef.value?.resetAll();
+  watermarkMode.value = false;
+  cropSelection.value = null;
+  cropStart = null;
+  cropResize = null;
+  resizingCropHandle.value = null;
+  hoveredCropHandle.value = null;
+  cancelTextEdit();
+  selectedId.value = null;
+  if (pendingCommit) { clearTimeout(pendingCommit); pendingCommit = null; }
   file.value = f;
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
-  imageUrl.value = f ? URL.createObjectURL(f) : '';
-  if (!f) imageEl.value = null;
+  const url = f ? URL.createObjectURL(f) : '';
+  imageUrl.value = url;
+  if (!f) { lifecycle.clear(); return; }
+  void lifecycle.importImage(() => decodeImage(url)).catch(() => {
+    message.error(t('tools.imageEditor.operationFailed'));
+  });
 }
 
-// Konva's Image shape only *listens* for a load event on its source element, it
-// never dispatches one, so the element has to be loaded by a real DOM <img>
-// before it can be handed to the stage.
-function onImageLoad(e: Event) {
-  const img = (e.target as HTMLImageElement);
-  imageEl.value = img;
+function fitImage(img: HTMLImageElement) {
   const maxW = 800;
   const maxH = 600;
   const scale = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight, 1);
@@ -173,23 +247,40 @@ const toolButtons: ToolButton[] = [
   { tool: 'line', icon: Line, labelKey: 'tools.imageEditor.toolLine' },
   { tool: 'number', icon: ListNumbers, labelKey: 'tools.imageEditor.toolNumber' },
   { tool: 'pen', icon: Pencil, labelKey: 'tools.imageEditor.toolPen' },
-  { tool: 'text', icon: Typography, labelKey: 'tools.imageEditor.toolText' },
+  { tool: 'text', icon: LetterT, labelKey: 'tools.imageEditor.toolText' },
   { tool: 'eraser', icon: Eraser, labelKey: 'tools.imageEditor.toolEraser' },
   { tool: 'mosaic', icon: GridDots, labelKey: 'tools.imageEditor.toolMosaic' },
 ];
 
 function setTool(next: Tool) {
+  if (operationBusy.value) return;
   activeTool.value = next;
 }
 
 // --- annotations + history ---------------------------------------------------
 
 const annotations = ref<Annotation[]>([]);
-const history = ref(createHistory<Annotation[]>([]));
+const historyCanUndo = ref(false);
+const historyCanRedo = ref(false);
+const lifecycle = createImageEditorLifecycle<HTMLImageElement>({
+  onChange(state) {
+    operationBusy.value = state.busy;
+    historyCanUndo.value = state.canUndo;
+    historyCanRedo.value = state.canRedo;
+    if (imageEl.value !== state.image) {
+      imageEl.value = state.image;
+      if (state.image) fitImage(state.image);
+    }
+    annotations.value = state.annotations;
+    if (selectedId.value !== null && !state.annotations.some(a => a.id === selectedId.value)) {
+      selectedId.value = null;
+    }
+  },
+});
 let nextId = 1;
 
-const canUndoNow = computed(() => canUndo(history.value));
-const canRedoNow = computed(() => canRedo(history.value));
+const canUndoNow = computed(() => !operationBusy.value && (hasImageOperationChanges(previewOperation.value) || historyCanUndo.value));
+const canRedoNow = computed(() => historyCanRedo.value);
 
 const selected = computed(() => annotations.value.find((a) => a.id === selectedId.value) ?? null);
 const selectedShape = computed(() => (selected.value?.type === 'shape' ? selected.value : null));
@@ -210,12 +301,12 @@ function pushHistory() {
     clearTimeout(pendingCommit);
     pendingCommit = null;
   }
-  if (JSON.stringify(annotations.value) === JSON.stringify(historyState(history.value))) return;
-  history.value = commit(history.value, annotations.value);
+  lifecycle.commitAnnotations(annotations.value);
 }
 
 /** Property edits (panel controls, handle drags) coalesce through this timer. */
 function scheduleCommit() {
+  if (operationBusy.value) return;
   if (pendingCommit) clearTimeout(pendingCommit);
   pendingCommit = setTimeout(() => {
     pendingCommit = null;
@@ -224,31 +315,45 @@ function scheduleCommit() {
 }
 
 function undoAction() {
+  if (operationBusy.value) return;
+  if (hasImageOperationChanges(previewOperation.value)) {
+    previewOperation.value = null;
+    operationsRef.value?.resetPreview();
+    return;
+  }
+  operationsRef.value?.resetPreview();
+  cropSelection.value = null;
+  cropStart = null;
+  cropResize = null;
+  resizingCropHandle.value = null;
+  hoveredCropHandle.value = null;
+  previewOperation.value = null;
   pushHistory();
-  history.value = undo(history.value);
-  applyRestored();
+  lifecycle.undo();
 }
 
 function redoAction() {
+  if (operationBusy.value) return;
+  operationsRef.value?.resetPreview();
+  cropSelection.value = null;
+  cropStart = null;
+  cropResize = null;
+  resizingCropHandle.value = null;
+  hoveredCropHandle.value = null;
+  previewOperation.value = null;
   pushHistory();
-  history.value = redo(history.value);
-  applyRestored();
-}
-
-function applyRestored() {
-  annotations.value = historyState(history.value);
-  if (selectedId.value !== null && !annotations.value.some((a) => a.id === selectedId.value)) {
-    selectedId.value = null;
-  }
+  lifecycle.redo();
 }
 
 // --- annotation edits --------------------------------------------------------
 
 function replaceAnnotation(id: number, next: Annotation) {
+  if (operationBusy.value) return;
   annotations.value = annotations.value.map((a) => (a.id === id ? next : a));
 }
 
 function deleteSelected() {
+  if (operationBusy.value) return;
   if (selectedId.value === null) return;
   annotations.value = annotations.value.filter((a) => a.id !== selectedId.value);
   selectedId.value = null;
@@ -256,6 +361,7 @@ function deleteSelected() {
 }
 
 function clearAll() {
+  if (operationBusy.value) return;
   annotations.value = [];
   selectedId.value = null;
   activeTool.value = 'select';
@@ -594,17 +700,19 @@ function onStageWheel(e: WheelEvent) {
   }
 }
 
+const parameterTool = computed(() => activeTool.value === 'select' ? selected.value?.type ?? null : activeTool.value);
+
 /** The annotation the params panel edits; drawing tools fall back to defaults. */
 const editingShape = computed(() =>
-  activeTool.value === 'shape' ? selectedShape.value : null);
+  parameterTool.value === 'shape' ? selectedShape.value : null);
 const editingLine = computed(() =>
-  activeTool.value === 'line' ? selectedLine.value : null);
+  parameterTool.value === 'line' ? selectedLine.value : null);
 const editingNumber = computed(() =>
-  activeTool.value === 'number' ? selectedNumber.value : null);
+  parameterTool.value === 'number' ? selectedNumber.value : null);
 const editingPen = computed(() =>
-  activeTool.value === 'pen' ? selectedPen.value : null);
+  parameterTool.value === 'pen' ? selectedPen.value : null);
 const editingText = computed(() =>
-  activeTool.value === 'text' ? selectedText.value : null);
+  parameterTool.value === 'text' ? selectedText.value : null);
 
 function pointerPosition(e: KonvaPointerEvent): { x: number; y: number } | null {
   return e.target.getStage().getPointerPosition();
@@ -648,6 +756,7 @@ function openTextEdit(x: number, y: number, annotationId: number | null, initial
 }
 
 function commitTextEdit() {
+  if (operationBusy.value) return;
   const edit = textEdit.value;
   if (!edit) return;
   textEdit.value = null;
@@ -688,11 +797,15 @@ function cancelTextEdit() {
 }
 
 function onTextDblClick(annotation: TextAnnotation) {
+  if (operationBusy.value) return;
   if (activeTool.value !== 'select') return;
   openTextEdit(annotation.x, annotation.y, annotation.id, annotation.text);
 }
 
 function onStageClick(e: KonvaPointerEvent) {
+  if (operationBusy.value) return;
+  if (colorPicking.value) { onPickCanvasClick(e); return; }
+  if (editorTab.value !== 'annotate' || watermarkMode.value) return;
   if (activeTool.value === 'line' && lineDefaults.value.kind === 'polyline') {
     const pointer = pointerPosition(e);
     if (!pointer) return;
@@ -710,7 +823,7 @@ function onStageClick(e: KonvaPointerEvent) {
     return;
   }
   if (activeTool.value === 'select') {
-    if (e.target === stageNode()) selectedId.value = null;
+    if (e.target === stageNode() || e.target.name() === 'image-editor-background') selectedId.value = null;
     return;
   }
   if (activeTool.value === 'text') {
@@ -726,6 +839,7 @@ function onStageClick(e: KonvaPointerEvent) {
 }
 
 function finishPolyline() {
+  if (operationBusy.value) return;
   lastClick = null;
   const pts = polylineDraft.value;
   polylineDraft.value = [];
@@ -792,6 +906,16 @@ function placeNumber(x: number, y: number) {
 }
 
 function onStageMouseDown(e: KonvaPointerEvent) {
+  if (operationBusy.value) return;
+  if (colorPicking.value) return;
+  if (cropEnabled.value && imageEl.value && !operationBusy.value) {
+    const pointer = cropImagePointer(e);
+    if (!pointer) return;
+    cropStart = pointer;
+    cropSelection.value = null;
+    return;
+  }
+  if (editorTab.value !== 'annotate' || watermarkMode.value) return;
   if (activeTool.value === 'shape') {
     const pointer = pointerPosition(e);
     if (!pointer) return;
@@ -835,6 +959,19 @@ function onStageMouseDown(e: KonvaPointerEvent) {
 }
 
 function onStageMouseMove(e: KonvaPointerEvent) {
+  if (operationBusy.value) return;
+  if (colorPicking.value) return;
+  if (cropResize && cropEnabled.value && imageEl.value) {
+    const pointer = cropImagePointer(e);
+    if (pointer) cropSelection.value = resizeCrop(cropResize.rect, cropResize.handle, pointer, { width: imageEl.value.naturalWidth, height: imageEl.value.naturalHeight }, cropRatio.value);
+    return;
+  }
+  if (cropStart && cropEnabled.value && imageEl.value) {
+    const pointer = cropImagePointer(e);
+    if (pointer) cropSelection.value = cropFromDrag(cropStart, pointer, { width: imageEl.value.naturalWidth, height: imageEl.value.naturalHeight }, cropRatio.value);
+    return;
+  }
+  if (editorTab.value !== 'annotate' || watermarkMode.value) return;
   if (shapeDraft.value) {
     const pointer = pointerPosition(e);
     if (!pointer) return;
@@ -899,6 +1036,18 @@ function onStageMouseMove(e: KonvaPointerEvent) {
 }
 
 function onStageMouseUp() {
+  if (operationBusy.value) return;
+  if (cropResize) { cropResize = null;
+  resizingCropHandle.value = null;
+  hoveredCropHandle.value = null; return; }
+  if (cropStart) {
+    cropStart = null;
+  cropResize = null;
+  resizingCropHandle.value = null;
+  hoveredCropHandle.value = null;
+    if (cropSelection.value && (cropSelection.value.width < 1 || cropSelection.value.height < 1)) cropSelection.value = null;
+    return;
+  }
   if (shapeDraft.value) {
     const rect = shapeDraftRect.value;
     shapeDraft.value = null;
@@ -1322,6 +1471,8 @@ function isEditableTarget(target: EventTarget | null): boolean {
 }
 
 function onKeydown(event: KeyboardEvent) {
+  if (operationBusy.value) return;
+  if (colorPicking.value && event.key === 'Escape') { cancelColorPicking(); event.preventDefault(); return; }
   // Typing keeps the browser's own undo: only page-level shortcuts are taken.
   if (isEditableTarget(event.target)) return;
   if (event.key === 'Escape') {
@@ -1347,6 +1498,7 @@ function onKeydown(event: KeyboardEvent) {
     return;
   }
   if (!event.ctrlKey && !event.metaKey) return;
+  if (operationBusy.value) return;
   const key = event.key.toLowerCase();
   if (key === 'z' && !event.shiftKey) {
     event.preventDefault();
@@ -1415,7 +1567,11 @@ function drawArrowHeads(ctx: CanvasRenderingContext2D, line: LineAnnotation,
   }
 }
 
-function createCanvas() {
+function createCanvas(includePreview = true): HTMLCanvasElement | null {
+  if (includePreview && previewOperation.value) {
+    const source = createCanvas(false);
+    return source ? transformCanvas(source, previewOperation.value) : null;
+  }
   if (!imageEl.value) return null;
   const canvas = document.createElement('canvas');
   const imgW = imageEl.value.naturalWidth;
@@ -1555,6 +1711,138 @@ function createCanvas() {
   return canvas;
 }
 
+
+function cancelColorPicking() {
+  colorPicking.value = false;
+  receivePickedColor = null;
+}
+function onPickCanvasClick(event: KonvaPointerEvent) {
+  event.cancelBubble = true;
+  const pointer = pointerPosition(event);
+  if (!pointer || !receivePickedColor) return;
+  let canvas = createCanvas();
+  if (!canvas) return;
+  const x = Math.max(0,Math.min(canvas.width - 1,Math.floor(pointer.x * canvas.width / renderWidth.value)));
+  const y = Math.max(0,Math.min(canvas.height - 1,Math.floor(pointer.y * canvas.height / renderHeight.value)));
+  let pixel = canvas.getContext('2d')?.getImageData(x,y,1,1).data;
+  // Sampling a removed background must still recover the source color being removed.
+  if (pixel && pixel[3] === 0) {
+    const source = createCanvas(false);
+    if (source) {
+      const op = previewOperation.value;
+      canvas = op?.kind === 'adjust' ? transformCanvas(source,{...op,transparent:false,opacity:100}) : source;
+      pixel = canvas.getContext('2d')?.getImageData(Math.min(x,canvas.width - 1),Math.min(y,canvas.height - 1),1,1).data;
+    }
+  }
+  if (!pixel) return;
+  const color = '#' + [...pixel.slice(0,3)].map(channel => channel.toString(16).padStart(2,'0')).join('');
+  const receive = receivePickedColor;
+  cancelColorPicking();
+  receive(color);
+}
+
+const cropHandles = computed(() => {
+  const rect = cropSelection.value;
+  const img = imageEl.value;
+  if (!cropEnabled.value || !rect || !img) return [];
+  const x = rect.x * stageWidth.value / img.naturalWidth;
+  const y = rect.y * stageHeight.value / img.naturalHeight;
+  const width = rect.width * stageWidth.value / img.naturalWidth;
+  const height = rect.height * stageHeight.value / img.naturalHeight;
+  return ([
+    ['nw', x, y], ['n', x + width / 2, y], ['ne', x + width, y],
+    ['e', x + width, y + height / 2], ['se', x + width, y + height],
+    ['s', x + width / 2, y + height], ['sw', x, y + height], ['w', x, y + height / 2],
+  ] as [CropHandle, number, number][]).map(([handle, hx, hy]) => ({handle, x:hx, y:hy}));
+});
+function onCropHandlePointerDown(handle: CropHandle, event: KonvaPointerEvent) {
+  event.cancelBubble = true;
+  if (!cropSelection.value || operationBusy.value) return;
+  cropStart = null;
+  cropResize = { handle, rect: { ...cropSelection.value } };
+  resizingCropHandle.value = handle;
+}
+
+function cropImagePointer(event: KonvaPointerEvent) {
+  const pointer = pointerPosition(event);
+  if (!pointer || !imageEl.value) return null;
+  return { x: pointer.x * imageEl.value.naturalWidth / stageWidth.value, y: pointer.y * imageEl.value.naturalHeight / stageHeight.value };
+}
+function onCropSettings(settings: {enabled: boolean; ratio: number}) {
+  if (cropEnabled.value !== settings.enabled || cropRatio.value !== settings.ratio) {
+    cropSelection.value = null;
+    cropStart = null;
+  cropResize = null;
+  resizingCropHandle.value = null;
+  hoveredCropHandle.value = null;
+  }
+  cropEnabled.value = settings.enabled;
+  cropRatio.value = settings.ratio;
+}
+function onCropPointerLeave(event: KonvaPointerEvent) {
+  if (!cropStart && !cropResize) return;
+  onStageMouseMove(event);
+  onStageMouseUp();
+}
+
+const previewCanvas = computed(() => {
+  if (!previewOperation.value || previewOperation.value.kind === 'crop' || !imageEl.value) return null;
+  const source = createCanvas(false);
+  return source ? transformCanvas(source, previewOperation.value) : null;
+});
+
+const renderSize = computed(() => {
+  const preview = previewCanvas.value;
+  if (!preview) return {width:stageWidth.value, height:stageHeight.value};
+  const scale = Math.min(800 / preview.width, 600 / preview.height, 1);
+  return {width:Math.round(preview.width * scale), height:Math.round(preview.height * scale)};
+});
+const renderWidth = computed(() => renderSize.value.width);
+const renderHeight = computed(() => renderSize.value.height);
+
+watch(editorTab, (_next, previous) => {
+  cancelColorPicking();
+  if (previous === 'adjust' && previewOperation.value?.kind === 'adjust') {
+    void applyOperation(previewOperation.value);
+  }
+  cropEnabled.value = false;
+  cropSelection.value = null;
+  cropStart = null;
+  cropResize = null;
+  resizingCropHandle.value = null;
+  hoveredCropHandle.value = null;
+  previewOperation.value = null;
+  selectedId.value = null;
+  activeTool.value = 'select';
+  commitTextEdit();
+});
+watch(watermarkMode, () => {
+  previewOperation.value = null;
+  selectedId.value = null;
+  commitTextEdit();
+});
+
+async function applyOperation(operation: ImageOperation) {
+  if (operationBusy.value || !hasImageOperationChanges(operation)) return;
+  commitTextEdit();
+  pushHistory();
+  const source = createCanvas(false);
+  if (!source) return;
+  try {
+    const applied = await lifecycle.apply(async () => {
+      const canvas = transformCanvas(source, operation);
+      return decodeImage(canvas.toDataURL('image/png'));
+    }, annotations.value);
+    if (!applied) return;
+    selectedId.value = null;
+    previewOperation.value = null;
+    cropSelection.value = null;
+    operationsRef.value?.finishOperation(operation.kind);
+  } catch {
+    message.error(t('tools.imageEditor.operationFailed'));
+  }
+}
+
 function downloadImage() {
   const canvas = createCanvas();
   if (!canvas) return;
@@ -1580,8 +1868,10 @@ async function copy() {
 
 onMounted(() => document.addEventListener('keydown', onKeydown));
 onUnmounted(() => {
+  canvasObserver?.disconnect();
   document.removeEventListener('keydown', onKeydown);
   if (pendingCommit) clearTimeout(pendingCommit);
+  lifecycle.dispose();
   if (imageUrl.value) URL.revokeObjectURL(imageUrl.value);
 });
 
@@ -1665,8 +1955,6 @@ const endArrowRender = {
   tag: previewRenderTag(((v: ArrowStyle) => arrowStylePreview(v, 'end')) as PreviewFn),
 };
 const numberFormatRender = { label: previewRenderLabel(numberFormatPreview as PreviewFn), tag: previewRenderTag(numberFormatPreview as PreviewFn) };
-const eraserModeRender = { label: previewRenderLabel(modePreview as PreviewFn), tag: previewRenderTag(modePreview as PreviewFn) };
-const mosaicEffectRender = { label: previewRenderLabel(mosaicEffectPreview as PreviewFn), tag: previewRenderTag(mosaicEffectPreview as PreviewFn) };
 
 function updateShape(patch: Partial<ShapeAnnotation>) {
   const target = editingShape.value;
@@ -1784,7 +2072,23 @@ function updateNumberLeader(patch: Partial<NonNullable<NumberAnnotation['leaderL
 
 /** The annotation the params panel edits for the mosaic tool. */
 const editingMosaic = computed(() =>
-  activeTool.value === 'mosaic' ? selectedMosaic.value : null);
+  parameterTool.value === 'mosaic' ? selectedMosaic.value : null);
+const mosaicMode = computed(() => editingMosaic.value ? (editingMosaic.value.region.kind === 'path' ? 'brush' : 'rect') : mosaicDefaults.value.mode);
+const mosaicBrushSize = computed(() => editingMosaic.value?.region.kind === 'path' ? editingMosaic.value.region.brushSize : mosaicDefaults.value.brushSize);
+function updateMosaicMode(mode: 'rect' | 'brush') {
+  const target = editingMosaic.value;
+  if (!target) { mosaicDefaults.value.mode = mode; return; }
+  if (mode === mosaicMode.value) return;
+  const box = annotationBBox(target);
+  updateMosaic({ region: mode === 'rect'
+    ? {kind:'rect', ...box}
+    : {kind:'path',points:[box.x,box.y + box.height / 2,box.x + box.width,box.y + box.height / 2],brushSize:Math.max(4,box.height / 2)} });
+}
+function updateMosaicBrushSize(brushSize: number) {
+  const target = editingMosaic.value;
+  if (target?.region.kind === 'path') updateMosaic({region:{...target.region,brushSize}});
+  else mosaicDefaults.value.brushSize = brushSize;
+}
 
 function updateMosaic(patch: Partial<MosaicAnnotation>) {
   const target = editingMosaic.value;
@@ -1804,28 +2108,35 @@ function arrowStyleValue(cfg: ArrowConfig | null): ArrowStyle {
   return cfg?.style ?? 'none';
 }
 
+const startArrowSize = ref(12);
+const endArrowSize = ref(12);
+
 function updateStartArrow(style: ArrowStyle, size?: number) {
   const current = editingLine.value?.startArrow ?? lineDefaults.value.startArrow;
-  const nextSize = size ?? current?.size ?? 12;
+  const nextSize = size ?? current?.size ?? startArrowSize.value;
+  startArrowSize.value = nextSize;
   const next: ArrowConfig | null = style === 'none' ? null : { style, size: nextSize };
   updateLine({ startArrow: next });
 }
 
 function updateEndArrow(style: ArrowStyle, size?: number) {
   const current = editingLine.value?.endArrow ?? lineDefaults.value.endArrow;
-  const nextSize = size ?? current?.size ?? 12;
+  const nextSize = size ?? current?.size ?? endArrowSize.value;
+  endArrowSize.value = nextSize;
   const next: ArrowConfig | null = style === 'none' ? null : { style, size: nextSize };
   updateLine({ endArrow: next });
 }
 
 function updateStartArrowSize(size: number | null) {
   const current = editingLine.value?.startArrow ?? lineDefaults.value.startArrow;
+  startArrowSize.value = size ?? 12;
   if (!current) return;
   updateLine({ startArrow: { ...current, size: size ?? 12 } });
 }
 
 function updateEndArrowSize(size: number | null) {
   const current = editingLine.value?.endArrow ?? lineDefaults.value.endArrow;
+  endArrowSize.value = size ?? 12;
   if (!current) return;
   updateLine({ endArrow: { ...current, size: size ?? 12 } });
 }
@@ -1903,28 +2214,31 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
         <div class="image-editor__hidden">
           <ToolFileUpload ref="fileUpload" accept="image/*" @change="onFileChange" />
         </div>
-        <img v-if="imageUrl" :src="imageUrl" style="display:none" @load="onImageLoad" />
-        <div v-if="imageUrl" class="canvas-wrapper" @wheel="onStageWheel">
-          <div class="image-editor__stage-wrap">
+        <div v-if="imageUrl" ref="canvasWrapper" class="canvas-wrapper" :class="{ 'canvas-wrapper--crop': cropEnabled }" :style="{ cursor: colorPicking ? 'crosshair' : cropCursor }" @wheel="onStageWheel">
+          <div :style="{ width: `${renderWidth * displayScale}px`, height: `${renderHeight * displayScale}px` }">
+          <div class="image-editor__stage-wrap" :style="{ width: `${renderWidth}px`, height: `${renderHeight}px`, transform: `scale(${displayScale})`, transformOrigin: 'top left' }">
           <v-stage
             ref="stageRef"
-            :config="{ width: stageWidth, height: stageHeight }"
+            :config="{ width: renderWidth, height: renderHeight, listening: (colorPicking || editorTab === 'crop' || editorTab === 'annotate' && !watermarkMode) && !operationBusy }"
             @click="onStageClick"
-            @mousedown="onStageMouseDown"
-            @mousemove="onStageMouseMove"
-            @mouseup="onStageMouseUp"
+            @pointerdown="onStageMouseDown"
+            @pointermove="onStageMouseMove"
+            @pointerup="onStageMouseUp"
+            @pointerleave="onCropPointerLeave"
+            @pointercancel="onStageMouseUp"
           >
             <v-layer>
               <v-image
                 :config="{
-                  image: imageEl,
+                  name: 'image-editor-background',
+                  image: previewCanvas ?? imageEl,
                   x: 0,
                   y: 0,
-                  width: stageWidth,
-                  height: stageHeight,
+                  width: renderWidth,
+                  height: renderHeight,
                 }"
               />
-              <template v-for="ann in annotations" :key="ann.id">
+              <template v-for="ann in (previewCanvas ? [] : annotations)" :key="ann.id">
                 <v-rect
                   v-if="ann.type === 'shape' && ann.kind === 'rect'"
                   :ref="(el: unknown) => setNodeRef(ann.id, el)"
@@ -2228,6 +2542,22 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   listening: false,
                 }"
               />
+              <v-rect v-if="cropEnabled" :config="{ x:0, y:0, width:stageWidth, height:stageHeight, fill:'rgba(0,0,0,0)' }" />
+              <v-rect v-if="cropEnabled && cropSelection && imageEl" :config="{
+                x: cropSelection.x * stageWidth / imageEl.naturalWidth,
+                y: cropSelection.y * stageHeight / imageEl.naturalHeight,
+                width: cropSelection.width * stageWidth / imageEl.naturalWidth,
+                height: cropSelection.height * stageHeight / imageEl.naturalHeight,
+                stroke: primaryColor, strokeWidth: 2, dash: [6,4], fill: 'rgba(255,255,255,0.15)', listening:false,
+              }" />
+              <v-rect v-for="handle in cropHandles" :key="`crop-${handle.handle}`" :config="{
+                x: handle.x - 5 / displayScale, y: handle.y - 5 / displayScale,
+                width: 10 / displayScale, height: 10 / displayScale,
+                fill: canvasColor || '#ffffff', stroke: primaryColor, strokeWidth: 1.5 / displayScale,
+                hitStrokeWidth: 12 / displayScale,
+              }" @pointerdown="onCropHandlePointerDown(handle.handle, $event)"
+                @pointerenter="hoveredCropHandle = handle.handle"
+                @pointerleave="hoveredCropHandle = null" />
               <v-transformer
                 v-if="selected && canManipulate"
                 ref="transformerRef"
@@ -2262,6 +2592,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                 @dragmove="onRotationHandleDrag"
                 @dragend="onRotationHandleDragEnd"
               />
+              <v-rect v-if="colorPicking" :config="{x:0,y:0,width:renderWidth,height:renderHeight,fill:'rgba(0,0,0,0)'}" @click="onPickCanvasClick" />
             </v-layer>
           </v-stage>
           <div
@@ -2281,6 +2612,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
             />
           </div>
           </div>
+          </div>
         </div>
         <button v-else type="button" class="image-editor__empty" @click="fileUpload?.triggerSelect()">
           <NIcon :size="26" :component="CloudUpload" class="image-editor__empty-icon" />
@@ -2288,34 +2620,44 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
           <span class="image-editor__empty-hint">{{ t('tool.fileUpload.accepted', { types: 'image/*' }) }}</span>
         </button>
         <template #actions-right>
-          <NButton :disabled="!file" @click="copy">{{ t('tool.copyFile') }}</NButton>
-          <NButton :disabled="!file" @click="downloadImage">{{ t('tool.exportFile') }}</NButton>
+          <NButton :disabled="!imageEl || operationBusy" @click="copy">{{ t('tool.copyFile') }}</NButton>
+          <NButton :disabled="!imageEl || operationBusy" @click="downloadImage">{{ t('tool.exportFile') }}</NButton>
         </template>
-        <template #params>
-          <div class="image-editor__params">
-            <div class="image-editor__toolbar" role="toolbar" :aria-label="t('tools.imageEditor.name')">
-              <NTooltip v-for="button in toolButtons" :key="button.tool" placement="bottom">
-                <template #trigger>
-                  <button
-                    type="button"
-                    class="image-editor__tool"
-                    :class="{ 'image-editor__tool--active': activeTool === button.tool }"
-                    :aria-pressed="activeTool === button.tool"
-                    @click="setTool(button.tool)"
-                  >
-                    <NIcon :size="18" :component="button.icon" />
-                  </button>
-                </template>
-                {{ t(button.labelKey) }}
-              </NTooltip>
+
+      </ToolFilePanel>
+    </NCard>
+          <div class="image-editor__params" :inert="operationBusy || undefined" :aria-busy="operationBusy">
+            <ToolTabs :value="editorTab"
+              :tabs="editorTabs"
+              :aria-label="t('tools.imageEditor.name')"
+              @update:value="editorTab = $event as typeof editorTab">
+
+            <div v-if="editorTab === 'annotate'" class="image-editor__toolbar" role="toolbar" :aria-label="t('tools.imageEditor.name')">
+              <button
+                v-for="button in toolButtons"
+                :key="button.tool"
+                type="button"
+                class="image-editor__tool editor-function"
+                :class="{ 'image-editor__tool--active': !watermarkMode && activeTool === button.tool }"
+                :aria-pressed="!watermarkMode && activeTool === button.tool"
+                :aria-label="t(button.labelKey)"
+                @click="watermarkMode = false; setTool(button.tool)"
+              >
+                <NIcon :size="24" :component="button.icon" />
+                <span>{{ t(button.labelKey) }}</span>
+              </button>
+              <button class="image-editor__tool image-editor__watermark editor-function" :class="{ 'image-editor__tool--active': watermarkMode }" :aria-pressed="watermarkMode" :aria-label="t('tools.imageEditor.operationwatermark')" @click="watermarkMode = true"><NIcon :size="24" :component="Typography" /><span>{{ t('tools.imageEditor.operationwatermark') }}</span></button>
             </div>
-            <div class="image-editor__params-row">
+            <ImageOperations ref="operationsRef" v-if="editorTab !== 'annotate' || watermarkMode" :tab="editorTab" :width="imageEl?.naturalWidth ?? 0" :height="imageEl?.naturalHeight ?? 0" :disabled="!imageEl" :busy="operationBusy" :crop-selection="cropSelection" @crop-settings="onCropSettings" @apply="applyOperation" @preview="previewOperation = $event" />
+            <div v-if="editorTab === 'annotate' && !watermarkMode && parameterTool !== null" class="image-editor__params-row">
+
               <!-- Shape params -->
-              <template v-if="activeTool === 'shape'">
+              <template v-if="parameterTool === 'shape'">
+                <div class="param-mode-start">
                 <div class="param-group" role="radiogroup" :aria-label="t('tools.imageEditor.toolShape')">
+                  <NTooltip v-for="opt in shapeKindOptions" :key="opt.value" placement="bottom">
+                    <template #trigger>
                   <button
-                    v-for="opt in shapeKindOptions"
-                    :key="opt.value"
                     type="button"
                     class="param-chip"
                     :class="{ 'param-chip--active': (editingShape?.kind ?? shapeDefaults.kind) === opt.value }"
@@ -2323,31 +2665,38 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     :aria-label="opt.label"
                     @click="updateShape({ kind: opt.value as ShapeAnnotation['kind'] })"
                   >
-                    <NIcon :size="18" :component="opt.value === 'rect' ? Rectangle : CircleIcon" />
+                    <NIcon :size="22" :component="opt.value === 'rect' ? Rectangle : CircleIcon" />
                   </button>
+                    </template>
+                    {{ opt.label }}
+                  </NTooltip>
                 </div>
+                  <span class="param-divider" aria-hidden="true"></span>
+                </div>
+                <div class="param-main">
+
                 <NTooltip placement="bottom">
                   <template #trigger>
-                    <NColorPicker
-                      class="param-color"
+                    <AnnotationColorControl
                       :value="editingShape?.stroke ?? shapeDefaults.stroke"
                       :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
                       @update:value="(v: string) => updateShape({ stroke: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.colour') }}
+                  {{ t('tools.imageEditor.shapeStrokeColor') }}
                 </NTooltip>
+                  <div class="param-tools">
                 <NTooltip placement="bottom">
                   <template #trigger>
                     <SizeField
                       :value="editingShape?.strokeWidth ?? shapeDefaults.strokeWidth"
                       :min="1" :max="50" :step="1"
-                      :label-key="t('tools.imageEditor.width')"
+                      :label-key="t('tools.imageEditor.strokeWidth')"
                       :icon="lineWeightIcon"
                       @update:value="(v: number) => updateShape({ strokeWidth: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.width') }}
+                  {{ t('tools.imageEditor.strokeWidth') }}
                 </NTooltip>
                 <NTooltip placement="bottom">
                   <template #trigger>
@@ -2362,29 +2711,30 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   </template>
                   {{ t('tools.imageEditor.stroke') }}
                 </NTooltip>
-                <div class="param-group">
+                <span class="param-divider" aria-hidden="true"></span>
+                <div class="param-group param-group--fill" :class="{ 'param-group--inactive': !(editingShape?.fillEnabled ?? shapeDefaults.fillEnabled) }">
                   <NTooltip placement="bottom">
                     <template #trigger>
                       <button
                         type="button"
-                        class="param-chip"
+                        class="param-chip param-chip--toggle"
                         :class="{ 'param-chip--active': editingShape?.fillEnabled ?? shapeDefaults.fillEnabled }"
                         :aria-pressed="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
                         :aria-label="t('tools.imageEditor.fill')"
                         @click="updateShape({ fillEnabled: !(editingShape?.fillEnabled ?? shapeDefaults.fillEnabled) })"
                       >
-                        <NIcon :size="18" :component="Paint" />
+                        <NIcon :size="22" :component="Paint" />
                       </button>
                     </template>
                     {{ t('tools.imageEditor.fill') }}
                   </NTooltip>
-                  <NColorPicker
-                    v-if="editingShape?.fillEnabled ?? shapeDefaults.fillEnabled"
+                  <CanvasColorPicker
                     class="param-color"
                     :value="editingShape?.fill ?? shapeDefaults.fill"
                     @update:value="(v: string) => updateShape({ fill: v })"
                   />
                 </div>
+                <span v-if="(editingShape?.kind ?? shapeDefaults.kind) === 'rect'" class="param-divider" aria-hidden="true"></span>
                 <NTooltip v-if="(editingShape?.kind ?? shapeDefaults.kind) === 'rect'" placement="bottom">
                   <template #trigger>
                     <SizeField
@@ -2397,14 +2747,17 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   </template>
                   {{ t('tools.imageEditor.cornerRadius') }}
                 </NTooltip>
+                  </div>
+                </div>
               </template>
 
               <!-- Line params -->
-              <template v-if="activeTool === 'line'">
+              <template v-if="parameterTool === 'line'">
+                <div class="param-mode-start">
                 <div class="param-group" role="radiogroup" :aria-label="t('tools.imageEditor.toolLine')">
+                  <NTooltip v-for="opt in lineKindOptions" :key="opt.value" placement="bottom">
+                    <template #trigger>
                   <button
-                    v-for="opt in lineKindOptions"
-                    :key="opt.value"
                     type="button"
                     class="param-chip"
                     :class="{ 'param-chip--active': (editingLine?.kind ?? lineDefaults.kind) === opt.value }"
@@ -2412,31 +2765,38 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     :aria-label="opt.label"
                     @click="updateLine({ kind: opt.value as LineAnnotation['kind'] })"
                   >
-                    <NIcon :size="18" :component="opt.value === 'straight' ? Line : Vector" />
+                    <NIcon :size="22" :component="opt.value === 'straight' ? Line : Vector" />
                   </button>
+                    </template>
+                    {{ opt.label }}
+                  </NTooltip>
                 </div>
+                  <span class="param-divider" aria-hidden="true"></span>
+                </div>
+                <div class="param-main">
+
                 <NTooltip placement="bottom">
                   <template #trigger>
-                    <NColorPicker
-                      class="param-color"
+                    <AnnotationColorControl :show-swatches="false"
                       :value="editingLine?.stroke ?? lineDefaults.stroke"
                       :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
                       @update:value="(v: string) => updateLine({ stroke: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.colour') }}
+                  {{ t('tools.imageEditor.lineColor') }}
                 </NTooltip>
+                  <div class="param-tools">
                 <NTooltip placement="bottom">
                   <template #trigger>
                     <SizeField
                       :value="editingLine?.strokeWidth ?? lineDefaults.strokeWidth"
                       :min="1" :max="50" :step="1"
-                      :label-key="t('tools.imageEditor.width')"
+                      :label-key="t('tools.imageEditor.lineWidth')"
                       :icon="lineWeightIcon"
                       @update:value="(v: number) => updateLine({ strokeWidth: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.width') }}
+                  {{ t('tools.imageEditor.lineWidth') }}
                 </NTooltip>
                 <NTooltip placement="bottom">
                   <template #trigger>
@@ -2451,7 +2811,15 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   </template>
                   {{ t('tools.imageEditor.stroke') }}
                 </NTooltip>
-                <div class="param-group">
+                <span class="param-divider param-arrow-divider" aria-hidden="true"></span>
+                <div class="param-group param-arrow-group">
+                  <SizeField
+                    :value="(editingLine?.startArrow ?? lineDefaults.startArrow)?.size ?? startArrowSize"
+                    :min="4" :max="40" :step="1"
+                    :label-key="t('tools.imageEditor.startArrowSize')"
+                    :icon="ArrowLeft"
+                    @update:value="updateStartArrowSize"
+                  />
                   <NTooltip placement="bottom">
                     <template #trigger>
                       <NSelect
@@ -2463,18 +2831,19 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                         @update:value="(v: string) => updateStartArrow(v as ArrowStyle)"
                       />
                     </template>
-                    {{ t('tools.imageEditor.startArrow') }}
+                    {{ t('tools.imageEditor.startArrowStyle') }}
                   </NTooltip>
-                  <SizeField
-                    v-if="arrowStyleValue(editingLine?.startArrow ?? lineDefaults.startArrow) !== 'none'"
-                    :value="(editingLine?.startArrow ?? lineDefaults.startArrow)?.size ?? 12"
-                    :min="4" :max="40" :step="1"
-                    :label-key="t('tools.imageEditor.startArrow')"
-                    :icon="ArrowLeft"
-                    @update:value="updateStartArrowSize"
-                  />
+
                 </div>
-                <div class="param-group">
+                <span class="param-divider param-arrow-divider" aria-hidden="true"></span>
+                <div class="param-group param-arrow-group">
+                  <SizeField
+                    :value="(editingLine?.endArrow ?? lineDefaults.endArrow)?.size ?? endArrowSize"
+                    :min="4" :max="40" :step="1"
+                    :label-key="t('tools.imageEditor.endArrowSize')"
+                    :icon="ArrowRight"
+                    @update:value="updateEndArrowSize"
+                  />
                   <NTooltip placement="bottom">
                     <template #trigger>
                       <NSelect
@@ -2486,43 +2855,40 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                         @update:value="(v: string) => updateEndArrow(v as ArrowStyle)"
                       />
                     </template>
-                    {{ t('tools.imageEditor.endArrow') }}
+                    {{ t('tools.imageEditor.endArrowStyle') }}
                   </NTooltip>
-                  <SizeField
-                    v-if="arrowStyleValue(editingLine?.endArrow ?? lineDefaults.endArrow) !== 'none'"
-                    :value="(editingLine?.endArrow ?? lineDefaults.endArrow)?.size ?? 12"
-                    :min="4" :max="40" :step="1"
-                    :label-key="t('tools.imageEditor.endArrow')"
-                    :icon="ArrowRight"
-                    @update:value="updateEndArrowSize"
-                  />
+
+                </div>
+                  </div>
                 </div>
               </template>
 
               <!-- Pen params -->
-              <template v-if="activeTool === 'pen'">
+              <template v-if="parameterTool === 'pen'">
+                <div class="param-mode-start"></div>
+                <div class="param-main">
                 <NTooltip placement="bottom">
                   <template #trigger>
-                    <NColorPicker
-                      class="param-color"
+                    <AnnotationColorControl
                       :value="editingPen?.stroke ?? penDefaults.stroke"
                       :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
                       @update:value="(v: string) => updatePen({ stroke: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.colour') }}
+                  {{ t('tools.imageEditor.penColor') }}
                 </NTooltip>
+                  <div class="param-tools">
                 <NTooltip placement="bottom">
                   <template #trigger>
                     <SizeField
                       :value="editingPen?.strokeWidth ?? penDefaults.strokeWidth"
                       :min="1" :max="30" :step="1"
-                      :label-key="t('tools.imageEditor.width')"
+                      :label-key="t('tools.imageEditor.lineWidth')"
                       :icon="lineWeightIcon"
                       @update:value="(v: number) => updatePen({ strokeWidth: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.width') }}
+                  {{ t('tools.imageEditor.lineWidth') }}
                 </NTooltip>
                 <NTooltip placement="bottom">
                   <template #trigger>
@@ -2537,32 +2903,36 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   </template>
                   {{ t('tools.imageEditor.stroke') }}
                 </NTooltip>
+                  </div>
+                </div>
               </template>
 
               <!-- Text params -->
-              <template v-if="activeTool === 'text'">
+              <template v-if="parameterTool === 'text'">
+                <div class="param-mode-start"></div>
+                <div class="param-main">
                 <NTooltip placement="bottom">
                   <template #trigger>
-                    <NColorPicker
-                      class="param-color"
+                    <AnnotationColorControl :show-swatches="false"
                       :value="editingText?.color ?? textDefaults.color"
                       :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
                       @update:value="(v: string) => updateText({ color: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.colour') }}
+                  {{ t('tools.imageEditor.textColor') }}
                 </NTooltip>
+                  <div class="param-tools">
                 <NTooltip placement="bottom">
                   <template #trigger>
                     <SizeField
                       :value="editingText?.fontSize ?? textDefaults.fontSize"
                       :min="8" :max="120" :step="1"
-                      :label-key="t('tools.imageEditor.size')"
+                      :label-key="t('tools.imageEditor.fontSize')"
                       :icon="Typography"
                       @update:value="(v: number) => updateText({ fontSize: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.size') }}
+                  {{ t('tools.imageEditor.fontSize') }}
                 </NTooltip>
                 <NTooltip placement="bottom">
                   <template #trigger>
@@ -2575,24 +2945,24 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   </template>
                   {{ t('tools.imageEditor.fontFamily') }}
                 </NTooltip>
-                <div class="param-group">
+                <span class="param-divider" aria-hidden="true"></span>
+                <div class="param-group param-group--text-stroke" :class="{ 'param-group--inactive': !textStrokeOf(editingText).enabled }">
                   <NTooltip placement="bottom">
                     <template #trigger>
                       <button
                         type="button"
-                        class="param-chip"
+                        class="param-chip param-chip--toggle"
                         :class="{ 'param-chip--active': textStrokeOf(editingText).enabled }"
                         :aria-pressed="textStrokeOf(editingText).enabled"
-                        :aria-label="t('tools.imageEditor.stroke')"
+                        :aria-label="t('tools.imageEditor.textStroke')"
                         @click="updateTextStroke({ enabled: !textStrokeOf(editingText).enabled })"
                       >
-                        <NIcon :size="18" :component="BorderStyle" />
+                        <NIcon :size="22" :component="BorderStyle" />
                       </button>
                     </template>
-                    {{ t('tools.imageEditor.stroke') }}
+                    {{ t('tools.imageEditor.textStroke') }}
                   </NTooltip>
-                  <template v-if="textStrokeOf(editingText).enabled">
-                    <NColorPicker
+                    <CanvasColorPicker
                       class="param-color"
                       :value="textStrokeOf(editingText).color"
                       @update:value="(v: string) => updateTextStroke({ color: v })"
@@ -2600,30 +2970,29 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     <SizeField
                       :value="textStrokeOf(editingText).width"
                       :min="1" :max="20" :step="1"
-                      :label-key="t('tools.imageEditor.stroke')"
-                      :icon="BorderStyle"
+                      :label-key="t('tools.imageEditor.strokeWidth')"
                       @update:value="(v: number) => updateTextStroke({ width: v })"
                     />
-                  </template>
+
                 </div>
-                <div class="param-group">
+                <span class="param-divider" aria-hidden="true"></span>
+                <div class="param-group" :class="{ 'param-group--inactive': !textBackgroundOf(editingText).enabled }">
                   <NTooltip placement="bottom">
                     <template #trigger>
                       <button
                         type="button"
-                        class="param-chip"
+                        class="param-chip param-chip--toggle"
                         :class="{ 'param-chip--active': textBackgroundOf(editingText).enabled }"
                         :aria-pressed="textBackgroundOf(editingText).enabled"
-                        :aria-label="t('tools.imageEditor.background')"
+                        :aria-label="t('tools.imageEditor.textBackground')"
                         @click="updateTextBackground({ enabled: !textBackgroundOf(editingText).enabled })"
                       >
-                        <NIcon :size="18" :component="Highlight" />
+                        <NIcon :size="22" :component="Highlight" />
                       </button>
                     </template>
-                    {{ t('tools.imageEditor.background') }}
+                    {{ t('tools.imageEditor.textBackground') }}
                   </NTooltip>
-                  <template v-if="textBackgroundOf(editingText).enabled">
-                    <NColorPicker
+                    <CanvasColorPicker
                       class="param-color"
                       :value="textBackgroundOf(editingText).color"
                       @update:value="(v: string) => updateTextBackground({ color: v })"
@@ -2631,16 +3000,18 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     <SizeField
                       :value="textBackgroundOf(editingText).opacity"
                       :min="0" :max="1" :step="0.1"
-                      :label-key="t('tools.imageEditor.background')"
-                      :icon="Highlight"
+                      :label-key="t('tools.imageEditor.operationopacity')"
                       @update:value="(v: number) => updateTextBackground({ opacity: v })"
                     />
-                  </template>
+
+                </div>
+                  </div>
                 </div>
               </template>
 
               <!-- Number params -->
-              <template v-if="activeTool === 'number'">
+              <template v-if="parameterTool === 'number'">
+                <div class="param-mode-start">
                 <NTooltip placement="bottom">
                   <template #trigger>
                     <NSelect
@@ -2654,28 +3025,32 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   </template>
                   {{ t('tools.imageEditor.numberFormat') }}
                 </NTooltip>
+                  <span class="param-divider" aria-hidden="true"></span>
+                </div>
+                <div class="param-main">
+
                 <NTooltip placement="bottom">
                   <template #trigger>
-                    <NColorPicker
-                      class="param-color"
+                    <AnnotationColorControl
                       :value="editingNumber?.color ?? numberDefaults.color"
                       :swatches="['#e03131', '#1971c2', '#2f9e44', '#f08c00', '#343a40']"
                       @update:value="(v: string) => updateNumber({ color: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.colour') }}
+                  {{ t('tools.imageEditor.numberColor') }}
                 </NTooltip>
+                  <div class="param-tools">
                 <NTooltip placement="bottom">
                   <template #trigger>
                     <SizeField
                       :value="editingNumber?.size ?? numberDefaults.size"
                       :min="10" :max="80" :step="1"
-                      :label-key="t('tools.imageEditor.size')"
+                      :label-key="t('tools.imageEditor.numberSize')"
                       :icon="Typography"
                       @update:value="(v: number) => updateNumber({ size: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.size') }}
+                  {{ t('tools.imageEditor.numberSize') }}
                 </NTooltip>
                 <NTooltip placement="bottom">
                   <template #trigger>
@@ -2707,89 +3082,108 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                     @update:value="(v: string) => updateNumberLeader({ strokeStyle: v as StrokeStyle })"
                   />
                 </div>
+                  </div>
+                </div>
               </template>
 
               <!-- Eraser params -->
-              <template v-if="activeTool === 'eraser'">
-                <NTooltip placement="bottom">
-                  <template #trigger>
-                    <NSelect
-                      class="param-select"
-                      :value="eraserDefaults.mode"
-                      :options="eraserModeOptions"
-                      :render-label="eraserModeRender.label"
-                      :render-tag="eraserModeRender.tag"
-                      @update:value="(v: string) => { eraserDefaults.mode = v as 'rect' | 'brush'; }"
-                    />
-                  </template>
-                  {{ t('tools.imageEditor.mode') }}
-                </NTooltip>
+              <template v-if="parameterTool === 'eraser'">
+                <div class="param-mode-start param-mode-start--centered">
+                <div class="param-group" role="radiogroup" :aria-label="t('tools.imageEditor.mode')">
+                  <NTooltip v-for="opt in eraserModeOptions" :key="opt.value" placement="bottom">
+                    <template #trigger>
+                      <button type="button" class="param-chip"
+                        :class="{ 'param-chip--active': eraserDefaults.mode === opt.value }"
+                        :aria-pressed="eraserDefaults.mode === opt.value"
+                        :aria-label="opt.label"
+                        @click="eraserDefaults.mode = opt.value as 'rect' | 'brush'">
+                        <NIcon :size="22" :component="opt.value === 'rect' ? Rectangle : Brush" />
+                      </button>
+                    </template>
+                    {{ opt.label }}
+                  </NTooltip>
+                </div>
+                </div>
+                <div class="param-main param-main--centered">
+
+                <span v-if="eraserDefaults.mode === 'brush'" class="param-divider" aria-hidden="true"></span>
                 <NTooltip v-if="eraserDefaults.mode === 'brush'" placement="bottom">
                   <template #trigger>
                     <SizeField
                       :value="eraserDefaults.brushSize"
                       :min="4" :max="100" :step="1"
-                      :label-key="t('tools.imageEditor.size')"
-                      :icon="Brush"
+                      :label-key="t('tools.imageEditor.brushSize')"
+                      :icon="lineWeightIcon"
                       @update:value="(v: number) => { eraserDefaults.brushSize = v; }"
                     />
                   </template>
-                  {{ t('tools.imageEditor.size') }}
+                  {{ t('tools.imageEditor.brushSize') }}
                 </NTooltip>
+                </div>
               </template>
 
               <!-- Mosaic params -->
-              <template v-if="activeTool === 'mosaic'">
-                <NTooltip placement="bottom">
-                  <template #trigger>
-                    <NSelect
-                      class="param-select"
-                      :value="mosaicDefaults.mode"
-                      :options="eraserModeOptions"
-                      :render-label="eraserModeRender.label"
-                      :render-tag="eraserModeRender.tag"
-                      @update:value="(v: string) => { mosaicDefaults.mode = v as 'rect' | 'brush'; }"
-                    />
-                  </template>
-                  {{ t('tools.imageEditor.mode') }}
-                </NTooltip>
-                <NTooltip placement="bottom">
-                  <template #trigger>
-                    <NSelect
-                      class="param-select"
-                      :value="editingMosaic?.effect ?? mosaicDefaults.effect"
-                      :options="mosaicEffectOptions"
-                      :render-label="mosaicEffectRender.label"
-                      :render-tag="mosaicEffectRender.tag"
-                      @update:value="(v: string) => updateMosaic({ effect: v as 'mosaic' | 'blur' })"
-                    />
-                  </template>
-                  {{ t('tools.imageEditor.effect') }}
-                </NTooltip>
+              <template v-if="parameterTool === 'mosaic'">
+                <div class="param-mode-start param-mode-start--centered">
+                <div class="param-group" role="radiogroup" :aria-label="t('tools.imageEditor.mode')">
+                  <NTooltip v-for="opt in eraserModeOptions" :key="opt.value" placement="bottom">
+                    <template #trigger>
+                      <button type="button" class="param-chip"
+                        :class="{ 'param-chip--active': mosaicMode === opt.value }"
+                        :aria-pressed="mosaicMode === opt.value"
+                        :aria-label="opt.label"
+                        @click="updateMosaicMode(opt.value as 'rect' | 'brush')">
+                        <NIcon :size="22" :component="opt.value === 'rect' ? Rectangle : Brush" />
+                      </button>
+                    </template>
+                    {{ opt.label }}
+                  </NTooltip>
+                </div>
+                  <span class="param-divider" aria-hidden="true"></span>
+                </div>
+                <div class="param-main param-main--centered">
+
+                <div class="param-group" role="group" :aria-label="t('tools.imageEditor.effect')">
+                  <NTooltip v-for="opt in mosaicEffectOptions" :key="opt.value" placement="bottom">
+                    <template #trigger>
+                      <button type="button" class="param-chip"
+                        :class="{ 'param-chip--active': (editingMosaic?.effect ?? mosaicDefaults.effect) === opt.value }"
+                        :aria-pressed="(editingMosaic?.effect ?? mosaicDefaults.effect) === opt.value"
+                        :aria-label="opt.label"
+                        @click="updateMosaic({ effect: opt.value as 'mosaic' | 'blur' })">
+                        <NIcon :size="22" :component="opt.value === 'mosaic' ? GridDots : Blur" />
+                      </button>
+                    </template>
+                    {{ opt.label }}
+                  </NTooltip>
+                </div>
+                <span class="param-divider" aria-hidden="true"></span>
                 <NTooltip placement="bottom">
                   <template #trigger>
                     <SizeField
                       :value="editingMosaic?.strength ?? mosaicDefaults.strength"
                       :min="1" :max="50" :step="1"
-                      :label-key="t('tools.imageEditor.strength')"
+                      :label-key="t((editingMosaic?.effect ?? mosaicDefaults.effect) === 'blur' ? 'tools.imageEditor.blurStrength' : 'tools.imageEditor.mosaicStrength')"
                       :icon="GridDots"
                       @update:value="(v: number) => updateMosaic({ strength: v })"
                     />
                   </template>
-                  {{ t('tools.imageEditor.strength') }}
+                  {{ t((editingMosaic?.effect ?? mosaicDefaults.effect) === 'blur' ? 'tools.imageEditor.blurStrength' : 'tools.imageEditor.mosaicStrength') }}
                 </NTooltip>
-                <NTooltip v-if="mosaicDefaults.mode === 'brush'" placement="bottom">
+                <span v-if="mosaicMode === 'brush'" class="param-divider" aria-hidden="true"></span>
+                <NTooltip v-if="mosaicMode === 'brush'" placement="bottom">
                   <template #trigger>
                     <SizeField
-                      :value="mosaicDefaults.brushSize"
+                      :value="mosaicBrushSize"
                       :min="4" :max="100" :step="1"
-                      :label-key="t('tools.imageEditor.size')"
-                      :icon="Brush"
-                      @update:value="(v: number) => { mosaicDefaults.brushSize = v; }"
+                      :label-key="t('tools.imageEditor.brushSize')"
+                      :icon="lineWeightIcon"
+                      @update:value="updateMosaicBrushSize"
                     />
                   </template>
-                  {{ t('tools.imageEditor.size') }}
+                  {{ t('tools.imageEditor.brushSize') }}
                 </NTooltip>
+                </div>
               </template>
             </div>
 
@@ -2799,11 +3193,11 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   <button
                     type="button"
                     class="image-editor__tool"
-                    :disabled="!canUndoNow"
+                    :disabled="!canUndoNow || operationBusy"
                     :aria-label="t('tools.imageEditor.undo')"
                     @click="undoAction"
                   >
-                    <NIcon :size="18" :component="ArrowBackUp" />
+                    <NIcon :size="22" :component="ArrowBackUp" />
                   </button>
                 </template>
                 {{ t('tools.imageEditor.undo') }}
@@ -2813,17 +3207,17 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                   <button
                     type="button"
                     class="image-editor__tool"
-                    :disabled="!canRedoNow"
+                    :disabled="!canRedoNow || operationBusy"
                     :aria-label="t('tools.imageEditor.redo')"
                     @click="redoAction"
                   >
-                    <NIcon :size="18" :component="ArrowForwardUp" />
+                    <NIcon :size="22" :component="ArrowForwardUp" />
                   </button>
                 </template>
                 {{ t('tools.imageEditor.redo') }}
               </NTooltip>
               <NButton v-if="selectedId !== null" type="error" size="small" @click="deleteSelected">
-                <NIcon :size="16" :component="Trash" style="margin-right: 4px;" />
+                <NIcon :size="20" :component="Trash" style="margin-right: 4px;" />
                 {{ t('tools.imageEditor.deleteSelected') }}
               </NButton>
               <NPopconfirm @positive-click="clearAll">
@@ -2833,20 +3227,51 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
                 {{ t('tools.imageEditor.confirmClearAll') }}
               </NPopconfirm>
             </div>
+            </ToolTabs>
           </div>
-        </template>
-      </ToolFilePanel>
-    </NCard>
   </ToolLayout>
 </template>
 
 <style scoped>
+:deep(.tool-file-panel__params) { display: none; }
+:deep(.tool-file-panel__actions) { flex-wrap:wrap; gap:8px; }
+.image-editor__params :deep(.editor-function) {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 72px;
+  height: 68px;
+  padding: 6px 4px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-2);
+  font: inherit;
+  font-size: var(--font-size-caption);
+  line-height: 1.2;
+  cursor: pointer;
+}
+.image-editor__params :deep(.editor-function:hover) {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+.image-editor__params :deep(.editor-function[aria-pressed="true"]) {
+  background: var(--color-primary);
+  color: var(--color-primary-text, #fff);
+}
+.image-editor__params :deep(.editor-function span) { text-align: center; }
+
 /* The box is wider and taller than most images; centre the stage in it rather
    than leaving it pinned to the top-left corner. */
+.canvas-wrapper--crop { cursor:crosshair; touch-action:none; }
 .canvas-wrapper {
   flex: 1;
   min-height: 0;
   max-width: 100%;
+  min-width: 0;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -2858,6 +3283,9 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
    editor positions a textarea at stage coordinates with a plain absolute offset. */
 .image-editor__stage-wrap {
   position: relative;
+  background-color: var(--color-surface);
+  background-image: conic-gradient(var(--color-hairline) 25%, transparent 0 50%, var(--color-hairline) 0 75%, transparent 0);
+  background-size: 16px 16px;
 }
 
 .image-editor__text-edit {
@@ -2926,6 +3354,7 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 }
 
 .image-editor__params {
+  margin-top: var(--spacing-md);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
@@ -2933,17 +3362,18 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
 .image-editor__toolbar {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--spacing-xxs);
+  gap: 8px;
 }
 
 .image-editor__tool {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border: none;
   border-radius: var(--radius-sm);
@@ -2973,17 +3403,34 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
    old one-parameter-per-row stack. Each control is an icon chip, a colour
    swatch, a preview select, or a SizeField; a param-group clusters a toggle
    with its dependent controls. */
+.image-editor__params-row :deep(.n-button), .image-editor__params-row :deep(.n-input), .image-editor__params-row :deep(.n-base-selection) { --n-height:42px !important; min-height:42px; }
+.image-editor__params-row :deep(.param-chip) { min-width:42px; min-height:42px; }
+.image-editor__footer :deep(.n-button) { --n-height:42px !important; height:42px; }
 .image-editor__params-row {
+  margin-top: 12px;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-xs);
 }
 
+.param-mode-start { display:flex; align-items:center; justify-content:flex-end; gap:var(--spacing-sm); flex:0 0 140px; width:140px; box-sizing:border-box; }
+.param-mode-start.param-mode-start--centered { flex:0 0 auto; width:auto; }
+.param-main.param-main--centered { flex:0 0 auto; justify-content:center; }
+.param-main { display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; flex:1; min-width:0; gap:var(--spacing-sm); }
+.image-editor__params-row :deep(.size-field__group) { margin-inline:0; }
+.param-tools { display:flex; flex:1; min-width:0; align-items:center; justify-content:center; flex-wrap:wrap; column-gap:12px; row-gap:12px; }
+.param-chip--toggle[aria-pressed="false"] { border:1px solid var(--color-hairline-strong); }
+.param-group.param-group--text-stroke,.param-group.param-group--fill { gap:12px; }
+.param-group--inactive > :not(.param-chip--toggle) {
+  filter: grayscale(1);
+  opacity: 0.4;
+}
 .param-group {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-xxs);
+  gap: 12px;
 }
 
 .param-label {
@@ -2996,19 +3443,19 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 .param-divider {
   display: inline-block;
   width: 1px;
-  height: 32px;
+  height: 42px;
   background: var(--color-hairline-strong);
   flex-shrink: 0;
   align-self: center;
-  margin: 0 8px;
+  margin: 0;
 }
 
 .param-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border: none;
   border-radius: var(--radius-sm);
@@ -3037,9 +3484,9 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 :deep(.param-color) {
   position: relative;
   overflow: hidden;
-  width: 32px;
-  height: 32px;
-  --n-height: 32px;
+  width: 42px;
+  height: 42px;
+  --n-height: 42px;
   padding: 0;
   border: 3px solid transparent;
   border-radius: 6px;
@@ -3061,34 +3508,34 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
   display: none;
 }
 
-/* Force NSelect to be compact (32px) to match other controls. */
+/* Match NSelect to the default action height (42px) to match other controls. */
 .param-select {
   width: 96px;
-  height: 32px !important;
+  height: 42px !important;
 }
 
 .param-select--text {
   width: 110px;
-  height: 32px !important;
+  height: 42px !important;
 }
 
 :deep(.param-select),
 :deep(.param-select--text) {
-  height: 32px !important;
+  height: 42px !important;
 }
 
 :deep(.param-select .n-base-selection),
 :deep(.param-select--text .n-base-selection) {
-  height: 32px !important;
-  min-height: 32px !important;
+  height: 42px !important;
+  min-height: 42px !important;
   display: flex !important;
   align-items: center !important;
 }
 
 :deep(.param-select .n-base-selection-input),
 :deep(.param-select--text .n-base-selection-input) {
-  height: 32px !important;
-  min-height: 32px !important;
+  height: 42px !important;
+  min-height: 42px !important;
   padding: 0 8px !important;
   display: flex !important;
   align-items: center !important;
@@ -3096,8 +3543,8 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
 :deep(.param-select .n-base-selection-label),
 :deep(.param-select--text .n-base-selection-label) {
-  height: 32px !important;
-  line-height: 32px !important;
+  height: 42px !important;
+  line-height: 42px !important;
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
@@ -3105,12 +3552,19 @@ function numberLeaderArrow(annotation: NumberAnnotation): number[] | null {
 
 :deep(.param-select .n-base-selection__arrow),
 :deep(.param-select--text .n-base-selection__arrow) {
-  height: 32px !important;
+  height: 42px !important;
   display: flex !important;
   align-items: center !important;
 }
 
+@media (max-width:640px) {
+  .param-mode-start, .param-mode-start.param-mode-start--centered { flex:0 0 100%; width:100%; justify-content:center; }
+  .param-main, .param-main.param-main--centered, .param-tools { flex:0 0 100%; width:100%; justify-content:center; flex-wrap:wrap; }
+  .param-group { flex-wrap:wrap; justify-content:center; max-width:100%; }
+}
+
 .image-editor__footer {
+  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

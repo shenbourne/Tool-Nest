@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
 import { NSpace, NButton, NInput, NInputNumber, NSelect, NColorPicker, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -8,6 +8,7 @@ import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import FileCard from '@/components/FileCard.vue';
 import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
+import { addPdfTextOverlay } from './pdf-text-overlay';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
@@ -42,13 +43,6 @@ watch([text, position, fontSize, color], () => {
   resultFile.value = null;
 });
 
-function hexToRgb(hex: string): [number, number, number] {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  return [r, g, b];
-}
-
 function download() {
   if (resultUrl.value) {
     const a = document.createElement('a');
@@ -70,60 +64,14 @@ async function apply() {
   processing.value = true;
   error.value = '';
   try {
-    const { PDFDocument, rgb, StandardFonts } = await import('pdf-lib');
     const buf = await file.value.arrayBuffer();
-    const doc = await PDFDocument.load(buf);
-    const font = await doc.embedFont(StandardFonts.Helvetica);
-    const [r, g, b] = hexToRgb(color.value);
-    const pages = doc.getPages();
-
-    for (const page of pages) {
-      const { width, height } = page.getSize();
-      const textWidth = font.widthOfTextAtSize(text.value, fontSize.value);
-      const textHeight = font.heightAtSize(fontSize.value);
-      const margin = 20;
-      let x = margin;
-      let y = height - fontSize.value - margin;
-
-      const pos = position.value;
-      if (pos.includes('center') && pos.startsWith('top')) {
-        x = (width - textWidth) / 2;
-        y = height - fontSize.value - margin;
-      } else if (pos.includes('right') && pos.startsWith('top')) {
-        x = width - textWidth - margin;
-        y = height - fontSize.value - margin;
-      } else if (pos === 'center') {
-        x = (width - textWidth) / 2;
-        y = (height + textHeight) / 2;
-      } else if (pos.includes('center') && pos.startsWith('bottom')) {
-        x = (width - textWidth) / 2;
-        y = margin;
-      } else if (pos.includes('left') && pos.startsWith('bottom')) {
-        x = margin;
-        y = margin;
-      } else if (pos.includes('right') && pos.startsWith('bottom')) {
-        x = width - textWidth - margin;
-        y = margin;
-      } else if (pos === 'top-left') {
-        x = margin;
-        y = height - fontSize.value - margin;
-      }
-
-      page.drawText(text.value, {
-        x, y,
-        size: fontSize.value,
-        font,
-        color: rgb(r, g, b),
-      });
-    }
-
-    const bytes = await doc.save();
+    const bytes = await addPdfTextOverlay(buf, { text: text.value, fontSize: fontSize.value, color: color.value, position: position.value });
     if (resultUrl.value) URL.revokeObjectURL(resultUrl.value);
     const blob = new Blob([bytes], { type: 'application/pdf' });
     resultUrl.value = URL.createObjectURL(blob);
     resultFile.value = new File([blob], 'edited.pdf', { type: 'application/pdf' });
-  } catch (e: any) {
-    error.value = e.message || t('tools.pdfEditor.failed');
+  } catch (e: unknown) {
+    error.value = (e instanceof Error ? e.message : '') || t('tools.pdfEditor.failed');
   }
   processing.value = false;
 }
@@ -146,11 +94,11 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
         <template #params>
           <NSpace vertical :size="12">
             <NInput v-model:value="text" :placeholder="t('tools.pdfEditor.textPlaceholder')" :input-props="{ id: 'pdfEditorField0' }" />
-            <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
-            <NSpace>
-              <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" style="width: 150px;" :input-props="{ id: 'pdfEditorField1' }" />
-              <NColorPicker v-model:value="color" style="width: 100px;" />
-            </NSpace>
+            <div class="pdf-editor__text-options">
+              <NSelect v-model:value="position" :options="positionOptions" :placeholder="t('tools.pdfEditor.positionPlaceholder')" />
+              <NInputNumber v-model:value="fontSize" :min="8" :max="120" :placeholder="t('tools.pdfEditor.fontSize')" :input-props="{ id: 'pdfEditorField1' }" />
+              <NColorPicker v-model:value="color" />
+            </div>
             <NButton type="primary" :loading="processing" @click="apply" :disabled="!file || !text" block>
               {{ t('common.apply') }}
             </NButton>
@@ -163,4 +111,15 @@ onUnmounted(() => { if (resultUrl.value) URL.revokeObjectURL(resultUrl.value); }
 </template>
 
 <style scoped>
+.pdf-editor__text-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 150px) 100px;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdf-editor__text-options > * {
+  min-width: 0;
+  width: 100%;
+}
 </style>

@@ -40,8 +40,16 @@ describe('konva image loading', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('loads the image through a DOM <img @load> before handing it to konva', () => {
-    const failures = canvasTools.filter((name) => !/<img\b[^>]*\s@load=/.test(source(name)));
+  it('loads the image through a DOM load event or awaited decode before handing it to konva', () => {
+    const failures = canvasTools.filter((name) => {
+      const markup = source(name);
+      const domLoad = /<img\b[^>]*\s@load=/.test(markup);
+      // The lifecycle accepts only an already-decoded image and rejects stale imports.
+      const lifecycleDecode = markup.includes('await img.decode()')
+        && markup.includes('lifecycle.importImage(() => decodeImage(url))')
+        && markup.includes('imageEl.value = state.image');
+      return !domLoad && !lifecycleDecode;
+    });
     expect(failures).toEqual([]);
   });
 });

@@ -14,7 +14,7 @@ import {
 import type { Component } from 'vue';
 import { fileCategory, type FileCategory } from '@/utils/file-thumbnail';
 
-const props = defineProps<{
+defineProps<{
   previewItem: { name: string; file?: File | null; type?: string | null } | null;
   previewText: string | null;
   previewPdfPages: string[];

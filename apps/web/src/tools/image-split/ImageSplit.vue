@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
 import { NCard, NSpace, NButton, NInputNumber, NAlert } from 'naive-ui';
 import FileCard from '@/components/FileCard.vue';
 import { useI18n } from 'vue-i18n';
@@ -7,12 +7,10 @@ import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
-import { useCopy } from '@/composables/useCopy';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
 const tool = useCurrentTool();
-const { copyFileToClipboard } = useCopy();
 
 const file = ref<File | null>(null);
 const imageUrl = ref<string>('');
@@ -83,12 +81,6 @@ function downloadTile(dataUrl: string, idx: number) {
   a.href = dataUrl;
   a.download = `tile_${idx + 1}.png`;
   a.click();
-}
-
-async function copyTile(dataUrl: string) {
-  const res = await fetch(dataUrl);
-  const blob = await res.blob();
-  await copyFileToClipboard(blob);
 }
 
 function downloadAll() {

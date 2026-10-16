@@ -1,42 +1,155 @@
-name: CI
+name: CI and Docker release
 
 on:
   push:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Commit, tag or ref in main history to rebuild (blank = main)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+# Serialize releases so a slow older build cannot overwrite a newer latest image.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || 'release' }}
+  cancel-in-progress: false
 
 jobs:
   ci:
-    name: Lint, Type-check, Test & Build
+    name: Lint, type-check, test and build
     runs-on: ubuntu-latest
-
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
     steps:
-      - name: Checkout code
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          fetch-depth: 0
+      - name: Pin the source checked by CI
+        id: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Checkout release controls from the workflow commit
         uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        with:
+          ref: ${{ github.sha }}
+          path: .release-control
+          sparse-checkout: scripts
+      - uses: pnpm/action-setup@v4
         with:
           version: 9.11.0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'pnpm'
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Release policy tests
+        run: node --test .release-control/scripts/release-plan.test.mjs
+      - name: Lint without rewriting source
+        run: |
+          pnpm --filter @toolnest/web exec eslint src --ext .vue,.ts,.tsx
+          pnpm --filter @toolnest/server exec eslint src
+      - run: pnpm type-check
+      - name: Tests
+        run: |
+          pnpm --filter @toolnest/server test
+          pnpm --filter @toolnest/web exec vitest run --maxWorkers=2 --minWorkers=1
+      - run: pnpm build
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run linter
-        run: pnpm lint
-
-      - name: Run type checking
-        run: pnpm type-check
-
-      - name: Run tests
-        run: pnpm test
-
-      - name: Build project
-        run: pnpm build
+  release:
+    name: Publish versioned multi-platform image
+    needs: ci
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.ci.outputs.source_sha }}
+          fetch-depth: 0
+      - name: Checkout release controls from the workflow commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: .release-control
+          sparse-checkout: scripts
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Determine release from root version
+        id: plan
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: node .release-control/scripts/release-plan.mjs
+      - name: Validate Docker Hub credentials
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          test -n "$DOCKERHUB_USERNAME" || { echo 'Missing DOCKERHUB_USERNAME secret'; exit 1; }
+          test -n "$DOCKERHUB_TOKEN" || { echo 'Missing DOCKERHUB_TOKEN secret'; exit 1; }
+      - uses: docker/setup-qemu-action@v3
+        if: steps.plan.outputs.publish == 'true'
+      - uses: docker/setup-buildx-action@v3
+        if: steps.plan.outputs.publish == 'true'
+      - uses: docker/login-action@v3
+        if: steps.plan.outputs.publish == 'true'
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker metadata
+        id: meta
+        if: steps.plan.outputs.publish == 'true'
+        uses: docker/metadata-action@v5
+        with:
+          images: shenbourne/tool-nest
+          flavor: latest=false
+          tags: |
+            type=raw,value=${{ steps.plan.outputs.version }}
+            type=raw,value=latest,enable=${{ steps.plan.outputs.stable == 'true' }}
+      - name: Build and push both platforms
+        id: build
+        if: steps.plan.outputs.publish == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Verify remote platforms
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+        run: |
+          docker buildx imagetools inspect "shenbourne/tool-nest:$VERSION" --raw > manifest.json
+          node --input-type=module -e "import fs from 'node:fs'; const m=JSON.parse(fs.readFileSync('manifest.json')); for(const arch of ['amd64','arm64']) if(!m.manifests?.some(x=>x.platform?.os==='linux'&&x.platform?.architecture===arch)) throw Error('Missing linux/'+arch);"
+      - name: Create immutable version tag after successful image publication
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          VERSION_TAG: ${{ steps.plan.outputs.tag }}
+          MANUAL_REBUILD: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          git fetch origin --tags
+          if git show-ref --verify --quiet "refs/tags/$VERSION_TAG"; then
+            test "$MANUAL_REBUILD" = true || test "$(git rev-parse "$VERSION_TAG^{commit}")" = "$(git rev-parse HEAD)" || { echo 'Version tag already points to another commit'; exit 1; }
+          else
+            git tag "$VERSION_TAG"
+            git push origin "refs/tags/$VERSION_TAG"
+          fi
+      - name: Release summary
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          echo "Published shenbourne/tool-nest:$VERSION ($DIGEST), linux/amd64 + linux/arm64" >> "$GITHUB_STEP_SUMMARY"

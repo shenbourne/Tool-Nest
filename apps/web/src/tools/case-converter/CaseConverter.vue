@@ -4,11 +4,10 @@ import { NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
-import { useCopy } from '@/composables/useCopy';
+import ToolStringResults from '@/components/ToolStringResults.vue';
 import { tool } from './index';
 
 const { t } = useI18n();
-const { copyToClipboard } = useCopy();
 
 const input = ref('hello world example');
 
@@ -25,7 +24,7 @@ const lowerCase = computed(() => input.value.toLowerCase());
 const titleCase = computed(() => toWords(input.value).map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(' '));
 const constantCase = computed(() => toWords(input.value).map(w => w.toUpperCase()).join('_'));
 
-const results = [
+const results = computed(() => [
   { label: 'camelCase', value: camelCase },
   { label: 'PascalCase', value: pascalCase },
   { label: 'snake_case', value: snakeCase },
@@ -34,9 +33,7 @@ const results = [
   { label: 'lower case', value: lowerCase },
   { label: 'Title Case', value: titleCase },
   { label: 'CONSTANT_CASE', value: constantCase },
-];
-
-function copyText(text: string) { copyToClipboard(text); }
+].map(result => ({ label: result.label, value: result.value.value })));
 </script>
 
 <template>
@@ -46,10 +43,7 @@ function copyText(text: string) { copyToClipboard(text); }
         <NInput v-model:value="input" :placeholder="t('tools.caseConverter.inputPlaceholder')"  :input-props="{ id: 'caseConverterField0' }"/>
       </template>
       <template #params>
-        <div v-for="r in results" :key="r.label" style="display: flex; align-items: center; gap: 12px;">
-          <span style="width: 140px; font-size: 13px; opacity: 0.6; flex-shrink: 0;">{{ r.label }}</span>
-          <NInput :value="r.value.value" readonly style="flex: 1;" @click="copyText(r.value.value)"  :input-props="{ id: 'caseConverterField1' }"/>
-        </div>
+        <ToolStringResults :results="results" id-prefix="case-converter-result" />
       </template>
     </ToolTextPanel>
   </ToolLayout>

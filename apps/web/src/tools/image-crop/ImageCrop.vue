@@ -47,9 +47,9 @@ const cropY = ref(0);
 const cropWidth = ref(100);
 const cropHeight = ref(100);
 
-const transformerRef = ref<any>(null);
-const rectNodeRef = ref<any>(null);
-const imageNodeRef = ref<any>(null);
+const transformerRef = ref<{ getNode(): Konva.Transformer } | null>(null);
+const rectNodeRef = ref<{ getNode(): Konva.Rect } | null>(null);
+const imageNodeRef = ref<{ getNode(): Konva.Image } | null>(null);
 
 function onFileChange(files: File[]) {
   const f = files[0] ?? null;

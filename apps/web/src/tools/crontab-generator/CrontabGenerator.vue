@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInput, NSpace, NAlert, NDataTable, NTag, NDivider } from 'naive-ui';
+import { NCard, NInput, NSpace, NDataTable, NTag, NDivider } from 'naive-ui';
 import type { DataTableColumn } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';

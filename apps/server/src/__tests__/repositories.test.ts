@@ -80,6 +80,33 @@ describe('YamlUserPrefsRepository', () => {
     expect(result.favorites).toHaveLength(50);
     expect(result.favorites[0]).toBe('tool-0');
   });
+
+  it('preserves independent concurrent preference updates', async () => {
+    const prefs = new repo.YamlUserPrefsRepository();
+    await Promise.all([
+      prefs.save({ language: 'en' }),
+      prefs.save({ theme: 'dark' }),
+    ]);
+
+    expect(await prefs.get()).toMatchObject({ language: 'en', theme: 'dark' });
+  });
+
+  it('serializes cumulative quota checks across repository instances and recovers after rejection', async () => {
+    const prefs = new repo.YamlUserPrefsRepository();
+    const other = new repo.YamlUserPrefsRepository();
+    await prefs.save({ settings: { seed: 'x'.repeat(30_000) } });
+    const results = await Promise.allSettled([
+      prefs.save({ settings: { first: 'a'.repeat(18_000) } }),
+      other.save({ settings: { second: 'b'.repeat(18_000) } }),
+    ]);
+    expect(results.map(result => result.status)).toEqual(['fulfilled', 'rejected']);
+    const stored = await prefs.get();
+    expect(stored.settings.first).toBe('a'.repeat(18_000));
+    expect(stored.settings.second).toBeUndefined();
+    expect(Buffer.byteLength(JSON.stringify(stored), 'utf8')).toBeLessThanOrEqual(64 * 1024);
+    await other.save({ theme: 'dark' });
+    expect((await prefs.get()).theme).toBe('dark');
+  });
 });
 
 describe('YamlReportRepository', () => {
@@ -140,5 +167,16 @@ describe('YamlReportRepository', () => {
   it('rejects oversized content before touching storage', async () => {
     const reports = new repo.YamlReportRepository();
     await expect(reports.create('x'.repeat(500_001))).rejects.toThrow(/exceeds maximum/);
+  });
+
+  it('retains every report created concurrently', async () => {
+    const reports = new repo.YamlReportRepository();
+    const created = await Promise.all([
+      reports.create('first'),
+      reports.create('second'),
+    ]);
+
+    await expect(reports.get(created[0].id)).resolves.toMatchObject({ content: 'first' });
+    await expect(reports.get(created[1].id)).resolves.toMatchObject({ content: 'second' });
   });
 });

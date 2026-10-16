@@ -403,8 +403,4 @@ onUnmounted(() => document.removeEventListener('paste', onPaste));
   min-height: 1em;
 }
 
-/* A single file fills the box, so its name lines up with the card. */
-.tool-file-upload:not(.tool-file-upload--multi) :deep(.file-card__name) {
-  text-align: left;
-}
 </style>

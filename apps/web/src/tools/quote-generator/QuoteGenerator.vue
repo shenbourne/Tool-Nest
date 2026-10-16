@@ -18,7 +18,6 @@ const QUOTES = [
   ["The only way to learn a new programming language is by writing programs in it.", "Dennis Ritchie"],
 ];
 const idx = ref(0);
-const quote = QUOTES[idx.value];
 function next() { idx.value = (idx.value + 1) % QUOTES.length; }
 </script>
 <template>

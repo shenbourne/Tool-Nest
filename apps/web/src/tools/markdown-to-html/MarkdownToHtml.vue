@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { NInput, NSpace, NButton } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import markdownit from 'markdown-it';
+import { printMarkdown } from './print-document';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
@@ -16,12 +17,7 @@ const inputMarkdown = ref('');
 const outputHtml = computed(() => inputMarkdown.value ? md.render(inputMarkdown.value) : '');
 
 function printHtml() {
-  const win = window.open('', '_blank');
-  if (win) {
-    win.document.write(outputHtml.value);
-    win.document.close();
-    win.print();
-  }
+  printMarkdown(inputMarkdown.value);
 }
 </script>
 

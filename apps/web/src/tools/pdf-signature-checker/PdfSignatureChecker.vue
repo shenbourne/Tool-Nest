@@ -43,8 +43,8 @@ async function checkSignatures() {
     hasSignatures.value = sigFields.length > 0;
     fieldNames.value = sigFields.map((field) => field.getName());
     checked.value = true;
-  } catch (e: any) {
-    error.value = e.message || t('tools.pdfSignatureChecker.failed');
+  } catch (e: unknown) {
+    error.value = (e instanceof Error ? e.message : '') || t('tools.pdfSignatureChecker.failed');
   }
   processing.value = false;
 }

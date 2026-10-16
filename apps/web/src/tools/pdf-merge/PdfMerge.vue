@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import { NSpace, NButton, NAlert } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
@@ -42,7 +42,7 @@ async function process() {
     const blob = new Blob([bytes], { type: 'application/pdf' });
     resultUrl.value = URL.createObjectURL(blob);
     resultFile.value = new File([blob], 'merged.pdf', { type: 'application/pdf' });
-  } catch (e: any) { error.value = e.message; }
+  } catch (e: unknown) { error.value = (e instanceof Error ? e.message : String(e)); }
   processing.value = false;
 }
 onUnmounted(() => {

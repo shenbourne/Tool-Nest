@@ -20,7 +20,7 @@ const textOutput = computed(() => inputUnicode.value ? convertUnicodeToText(inpu
 <template>
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
-      <ToolTextPanel v-model:input-text="inputText" :output-text="unicodeOutput" :input-title="t('common.input')" :output-title="t('tools.textToUnicode.textToUnicodeEntities')" export-name="unicode.txt">
+      <ToolTextPanel v-model:input-text="inputText" :output-text="unicodeOutput" :input-title="t('common.input')" :output-title="t('tools.textToUnicode.textToUnicodeEntities')" export-name="unicode.txt" stack-on-mobile wrap-actions>
         <template #input>
           <NInput v-model:value="inputText" type="textarea" :rows="4" :placeholder="t('tools.textToUnicode.inputPlaceholder')"  :input-props="{ id: 'textToUnicodeField0' }"/>
         </template>
@@ -28,7 +28,7 @@ const textOutput = computed(() => inputUnicode.value ? convertUnicodeToText(inpu
           <NInput :value="unicodeOutput" type="textarea" :rows="4" readonly :placeholder="t('tools.textToUnicode.unicodeOutputPlaceholder')"  :input-props="{ id: 'textToUnicodeField1' }"/>
         </template>
       </ToolTextPanel>
-      <ToolTextPanel v-model:input-text="inputUnicode" :output-text="textOutput" :input-title="t('common.input')" :output-title="t('tools.textToUnicode.unicodeEntitiesToText')" export-name="output.txt">
+      <ToolTextPanel v-model:input-text="inputUnicode" :output-text="textOutput" :input-title="t('common.input')" :output-title="t('tools.textToUnicode.unicodeEntitiesToText')" export-name="output.txt" stack-on-mobile wrap-actions>
         <template #input>
           <NInput v-model:value="inputUnicode" type="textarea" :rows="4" :placeholder="t('tools.textToUnicode.unicodeInputPlaceholder')"  :input-props="{ id: 'textToUnicodeField2' }"/>
         </template>

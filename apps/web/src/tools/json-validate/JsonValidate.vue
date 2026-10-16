@@ -12,7 +12,7 @@ const input = ref('');
 const output = computed(() => {
   if (!input.value.trim()) return '';
   try { JSON.parse(input.value); return '✅ ' + t('tools.jsonValidate.valid'); }
-  catch (e: any) { return '❌ ' + t('common.invalidJson') + ': ' + e.message; }
+  catch (e: unknown) { return '❌ ' + t('common.invalidJson') + ': ' + (e instanceof Error ? e.message : String(e)); }
 });
 </script>
 <template>

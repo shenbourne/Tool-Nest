@@ -27,10 +27,12 @@ function refresh() { nonce.value++; }
         <NInput :value="uuids" type="textarea" readonly :rows="Math.min(count + 1, 10)" style="font-family: monospace; text-align: center;"  :input-props="{ id: 'uuidGeneratorField1' }"/>
       </template>
       <template #params>
-        <NFormItem :label="t('common.quantity')" label-placement="left">
+        <div class="tool-generation-row">
+        <NFormItem :label="t('common.quantity')" label-placement="left" :show-feedback="false">
           <NInputNumber v-model:value="count" :min="1" :max="50" style="width: 200px;"  :input-props="{ id: 'uuidGeneratorField0' }"/>
         </NFormItem>
-        <NButton @click="refresh">{{ t('common.retry') }}</NButton>
+        <NButton type="primary" @click="refresh">{{ t('common.generationActions.uuid') }}</NButton>
+        </div>
       </template>
     </ToolTextPanel>
   </ToolLayout>

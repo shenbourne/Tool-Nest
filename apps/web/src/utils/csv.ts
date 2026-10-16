@@ -58,7 +58,7 @@ export function serializeCSV(rows: string[][], sep = ','): string {
     .map(row =>
       row
         .map(cell =>
-          cell.includes(sep) || cell.includes('"') || cell.includes('\n')
+          cell.includes(sep) || cell.includes('"') || cell.includes('\n') || cell.includes('\r')
             ? '"' + cell.replace(/"/g, '""') + '"'
             : cell,
         )

@@ -80,9 +80,9 @@ const resultColumns = computed<DataTableColumn<BenchmarkResult>[]>(() => [
   <ToolLayout v-if="tool" :tool="tool">
     <NSpace vertical :size="16">
       <NCard :title="t('tools.benchmarkBuilder.suitesTitle')">
-        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
-          <div v-for="suite in suites" :key="suite.id" style="flex: 1; min-width: 300px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <div class="suite-list">
+          <div v-for="suite in suites" :key="suite.id" class="suite-editor">
+            <div class="suite-header">
               <NInput
                 :value="suite.name"
                 @update:value="(v: string) => suite.name = v"
@@ -142,3 +142,35 @@ const resultColumns = computed<DataTableColumn<BenchmarkResult>[]>(() => [
     </NSpace>
   </ToolLayout>
 </template>
+
+<style scoped>
+.suite-list {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.suite-editor {
+  flex: 1;
+  min-width: 300px;
+}
+
+.suite-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 640px) {
+  .suite-editor {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .suite-header {
+    align-items: stretch;
+  }
+}
+</style>

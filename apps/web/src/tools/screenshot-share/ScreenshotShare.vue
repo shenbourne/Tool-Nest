@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { NCard, NSpace, NButton, NInput, NAlert } from 'naive-ui';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import html2canvas from 'html2canvas';
@@ -37,8 +37,8 @@ async function capture() {
     const canvas = await html2canvas(el as HTMLElement);
     previewUrl.value = canvas.toDataURL('image/png');
   }
-  catch (e: any) {
-    errorMsg.value = e?.message || t('tools.screenshotShare.captureFailed');
+  catch (e: unknown) {
+    errorMsg.value = (e instanceof Error ? e.message : '') || t('tools.screenshotShare.captureFailed');
   }
   finally {
     capturing.value = false;
@@ -60,8 +60,8 @@ async function copyScreenshot() {
     const blob = await res.blob();
     await copyImageToClipboard(blob);
   }
-  catch (e: any) {
-    errorMsg.value = e?.message || t('tools.screenshotShare.copyFailed');
+  catch (e: unknown) {
+    errorMsg.value = (e instanceof Error ? e.message : '') || t('tools.screenshotShare.copyFailed');
   }
 }
 </script>

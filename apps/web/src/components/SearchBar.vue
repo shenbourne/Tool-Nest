@@ -3,10 +3,10 @@ import { NInput, NCard, NTag, NScrollbar } from 'naive-ui';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useSearchStore } from '@/stores/search.store';
-import { ref, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 
-const props = defineProps<{ size?: 'medium' | 'large' }>();
+defineProps<{ size?: 'medium' | 'large' }>();
 const { t } = useI18n();
 const router = useRouter();
 const searchStore = useSearchStore();

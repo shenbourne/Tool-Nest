@@ -5,6 +5,56 @@ import { allTools } from '@/tools/registry';
 const validCategories = new Set(TOOL_CATEGORIES.map((c) => c.name));
 
 describe('tool registry', () => {
+  it('unifies image converters while retaining legacy URLs', () => {
+    const tool = allTools.find(tool => tool.path === '/image-format-converter');
+    expect(tool).toBeDefined();
+    for (const path of ['/jpg-to-png', '/convert-to-jpg', '/convert-to-webp']) {
+      expect(allTools.some(tool => tool.path === path)).toBe(false);
+      expect(tool?.redirectFrom).toContain(path);
+    }
+  });
+  it('excludes the removed list duplicate tool', () => {
+    expect(allTools.some(tool => tool.path === '/list-duplicate' || tool.redirectFrom?.includes('/list-duplicate'))).toBe(false);
+  });
+  it('excludes tools removed at user request', () => {
+    const removed = ['/text-split', '/text-censor', '/text-repeat'];
+    for (const path of removed) {
+      expect(allTools.some(tool => tool.path === path || tool.redirectFrom?.includes(path))).toBe(false);
+    }
+  });
+  it('consolidates duplicate CSV, JSON, dedup and secret tools with legacy URLs', () => {
+    const groups: Record<string, string[]> = {
+      '/list-converter': ['/list-sort', '/list-wrap', '/text-join', '/list-find-popular', '/list-group', '/list-reverse', '/list-rotate', '/list-shuffle', '/list-truncate', '/list-unwrap'],
+      '/table-tools': ['/csv-transpose','/csv-rows-to-columns','/csv-change-separator','/csv-find-incomplete','/csv-insert-columns','/csv-swap-columns'],
+      '/json-prettify': ['/json-stringify', '/json-viewer'],
+      '/text-tools': ['/remove-duplicate-lines', '/list-find-unique'],
+      '/password-generator': ['/token-generator'],
+    };
+    for (const [canonical, legacy] of Object.entries(groups)) {
+      const retained = allTools.filter(tool => tool.path === canonical);
+      expect(retained).toHaveLength(1);
+      for (const path of legacy) {
+        expect(allTools.some(tool => tool.path === path)).toBe(false);
+        expect(retained[0].redirectFrom).toContain(path);
+      }
+    }
+    const paths = allTools.flatMap(tool => [tool.path, ...(tool.redirectFrom ?? [])]);
+    expect(new Set(paths).size).toBe(paths.length);
+  });
+  it('consolidates nine time cards and retains every old URL', () => {
+    const merged = allTools.filter(tool => tool.path === '/date-time');
+    expect(merged).toHaveLength(1);
+    const legacy = ['/date-weekday-calculator', '/days-to-hours', '/discord-timestamp', '/hours-to-days', '/seconds-to-time', '/time-between-dates', '/time-to-decimal', '/time-to-seconds', '/truncate-clock-time'];
+    for (const path of legacy) {
+      expect(allTools.some(tool => tool.path === path)).toBe(false);
+      expect(merged[0].redirectFrom).toContain(path);
+    }
+  });
+  it('consolidates calculator discovery and preserves the legacy URL', () => {
+    expect(allTools.filter(tool => tool.path === '/generic-calculator')).toHaveLength(1);
+    expect(allTools.some(tool => tool.path === '/math-evaluator')).toBe(false);
+    expect(allTools.find(tool => tool.path === '/generic-calculator')?.redirectFrom).toContain('/math-evaluator');
+  });
   it('loads tool modules from the filesystem', () => {
     expect(allTools.length).toBeGreaterThan(0);
   });

@@ -31,7 +31,7 @@ async function fetchInfo() {
       { key: 'ISP', value: j.org || '' },
       { key: 'ASN', value: j.asn || '' },
     ];
-  } catch (e: any) { error.value = e.message; }
+  } catch (e: unknown) { error.value = (e instanceof Error ? e.message : String(e)); }
   loading.value = false;
 }
 onMounted(fetchInfo);
@@ -42,7 +42,14 @@ const cols = computed(() => [{ title: t('tools.ipInfo.property'), key: 'key' }, 
     <NCard><NSpace vertical :size="12">
       <NButton :loading="loading" @click="fetchInfo">{{ t('common.refresh') }}</NButton>
       <NAlert v-if="error" type="error" :title="error" />
-      <NDataTable v-if="data.length" :columns="cols" :data="data" :bordered="false" size="small" />
+      <div v-if="data.length" key="summary" class="ip-summary"><strong>{{ data[0]?.value }}</strong><span>{{ [data[2]?.value, data[4]?.value, data[10]?.value].filter(Boolean).join(' · ') }}</span></div>
+      <NDataTable v-if="data.length" key="records" :columns="cols" :data="data" :bordered="false" size="small" />
     </NSpace></NCard>
   </ToolLayout>
 </template>
+
+<style scoped>
+.ip-summary { display: flex; flex-direction: column; gap: 6px; padding: 12px 0; overflow-wrap: anywhere; }
+.ip-summary strong { font-size: 26px; color: var(--color-primary); }
+.ip-summary span { color: var(--color-text-2); }
+</style>

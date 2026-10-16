@@ -1,4 +1,73 @@
 {
+  "networkResults": {
+    "noMeasurements": "No measurements available; inconclusive",
+    "measurementCount": "Sample count",
+    "countries": "Sample countries/regions",
+    "latestMeasurement": "Latest measurement (UTC)",
+    "rateLimited": "Too many requests. Please try again later.",
+    "probe": "Probe",
+    "completed": "Completed",
+    "failed": "Measurement failed",
+    "hopCount": "Hop count",
+    "targetIp": "Target IP",
+    "hop": "Hop",
+    "host": "Host",
+    "loss": "Packet loss",
+    "average": "Average latency",
+    "minimum": "Minimum latency",
+    "maximum": "Maximum latency",
+    "received": "Received packets",
+    "queryTime": "DNS query time",
+    "dnsStatus": "DNS status",
+    "resolver": "Resolver",
+    "name": "Name",
+    "type": "Type",
+    "answer": "Answer",
+    "resolved": "Resolved",
+    "unresolved": "Resolution failed",
+    "confirmed": "Confirmed blocking evidence",
+    "anomaly": "Anomaly, not confirmed",
+    "noEvidence": "No blocking evidence found",
+    "unknown": "Insufficient evidence",
+    "registrar": "Registrar",
+    "status": "Status",
+    "nameservers": "Nameservers",
+    "event": "Event",
+    "date": "Date (UTC)",
+    "registered": "Registration",
+    "expires": "Expiration",
+    "updated": "Last change",
+    "databaseUpdated": "RDAP database update",
+    "noResults": "No measurement data available.",
+    "noRecords": "No records returned.",
+    "log": "View probe log",
+    "rawData": "View full data (JSON)",
+    "mtrNote": "Routes are measured from remote probes. Loss or silence at an intermediate hop does not necessarily mean the destination is unreachable.",
+    "latencyNote": "These are DNS query times from remote probes, rather than Ping latency from your device.",
+    "dnsLeakNote": "These are server-side DNS results and cannot determine whether your device has a DNS leak.",
+    "censorshipNote": "Queries the latest 100 OONI records per URL from the past 30 days. This is historical evidence, not a live test from your device. Missing evidence does not guarantee access in every region.",
+    "invalidResponse": "The network service returned an invalid response. Check that the backend is running and try again.",
+    "urlsPlaceholder": "One URL per line, for example https://example.com",
+    "recordCount": "{count} records"
+  },
+  "numericParams": {
+    "widthPixels": "Width (px)",
+    "heightPixels": "Height (px)",
+    "quality": "Compression quality (0.1–1)",
+    "angle": "Rotation angle (°)",
+    "opacity": "Opacity (0–1)",
+    "fps": "Frame rate (fps)",
+    "duration": "Duration (seconds, 0 = full video)",
+    "startIndex": "Start index",
+    "endIndex": "End index",
+    "columnPosition": "Insert position (zero-based)",
+    "columnA": "Column A index (zero-based)",
+    "columnB": "Column B index (zero-based)",
+    "repeatCount": "Repeat count",
+    "rotatePositions": "Lines to rotate",
+    "bytes": "Bytes (B)",
+    "keepCount": "Items to keep"
+  },
   "app": {
     "title": "ToolNest",
     "subtitle": "Developer Tools"
@@ -24,69 +93,57 @@
     "noToolsInstalled": "No tools installed yet"
   },
   "category": {
-    "crypto": {
-      "name": "Crypto",
-      "desc": "Encryption, hashing, and security tools"
-    },
-    "converter": {
-      "name": "Converters",
-      "desc": "Format and unit conversion tools"
-    },
-    "web": {
-      "name": "Web",
-      "desc": "Web development and URL tools"
-    },
-    "developer": {
-      "name": "Developer",
-      "desc": "Development and DevOps tools"
-    },
-    "network": {
-      "name": "Network",
-      "desc": "Network calculation and analysis tools"
-    },
     "text": {
-      "name": "Text",
-      "desc": "Text processing and analysis tools"
+      "name": "Text & Strings",
+      "desc": "Edit, compare, extract, analyze and generate text"
     },
     "data": {
-      "name": "Data",
-      "desc": "Data format and validation tools"
+      "name": "Data & Structured Formats",
+      "desc": "JSON, YAML, TOML, XML, CSV and list processing"
+    },
+    "encoding": {
+      "name": "Encoding & Identifiers",
+      "desc": "Base64, character encodings, unique identifiers and QR codes"
+    },
+    "crypto": {
+      "name": "Passwords & Security",
+      "desc": "Passwords, authentication, hashes, encryption and redaction"
+    },
+    "web": {
+      "name": "Web & Browser",
+      "desc": "URLs, HTML, HTTP, browser information and colors"
+    },
+    "developer": {
+      "name": "Development & Operations",
+      "desc": "Git, regex, SQL, Cron, permissions and containers"
+    },
+    "network": {
+      "name": "Network & Diagnostics",
+      "desc": "IP, DNS, connectivity, routing and network diagnostics"
+    },
+    "math": {
+      "name": "Numbers & Units",
+      "desc": "Calculations, sequences, random numbers, bases and units"
+    },
+    "datetime": {
+      "name": "Date & Time",
+      "desc": "Dates, timestamps, duration calculations and timers"
     },
     "image": {
-      "name": "Image",
-      "desc": "Image processing tools"
+      "name": "Images & Graphics",
+      "desc": "Image editing, compression, conversion, OCR and screenshots"
     },
     "video": {
-      "name": "Video",
-      "desc": "Video editing tools"
+      "name": "Video & GIF",
+      "desc": "Video, GIF and image animation processing"
     },
     "audio": {
       "name": "Audio",
-      "desc": "Audio processing tools"
+      "desc": "Audio trimming, conversion, merging and speed changes"
     },
     "pdf": {
-      "name": "PDF",
-      "desc": "PDF manipulation tools"
-    },
-    "math": {
-      "name": "Math",
-      "desc": "Mathematical calculation tools"
-    },
-    "measurement": {
-      "name": "Measurement",
-      "desc": "Measurement and timing tools"
-    },
-    "generator": {
-      "name": "Generators",
-      "desc": "Content generation tools"
-    },
-    "network-test": {
-      "name": "Network Tests",
-      "desc": "Network testing and diagnostics"
-    },
-    "platform": {
-      "name": "Platform",
-      "desc": "Platform and utility tools"
+      "name": "PDF & Documents",
+      "desc": "PDF editing, merging, splitting, conversion and protection"
     }
   },
   "settings": {
@@ -139,6 +196,7 @@
     "importFile": "Import file",
     "exportFile": "Export file",
     "pasteFile": "Paste file",
+    "pasteText": "Paste text",
     "importFailed": "Failed to read the file",
     "pasteFailed": "Failed to read the clipboard",
     "collapse": "Collapse",
@@ -193,6 +251,15 @@
     "decrypt": "Decrypt",
     "settings": "Settings",
     "select": "Select",
+    "generationActions": {
+      "mnemonic": "Generate mnemonic",
+      "uuid": "Generate UUID",
+      "ulid": "Generate ULID",
+      "randomNumbers": "Generate random numbers",
+      "macAddresses": "Generate MAC addresses",
+      "randomPort": "Generate random port",
+      "ipv6Ula": "Generate IPv6 ULA address"
+    },
     "generate": "Generate",
     "convert": "Convert",
     "compare": "Compare",
@@ -257,7 +324,45 @@
   "tags": {
     "filter": "Filter by tags",
     "clearAll": "Clear all",
-    "selected": "{count} selected"
+    "selected": "{count} selected",
+    "labels": {
+      "converter": "Convert",
+      "generator": "Generate",
+      "validator": "Validate",
+      "calculator": "Calculate",
+      "parser": "Parse",
+      "encoder": "Encode / Decode",
+      "security": "Security",
+      "text": "Text",
+      "csv": "CSV",
+      "list": "Lists",
+      "json": "JSON",
+      "xml": "XML",
+      "math": "Math",
+      "time": "Time",
+      "number": "Numbers",
+      "statistics": "Statistics",
+      "random": "Random",
+      "filter": "Filter",
+      "check": "Check",
+      "extract": "Extract",
+      "debug": "Debug",
+      "discord": "Discord",
+      "tsv": "TSV",
+      "yaml": "YAML",
+      "toml": "TOML",
+      "network": "Network",
+      "developer": "Development",
+      "productivity": "Productivity",
+      "media": "Media",
+      "clipboard": "Clipboard",
+      "browser": "Runs in browser",
+      "backend": "Runs on server",
+      "file-upload": "File input",
+      "lazy-load": "Loaded on demand",
+      "worker": "Background processing",
+      "compressor": "Compress"
+    }
   },
   "commandPalette": {
     "placeholder": "Search tools, actions...",
@@ -265,6 +370,72 @@
     "hint": "↑↓ Navigate · Enter Select · Esc Close"
   },
   "tools": {
+    "jsonTools": {"name":"JSON Tools","description":"Format, minify, sort, escape and validate JSON using one shared input","operation":"Operation","format":"Format","minify":"Minify","sort":"Sort keys","escape":"Escape","unescape":"Unescape","validate":"Validate","awaitingValidation":"Awaiting input"},
+    "tableTools": {
+      "tableTooLarge": "Tables support up to 20,000 cells (rows × maximum columns). Reduce the number of rows or columns.",
+      "pipeLabel": "Pipe",
+      "headerRow": "Header", "insertAbove": "Insert row above", "insertBelow": "Insert row below", "insertLeft": "Insert column left", "insertRight": "Insert column right",
+      "sameAsImport": "Same as import delimiter",
+      "autoDelimiter": "Auto detect", "detectedDelimiter": "Detected: {separator}",
+
+  "transposeNow": "Transpose table",
+  "deleteColumn": "Delete current column",
+  "deleteRow": "Delete current row",
+  "pasteTable": "Paste table",
+  "dimensions": "{rows} rows × {columns} columns",
+  "addRow": "Add row",
+  "undo": "Undo",
+  "sheetHint": "Edit cells · Tab to move · Enter next row · Shift+Enter newline · Paste Excel ranges",
+  "exportDelimiter": "Copy/export delimiter",
+  "importDelimiter": "Import delimiter",
+  "redo": "Redo",
+  "copyTable": "Copy table",
+  "sheet": "Editable table",
+  "addColumn": "Add column",
+  "cell": "Cell {column}{row}"
+,
+      "unclosedQuote": "A quoted cell is not closed.", "invalidQuote": "Invalid quoting: escape a quote with two double quotes.", "invalidCsv": "Invalid CSV/TSV: check delimiters and quotes.",
+  "insert": "Insert column",
+  "columnA": "Column A (1-based)",
+  "transposeShort": "Transpose",
+  "position": "Insert position (columns before it)",
+  "checkNote": "The first record is the header. Check subsequent record widths; quoted newlines belong to the same record.",
+  "transpose": "Transpose",
+  "targetSeparator": "Output delimiter",
+  "insertShort": "Insert",
+  "name": "Table Data Tools",
+  "swapShort": "Swap",
+  "separatorShort": "Delimiter",
+  "description": "Edit CSV/TSV cells directly, transpose, insert or swap columns, and check records live",
+  "sourceSeparator": "Input delimiter",
+  "separator": "Delimiter",
+  "checkShort": "Check",
+  "swap": "Swap columns",
+  "invalidIndex": "Enter a valid integer column position.",
+  "columnB": "Column B (1-based)",
+  "columnRange": "Column number is outside the table.",
+  "issue": "Record {record}: {columns} columns; header has {expected}",
+  "check": "Check records"
+},
+    "dataConverter": {
+      "json-to-yaml": "JSON → YAML",
+      "yaml-to-json": "YAML → JSON",
+      "json-to-csv": "JSON → CSV",
+      "csv-to-json": "CSV → JSON",
+      "xml-to-json": "XML → JSON",
+      "xmlHeaders": "XML headers must be valid element names starting with a letter or underscore.",
+  "duplicateHeaders": "Duplicate headers: use unique names.",
+  "extraColumns": "A row exceeds the header width: add missing headers.",
+  "tableArray": "Table export requires an array of objects.",
+  "to": "Target format",
+  "swap": "Swap direction",
+  "note": "CSV/TSV use the first row as headers and read cells as strings. Table export requires an array of objects. XML uses _attributes / _text nodes. Comments and type information may be lost.",
+  "nestedCells": "Flatten nested objects or arrays before table export.",
+  "description": "Convert between JSON, YAML, TOML, XML, CSV and TSV",
+  "xmlShape": "XML requires an object containing a root element.",
+  "name": "Data Format Converter",
+  "from": "Source format"
+},
     "helloWorld": {
       "name": "Hello World",
       "description": "A sample tool to verify the registration system",
@@ -274,18 +445,21 @@
       "name": "JSON Prettify",
       "description": "Format and beautify JSON strings",
       "input": "Input JSON",
-      "output": "Formatted Output"
+      "output": "Formatted Output",
+      "spaces": "{count} spaces",
+      "tab": "Tab"
     },
     "base64Encoder": {
-      "name": "Base64 Encoder/Decoder",
-      "description": "Encode or decode Base64 strings",
+      "name": "Base64 Tools",
+      "description": "Encode and decode Base64 strings, convert files to and from Base64",
+      "tabCodec": "Encode/Decode",
+      "tabFile": "File Converter",
+      "textToBase64": "Text → Base64",
+      "base64ToText": "Base64 → Text",
       "encodePlaceholder": "Enter text to encode...",
       "decodePlaceholder": "Enter Base64 to decode...",
-      "nothingToSwap": "Nothing to swap: the output is empty"
-    },
-    "tokenGenerator": {
-      "name": "Token Generator",
-      "description": "Generate random alphanumeric tokens with custom length and character sets"
+      "invalidBase64": "Invalid Base64 input",
+      "invalidText": "The text contains characters that cannot be encoded"
     },
     "hashText": {
       "name": "Hash Text",
@@ -373,21 +547,6 @@
       "suggestAvoidRepeats": "Avoid repeated characters",
       "suggestAvoidCommon": "Avoid common patterns"
     },
-    "baseConverter": {
-      "name": "Base Converter",
-      "description": "Convert numbers between binary, octal, decimal, and hexadecimal",
-      "inputBase": "Input base",
-      "outputBase": "Output base",
-      "inputPlaceholder": "Enter number...",
-      "resultPlaceholder": "Result...",
-      "invalidInput": "Invalid input",
-      "binary": "Binary (2)",
-      "octal": "Octal (8)",
-      "decimal": "Decimal (10)",
-      "hexadecimal": "Hexadecimal (16)",
-      "base32": "Base32",
-      "base36": "Base36"
-    },
     "colorConverter": {
       "name": "Color Converter",
       "description": "Convert colors between HEX, RGB, and HSL formats",
@@ -399,8 +558,8 @@
       "inputPlaceholder": "Text to encode/decode...",
       "encoded": "Encoded",
       "decoded": "Decoded",
-      "copyEncoded": "Copy Encoded",
-      "copyDecoded": "Copy Decoded",
+      "inputEncode": "URL Encode",
+      "inputDecode": "URL Decode",
       "invalidEncoding": "Invalid percent-encoding"
     },
     "caseConverter": {
@@ -442,7 +601,9 @@
       "pathname": "Pathname",
       "search": "Search",
       "hash": "Hash",
-      "defaultPort": "(default)"
+      "defaultPort": "(default)",
+      "addParam": "Add parameter",
+      "removeParam": "Remove"
     },
     "httpStatus": {
       "name": "HTTP Status Codes",
@@ -451,18 +612,6 @@
       "code": "Code",
       "class": "Class",
       "descriptionColumn": "Description"
-    },
-    "mathEvaluator": {
-      "name": "Math Evaluator",
-      "description": "Evaluate mathematical expressions with operators and grouping",
-      "expressionPlaceholder": "Enter math expression...",
-      "supportedOperators": "Supported operators",
-      "operatorsList": "+, -, *, /, ^ (power), % (modulo), () (grouping)",
-      "divisionByZero": "Division by zero",
-      "missingClosingParenthesis": "Missing closing parenthesis",
-      "unexpectedCharacter": "Unexpected character: {char}",
-      "endOfInput": "end of input",
-      "errorPrefix": "Error: {message}"
     },
     "textStats": {
       "name": "Text Statistics",
@@ -537,17 +686,11 @@
       "description": "Convert text to Morse code and back",
       "unmappable": "These characters cannot be encoded: {chars}"
     },
-    "textCensor": {
-      "name": "Text Censor",
-      "description": "Filter and mask profanity or sensitive words"
-    },
-    "createPalindrome": {
-      "name": "Create Palindrome",
-      "description": "Create a palindrome by appending reversed text"
-    },
     "palindromeChecker": {
-      "name": "Palindrome Checker",
-      "description": "Check if text is a palindrome",
+      "name": "Palindrome",
+      "description": "Check if text is a palindrome, or create one by appending reversed text",
+      "checkTab": "Check",
+      "createTab": "Create",
       "isPalindrome": "✅ Yes! This is a palindrome.",
       "notPalindrome": "❌ Not a palindrome."
     },
@@ -556,19 +699,10 @@
       "description": "Extract email addresses from text using regex",
       "noEmailsFound": "No emails found."
     },
-    "extractSubstring": {
-      "name": "Extract Substring",
-      "description": "Extract a portion of text by position range",
-      "inputPlaceholder": "Input text..."
-    },
     "hiddenCharDetector": {
       "name": "Hidden Character Detector",
       "description": "Detect invisible and special Unicode characters",
       "noneDetected": "No hidden characters detected."
-    },
-    "textJoin": {
-      "name": "Text Join",
-      "description": "Join multiple lines with a custom separator"
     },
     "quoteGenerator": {
       "name": "Quote Generator",
@@ -577,12 +711,8 @@
     },
     "removeDuplicateLines": {
       "name": "Remove Duplicate Lines",
-      "description": "Remove duplicate lines from text"
-    },
-    "textRepeat": {
-      "name": "Text Repeat",
-      "description": "Repeat text a specified number of times",
-      "inputPlaceholder": "Text to repeat..."
+      "description": "Remove duplicate lines from text",
+      "keepEmpty": "Keep empty lines"
     },
     "textReverse": {
       "name": "Text Reverse",
@@ -590,12 +720,8 @@
     },
     "textRotate": {
       "name": "Text Rotate",
-      "description": "Rotate text lines by N positions",
-      "inputPlaceholder": "Input lines..."
-    },
-    "textSplit": {
-      "name": "Text Split",
-      "description": "Split text by delimiters into separate lines"
+      "description": "Rotate characters by N positions",
+      "inputPlaceholder": "Input text..."
     },
     "textReplacer": {
       "name": "Text Replacer",
@@ -606,31 +732,38 @@
       "invalidRegex": "Invalid regex"
     },
     "textTruncate": {
-      "name": "Text Truncate",
-      "description": "Truncate text by characters, words, or lines",
+      "name": "Text Slice",
+      "description": "Extract a slice of text by character, word, or line range",
       "inputPlaceholder": "Input text...",
       "characters": "Characters",
       "words": "Words",
       "lines": "Lines"
     },
     "passwordGenerator": {
-      "name": "Password Generator",
-      "description": "Generate secure random passwords with custom options",
+      "name": "Password & Token Generator",
+      "description": "Generate passwords or tokens with custom length, character sets and exclusions",
       "selectOneOption": "Select at least one option",
       "excludePlaceholder": "Exclude characters...",
       "generatePassword": "Generate Password",
-      "outputPlaceholder": "Click generate..."
+      "outputPlaceholder": "Generated password or token",
+      "passwordPreset": "Password",
+      "tokenPreset": "Token",
+      "preset": "Generation preset",
+      "generateToken": "Generate Token",
+      "invalidLength": "Length must be an integer from 1 to 512"
     },
     "byteConverter": {
+      "bits": "Bits",
       "name": "Byte Converter",
-      "description": "Convert between bytes, KB, MB, GB, TB, and bits",
+      "description": "Convert between bytes, KB, MB, GB, TB, PB, and bits",
       "unit": "Unit",
       "value": "Value",
-      "inputPlaceholder": "Enter bytes..."
+      "inputPlaceholder": "Enter bytes...",
+      "byteSection": "Byte units"
     },
     "numberToWords": {
       "name": "Number to Words",
-      "description": "Convert numbers to English words"
+      "description": "Convert an integer into English words for documents, learning number expressions, or spelling out monetary amounts (currency units are not added). Enter one integer to convert automatically: 123 → one hundred and twenty-three, 1000 → one thousand, -42 → negative forty-two, and 0 → zero. Negative numbers and leading zeros are supported; surrounding whitespace is ignored. Valid range: -9007199254740991 to 9007199254740991. Integers only: decimals, comma separators, scientific notation, a leading plus sign, and batch input are unsupported. Output uses cardinal words, not ordinals. Conversion runs locally in your browser."
     },
     "arithmeticSequence": {
       "name": "Arithmetic Sequence",
@@ -642,21 +775,34 @@
     },
     "genericCalculator": {
       "name": "Generic Calculator",
-      "description": "Simple calculator for basic math expressions",
+      "description": "Evaluate expressions live with calculator keys and reusable history",
       "expressionPlaceholder": "Expression: {example}",
-      "resultPlaceholder": "Result...",
       "history": "History:",
-      "unexpected": "Unexpected: {char}",
       "endOfInput": "end of input",
-      "errorPrefix": "Error: {message}",
-      "notFinite": "result is not a finite number"
+      "notFinite": "result is not a finite number",
+      "invalidFactorial": "Factorial requires an integer from 0 to 170",
+      "clear": "Clear input",
+      "backspace": "Backspace",
+      "toggleSign": "Toggle sign",
+      "equals": "Calculate and record",
+      "clearHistory": "Clear history",
+      "emptyHistory": "Press equals or Enter to save a calculation",
+      "reuse": "Reuse this expression",
+      "operators": "Supports + − × ÷, remainder %, power ^, parentheses and factorial !",
+      "historyHint": "Saved in this browser, up to 100 entries",
+      "divisionByZero": "Division by zero",
+      "missingClosingParenthesis": "Missing closing parenthesis",
+      "unexpectedCharacter": "Unexpected character: {char}"
     },
     "randomNumberGenerator": {
       "name": "Random Number Generator",
       "description": "Generate random numbers with custom range",
       "rangeTooSmall": "Range too small for unique numbers",
       "invalidRange": "Minimum must be less than or equal to maximum",
-      "uniqueOnly": "Unique only"
+      "allowRepeat": "Allow repeats",
+      "min": "Minimum",
+      "max": "Maximum",
+      "count": "Count"
     },
     "numberSum": {
       "name": "Number Sum",
@@ -666,8 +812,35 @@
     },
     "numberGenerator": {
       "name": "Number Generator",
-      "description": "Generate number sequences: Fibonacci, primes, even, odd",
-      "usageHint": "Line 1: type (fibonacci/primes/even/odd)\nLine 2: count"
+      "description": "Generate Fibonacci, prime, arithmetic and geometric sequences with number statistics",
+      "usageHint": "Choose a sequence and set the first term, count and arithmetic difference.",
+      "settings": "Sequence settings",
+      "intro": "Choose a sequence and adjust the count. Results update instantly.",
+      "sequenceType": "Sequence type",
+      "fibonacci": "Fibonacci",
+      "primes": "Primes",
+      "countLabel": "Number of terms",
+      "range": "1–{max} terms",
+      "result": "Generated sequence",
+      "items": "{count} terms",
+      "ready": "Comma-separated numbers, ready to copy or export.",
+      "invalidCount": "Enter a whole number between 1 and {max}.",
+      "startLabel": "Starting value",
+      "startHint": "First value ≥ start",
+      "invalidStart": "Starting value must be a whole number between 0 and {max}.",
+      "arithmetic": "Arithmetic sequence",
+      "arithmeticHint": "Use this exact first term",
+      "invalidArithmetic": "Enter valid first term, difference and count; results must be finite.",
+      "geometric": "Geometric",
+      "parameters": "Parameters",
+      "ratio": "Common ratio",
+      "statistics": "Number statistics",
+      "statisticsSource": "Statistics source",
+      "customNumbers": "Custom numbers",
+      "customHint": "Separate numbers with lines, commas or spaces",
+      "total": "Sum",
+      "emptyStatistics": "No numbers to analyze",
+      "overflow": "Numeric overflow"
     },
     "csvToJson": {
       "name": "CSV to JSON",
@@ -723,57 +896,6 @@
       "columnA": "Column A",
       "columnB": "Column B"
     },
-    "csvTranspose": {
-      "name": "Transpose CSV",
-      "description": "Transpose CSV data (rows become columns)"
-    },
-    "listDuplicate": {
-      "name": "List Duplicate",
-      "description": "Duplicate each item in a list"
-    },
-    "listFindPopular": {
-      "name": "List Find Most Popular",
-      "description": "Find the most frequent items in a list"
-    },
-    "listFindUnique": {
-      "name": "List Find Unique",
-      "description": "Extract unique items from a list"
-    },
-    "listGroup": {
-      "name": "List Group",
-      "description": "Group list items into chunks of N",
-      "inputPlaceholder": "List items (one per line)...",
-      "groupSize": "Group size",
-      "groupLabel": "--- Group {number} ---"
-    },
-    "listReverse": {
-      "name": "List Reverse",
-      "description": "Reverse the order of list items"
-    },
-    "listRotate": {
-      "name": "List Rotate",
-      "description": "Rotate list items by N positions"
-    },
-    "listShuffle": {
-      "name": "List Shuffle",
-      "description": "Randomly shuffle list items"
-    },
-    "listSort": {
-      "name": "List Sort",
-      "description": "Sort list items alphabetically or numerically"
-    },
-    "listTruncate": {
-      "name": "List Truncate",
-      "description": "Keep only the first N items of a list"
-    },
-    "listUnwrap": {
-      "name": "List Unwrap",
-      "description": "Remove wrapping characters from list items"
-    },
-    "listWrap": {
-      "name": "List Wrap",
-      "description": "Wrap each list item with prefix and suffix"
-    },
     "jsonEscape": {
       "name": "JSON Escape",
       "description": "Escape and unescape JSON strings",
@@ -781,10 +903,6 @@
       "escapePlaceholder": "Text to escape...",
       "unescapePlaceholder": "JSON string to unescape...",
       "invalidInput": "Invalid input"
-    },
-    "jsonStringify": {
-      "name": "JSON Stringify",
-      "description": "Format and serialize JSON with options"
     },
     "jsonSort": {
       "name": "JSON Sort",
@@ -897,18 +1015,6 @@
       "watermarkPlaceholder": "Watermark text...",
       "addWatermark": "Add Watermark"
     },
-    "convertToJpg": {
-      "name": "Convert to JPG",
-      "description": "Convert images to JPEG format",
-      "convert": "Convert to JPG",
-      "downloadJpg": "Download JPG"
-    },
-    "convertToWebp": {
-      "name": "Convert to WebP",
-      "description": "Convert images to WebP format",
-      "convert": "Convert to WebP",
-      "downloadWebp": "Download WebP"
-    },
     "imageChangeOpacity": {
       "name": "Image Change Opacity",
       "description": "Adjust image transparency and opacity",
@@ -944,7 +1050,7 @@
     },
     "imageEditor": {
       "name": "Image Editor",
-      "description": "Add text and drawings to images",
+      "description": "Crop, flip, rotate and resize images, adjust colors and opacity, remove colors or backgrounds, and add annotations and watermarks.",
       "addText": "Add Text",
       "drawLine": "Draw Line",
       "clearAll": "Clear All",
@@ -995,7 +1101,7 @@
       "fill": "Fill: ",
       "cornerRadius": "Corner radius: ",
       "content": "Content: ",
-      "stroke": "Stroke: ",
+      "stroke": "Line style",
       "background": "Background: ",
       "opacity": "Opacity: ",
       "effect": "Effect: ",
@@ -1006,18 +1112,61 @@
       "numberFormat": "Number format: ",
       "leaderLine": "Leader line: ",
       "leaderWidth": "Leader width: ",
-      "leaderStroke": "Leader stroke: "
+      "leaderStroke": "Leader stroke: ",
+      "tabcrop": "Crop",
+      "tabadjust": "Adjust",
+      "tabannotate": "Annotate",
+      "operationcrop": "Crop",
+      "operationflip": "Flip",
+      "operationrotate": "Rotate",
+      "operationresize": "Resize",
+      "operationcolors": "Colors",
+      "operationopacity": "Opacity",
+      "operationtransparent": "Transparency",
+      "operationbackground": "Remove background",
+      "operationwatermark": "Watermark",
+      "freeRatio": "Free",
+      "originalRatio": "Original",
+      "ratio": "Crop ratio",
+      "horizontal": "Flip horizontal",
+      "vertical": "Flip vertical",
+      "lockAspect": "Lock aspect",
+      "hue": "Hue",
+      "saturation": "Saturation",
+      "brightness": "Brightness",
+      "contrast": "Contrast",
+      "targetColor": "Target color",
+      "tolerance": "Tolerance",
+      "operationFailed": "Image processing failed. Adjust the parameters and try again.",
+      "softenEdges": "Soften edges",
+      "operationhue": "Hue",
+      "operationsaturation": "Saturation",
+      "operationbrightness": "Brightness",
+      "operationcontrast": "Contrast",
+      "pickFromImage": "Pick from image",
+      "pickColorHint": "Click a pixel in the image. Press Esc to cancel.",
+      "shapeStrokeColor": "Outline color",
+      "lineColor": "Line color",
+      "penColor": "Pen color",
+      "textColor": "Text color",
+      "numberColor": "Number color",
+      "strokeWidth": "Outline width",
+      "numberSize": "Number font size",
+      "brushSize": "Brush size",
+      "startArrowSize": "Start arrow size",
+      "endArrowSize": "End arrow size",
+      "startArrowStyle": "Start arrow style",
+      "endArrowStyle": "End arrow style",
+      "textStroke": "Text outline",
+      "textBackground": "Text background",
+      "mosaicStrength": "Pixelation strength",
+      "blurStrength": "Blur strength"
     },
     "imageRemoveBackground": {
       "name": "Image Remove Background",
       "description": "Remove background color from images",
       "backgroundColor": "Background Color: ",
       "toleranceRange": "Tolerance (0-100): "
-    },
-    "jpgToPng": {
-      "name": "JPG to PNG",
-      "description": "Convert JPG images to PNG format",
-      "downloadAsPng": "Download as PNG"
     },
     "pdfMerge": {
       "name": "PDF Merge",
@@ -1124,8 +1273,27 @@
       "error": "Error: {message}"
     },
     "browserFingerprint": {
-      "name": "Browser Fingerprint",
-      "description": "View detailed browser and device information"
+      "name": "Browser Info",
+      "description": "View detailed browser and device information",
+      "platform": "Platform",
+      "language": "Language",
+      "languages": "Languages",
+      "screen": "Screen",
+      "colorDepth": "Color Depth",
+      "timezone": "Timezone",
+      "cookies": "Cookies Enabled",
+      "doNotTrack": "Do Not Track",
+      "hardwareConcurrency": "Logical Processors",
+      "deviceMemory": "Device Memory",
+      "maxTouchPoints": "Max Touch Points",
+      "pdfViewer": "PDF Viewer",
+      "webglVendor": "WebGL Vendor",
+      "webglRenderer": "WebGL Renderer",
+      "unavailable": "Unavailable",
+      "notSet": "Not set",
+      "enabled": "Yes",
+      "disabled": "No",
+      "bits": "bit"
     },
     "speedTest": {
       "name": "Speed Test",
@@ -1256,8 +1424,8 @@
       "ogUrlPlaceholder": "OG page URL",
       "twitter": "Twitter Card",
       "twitterCardPlaceholder": "Twitter card type",
-      "twitterSitePlaceholder": "Twitter site handle (e.g. @example)",
-      "twitterCreatorPlaceholder": "Twitter creator handle (e.g. @author)",
+      "twitterSitePlaceholder": "Twitter site handle (e.g. {'@'}example)",
+      "twitterCreatorPlaceholder": "Twitter creator handle (e.g. {'@'}author)",
       "output": "Generated Meta Tags"
     },
     "mimeTypes": {
@@ -1427,12 +1595,6 @@
       "octal": "Octal",
       "symbolic": "Symbolic"
     },
-    "jsonViewer": {
-      "name": "JSON Viewer",
-      "description": "Format and validate JSON data",
-      "inputPlaceholder": "Paste your JSON here...",
-      "outputTitle": "Formatted Output"
-    },
     "dockerRunToCompose": {
       "name": "Docker Run to Compose",
       "description": "Convert docker run commands to docker-compose YAML",
@@ -1465,7 +1627,7 @@
       "normalized": "Normalized",
       "status": "Status",
       "ok": "OK",
-      "errorMissingAt": "Invalid email format: missing @"
+      "errorMissingAt": "Invalid email format: missing {'@'}"
     },
     "regexTester": {
       "name": "Regex Tester",
@@ -1567,6 +1729,24 @@
       "syntaxDiagram": "┌──────────── minute (0 - 59)\n│ ┌────────── hour (0 - 23)\n│ │ ┌──────── day of month (1 - 31)\n│ │ │ ┌────── month (1 - 12)\n│ │ │ │ ┌──── day of week (0 - 6, Sunday = 0)\n│ │ │ │ │\n* * * * *"
     },
     "dockerComposeTo1panel": {
+      "packageVersionError": "Enter a valid new version that does not already exist in the package.",
+      "packageComposeError": "Invalid Compose configuration. Check the YAML and services.",
+      "packageTitle": "Import an existing 1Panel app",
+      "packageHint": "Select a single-app ZIP (up to 50 MB). App information, existing versions and supporting files are preserved.",
+      "packageLoading": "Reading application package…",
+      "packageVersionHint": "Create a new app version: choose a source version, edit app information and Compose, and enter a distinct new version.",
+      "sourceVersion": "Source version",
+      "newVersion": "New version",
+      "clearPackage": "Exit package import mode",
+      "packageImported": "App imported. Confirm the new version.",
+      "packageImportFailed": "Import failed. Existing content was preserved. Check that the ZIP contains one app with root data.yml, version Compose and version data.yml.",
+      "readmeLink": "File URL",
+      "readmeImportMode": "README import mode",
+      "readmeLinkPlaceholder": "Enter an HTTP(S) URL to the raw README file",
+      "readmeImportLink": "Import from URL",
+      "readmeLinkHint": "Use a raw file URL. The website must allow cross-origin requests.",
+      "readmeImported": "README imported",
+      "readmeImportFailed": "Import failed. Existing content was preserved. Check the file or use a raw file URL that allows cross-origin requests.",
       "name": "Docker Compose to 1Panel",
       "description": "Convert docker-compose YAML into a 1Panel app directory and zip bundle",
       "composeTitle": "Docker Compose YAML (click title to collapse)",
@@ -1707,8 +1887,6 @@
       "print": "Print"
     },
     "base64FileConverter": {
-      "name": "Base64 File Converter",
-      "description": "Convert files to Base64 and back",
       "base64ToFile": "Base64 → File",
       "fileToBase64": "File → Base64",
       "inputPlaceholder": "Paste Base64 string or data URL...",
@@ -1814,15 +1992,72 @@
       "labelLocalDateTime": "Local Date Time",
       "labelRelative": "Relative"
     },
+    "listWorkbench": {
+      "convertShort": "Convert",
+      "reorderShort": "Reorder",
+      "sliceShort": "Slice",
+      "groupShort": "Group",
+      "statisticsShort": "Stats",
+      "groupDisabledHint": "Set items per group to 0 to keep the list ungrouped.",
+      "applyOnce": "Apply",
+      "emptyItem": "(Empty item)",
+      "item": "Item",
+      "reorder": "Sort & reorder",
+      "format": "Wrap / output",
+      "statsHint": "Counts list items before wrapping and group separators.",
+      "groupSize": "Items per group",
+      "statistics": "Frequency statistics",
+      "group": "Group",
+      "rotateHint": "Positive rotates left; negative rotates right.",
+      "statsOrder": "Frequency order",
+      "leastFirst": "Least frequent first",
+      "enableConvert": "Enable conversion & wrapping",
+      "enableSlice": "Enable slicing",
+      "convert": "Convert & wrap",
+      "reshuffle": "Shuffle again",
+      "trimItems": "Trim whitespace",
+      "unwrap": "Remove wrappers",
+      "sort": "Sort",
+      "noItems": "No list items",
+      "positions": "Rotation positions",
+      "semicolon": "Semicolon",
+      "enableReorder": "Enable sorting",
+      "sequence": "Processing order",
+      "mostFirst": "Most frequent first",
+      "rangeHint": "Indices start at 1 and include the end item, using the list after earlier operations.",
+      "shuffle": "Shuffle",
+      "groupSeparator": "Group separator",
+      "pipe": "Pipe",
+      "originalItems": "Original input",
+      "statsSource": "Statistics source",
+      "slice": "Slice",
+      "finalItems": "Final list",
+      "summary": "Total items {total} / Unique items {unique}",
+      "operations": "List operations",
+      "reverse": "Reverse",
+      "rotate": "Rotate",
+      "removeEmpty": "Remove empty items",
+      "clean": "Unwrap / clean / deduplicate",
+      "useOutput": "Use as input",
+      "blankLine": "Blank line",
+      "enabled": "Enabled",
+      "topN": "Show top N items",
+      "removeDuplicates": "Remove duplicates",
+      "newLine": "New line",
+      "separatorHint": "Separators always apply. Disabling this tab only stops cleanup and wrapping.",
+      "lowerCase": "Lowercase",
+      "count": "Count",
+      "enableGroup": "Enable grouping"
+    },
     "listConverter": {
-      "name": "List Converter",
-      "description": "Transform lists with sort, deduplicate, prefix/suffix options",
+      "name": "List Tools",
+      "description": "Combine conversion, sorting, reordering, slicing and grouping, with item frequency statistics",
       "inputPlaceholder": "Enter list items...",
       "comma": "Comma (,)",
       "semicolon": "Semicolon (;)",
       "newline": "Newline",
       "tab": "Tab",
-      "pipe": "Pipe (|)",
+      "pipe": "Pipe",
       "space": "Space",
       "none": "None",
       "ascending": "Ascending",
@@ -1832,7 +2067,15 @@
       "removeEmpty": "Remove Empty",
       "removeDuplicates": "Remove Duplicates",
       "itemPrefix": "Item Prefix",
-      "itemSuffix": "Item Suffix"
+      "itemSuffix": "Item Suffix",
+      "inputSeparator": "Input separator",
+      "outputSeparator": "Output separator",
+      "auto": "Auto detect",
+      "custom": "Custom",
+      "customInputSeparator": "Custom input separator",
+      "customOutputSeparator": "Custom output separator",
+      "inputSeparatorRequired": "Enter a separator to split the input",
+      "sameAsInput": "Same as input separator"
     },
     "qrCodeGenerator": {
       "name": "QR Code Generator",
@@ -2060,7 +2303,32 @@
     "pingTest": {
       "name": "Ping Test",
       "description": "Test network latency to a target",
-      "ping": "Ping"
+      "ping": "Ping",
+      "results": {
+        "probeCount": "{count} probes",
+        "probe": "Probe {index}",
+        "remoteNote": "Latency is measured from the remote probes below, rather than your device.",
+        "reachable": "Reachable",
+        "packetLoss": "Packet loss",
+        "unreachable": "No response",
+        "failed": "Measurement failed",
+        "completed": "Completed",
+        "average": "Average latency",
+        "minimum": "Minimum latency",
+        "maximum": "Maximum latency",
+        "loss": "Packet loss",
+        "address": "Target IP",
+        "packets": "Sent {sent} · Received {received} · Lost {lost}",
+        "rawOutput": "View probe log",
+        "rawData": "View full data (JSON)",
+        "noResults": "No probe results available."
+      },
+      "errors": {
+        "serviceUnavailable": "Ping service is unavailable. Make sure the backend is running and try again.",
+        "invalidResponse": "Ping service returned an invalid response. Check the service configuration and try again.",
+        "rateLimited": "Too many requests. Please try again later.",
+        "requestFailed": "Ping request failed. Please try again later."
+      }
     },
     "mtrTest": {
       "name": "MTR Test",
@@ -2079,6 +2347,12 @@
       "dnsServerPlaceholder": "Custom DNS server (optional)"
     },
     "censorshipCheck": {
+      "errors": {
+        "VALIDATION_ERROR": "Enter valid URLs or domains, up to 10 per request. URLs containing usernames or passwords are not supported.",
+        "OONI_UNAVAILABLE": "OONI measurement service is unavailable. Please try again later.",
+        "OONI_TIMEOUT": "OONI measurement query timed out. Please try again later.",
+        "OONI_INVALID_RESPONSE": "OONI returned invalid data. Please try again later."
+      },
       "name": "Censorship Check",
       "description": "Check if websites are censored",
       "check": "Check",
@@ -2108,6 +2382,62 @@
       "removed": "Removed",
       "changed": "Changed",
       "differences": "Differences"
+    },
+    "dateTime": {
+      "durationShort": "Duration",
+      "weekdayShort": "Weekday",
+      "intervalShort": "Interval",
+      "discordShort": "Discord",
+      "truncateShort": "Truncate",
+      "name": "Date & time",
+      "description": "Convert durations, find weekdays, compare dates, generate Discord timestamps and truncate time",
+      "duration": "Duration conversion",
+      "unit": "Input unit",
+      "clock": "Time (HH:MM:SS)",
+      "amount": "Duration",
+      "invalid": "Enter a finite nonnegative value; clock minutes and seconds must be below 60",
+      "results": "Results",
+      "copyAll": "Copy all",
+      "copyResult": "Copy {label}",
+      "empty": "Enter a valid value to see results",
+      "date": "Date",
+      "dateTime": "Date and time",
+      "clockInput": "Time",
+      "remainder": "Days and remaining time",
+      "localTime": "Dates and times use your local time zone",
+      "resultsClock": "Hours, minutes, seconds",
+      "confirm": "Confirm"
+    },
+    "numberConverter": {
+      "name": "Number Converter",
+      "description": "Convert between Arabic numbers, English words, Roman numerals, binary, octal and hexadecimal.",
+      "decimal": "Arabic (decimal)",
+      "english": "English words",
+      "roman": "Roman numerals",
+      "binary": "Binary",
+      "octal": "Octal",
+      "hex": "Hexadecimal",
+      "invalid": "Enter a valid integer or number representation. Range: ±9,007,199,254,740,991; Roman numerals: 1–3999.",
+      "romanRange": "Roman numerals support integers from 1 to 3999. This value cannot be represented."
+    },
+    "imageFormatConverter": {
+      "name": "Image Format Converter",
+      "description": "Convert images to PNG, JPG or WebP. JPG uses a white background; PNG and WebP preserve transparency.",
+      "format": "Output format",
+      "convert": "Convert image"
+    },
+    "textWorkbench": {
+      "name": "Text Tools",
+      "description": "Replace, reverse, rotate and slice text, with input/output statistics and comparison",
+      "replace": "Replace",
+      "reorder": "Reorder",
+      "slice": "Slice",
+      "statistics": "Statistics",
+      "diff": "Diff",
+      "operations": "Text operations",
+      "hint": "Processing order: replacement → deduplicate lines → reverse/rotate → slicing. Switching tabs does not apply actions.",
+      "statsShort": "Stats",
+      "deduplicate": "Dedup"
     }
   }
 }

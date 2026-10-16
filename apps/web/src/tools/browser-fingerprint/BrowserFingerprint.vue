@@ -1,43 +1,77 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { NCard, NSpace, NDataTable } from 'naive-ui';
+import { computed, onMounted, ref } from 'vue';
+import { NDescriptions, NDescriptionsItem } from 'naive-ui';
+import { useI18n } from 'vue-i18n';
+import { useMediaQuery } from '@vueuse/core';
 import ToolLayout from '@/layouts/ToolLayout.vue';
+import { parseUserAgent, getCurrentUserAgent } from '../user-agent-parser/user-agent-parser.service';
 import { tool } from './index';
-const data = ref<{key: string; value: string}[]>([]);
+
+const { t } = useI18n();
+const mobile = useMediaQuery('(max-width: 640px)');
+const ua = ref('');
+const environment = ref<{ key: string; value: string | number | boolean | null }[]>([]);
+const parsed = computed(() => parseUserAgent(ua.value));
+const rows = computed(() => [
+  { label: t('tools.userAgentParser.browser'), value: [parsed.value.browser.name, parsed.value.browser.version].join(' ') },
+  { label: t('tools.userAgentParser.operatingSystem'), value: [parsed.value.os.name, parsed.value.os.version].join(' ') },
+  { label: t('tools.userAgentParser.deviceType'), value: parsed.value.device.type },
+  { label: t('tools.userAgentParser.vendor'), value: parsed.value.device.vendor },
+  { label: t('tools.userAgentParser.model'), value: parsed.value.device.model },
+  { label: t('tools.userAgentParser.engine'), value: [parsed.value.engine.name, parsed.value.engine.version].join(' ') },
+  { label: 'CPU', value: parsed.value.cpu.architecture },
+  ...environment.value.map(({ key, value }) => ({
+    label: t('tools.browserFingerprint.' + key),
+    value: value === null ? t('tools.browserFingerprint.unavailable')
+      : typeof value === 'boolean' ? t('tools.browserFingerprint.' + (value ? 'enabled' : 'disabled'))
+      : key === 'colorDepth' ? value + ' ' + t('tools.browserFingerprint.bits')
+      : key === 'doNotTrack' && value === '' ? t('tools.browserFingerprint.notSet') : String(value),
+  })),
+]);
+
 onMounted(() => {
-  const nav = navigator as any;
-  data.value = [
-    { key: 'User Agent', value: navigator.userAgent },
-    { key: 'Platform', value: navigator.platform },
-    { key: 'Language', value: navigator.language },
-    { key: 'Languages', value: navigator.languages?.join(', ') || '' },
-    { key: 'Screen', value: screen.width + 'x' + screen.height + ' @' + devicePixelRatio + 'x' },
-    { key: 'Color Depth', value: screen.colorDepth + ' bit' },
-    { key: 'Timezone', value: Intl.DateTimeFormat().resolvedOptions().timeZone },
-    { key: 'Cookies Enabled', value: String(navigator.cookieEnabled) },
-    { key: 'Do Not Track', value: nav.doNotTrack || 'Not set' },
-    { key: 'Hardware Concurrency', value: String(navigator.hardwareConcurrency || 'N/A') },
-    { key: 'Device Memory', value: (nav.deviceMemory || 'N/A') + ' GB' },
-    { key: 'Max Touch Points', value: String(nav.maxTouchPoints || 0) },
-    { key: 'PDF Viewer', value: String(navigator.pdfViewerEnabled ?? 'N/A') },
-    { key: 'WebGL Vendor', value: getWebGL('UNMASKED_VENDOR_WEBGL') },
-    { key: 'WebGL Renderer', value: getWebGL('UNMASKED_RENDERER_WEBGL') },
+  ua.value = getCurrentUserAgent();
+  const nav = navigator as Navigator & { deviceMemory?: number; doNotTrack?: string | null };
+  environment.value = [
+    { key: 'platform', value: nav.platform || null },
+    { key: 'language', value: nav.language || null },
+    { key: 'languages', value: nav.languages?.join(', ') || null },
+    { key: 'screen', value: screen.width + ' × ' + screen.height + ' @' + devicePixelRatio + 'x' },
+    { key: 'colorDepth', value: screen.colorDepth },
+    { key: 'timezone', value: Intl.DateTimeFormat().resolvedOptions().timeZone || null },
+    { key: 'cookies', value: nav.cookieEnabled },
+    { key: 'doNotTrack', value: nav.doNotTrack === '1' ? true : nav.doNotTrack === '0' ? false : nav.doNotTrack || '' },
+    { key: 'hardwareConcurrency', value: nav.hardwareConcurrency || null },
+    { key: 'deviceMemory', value: nav.deviceMemory ? nav.deviceMemory + ' GB' : null },
+    { key: 'maxTouchPoints', value: nav.maxTouchPoints },
+    { key: 'pdfViewer', value: nav.pdfViewerEnabled ?? null },
+    { key: 'webglVendor', value: getWebGL('vendor') },
+    { key: 'webglRenderer', value: getWebGL('renderer') },
   ];
 });
-function getWebGL(param: string): string {
+function getWebGL(param: 'vendor' | 'renderer'): string | null {
   try {
-    const c = document.createElement('canvas');
-    const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
-    if (!gl) return 'N/A';
-    const ext = (gl as WebGLRenderingContext).getExtension('WEBGL_debug_renderer_info');
-    if (!ext) return 'N/A';
-    return (gl as WebGLRenderingContext).getParameter(param === 'UNMASKED_VENDOR_WEBGL' ? ext.UNMASKED_VENDOR_WEBGL : ext.UNMASKED_RENDERER_WEBGL) || 'N/A';
-  } catch { return 'N/A'; }
+    const canvas = document.createElement('canvas');
+    const gl = (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
+    const ext = gl?.getExtension('WEBGL_debug_renderer_info');
+    return gl && ext ? gl.getParameter(param === 'vendor' ? ext.UNMASKED_VENDOR_WEBGL : ext.UNMASKED_RENDERER_WEBGL) || null : null;
+  } catch { return null; }
 }
-const cols = [{ title: 'Property', key: 'key' }, { title: 'Value', key: 'value' }];
 </script>
+
 <template>
   <ToolLayout :tool="tool">
-    <NCard><NDataTable :columns="cols" :data="data" :bordered="false" size="small" /></NCard>
+    <NDescriptions label-placement="left" bordered :column="mobile ? 1 : 2" size="small" class="browser-info">
+      <NDescriptionsItem label="User-Agent" :span="mobile ? 1 : 2">{{ ua }}</NDescriptionsItem>
+      <NDescriptionsItem v-for="row in rows" :key="row.label" :label="row.label">{{ row.value }}</NDescriptionsItem>
+    </NDescriptions>
   </ToolLayout>
 </template>
+
+<style scoped>
+.browser-info { overflow-wrap: anywhere; }
+.browser-info :deep(.n-descriptions-table-header) { width: 120px; }
+@media (max-width: 640px) {
+  .browser-info :deep(.n-descriptions-table-header) { width: 96px; }
+}
+</style>

@@ -1,63 +1,60 @@
 <script setup lang="ts">
-import { NInput, NSpace, NButton, NRadioGroup, NRadio, NAlert } from 'naive-ui';
+import { NInput, NSpace, NAlert, NDivider } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
-import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolTextPanel from '@/components/ToolTextPanel.vue';
-import { useCurrentTool } from '@/composables/useCurrentTool';
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 
 const { t } = useI18n();
-const tool = useCurrentTool();
 
-const mode = ref<'encode' | 'decode'>('encode');
-const input = ref('');
-const error = ref('');
+// --- 文本 → Base64 ---
+const encodeInput = ref('');
 
-const output = computed(() => {
-  if (!input.value) return '';
-  try {
-    if (mode.value === 'encode') return btoa(unescape(encodeURIComponent(input.value)));
-    return decodeURIComponent(escape(atob(input.value)));
-  } catch (e: any) {
-    error.value = e.message;
-    return '';
-  }
+const encodeResult = computed(() => {
+  if (!encodeInput.value) return { output: '', error: '' };
+  try { return { output: btoa(unescape(encodeURIComponent(encodeInput.value))), error: '' }; }
+  catch { return { output: '', error: t('tools.base64Encoder.invalidText') }; }
 });
+const encodeOutput = computed(() => encodeResult.value.output);
+const encodeError = computed(() => encodeResult.value.error);
 
-watch(input, () => { error.value = ''; });
-watch(mode, () => { error.value = ''; });
+// --- Base64 → 文本 ---
+const decodeInput = ref('');
 
-function swap() {
-  const prev = output.value;
-  // Swapping an empty result (e.g. an invalid decode) would wipe the user's
-  // original input, so refuse instead.
-  if (!prev) { error.value = t('tools.base64Encoder.nothingToSwap'); return; }
-  error.value = '';
-  mode.value = mode.value === 'encode' ? 'decode' : 'encode';
-  input.value = prev;
-}
+const decodeResult = computed(() => {
+  if (!decodeInput.value) return { output: '', error: '' };
+  try { return { output: decodeURIComponent(escape(atob(decodeInput.value))), error: '' }; }
+  catch { return { output: '', error: t('tools.base64Encoder.invalidBase64') }; }
+});
+const decodeOutput = computed(() => decodeResult.value.output);
+const decodeError = computed(() => decodeResult.value.error);
 </script>
 
 <template>
-  <ToolLayout v-if="tool" :tool="tool">
-    <ToolTextPanel v-model:input-text="input" :output-text="output" :input-title="t('common.input')" :output-title="t('common.output')" export-name="output.txt">
+  <NSpace vertical :size="12" class="base64-encoder">
+    <ToolTextPanel v-model:input-text="encodeInput" :output-text="encodeOutput" :input-title="t('tools.base64Encoder.textToBase64')" :output-title="t('common.output')" export-name="base64.txt" stack-on-mobile>
       <template #input>
-        <NInput v-model:value="input" type="textarea" :rows="6" :placeholder="mode === 'encode' ? t('tools.base64Encoder.encodePlaceholder') : t('tools.base64Encoder.decodePlaceholder')"  :input-props="{ id: 'base64EncoderField0' }"/>
+        <NInput v-model:value="encodeInput" type="textarea" :rows="6" :placeholder="t('tools.base64Encoder.encodePlaceholder')" :input-props="{ id: 'base64EncoderField0' }" />
       </template>
       <template #output>
-        <NInput :value="output" type="textarea" :rows="6" readonly  :input-props="{ id: 'base64EncoderField1' }"/>
+        <NInput :value="encodeOutput" type="textarea" :rows="6" readonly :input-props="{ id: 'base64EncoderField1' }" />
       </template>
       <template #params>
-        <NSpace align="center">
-          <NRadioGroup v-model:value="mode">
-            <NRadio name="base64EncoderMode" value="encode">{{ t('common.encode') }}</NRadio>
-            <NRadio name="base64EncoderMode" value="decode">{{ t('common.decode') }}</NRadio>
-          </NRadioGroup>
-          <NButton @click="swap">⇄ {{ t('common.swap') }}</NButton>
-          <NButton @click="input = ''">{{ t('tool.clear') }}</NButton>
-        </NSpace>
-        <NAlert v-if="error" type="error" :title="error" />
+        <NAlert v-if="encodeError" type="error" :title="encodeError" />
       </template>
     </ToolTextPanel>
-  </ToolLayout>
+
+    <NDivider style="margin: 0 0 12px 0;" />
+
+    <ToolTextPanel v-model:input-text="decodeInput" :output-text="decodeOutput" :input-title="t('tools.base64Encoder.base64ToText')" :output-title="t('common.output')" export-name="output.txt" stack-on-mobile>
+      <template #input>
+        <NInput v-model:value="decodeInput" type="textarea" :rows="6" :placeholder="t('tools.base64Encoder.decodePlaceholder')" :input-props="{ id: 'base64EncoderField2' }" />
+      </template>
+      <template #output>
+        <NInput :value="decodeOutput" type="textarea" :rows="6" readonly :input-props="{ id: 'base64EncoderField3' }" />
+      </template>
+      <template #params>
+        <NAlert v-if="decodeError" type="error" :title="decodeError" />
+      </template>
+    </ToolTextPanel>
+  </NSpace>
 </template>

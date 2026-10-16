@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'ToolRot13' });
 import { ref, computed } from 'vue';
 import { NInput } from 'naive-ui';
 import { useI18n } from 'vue-i18n';

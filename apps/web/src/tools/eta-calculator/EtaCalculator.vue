@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { NCard, NInputNumber, NDatePicker, NSpace, NProgress, NStatistic, NDivider } from 'naive-ui';
+import { NCard, NInputNumber, NSpace, NProgress, NStatistic, NDivider } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
+import DateTimePicker from '@/components/DateTimePicker.vue';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
 import { calculateEta, formatDuration, formatEndTime } from './eta-calculator.service';
@@ -39,7 +40,7 @@ const result = computed(() =>
           </div>
           <div>
             <span style="display: block; margin-bottom: 4px; font-weight: 500;">{{ t('tools.etaCalculator.startTime') }}</span>
-            <NDatePicker v-model:value="startTime" type="datetime" style="width: 100%;" />
+            <DateTimePicker v-model:value="startTime" />
           </div>
         </NSpace>
       </NCard>

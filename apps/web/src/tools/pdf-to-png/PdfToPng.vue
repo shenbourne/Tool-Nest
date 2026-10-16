@@ -6,12 +6,10 @@ import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import ToolFileUpload from '@/components/ToolFileUpload.vue';
 import ToolFilePanel from '@/components/ToolFilePanel.vue';
-import { useCopy } from '@/composables/useCopy';
 import { tool } from './index';
 const fileUpload = ref<InstanceType<typeof ToolFileUpload> | null>(null);
 
 const { t } = useI18n();
-const { copyFileToClipboard } = useCopy();
 
 interface PageImage {
   url: string;
@@ -31,19 +29,6 @@ function onFile(files: File[]) {
   images.value = [];
   imageFiles.value = [];
   error.value = '';
-}
-
-function downloadImage(img: PageImage) {
-  const a = document.createElement('a');
-  a.href = img.url;
-  a.download = `page-${img.page}.png`;
-  a.click();
-}
-
-async function copyImage(img: PageImage) {
-  const res = await fetch(img.url);
-  const blob = await res.blob();
-  await copyFileToClipboard(blob);
 }
 
 async function convert() {
@@ -70,8 +55,8 @@ async function convert() {
       result.push({ url: URL.createObjectURL(blob), page: i });
     }
     images.value = result;
-  } catch (e: any) {
-    error.value = e.message || t('tools.pdfToPng.failed');
+  } catch (e: unknown) {
+    error.value = (e instanceof Error ? e.message : '') || t('tools.pdfToPng.failed');
   }
   processing.value = false;
 }

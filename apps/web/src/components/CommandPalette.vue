@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useSearchStore } from '@/stores/search.store';
 import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
-import { useDebounceFn } from '@vueuse/core';
 
 const show = ref(false);
 const query = ref('');
@@ -14,10 +13,10 @@ const router = useRouter();
 const searchStore = useSearchStore();
 
 const results = computed(() => {
-  if (!query.value.trim()) return searchStore.results.slice(0, 20);
-  searchStore.setQuery(query.value);
   return searchStore.results.slice(0, 20);
 });
+
+watch(query, (value) => searchStore.setQuery(value));
 
 function open() {
   show.value = true;

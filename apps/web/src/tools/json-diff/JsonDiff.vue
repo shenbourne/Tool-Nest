@@ -11,21 +11,21 @@ const { t } = useI18n();
 
 const leftJson = ref('');
 const rightJson = ref('');
-const errorMsg = ref('');
 
-const diffResult = computed<JsonDiffRow[]>(() => {
-  errorMsg.value = '';
-  if (!leftJson.value.trim() && !rightJson.value.trim()) return [];
+const comparison = computed<{ rows: JsonDiffRow[]; error: string }>(() => {
+  if (!leftJson.value.trim() && !rightJson.value.trim()) return { rows: [], error: '' };
   try {
     const a = leftJson.value.trim() === '' ? undefined : JSON.parse(leftJson.value);
     const b = rightJson.value.trim() === '' ? undefined : JSON.parse(rightJson.value);
-    return diffJsonTree(a, b);
+    return { rows: diffJsonTree(a, b), error: '' };
   }
-  catch (e: any) {
-    errorMsg.value = e?.message || t('common.invalidJson');
-    return [];
+  catch (e: unknown) {
+    return { rows: [], error: (e instanceof Error ? e.message : '') || t('common.invalidJson') };
   }
 });
+
+const diffResult = computed(() => comparison.value.rows);
+const errorMsg = computed(() => comparison.value.error);
 
 const stats = computed(() => summarizeJsonTree(diffResult.value));
 
@@ -60,7 +60,7 @@ function rightFillClass(row: JsonDiffRow): string {
 </script>
 <template>
   <ToolLayout :tool="tool">
-    <NSpace vertical :size="16">
+    <div class="json-diff-workbench">
       <ToolTextPairPanel
         v-model:left-text="leftJson"
         v-model:right-text="rightJson"
@@ -71,13 +71,13 @@ function rightFillClass(row: JsonDiffRow): string {
         <template #left><NInput v-model:value="leftJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.leftPlaceholder')" :input-props="{ id: 'jsonDiffField0' }" /></template>
         <template #right><NInput v-model:value="rightJson" type="textarea" :rows="10" :placeholder="t('tools.jsonDiff.rightPlaceholder')" :input-props="{ id: 'jsonDiffField1' }" /></template>
       </ToolTextPairPanel>
-      <NAlert v-if="errorMsg" type="error" :title="errorMsg" />
-      <NSpace v-if="diffResult.length">
+      <NAlert key="error" v-if="errorMsg" type="error" :title="errorMsg" />
+      <NSpace key="stats" v-if="diffResult.length">
         <NTag type="success">{{ t('tools.jsonDiff.added') }}: {{ stats.added }}</NTag>
         <NTag type="error">{{ t('tools.jsonDiff.removed') }}: {{ stats.removed }}</NTag>
         <NTag type="warning">{{ t('tools.jsonDiff.changed') }}: {{ stats.changed }}</NTag>
       </NSpace>
-      <NCard v-if="diffResult.length" :title="t('tools.jsonDiff.differences')">
+      <NCard key="diff" v-if="diffResult.length" :title="t('tools.jsonDiff.differences')">
         <div class="json-diff-viewer">
           <div class="json-diff-scroll">
             <div class="json-diff-grid">
@@ -115,11 +115,17 @@ function rightFillClass(row: JsonDiffRow): string {
           </div>
         </div>
       </NCard>
-    </NSpace>
+    </div>
   </ToolLayout>
 </template>
 
 <style scoped>
+.json-diff-workbench {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .json-diff-viewer {
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-lg);

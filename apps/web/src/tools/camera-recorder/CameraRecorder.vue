@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onBeforeUnmount, watch } from 'vue';
-import { NCard, NSpace, NButton, NAlert, NSelect, NDivider, NPopconfirm } from 'naive-ui';
+import { NCard, NSpace, NButton, NAlert, NSelect, NPopconfirm } from 'naive-ui';
 import { useI18n } from 'vue-i18n';
 import ToolLayout from '@/layouts/ToolLayout.vue';
 import { useCurrentTool } from '@/composables/useCurrentTool';
@@ -65,7 +65,7 @@ async function startStream() {
     stream.value.getTracks().forEach(t => t.stop());
   }
 
-  const constraints: MediaStreamConstraints = {
+  const constraints: globalThis.MediaStreamConstraints = {
     video: selectedCamera.value ? { deviceId: selectedCamera.value } : true,
     audio: selectedMic.value ? { deviceId: selectedMic.value } : true,
   };

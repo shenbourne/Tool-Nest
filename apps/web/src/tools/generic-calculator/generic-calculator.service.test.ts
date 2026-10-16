@@ -15,7 +15,7 @@ describe('evaluateExpression', () => {
     expect(() => evaluateExpression('2+')).toThrow();
   });
 
-  it('produces Infinity for division by zero (handled by caller)', () => {
-    expect(evaluateExpression('5/0')).toBe(Infinity);
+  it('rejects division by zero', () => {
+    expect(() => evaluateExpression('5/0')).toThrow();
   });
 });
