@@ -54,6 +54,8 @@ jobs:
         run: |
           pnpm --filter @toolnest/web exec eslint src --ext .vue,.ts,.tsx
           pnpm --filter @toolnest/server exec eslint src
+      - name: Build shared package declarations for clean checkout
+        run: pnpm --filter @toolnest/shared build
       - run: pnpm type-check
       - name: Tests
         run: |
